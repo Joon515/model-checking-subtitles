@@ -1,0 +1,3703 @@
+﻿1
+00:00:02,400 --> 00:00:09,720
+good morning. Welcome to the second lecture of of introduction to model checking.
+
+2
+00:00:09,720 --> 00:00:19,440
+Okay. Good. Then let's start. I explained you in the first lecture that in model checking the first
+
+3
+00:00:19,440 --> 00:00:24,720
+thing that we have to to do is we have to talk about models.
+
+4
+00:00:24,720 --> 00:00:28,240
+because that's what we're all going to check, models.
+
+5
+00:00:28,240 --> 00:00:32,480
+So the model that we're going to use is what they call transition systems.
+
+6
+00:00:32,480 --> 00:00:38,200
+so what's a transition system? A transition system is a kind of a directed graph.
+
+7
+00:00:38,200 --> 00:00:42,760
+and this graph is basically extended with a couple of notations.
+
+8
+00:00:42,760 --> 00:00:47,720
+So roughly speaking the idea is that we have a a real system
+
+9
+00:00:47,720 --> 00:00:53,370
+and we're going to make a model and this model is basically this this semantic model.
+
+10
+00:00:53,370 --> 00:00:59,120
+And this model, the idea is that we're going to represent a couple of essential
+
+11
+00:00:59,120 --> 00:01:04,239
+yeah, features of the system. The first is the state.
+
+12
+00:01:04,239 --> 00:01:09,880
+So think about a traffic light. The state of the traffic light is its current color.
+
+13
+00:01:09,880 --> 00:01:15,720
+The stepwise behavior which means how the system will evolve.
+
+14
+00:01:15,720 --> 00:01:21,480
+The traffic light could switch from what is it from red to orange.
+
+15
+00:01:21,480 --> 00:01:24,480
+That could be a change, that is a transition.
+
+16
+00:01:24,480 --> 00:01:29,240
+Then we have to start somewhere. Maybe initially the traffic light is red.
+
+17
+00:01:29,240 --> 00:01:34,645
+And there is additional information about communication or even execution of actions.
+
+18
+00:01:34,645 --> 00:01:40,080
+We call this or execution of statements. This is what we're going to call actions.
+
+19
+00:01:40,080 --> 00:01:47,400
+And that will become very important in the next lecture because we're going to use those actions to actually take
+
+20
+00:01:47,400 --> 00:01:55,360
+models of small components and try to glue those components together to get a model of a larger system.
+
+21
+00:01:55,360 --> 00:01:59,920
+what will be important is that we also have properties about states.
+
+22
+00:01:59,920 --> 00:02:04,120
+A very simple property would be if the traffic light is green, the property is
+
+23
+00:02:04,120 --> 00:02:06,680
+the traffic light is green, which is obvious.
+
+24
+00:02:06,680 --> 00:02:09,720
+the other property is not red, which is also obvious, but maybe there are
+
+25
+00:02:09,720 --> 00:02:11,315
+other properties that we would like to state.
+
+26
+00:02:11,315 --> 00:02:18,880
+And what we do is we associate this information to the states of transition system.
+
+27
+00:02:18,880 --> 00:02:24,000
+So formally we're going to talk about six doubles.
+
+28
+00:02:24,000 --> 00:02:28,080
+we have six ingredients and this is a transition system.
+
+29
+00:02:28,080 --> 00:02:32,680
+So a transition system consists of a couple of states.
+
+30
+00:02:32,680 --> 00:02:41,000
+This states is accountably infinite or finite set of states.
+
+31
+00:02:41,000 --> 00:02:43,472
+So this is the first difference with finite state automata.
+
+32
+00:02:43,472 --> 00:02:48,520
+Finite state automata have finitely many states. In a transition system there can also be
+
+33
+00:02:48,520 --> 00:02:53,160
+infinitely many states, but they are countable. So we can number them.
+
+34
+00:02:53,160 --> 00:02:57,440
+Then we have a set of actions.
+
+35
+00:02:57,440 --> 00:03:04,760
+And those actions we are going to basically use on the transitions to glue transition systems together to
+
+36
+00:03:04,760 --> 00:03:11,920
+build larger transition systems. As I said, this is going to be important in the next lecture next week.
+
+37
+00:03:11,920 --> 00:03:15,360
+Then we have a transition relation which is a ternary relation.
+
+38
+00:03:15,360 --> 00:03:20,360
+So it contains triples. and the triples are of the form we
+
+39
+00:03:20,360 --> 00:03:25,280
+have a source state, we have a target state, and we have an action that tells
+
+40
+00:03:25,280 --> 00:03:29,920
+you basically if the current state is this is in this set and we take a certain
+
+41
+00:03:29,920 --> 00:03:33,880
+action, then the next state will be a state over here.
+
+42
+00:03:33,880 --> 00:03:36,006
+So the typical kind of relation is the following.
+
+43
+00:03:36,006 --> 00:03:43,840
+We are currently in state small s. So this small s is a member of capital S.
+
+44
+00:03:43,840 --> 00:03:47,582
+And then the relation says, "Okay, s alpha s prime."
+
+45
+00:03:47,582 --> 00:03:51,274
+So actually this is already a shorthand because now you may say, "Where are the triples?"
+
+46
+00:03:51,274 --> 00:04:00,320
+Well, the triples are as follows. You have s alpha s prime, which is a member of this transition relation.
+
+47
+00:04:00,320 --> 00:04:08,600
+and this means that we currently are in state s then we can take action alpha
+
+48
+00:04:08,600 --> 00:04:12,880
+and the next state then will be s prime.
+
+49
+00:04:12,880 --> 00:04:15,731
+I'm going to use this abbreviation which is on the slide.
+
+50
+00:04:15,731 --> 00:04:20,959
+So the abbreviation that we're going to use is s alpha s prime.
+
+51
+00:04:20,959 --> 00:04:32,880
+So this is just a shorthand this thing for what we have written here formally.
+
+52
+00:04:32,880 --> 00:04:36,920
+Good. Then we have a set of initial states.
+
+53
+00:04:36,920 --> 00:04:39,720
+Can be typically one state, but can also be more.
+
+54
+00:04:39,720 --> 00:04:48,280
+If there are more than one state initially, that means that the system non-deterministically can decide where to start.
+
+55
+00:04:48,280 --> 00:04:57,240
+Okay? Then we have these elementary properties. So I would like to associate certain information to the states.
+
+56
+00:04:57,240 --> 00:05:01,337
+And these are given by atomic propositions. The traffic light is green.
+
+57
+00:05:01,337 --> 00:05:06,640
+The traffic light is not red. So these are members of this set AP.
+
+58
+00:05:06,640 --> 00:05:12,920
+And then we're going to associate to every state the elementary properties that hold in that state.
+
+59
+00:05:12,920 --> 00:05:15,805
+That can be several. And typically it's a set.
+
+60
+00:05:15,805 --> 00:05:22,600
+So what we have is we have a mapping labeling L that maps every state to a set of the
+
+61
+00:05:22,600 --> 00:05:31,080
+atomic propositions. Good. We will see several examples during the lecture of these kind of transition systems.
+
+62
+00:05:31,080 --> 00:05:33,840
+So here is a very simple transition system for a beverage machine.
+
+63
+00:05:33,840 --> 00:05:39,160
+It has four states. Pay, select, Coke, and Sprite.
+
+64
+00:05:39,160 --> 00:05:41,625
+With the transition relation indicated by the arrows.
+
+65
+00:05:41,625 --> 00:05:44,120
+So there is a transition from pay to select.
+
+66
+00:05:44,120 --> 00:05:49,360
+And for simplicity I omitted these actions alpha.
+
+67
+00:05:49,360 --> 00:05:54,720
+They don't play any role for this example, so let's not bother about them too much.
+
+68
+00:05:54,720 --> 00:05:57,411
+So this is a state space. We have some initial state.
+
+69
+00:05:57,411 --> 00:06:03,600
+The initial state is pay because it has an incoming incoming arrow basically coming from out of
+
+70
+00:06:03,600 --> 00:06:08,000
+the blue so to speak. so that's the initial state pay.
+
+71
+00:06:08,000 --> 00:06:10,434
+Then we have maybe we have actions.
+
+72
+00:06:10,434 --> 00:06:12,228
+So now we have enriched this with actions.
+
+73
+00:06:12,228 --> 00:06:16,800
+So this could be the action coin. This could be the action get Coke.
+
+74
+00:06:16,800 --> 00:06:21,560
+This could This is the action get Sprite if we move from Sprite to pay.
+
+75
+00:06:21,560 --> 00:06:25,720
+And in select apparently there is an action tall here and an action tall there.
+
+76
+00:06:25,720 --> 00:06:31,600
+So the first thing you see already that this also can like automata be non-deterministic.
+
+77
+00:06:31,600 --> 00:06:36,880
+In this state there are two tall label transitions, namely one going to the
+
+78
+00:06:36,880 --> 00:06:40,584
+left and one going to the right.
+
+79
+00:06:40,584 --> 00:06:46,560
+Both labeled the same. The set of atomic propositions I indicate them here by colors.
+
+80
+00:06:46,560 --> 00:06:49,960
+So this is the let's say the elementary properties.
+
+81
+00:06:49,960 --> 00:06:54,520
+Suppose that the elementary properties are something of the form pay and drink.
+
+82
+00:06:54,520 --> 00:07:01,360
+red and green. Then we have to define which states satisfy which properties.
+
+83
+00:07:01,360 --> 00:07:04,000
+We say, "Well, in the select state no property holds."
+
+84
+00:07:04,000 --> 00:07:09,080
+In terms of a color this means the color is simply a transparent, it's white.
+
+85
+00:07:09,080 --> 00:07:14,480
+Then the labeling of the state pay is labeled with the singleton set pay
+
+86
+00:07:14,480 --> 00:07:19,840
+indicated by the red color over here. And the labeling of the two states on
+
+87
+00:07:19,840 --> 00:07:29,080
+the bottom, Coke and Sprite are labeled with the singleton set drink and that means I colored them green.
+
+88
+00:07:29,080 --> 00:07:36,093
+Good. So there are two main differences with respect Well, three main differences maybe with respect to finite state automata.
+
+89
+00:07:36,093 --> 00:07:40,240
+First, the number of states can in principally be infinite.
+
+90
+00:07:40,240 --> 00:07:45,024
+This example is finite, but we can also later we will see infinite state transition systems.
+
+91
+00:07:45,024 --> 00:07:48,640
+There is not something like an accepting state.
+
+92
+00:07:48,640 --> 00:07:52,560
+So it's not the case that an a label transition system accepts a word and
+
+93
+00:07:52,560 --> 00:07:54,851
+based on this word moves from one state to another state.
+
+94
+00:07:54,851 --> 00:07:58,240
+No, it models the behavior of a system.
+
+95
+00:07:58,240 --> 00:08:07,520
+So it exhibits certain actions like get Coke, coin, or get Sprite.
+
+96
+00:08:07,520 --> 00:08:14,160
+Now you may change the labeling. So I now I keep the same atomic the same
+
+97
+00:08:14,160 --> 00:08:17,760
+So let's suppose now I simply say every state I mean the set of atomic
+
+98
+00:08:17,760 --> 00:08:21,080
+propositions is identical to the set of states.
+
+99
+00:08:21,080 --> 00:08:25,280
+And then the obvious labeling would be the labeling every state is labeled with
+
+100
+00:08:25,280 --> 00:08:32,000
+itself and that means formally L of S is the singleton set containing S.
+
+101
+00:08:32,000 --> 00:08:35,200
+So you see the coloring scheme of the of the pictures changes, but of course the
+
+102
+00:08:35,200 --> 00:08:40,159
+rest of the picture stays the same.
+
+103
+00:08:40,159 --> 00:08:43,056
+Good. So what is the behavior of such a transition system?
+
+104
+00:08:43,056 --> 00:08:47,000
+And I tried to write this down here as a kind of pseudo code algorithm.
+
+105
+00:08:47,000 --> 00:08:53,480
+So yeah. Did you go back? Yes. shouldn't the transitions going out from select be different?
+
+106
+00:08:53,480 --> 00:08:58,240
+It said and then you decide if you want Coke or Sprite.
+
+107
+00:08:58,240 --> 00:09:01,450
+you What is the question you have?
+
+108
+00:09:01,450 --> 00:09:04,360
+The transitions going out from the select state.
+
+109
+00:09:04,360 --> 00:09:08,840
+Yes. Shouldn't they be different so that we can know where to No. I mean
+
+110
+00:09:08,840 --> 00:09:11,451
+so the transitions are still the same.
+
+111
+00:09:11,451 --> 00:09:15,634
+So still you have a transition that moves from Coke to Sprite.
+
+112
+00:09:15,634 --> 00:09:21,560
+So simply what you have is you have of select you have a tall transition, right?
+
+113
+00:09:21,560 --> 00:09:24,720
+That's the label. And that it moves to Coke.
+
+114
+00:09:24,720 --> 00:09:32,640
+That's one transition. And we have a transition that says select tall to Sprite.
+
+115
+00:09:32,640 --> 00:09:38,680
+These two transitions were there in my first transition system, this one, where we had this labeling.
+
+116
+00:09:38,680 --> 00:09:42,040
+The only thing I changed is the labeling.
+
+117
+00:09:42,040 --> 00:09:46,560
+It doesn't affect the transitions. The transitions are still the same.
+
+118
+00:09:46,560 --> 00:09:50,600
+The only point is that now the labeling of these two states is different.
+
+119
+00:09:50,600 --> 00:09:54,256
+But the automata or the transition system is still non-deterministic.
+
+120
+00:09:54,256 --> 00:09:58,680
+Being in the state select, you can do a total transition.
+
+121
+00:09:58,680 --> 00:10:03,080
+You either end up in the Coke state or you end up in the Sprite state.
+
+122
+00:10:03,080 --> 00:10:11,080
+This remains the same. No matter what is the labeling of the states.
+
+123
+00:10:11,080 --> 00:10:18,120
+Good. So, to make this more clear, I hope this is a kind of pseudo code
+
+124
+00:10:18,120 --> 00:10:22,313
+that tells you what is the possible behaviors of a transition system.
+
+125
+00:10:22,313 --> 00:10:25,560
+So, first we have to fix where do we start?
+
+126
+00:10:25,560 --> 00:10:30,760
+Now, typically here we have one initial state and it's clear you start in that initial state.
+
+127
+00:10:30,760 --> 00:10:33,955
+Now, suppose there are two, then where do we start?
+
+128
+00:10:33,955 --> 00:10:41,880
+Well, you select this non-deterministically. And the idea is that an initial state simply tells you what is the possible
+
+129
+00:10:41,880 --> 00:10:46,432
+initial state where the system can start.
+
+130
+00:10:46,432 --> 00:10:51,440
+It has no preference for one over the other initial state.
+
+131
+00:10:51,440 --> 00:10:55,171
+it doesn't flip a coin and says this happens with 50% and that happens.
+
+132
+00:10:55,171 --> 00:10:59,680
+No, it's simply completely non-deterministic way you start.
+
+133
+00:10:59,680 --> 00:11:01,366
+Good. Then the question is how to continue.
+
+134
+00:11:01,366 --> 00:11:08,480
+Well, pick such an initial state. Suppose that we pick initial state S from the set of initial states.
+
+135
+00:11:08,480 --> 00:11:11,035
+Then, if S is non-terminal, what does that mean?
+
+136
+00:11:11,035 --> 00:11:15,080
+If S has at least an outgoing transition.
+
+137
+00:11:15,080 --> 00:11:24,080
+Which means we need to have something of the form S moves with some action alpha somewhere.
+
+138
+00:11:24,080 --> 00:11:27,413
+If such a transition doesn't exist, S is terminal.
+
+139
+00:11:27,413 --> 00:11:33,680
+We cannot continue. So, in the very simple case where this is a transition system, we start
+
+140
+00:11:33,680 --> 00:11:36,346
+here and this is S, but it has no outgoing arrows.
+
+141
+00:11:36,346 --> 00:11:43,280
+Then we don't enter the while loop.
+
+142
+00:11:43,280 --> 00:11:46,080
+So, we have a non-terminal, then what do we do?
+
+143
+00:11:46,080 --> 00:11:50,817
+We select non-deterministically a transition. So, look at this S.
+
+144
+00:11:50,817 --> 00:12:00,000
+This S has maybe several outgoing transitions. Alpha one, alpha two, alpha n.
+
+145
+00:12:00,000 --> 00:12:06,786
+Which one are we going to take? Well, the transition system is describing the possible behaviors of a system, right?
+
+146
+00:12:06,786 --> 00:12:10,160
+It's not an automaton waiting for alpha one as an input.
+
+147
+00:12:10,160 --> 00:12:15,706
+No, it's something that describes what the system can do proactively.
+
+148
+00:12:15,706 --> 00:12:19,640
+I mean, on its own. And that means you can either do alpha
+
+149
+00:12:19,640 --> 00:12:21,910
+one or you can do alpha two or you can alpha n.
+
+150
+00:12:21,910 --> 00:12:26,860
+So, we're going to pick one. So, now we're going to select one.
+
+151
+00:12:26,860 --> 00:12:29,074
+So, what we're going to do? We're going to select one.
+
+152
+00:12:29,074 --> 00:12:33,720
+Let's suppose we take this one. So, that's the one we pick.
+
+153
+00:12:33,720 --> 00:12:36,280
+That means we go to another to to some state.
+
+154
+00:12:36,280 --> 00:12:43,800
+So, this is some state S prime. And that means that's the transition we have selected.
+
+155
+00:12:43,800 --> 00:12:48,320
+And then from then on, so we execute the action, the current state is going to be
+
+156
+00:12:48,320 --> 00:12:51,906
+S prime, the target of the transition, and then we repeat the loop.
+
+157
+00:12:51,906 --> 00:12:59,440
+And we do this until we reach a state that has no outgoing transitions.
+
+158
+00:12:59,440 --> 00:13:05,240
+So, one thing that you should in mind have in mind, even if the transition system is finite,
+
+159
+00:13:05,240 --> 00:13:11,839
+this algorithm, well, algorithm pseudo code, will not necessarily terminate.
+
+160
+00:13:11,839 --> 00:13:19,000
+I mean, in case I can maybe go from S.
+
+161
+00:13:19,000 --> 00:13:23,120
+I have a transition, let's say, with alpha I can move here, with beta I can
+
+162
+00:13:23,120 --> 00:13:29,560
+move there, and from S prime we can go back, maybe again with alpha.
+
+163
+00:13:29,560 --> 00:13:37,760
+Then this algorithm will not terminate. Because we never reach a state that has no outgoing edges.
+
+164
+00:13:37,760 --> 00:13:44,040
+So, the behaviors of transition systems are typically infinite.
+
+165
+00:13:44,040 --> 00:13:48,120
+Unless you have a state where you cannot continue.
+
+166
+00:13:48,120 --> 00:13:53,800
+Good. That's also a major difference with finite state automata.
+
+167
+00:13:53,800 --> 00:14:01,320
+Good. So, what's now an execution? An execution is a possible, I would say, kind of output of this algorithm.
+
+168
+00:14:01,320 --> 00:14:04,088
+namely, how did you traverse the transition system?
+
+169
+00:14:04,088 --> 00:14:07,839
+You maybe started with S0 because S0 is an initial state.
+
+170
+00:14:07,839 --> 00:14:11,760
+Then we have selected perhaps initially alpha one.
+
+171
+00:14:11,760 --> 00:14:13,855
+We move to one of the target states as one.
+
+172
+00:14:13,855 --> 00:14:18,720
+In S1, we have again selected one of the possible output or one of the
+
+173
+00:14:18,720 --> 00:14:23,640
+edges of S1, maybe alpha two. We move to S2 and so forth.
+
+174
+00:14:23,640 --> 00:14:30,959
+We call this executions. So, executions are typically infinite.
+
+175
+00:14:30,959 --> 00:14:33,788
+And then you can define what is the set of states that is reachable.
+
+176
+00:14:33,788 --> 00:14:40,560
+Those are the states that you can reach from some initial state by actually running this algorithm.
+
+177
+00:14:40,560 --> 00:14:44,400
+So, in my example over here, both states are reachable.
+
+178
+00:14:44,400 --> 00:14:47,925
+Of course, initially this is already reachable because that's why we start.
+
+179
+00:14:47,925 --> 00:14:55,640
+And this one will be reachable because as soon as we select here beta, this is S prime.
+
+180
+00:14:55,640 --> 00:14:58,331
+Notice also that a possible execution could be also something like this.
+
+181
+00:14:58,331 --> 00:15:03,000
+We could start in S, we pick alpha, we start in S, we pick alpha, and we do
+
+182
+00:15:03,000 --> 00:15:06,091
+alpha, and we always stay in S. This is always fine.
+
+183
+00:15:06,091 --> 00:15:10,520
+This is also fine, right? It's also a possible execution.
+
+184
+00:15:10,520 --> 00:15:16,520
+Reachability is basically a universal quantification over all possible executions.
+
+185
+00:15:16,520 --> 00:15:22,800
+And there is another execution, namely that moves from S to S prime by doing beta.
+
+186
+00:15:22,800 --> 00:15:27,160
+Good. So, what are we typically doing? Question.
+
+187
+00:15:27,160 --> 00:15:29,959
+Is there a way that a state is not reachable?
+
+188
+00:15:29,959 --> 00:15:35,617
+Is there a Is there a transition system where a state is not reachable?
+
+189
+00:15:35,617 --> 00:15:42,040
+Yes, sure. I mean, I can write I can add another state here.
+
+190
+00:15:42,040 --> 00:15:47,200
+Maybe this and this can maybe move here with alpha.
+
+191
+00:15:47,200 --> 00:15:50,240
+But I will never reach S double prime.
+
+192
+00:15:50,240 --> 00:15:53,200
+It's part of my picture, it's part of my transition system, but I will
+
+193
+00:15:53,200 --> 00:15:59,200
+never reach it because there is no possibility to start from in this case the initial state to go there.
+
+194
+00:15:59,200 --> 00:16:04,200
+Even if I would let's say say that this is an initial state, too.
+
+195
+00:16:04,200 --> 00:16:11,400
+That will not change the matter. S double prime is still not reachable.
+
+196
+00:16:11,400 --> 00:16:13,942
+Good. So, what are we going to do in model checking?
+
+197
+00:16:13,942 --> 00:16:16,853
+Typically, we have a kind of system which is complicated.
+
+198
+00:16:16,853 --> 00:16:23,240
+It maybe has several components. The double bar symbol stands for something like multi-threading.
+
+199
+00:16:23,240 --> 00:16:26,079
+That will be dealt with in the next lecture.
+
+200
+00:16:26,079 --> 00:16:30,480
+We map this system onto a transition system, so the structure we just have learned.
+
+201
+00:16:30,480 --> 00:16:32,393
+And this is one of the inputs to a model checker.
+
+202
+00:16:32,393 --> 00:16:37,560
+The other input is a specification that we get to this much later.
+
+203
+00:16:37,560 --> 00:16:41,914
+So, actually what we're currently considering is basically transition systems.
+
+204
+00:16:41,914 --> 00:16:48,959
+So, one of the essential inputs to basically every model checking algorithm.
+
+205
+00:16:48,959 --> 00:16:55,200
+Good. Now, your model is typically not described by a transition system.
+
+206
+00:16:55,200 --> 00:17:01,120
+Models typically are huge. so, you don't want to specify you won't
+
+207
+00:17:01,120 --> 00:17:06,280
+don't want to draw a state space of let's say 10,000 states.
+
+208
+00:17:06,280 --> 00:17:13,040
+Don't think about a million states. So, typically you describe your system on an abstract level using some syntax, a
+
+209
+00:17:13,040 --> 00:17:19,800
+language. And then what we are going to to see is that these languages can then be mapped
+
+210
+00:17:19,800 --> 00:17:27,120
+by means of a semantics, which means an interpretation of this language of these terms into a transition system.
+
+211
+00:17:27,120 --> 00:17:33,400
+So, the bottom line of the lecture of today is that transition systems are the elementary models.
+
+212
+00:17:33,400 --> 00:17:41,520
+And basically almost everything you can think about, almost everything, you can model by means of transition systems.
+
+213
+00:17:41,520 --> 00:17:47,800
+Good. So, the first example I'm going to show you, I'm going to explicitly make
+
+214
+00:17:47,800 --> 00:17:50,206
+this explicit and by means of two examples.
+
+215
+00:17:50,206 --> 00:17:58,600
+The first thing is hardware circuits. So, I'm going to argue if this is a hardware circuit,
+
+216
+00:17:58,600 --> 00:18:02,080
+then the semantics can be given in terms of a transition system.
+
+217
+00:18:02,080 --> 00:18:06,760
+And because we are going to do model checking of transition systems, we can also do model checking of hardware
+
+218
+00:18:06,760 --> 00:18:14,679
+circuits. The second example I'm giving are programs, sequential programs.
+
+219
+00:18:14,679 --> 00:18:19,920
+So, what we're going to see here, there is a sequential program, so there is only one component, P1.
+
+220
+00:18:19,920 --> 00:18:24,470
+Forget about the other ones, which is given as a program in pseudo code.
+
+221
+00:18:24,470 --> 00:18:31,880
+I'm going to show you the underlying interpretation of such a program is again a transition system.
+
+222
+00:18:31,880 --> 00:18:37,320
+Okay? Good. So, if we can do model checking of transition systems, we can do model checking of programs
+
+223
+00:18:37,320 --> 00:18:40,854
+that give rise to finite transition systems. Okay.
+
+224
+00:18:40,854 --> 00:18:44,325
+So, the first example is a circuit and I'll make it very simple.
+
+225
+00:18:44,325 --> 00:18:46,345
+The circuit has a couple of input bits.
+
+226
+00:18:46,345 --> 00:18:48,419
+So, these are the inputs to the circuit.
+
+227
+00:18:48,419 --> 00:18:52,360
+In my case, there are n Boolean inputs.
+
+228
+00:18:52,360 --> 00:18:58,200
+So, X1 is either 0 or 1, X2 is either 0 or 1, and so forth.
+
+229
+00:18:58,200 --> 00:19:04,200
+Then we have a circuit. This circuit has a couple of registers, in my case K.
+
+230
+00:19:04,200 --> 00:19:10,600
+They store, so they have a value and these values are again Boolean, 0 1s.
+
+231
+00:19:10,600 --> 00:19:17,665
+And this circuit has output bits, in my case M output bits, Y1 to YM.
+
+232
+00:19:17,665 --> 00:19:21,880
+And again, they are bits, so they're 0 1s.
+
+233
+00:19:21,880 --> 00:19:29,840
+I'm going to describe the behavior of this hardware circuit by means of two things.
+
+234
+00:19:29,840 --> 00:19:33,960
+Suppose that I change the input. Then there are two things that I need to
+
+235
+00:19:33,960 --> 00:19:39,919
+tell you about this hardware circuit. First, what kind of effect does this have on the registers?
+
+236
+00:19:39,919 --> 00:19:44,340
+This is given by the function delta.
+
+237
+00:19:44,340 --> 00:19:49,560
+So, for every register, I have to tell you if an input changes, what happens to this register.
+
+238
+00:19:49,560 --> 00:19:55,520
+So, for For one, I have a function delta one that tells me
+
+239
+00:19:55,520 --> 00:20:03,600
+if I provide the circuit with a new input, what is the new value of register one?
+
+240
+00:20:03,600 --> 00:20:10,520
+The same for register two. I have K registers, so I have K functions.
+
+241
+00:20:10,520 --> 00:20:16,440
+For every register, I have to tell you how is the register going to change.
+
+242
+00:20:16,440 --> 00:20:20,880
+Good. Secondly, I have to tell you something about the output bits.
+
+243
+00:20:20,880 --> 00:20:24,946
+So for every output bit, Y1 up to YM, I have a function.
+
+244
+00:20:24,946 --> 00:20:31,080
+So for Y1, I have a function which I called lambda one that's going to tell you what will be
+
+245
+00:20:31,080 --> 00:20:40,080
+the output bit Y1 given given what? Well, actually given an input plus the value of the registers.
+
+246
+00:20:40,080 --> 00:20:49,270
+Good. So, what are these? The type of these functions are the following.
+
+247
+00:20:49,270 --> 00:20:55,520
+So, these deltas and these lambdas are all functions.
+
+248
+00:20:55,520 --> 00:20:57,565
+We call them switching function, but that's not so important.
+
+249
+00:20:57,565 --> 00:20:59,488
+What did they do What do they do?
+
+250
+00:20:59,488 --> 00:21:03,560
+They take as input first of all the input bits.
+
+251
+00:21:03,560 --> 00:21:07,840
+So, the input bits are N-tuples because I have N inputs.
+
+252
+00:21:07,840 --> 00:21:12,880
+Every value is binary, so I have this set to the power N.
+
+253
+00:21:12,880 --> 00:21:17,360
+Then those values also depend on the current value of the registers.
+
+254
+00:21:17,360 --> 00:21:24,480
+How many registers do I have? I have K registers, so I have 0 1 to the power K.
+
+255
+00:21:24,480 --> 00:21:29,600
+Based on these inputs and the values of the registers, I'm going to determine
+
+256
+00:21:29,600 --> 00:21:33,960
+the new value of the register or the output.
+
+257
+00:21:33,960 --> 00:21:37,960
+Either for register J or for output I.
+
+258
+00:21:37,960 --> 00:21:41,880
+So, the subscripts are going to tell you which register we going to talk about,
+
+259
+00:21:41,880 --> 00:21:45,720
+which outputs we are going to talk about.
+
+260
+00:21:45,720 --> 00:21:52,280
+Good. So, this is the idea. We have input values for all the bits.
+
+261
+00:21:52,280 --> 00:21:58,400
+So, A1 is the current value of X1, A2 is the value of X2 and so forth, and AN is
+
+262
+00:21:58,400 --> 00:22:06,200
+the value of XN. We have also the current values of all the registers.
+
+263
+00:22:06,200 --> 00:22:10,040
+So, C1 is the current value of register one.
+
+264
+00:22:10,040 --> 00:22:18,840
+C2 is the current value of register two and so forth, and CK is the current value of register K.
+
+265
+00:22:18,840 --> 00:22:21,142
+Now, what are we these functions going to define?
+
+266
+00:22:21,142 --> 00:22:28,360
+So, we have those functions delta J. Delta J is given these inputs and these current values of the
+
+267
+00:22:28,360 --> 00:22:33,440
+registers going to compute the next value of register J.
+
+268
+00:22:33,440 --> 00:22:37,450
+Only J. Similarly, we do for the outputs.
+
+269
+00:22:37,450 --> 00:22:50,000
+We have a function lambda I that is actually giving the output value for the output variable Y I.
+
+270
+00:22:50,000 --> 00:22:55,640
+Good. And now what we're going to do is we're going to build a transition system for these circuits.
+
+271
+00:22:55,640 --> 00:22:58,160
+And the first thing I'm doing I'm trying to give you an intuition.
+
+272
+00:22:58,160 --> 00:23:01,600
+We trying to do this by means of an example, and then I will write you
+
+273
+00:23:01,600 --> 00:23:05,760
+on the blackboard how this works. So, what's the initial?
+
+274
+00:23:05,760 --> 00:23:07,960
+We start to We have to start somewhere.
+
+275
+00:23:07,960 --> 00:23:11,748
+So, the initial valuation is the actually there are no inputs yet.
+
+276
+00:23:11,748 --> 00:23:15,913
+So, the initial valuation is for every register stores a certain value at the moment.
+
+277
+00:23:15,913 --> 00:23:23,440
+Typically, these are only zeros for instance. Yeah, you say basically by default all registers initially are zero,
+
+278
+00:23:23,440 --> 00:23:27,760
+which means register one initially has a value C01.
+
+279
+00:23:27,760 --> 00:23:32,240
+The zero stands for initial, one stands for the register we are talking about.
+
+280
+00:23:32,240 --> 00:23:41,200
+So, the Kth register has an initial value C0 for that register K, which means C0K.
+
+281
+00:23:41,200 --> 00:23:45,679
+For the moment, just assume all those C0s are zero.
+
+282
+00:23:45,679 --> 00:23:48,520
+Now, we're going to define a transition system.
+
+283
+00:23:48,520 --> 00:23:53,640
+So, the transition system, you should think about what's the state of this circuit.
+
+284
+00:23:53,640 --> 00:23:56,880
+So, what's the current state of the circuit is basically the the value of
+
+285
+00:23:56,880 --> 00:24:00,960
+the inputs plus the values of all the registers.
+
+286
+00:24:00,960 --> 00:24:03,017
+Yeah, that's the idea. That will be the state.
+
+287
+00:24:03,017 --> 00:24:06,679
+That will define what is the current state of this circuit.
+
+288
+00:24:06,679 --> 00:24:09,632
+Then the transitions will describe represent the step-wise behavior.
+
+289
+00:24:09,632 --> 00:24:15,320
+So, they will be defined actually by those two functions delta and lambda because they are going to tell us
+
+290
+00:24:15,320 --> 00:24:22,760
+how the registers will change and how the output function will change if we change the input.
+
+291
+00:24:22,760 --> 00:24:25,970
+Then the values of the input bits are actually going to change non-deterministically.
+
+292
+00:24:25,970 --> 00:24:32,240
+Why is this? Well, we want to describe the hardware circuit.
+
+293
+00:24:32,240 --> 00:24:38,880
+Somewhere from outside the system, someone is provided maybe typically another component is providing the inputs.
+
+294
+00:24:38,880 --> 00:24:43,305
+The system itself doesn't have any control on which input will come next, right?
+
+295
+00:24:43,305 --> 00:24:46,520
+This is what the outside world is going to define.
+
+296
+00:24:46,520 --> 00:24:50,270
+Somewhere here from the outside, someone is this sending us those bits.
+
+297
+00:24:50,270 --> 00:24:54,800
+We don't have control over which bits is going to be next.
+
+298
+00:24:54,800 --> 00:24:57,506
+Will this be a zero? Will this be a one?
+
+299
+00:24:57,506 --> 00:25:04,000
+I don't know. So, we're going to use non-determinism to model this.
+
+300
+00:25:04,000 --> 00:25:09,880
+And then we have atomic propositions. I think in my example, I will only concentrate on the Ys.
+
+301
+00:25:09,880 --> 00:25:13,200
+Now, the choices that we're going to do is you could for instance say the
+
+302
+00:25:13,200 --> 00:25:16,760
+current state tells you what's the current value of the input bits.
+
+303
+00:25:16,760 --> 00:25:20,280
+you could decide that's to say, well, the current value of the output bits.
+
+304
+00:25:20,280 --> 00:25:23,240
+In my example, I will only use the output bits.
+
+305
+00:25:23,240 --> 00:25:28,840
+And then there are registers that tell you something about what's the current value of a register.
+
+306
+00:25:28,840 --> 00:25:32,720
+So, basically, here you're going to take the information which is already in the
+
+307
+00:25:32,720 --> 00:25:37,679
+state plus you can take also the output values.
+
+308
+00:25:37,679 --> 00:25:40,148
+Let's look at an example. This is a very simple example.
+
+309
+00:25:40,148 --> 00:25:45,600
+It has one input, one output, one register.
+
+310
+00:25:45,600 --> 00:25:52,114
+One input, one output, one register. And what it does is the input is coming here.
+
+311
+00:25:52,114 --> 00:25:55,800
+There is an exclusive or here. There is an or here.
+
+312
+00:25:55,800 --> 00:25:59,520
+and there is an an inverter over here.
+
+313
+00:25:59,520 --> 00:26:05,760
+Good. So, what's the output function? The output function tells you for Y, so
+
+314
+00:26:05,760 --> 00:26:09,720
+we have only one output function, namely lambda Y.
+
+315
+00:26:09,720 --> 00:26:12,165
+What is lambda Y? Well, it's the negation.
+
+316
+00:26:12,165 --> 00:26:14,990
+So, this is the nega- inverter of what?
+
+317
+00:26:14,990 --> 00:26:20,760
+Well, of the output of this XOR. So, this symbol stands for exclusive or.
+
+318
+00:26:20,760 --> 00:26:24,400
+And then here is an X. So, that's the input to the exclusive or and the
+
+319
+00:26:24,400 --> 00:26:30,420
+current value of the register. This brown over here is the current value of the register.
+
+320
+00:26:30,420 --> 00:26:36,160
+That's R. Then what's the transition function? Then that tells us something about the register.
+
+321
+00:26:36,160 --> 00:26:38,760
+So, the register R is basically a disjunction.
+
+322
+00:26:38,760 --> 00:26:41,630
+It's an or of what? Well, of X.
+
+323
+00:26:41,630 --> 00:26:47,520
+That's the blue incoming line and brown, which is the incoming line coming from the register.
+
+324
+00:26:47,520 --> 00:26:52,166
+So, delta R is X or R.
+
+325
+00:26:52,166 --> 00:26:56,050
+So, they are typically Boolean functions that tell you how to change the state.
+
+326
+00:26:56,050 --> 00:27:02,880
+Good. So, now we want to build a state space or transition system for this circuit.
+
+327
+00:27:02,880 --> 00:27:06,766
+Now, what are the states? Well, they are the output function and the transition function.
+
+328
+00:27:06,766 --> 00:27:12,360
+The transition system looks as follows. First of all, we have four states.
+
+329
+00:27:12,360 --> 00:27:16,120
+Why is this? Well, we have one input, one register.
+
+330
+00:27:16,120 --> 00:27:21,560
+They both are binary, so we have two to the power two many states.
+
+331
+00:27:21,560 --> 00:27:26,080
+So, that's hopefully clear. Then the first state is where do we start?
+
+332
+00:27:26,080 --> 00:27:30,920
+Now, we can maybe agree on the fact that maybe the register is initially zero.
+
+333
+00:27:30,920 --> 00:27:34,320
+So, that will be true in this state and in that state.
+
+334
+00:27:34,320 --> 00:27:36,171
+And now the question is where can we start?
+
+335
+00:27:36,171 --> 00:27:43,520
+Now, remember that the output the input to the to the hardware circuit is non-deterministic, right?
+
+336
+00:27:43,520 --> 00:27:49,040
+The circuit itself has no control what will be the first input bit.
+
+337
+00:27:49,040 --> 00:27:50,520
+What does that mean in terms of the transition system?
+
+338
+00:27:50,520 --> 00:27:54,520
+It means that we will have two initial states.
+
+339
+00:27:54,520 --> 00:27:57,400
+So, these will be the two initial states.
+
+340
+00:27:57,400 --> 00:28:01,960
+Yeah, because you don't know. The system doesn't know whether the first input bit will be a
+
+341
+00:28:01,960 --> 00:28:05,725
+zero or will be a one. Good.
+
+342
+00:28:05,725 --> 00:28:09,960
+And this has been my assumption. If the assumption is different, then of course you could also start here and
+
+343
+00:28:09,960 --> 00:28:12,537
+there, but then the assumption is that the register initially is one.
+
+344
+00:28:12,537 --> 00:28:16,800
+I make the assumption initially the register is zero.
+
+345
+00:28:16,800 --> 00:28:20,200
+Good. And now we have to look at the transition function.
+
+346
+00:28:20,200 --> 00:28:29,159
+So, here is one transition. So, let's suppose that we are in this state,
+
+347
+00:28:29,159 --> 00:28:34,720
+and suppose that the input bit changes from zero to zero.
+
+348
+00:28:34,720 --> 00:28:37,564
+So, it change it stays at zero. Okay?
+
+349
+00:28:37,564 --> 00:28:40,320
+What does it mean in terms of my transition system?
+
+350
+00:28:40,320 --> 00:28:46,160
+I stay in this state. Good. Why is this?
+
+351
+00:28:46,160 --> 00:28:49,520
+Well, I mean actually maybe I should should write this down.
+
+352
+00:28:49,520 --> 00:28:53,560
+So, how is the transition relation formally defined?
+
+353
+00:28:53,560 --> 00:28:56,560
+I can use the board over here.
+
+354
+00:28:56,560 --> 00:29:08,919
+So, the formal definition is the following. So, delta RJ in my case, J equals one because I only
+
+355
+00:29:08,919 --> 00:29:12,666
+have one register, but in case in a general setting I have more, is the following.
+
+356
+00:29:12,666 --> 00:29:17,960
+It's a function that tells you take the current input values.
+
+357
+00:29:17,960 --> 00:29:25,226
+Take all the values of the registers.
+
+358
+00:29:25,226 --> 00:29:29,645
+This moves by some transition. Let's call this a tau transition.
+
+359
+00:29:29,645 --> 00:29:38,400
+That's my action. As the actions do not play any important role here, I just take an arbitrary symbol.
+
+360
+00:29:38,400 --> 00:29:42,480
+And then we move to a new state, which will be A1 prime
+
+361
+00:29:42,480 --> 00:29:55,880
+up to AN prime and C1 prime up to CK' such that Yeah, so this is the input.
+
+362
+00:29:55,880 --> 00:30:12,680
+This is the current register values. And then we define that CJ' Yeah, in particular, what happens to those values?
+
+363
+00:30:12,680 --> 00:30:27,200
+CJ' is going to be delta RJ of A1 up to AN, R1 up to C1 up to CK.
+
+364
+00:30:27,200 --> 00:30:36,800
+So what is important is that these values depend on these current state values.
+
+365
+00:30:36,800 --> 00:30:41,600
+So this is going to be determined by this.
+
+366
+00:30:41,600 --> 00:30:48,160
+So suppose that currently we are in the state X = 0, R = 0.
+
+367
+00:30:48,160 --> 00:30:54,600
+This is A1. This is A0 A1.
+
+368
+00:30:54,600 --> 00:31:00,720
+This value is C1. Now the system is going to change.
+
+369
+00:31:00,720 --> 00:31:03,800
+Let's say the next input is a zero.
+
+370
+00:31:03,800 --> 00:31:07,560
+So then this state moves to a new state.
+
+371
+00:31:07,560 --> 00:31:13,000
+What will be the new state? Well, the new input Let's suppose that X = 0, so this now is
+
+372
+00:31:13,000 --> 00:31:20,680
+the value A1' Now the question is what happens to the register?
+
+373
+00:31:20,680 --> 00:31:25,400
+And now it becomes important. This value of the register depends on those two values.
+
+374
+00:31:25,400 --> 00:31:31,000
+Not on the new input. So that means that in this case we will
+
+375
+00:31:31,000 --> 00:31:41,160
+have that R equals well, the or of this value, so zero or zero.
+
+376
+00:31:41,160 --> 00:31:51,200
+And that is zero. So that explains the self loop here in this state.
+
+377
+00:31:51,200 --> 00:31:54,920
+What happens if the input becomes a one?
+
+378
+00:31:54,920 --> 00:32:02,720
+Then the input becomes a one. So in that case I move from the state X0 R = 0
+
+379
+00:32:02,720 --> 00:32:07,240
+to the state X = 1 because that's my new input.
+
+380
+00:32:07,240 --> 00:32:15,120
+And now again, this register value depends on those two values, so again it's zero or zero, which means zero.
+
+381
+00:32:15,120 --> 00:32:27,890
+And that's the rightmost state over there. Good.
+
+382
+00:32:27,890 --> 00:32:33,800
+So if we continue this kind of scheme then we now concentrate on the state X =
+
+383
+00:32:33,800 --> 00:32:38,400
+1 R is zero. Now there are two possible successor states.
+
+384
+00:32:38,400 --> 00:32:44,480
+Either the next input is a zero or the next input is a one.
+
+385
+00:32:44,480 --> 00:32:48,590
+Good. If the next input is a zero, then what is the value of the register?
+
+386
+00:32:48,590 --> 00:32:57,040
+The value of the register is the the disjunction of those two values, and one or zero is one.
+
+387
+00:32:57,040 --> 00:33:05,000
+Okay? If the input changes to one or actually stays at one then again, similarly, this value is the
+
+388
+00:33:05,000 --> 00:33:09,760
+disjunction of one and zero, which is a one.
+
+389
+00:33:09,760 --> 00:33:14,920
+Good. I hope this is clear. If you continue this, you get this as a transition system.
+
+390
+00:33:14,920 --> 00:33:25,240
+And the claim is that the behavior of this transition system models basically the behavior of this sequential circuit.
+
+391
+00:33:25,240 --> 00:33:29,360
+Good. Now you can try to say, "Okay, what are the elementary properties?"
+
+392
+00:33:29,360 --> 00:33:32,800
+Maybe the elementary properties that we would like to say is basically that the
+
+393
+00:33:32,800 --> 00:33:35,960
+output is true or the output is not true.
+
+394
+00:33:35,960 --> 00:33:40,200
+So we want to indicate whether this output is high or low.
+
+395
+00:33:40,200 --> 00:33:46,360
+True or false. And in this state, for instance, zero and zero, then we have to say it's not
+
+396
+00:33:46,360 --> 00:33:54,840
+the case of this exclusive or. And that's true here, so that's why Y is true in that state.
+
+397
+00:33:54,840 --> 00:34:01,720
+Formally, what we say is that the labeling of this state is a singleton set only containing Y.
+
+398
+00:34:01,720 --> 00:34:05,160
+maybe if we also want to say something about X, then maybe the input
+
+399
+00:34:05,160 --> 00:34:09,460
+here is one, so therefore X holds. Maybe that R holds.
+
+400
+00:34:09,460 --> 00:34:15,169
+And in that state, actually, in those two states, you can check yourself that Y is false.
+
+401
+00:34:15,169 --> 00:34:21,679
+So this output bit is low because it's not that X and Y are exclusive or here.
+
+402
+00:34:21,679 --> 00:34:25,280
+And in this state, you see now the example where we have a set, namely X is
+
+403
+00:34:25,280 --> 00:34:29,800
+high, R is is high, and actually Y is high as well.
+
+404
+00:34:29,800 --> 00:34:37,120
+So the labeling of that state is X, {comma} R, {comma} Y.
+
+405
+00:34:37,120 --> 00:34:43,520
+Good. How many states has a transition system if I have a circuit of this form?
+
+406
+00:34:43,520 --> 00:34:48,422
+suppose I have many gates. So in this example, I only have three gates, right?
+
+407
+00:34:48,422 --> 00:34:52,280
+This XOR, OR, and NOT. Typically, I can have many more.
+
+408
+00:34:52,280 --> 00:34:55,914
+Here is even no input, so it's even very simple.
+
+409
+00:34:55,914 --> 00:35:00,600
+We only have thousand gates, we have 100 registers, and we have an output.
+
+410
+00:35:00,600 --> 00:35:05,960
+How many states do we get? We get two to the power 100 states.
+
+411
+00:35:05,960 --> 00:35:09,760
+Because we have to keep track of all the possible values of those
+
+412
+00:35:09,760 --> 00:35:15,080
+registers, and there are two to the power 100 different possibilities.
+
+413
+00:35:15,080 --> 00:35:22,040
+What about this? So this the first slide says the number of gates is does not is not decisive.
+
+414
+00:35:22,040 --> 00:35:24,760
+It's the number of registers which is important.
+
+415
+00:35:24,760 --> 00:35:28,640
+The second thing is of course that also the number of input bits is important.
+
+416
+00:35:28,640 --> 00:35:34,400
+So this is a very simple example, no output, only an input, and again 100 registers.
+
+417
+00:35:34,400 --> 00:35:40,760
+How many possible states does the transition system of this circuit has?
+
+418
+00:35:40,760 --> 00:35:45,280
+Two to the power 100 because these are all the possible different values of the registers
+
+419
+00:35:45,280 --> 00:35:50,560
+times two to the power one. We have one input, and these and the input is either
+
+420
+00:35:50,560 --> 00:35:53,440
+true or false, so we have two to the power one.
+
+421
+00:35:53,440 --> 00:35:58,640
+So it's the number of registers and the number of reg- inputs that is
+
+422
+00:35:58,640 --> 00:36:05,160
+decisive on the size of the transition system.
+
+423
+00:36:05,160 --> 00:36:11,520
+Good. That was my first example. So the bottom line of this part is basically
+
+424
+00:36:11,520 --> 00:36:18,080
+every sequential hardware circuit I can model by means of a transition system.
+
+425
+00:36:18,080 --> 00:36:22,200
+Actually, those transition systems in this case are always finite.
+
+426
+00:36:22,200 --> 00:36:26,920
+They can be big but they're always finite.
+
+427
+00:36:26,920 --> 00:36:31,720
+One of the reasons why model checking was first applied initially only to hardware circuits because then it was
+
+428
+00:36:31,720 --> 00:36:37,080
+guaranteed that the models are finite state. Now for data dependent systems, I think
+
+429
+00:36:37,080 --> 00:36:39,988
+about programs, this is a bit different.
+
+430
+00:36:39,988 --> 00:36:45,600
+So you can for instance not equally simply model in a transition system a situation like this.
+
+431
+00:36:45,600 --> 00:36:49,640
+We are in a state, and now dependent on the value of some variable in the
+
+432
+00:36:49,640 --> 00:36:54,480
+program, let's say X, we would like to go left or we would like to go right.
+
+433
+00:36:54,480 --> 00:37:02,320
+So the current definition of the transition systems does not give us any means to model this.
+
+434
+00:37:02,320 --> 00:37:07,400
+So this happens for instance in programs. So here you have a just a loopy program.
+
+435
+00:37:07,400 --> 00:37:14,120
+It says as long as X is positive, you subtract one from X and you add one to Y.
+
+436
+00:37:14,120 --> 00:37:17,600
+And the way I'm going to do that, because I don't want to introduce here
+
+437
+00:37:17,600 --> 00:37:21,040
+an let's say yet another programming language, what I'm going to do is I'm
+
+438
+00:37:21,040 --> 00:37:25,480
+going to actually look at the control flow graph of a program.
+
+439
+00:37:25,480 --> 00:37:28,120
+So what I did here is I take this program.
+
+440
+00:37:28,120 --> 00:37:31,552
+And what I will do is I will use a graphical notation for programs.
+
+441
+00:37:31,552 --> 00:37:36,160
+They look like this, they are graphs. They're not transition systems, right?
+
+442
+00:37:36,160 --> 00:37:41,520
+They're graphs. They have locations L1, L2, L3.
+
+443
+00:37:41,520 --> 00:37:46,640
+Basically, they correspond to the lines in this program.
+
+444
+00:37:46,640 --> 00:37:51,176
+suppose that we start in L1. Then what do we have to do?
+
+445
+00:37:51,176 --> 00:37:55,359
+We first have to evaluate the guard X is larger than zero.
+
+446
+00:37:55,359 --> 00:38:01,702
+Okay. If X violates the guard, that means we are not going to execute the loop.
+
+447
+00:38:01,702 --> 00:38:06,480
+That means basically we go to the location which corresponds to those three dots.
+
+448
+00:38:06,480 --> 00:38:13,280
+We should continue here. Which is indicated by this location L3.
+
+449
+00:38:13,280 --> 00:38:18,160
+However, if the guard holds, which means if X is strictly positive I mean if X is
+
+450
+00:38:18,160 --> 00:38:24,359
+positive, then we can take this, and I'm going to introduce this I mean this edge
+
+451
+00:38:24,359 --> 00:38:28,440
+I'm going to say if X is larger than zero, then what we're going to do, we're
+
+452
+00:38:28,440 --> 00:38:35,000
+going to subtract one from X. So I'm already executing in this edge that I'm going to do the first
+
+453
+00:38:35,000 --> 00:38:40,640
+assignment in the loop. Now what then I still have to do is the second assignment.
+
+454
+00:38:40,640 --> 00:38:43,676
+So now I do the second assignment. I add one to Y.
+
+455
+00:38:43,676 --> 00:38:48,480
+Where do I end up? Well, I end up to the same program line over here
+
+456
+00:38:48,480 --> 00:38:51,240
+because then again, I'm going to check whether I have to execute the loop or
+
+457
+00:38:51,240 --> 00:38:55,960
+not, which is indicated here by going back to L1.
+
+458
+00:38:55,960 --> 00:38:59,440
+Okay? So I hope it's clear that the graph on the right-hand side, which we
+
+459
+00:38:59,440 --> 00:39:08,600
+are going to call a program graph is a kind of faithful representation of the program on the left.
+
+460
+00:39:08,600 --> 00:39:11,992
+Good. So this is what we just mentioned.
+
+461
+00:39:11,992 --> 00:39:17,560
+The locations actually correspond to almost the line numbers with one special thing, namely
+
+462
+00:39:17,560 --> 00:39:23,560
+that I decided to take those two things together, so evaluating the guard and doing the first assignment
+
+463
+00:39:23,560 --> 00:39:32,760
+is actually attached to a an edge. So formally, an edge actually contains basically of a pair, namely a condition.
+
+464
+00:39:32,760 --> 00:39:36,495
+The condition says X larger than zero plus one or more actions.
+
+465
+00:39:36,495 --> 00:39:43,040
+In my case, it's one action. The action says subtract one from X.
+
+466
+00:39:43,040 --> 00:39:46,760
+In this case, there is only a condition, there is no action, and therefore I
+
+467
+00:39:46,760 --> 00:39:49,760
+there is no let's say statement or assignment going to take place.
+
+468
+00:39:49,760 --> 00:39:51,993
+So, therefore I did not indicate this assignment.
+
+469
+00:39:51,993 --> 00:39:58,560
+Here you could write read this as the condition is true, which we typically omit for simplicity,
+
+470
+00:39:58,560 --> 00:40:05,560
+and if the condition is true, we are going to increment Y by one.
+
+471
+00:40:05,560 --> 00:40:12,040
+Good. So, I'm going to argue and going to show you that every program graph
+
+472
+00:40:12,040 --> 00:40:19,360
+and mind, a program graph is for me a program, every program graph can be described or
+
+473
+00:40:19,360 --> 00:40:23,971
+gives rise to a transition system. So, what's the state of such a transition system?
+
+474
+00:40:23,971 --> 00:40:26,920
+Now, what do we want to what do we need to know about a
+
+475
+00:40:26,920 --> 00:40:29,900
+program to know what is the current state of a program?
+
+476
+00:40:29,900 --> 00:40:35,520
+Well, first what we need we could need to know is where is the current program counter, the location.
+
+477
+00:40:35,520 --> 00:40:39,720
+Secondly, what we know need to know is we need to know all the relevant data,
+
+478
+00:40:39,720 --> 00:40:43,760
+which means all the values of all the program variables.
+
+479
+00:40:43,760 --> 00:40:47,405
+In my example, I basically have two program variables, X and Y.
+
+480
+00:40:47,405 --> 00:40:54,000
+So, in my case, the state of this system would be I am in some state in location L, the
+
+481
+00:40:54,000 --> 00:40:59,560
+current value of X is 15, for instance, the current value of Y is 10, for
+
+482
+00:40:59,560 --> 00:41:06,320
+instance, and that is the whole information I need to model this as a state.
+
+483
+00:41:06,320 --> 00:41:11,000
+Good. So, let's look at an example of a run of this program, and for the sake of
+
+484
+00:41:11,000 --> 00:41:17,840
+my example, I assume that X initially is two and Y initially is zero.
+
+485
+00:41:17,840 --> 00:41:25,360
+Then, this would be a possible run. So, every, let's say, picture of everything over here is a state.
+
+486
+00:41:25,360 --> 00:41:27,673
+So, that's the state of my transition system.
+
+487
+00:41:27,673 --> 00:41:33,617
+So, what's the initial state? Well, the initial state tells me I am about to execute line one.
+
+488
+00:41:33,617 --> 00:41:38,200
+So, the program counter the value currently is L1.
+
+489
+00:41:38,200 --> 00:41:41,480
+Then, we have agreed that initially the value of X equals two and the initial
+
+490
+00:41:41,480 --> 00:41:46,200
+value of Y equals zero, so these are the two values which I have over here.
+
+491
+00:41:46,200 --> 00:41:50,425
+Good. Now, I'm about to execute L1. So, let's do L1.
+
+492
+00:41:50,425 --> 00:41:55,040
+Remember, what are we going to do? We're going to check whether X is larger than zero.
+
+493
+00:41:55,040 --> 00:41:59,200
+So, we're going to check in this state whether X is larger than zero, which is
+
+494
+00:41:59,200 --> 00:42:05,840
+the case because X equals two, which means we are able to execute L1.
+
+495
+00:42:05,840 --> 00:42:12,000
+So, let's do this. What then happens is that we decrement X by one, so this two becomes a one.
+
+496
+00:42:12,000 --> 00:42:18,425
+Y is not touched. Now, I am about to execute L2, because that's the current value of the program counter.
+
+497
+00:42:18,425 --> 00:42:25,000
+What happens in L2? Well, X is not affected and Y is incremented by one.
+
+498
+00:42:25,000 --> 00:42:27,588
+Where is the control flow of my program moving?
+
+499
+00:42:27,588 --> 00:42:33,862
+Well, you just have executed L2, then we go back to the beginning of the loop.
+
+500
+00:42:33,862 --> 00:42:39,640
+So, actually we the program counter is changing from L2 to L1.
+
+501
+00:42:39,640 --> 00:42:45,200
+Okay? Now, what you see is still X is larger than zero, because X equals one,
+
+502
+00:42:45,200 --> 00:42:48,240
+so we can subtract one and we move to L2.
+
+503
+00:42:48,240 --> 00:42:52,640
+You increment Y by one, so you get Y equals two, you move to L1.
+
+504
+00:42:52,640 --> 00:42:59,000
+Now, we go again, we are about to check the condition, and now you see that X equals zero.
+
+505
+00:42:59,000 --> 00:43:04,440
+That means that we violate the guard of the loop, and that means that the next state will
+
+506
+00:43:04,440 --> 00:43:10,760
+not be L2, but we immediately jump to L3, which is the dot dot dot.
+
+507
+00:43:10,760 --> 00:43:17,040
+And think about the continuation of this loop, and there the program would continue.
+
+508
+00:43:17,040 --> 00:43:22,880
+So, this is in indicated here. The program counter from this state moves to L3, because the
+
+509
+00:43:22,880 --> 00:43:31,560
+guard of the loop is false. X doesn't change, Y doesn't change, so we're currently in this state.
+
+510
+00:43:31,560 --> 00:43:38,360
+Now, this is one possible behavior of the program, well, in this case, the only possible
+
+511
+00:43:38,360 --> 00:43:45,920
+behavior if the input of the program initially is X equals two and Y equals zero.
+
+512
+00:43:45,920 --> 00:43:54,280
+We are going to allow programs to also be non-deterministic, that means that in general, a program may have several
+
+513
+00:43:54,280 --> 00:43:58,594
+possible executions, because this is just an execution, right?
+
+514
+00:43:58,594 --> 00:44:05,120
+This whole thing here. for the same input.
+
+515
+00:44:05,120 --> 00:44:15,320
+Good. So, now you can say now the actions are can take are basically in the transition system
+
+516
+00:44:15,320 --> 00:44:20,154
+correspond to the assignments. So, here I have two assignments, this X and the assignment to Y.
+
+517
+00:44:20,154 --> 00:44:25,857
+Let's call them actions alpha and beta. I actually did the same in my program graph.
+
+518
+00:44:25,857 --> 00:44:30,240
+This was my program graph before. I now call this assignment beta and this
+
+519
+00:44:30,240 --> 00:44:34,240
+alpha, and that means that my transition system now looks as follows, and now
+
+520
+00:44:34,240 --> 00:44:40,480
+what you see is now you can basically indicate in every step which assignment did you take.
+
+521
+00:44:40,480 --> 00:44:44,440
+Or which action did you take. And what I do here is I took the action
+
+522
+00:44:44,440 --> 00:44:47,600
+loop exit, so here is the action loop exit.
+
+523
+00:44:47,600 --> 00:44:53,000
+So, actually the program graph is a graph.
+
+524
+00:44:53,000 --> 00:44:59,400
+there are conditions on edges as well as actions, and actions in terms of a program correspond typically to
+
+525
+00:44:59,400 --> 00:45:07,320
+something like an assignment. Good. Now, I would like to make this formal,
+
+526
+00:45:07,320 --> 00:45:15,520
+and I would like to provide a mapping from any arbitrary program graph to a transition system.
+
+527
+00:45:15,520 --> 00:45:19,960
+By the way, are there any questions so far?
+
+528
+00:45:19,960 --> 00:45:26,120
+No. Good. So, the first thing I'm going to define what are type variables.
+
+529
+00:45:26,120 --> 00:45:30,000
+So, in my program I have variables, and I'm going to assume that every
+
+530
+00:45:30,000 --> 00:45:34,120
+variable has a type, which means the value of this variable comes from a
+
+531
+00:45:34,120 --> 00:45:38,800
+certain domain, namely the set the domain of X.
+
+532
+00:45:38,800 --> 00:45:43,760
+So, Boolean variables, the domain of a Boolean variable is simply 0 1.
+
+533
+00:45:43,760 --> 00:45:48,120
+The domain of an integer variable Y in my case is is a natural number.
+
+534
+00:45:48,120 --> 00:45:55,880
+the variable Z, where the these are colors, so these could be modeling the colors of my traffic light.
+
+535
+00:45:55,880 --> 00:46:02,400
+Then, we have to make sure we have seen a state of the program is the program
+
+536
+00:46:02,400 --> 00:46:06,600
+plus the values of all the variables. How are we going to formalize this?
+
+537
+00:46:06,600 --> 00:46:11,680
+We're going to formalize the values of all the variables by means of a function, and those functions we call
+
+538
+00:46:11,680 --> 00:46:18,960
+evaluations. So, what's an evaluation? Suppose I give you a set var of variables.
+
+539
+00:46:18,960 --> 00:46:23,300
+Every variable is typed, so either it's an integer, a Boolean, a color, whatever you want.
+
+540
+00:46:23,300 --> 00:46:27,880
+And now we give a function, and I'm assuming up front this is type consistent.
+
+541
+00:46:27,880 --> 00:46:33,000
+Type consistent means the value of a Boolean is a Boolean, and not 27.
+
+542
+00:46:33,000 --> 00:46:37,640
+The value of an integer is an integer, and not a string, and so forth.
+
+543
+00:46:37,640 --> 00:46:43,040
+And this function is going to map variables to values.
+
+544
+00:46:43,040 --> 00:46:45,450
+So, this is what I just have said.
+
+545
+00:46:45,450 --> 00:46:51,160
+Type consistent means that if I take the variable X and I look at the value that
+
+546
+00:46:51,160 --> 00:46:55,840
+eta is going to assign to X, this must be a value that corresponds is a member
+
+547
+00:46:55,840 --> 00:47:00,560
+of the set dom of X. It must be in the domain of X.
+
+548
+00:47:00,560 --> 00:47:05,320
+No type inconsistencies. That's what this actually says.
+
+549
+00:47:05,320 --> 00:47:12,960
+What are the values? Now, we basically have different all the variables X and for we take the
+
+550
+00:47:12,960 --> 00:47:16,680
+union over all the domains of all the variables.
+
+551
+00:47:16,680 --> 00:47:20,840
+If I have a Boolean variable, if I have an integer, and I have a string,
+
+552
+00:47:20,840 --> 00:47:26,880
+then this function is going to assign to this Boolean, to this integer, and to this string a value.
+
+553
+00:47:26,880 --> 00:47:36,400
+So, the codomain of eta is the union of the Booleans, the integers, and the string.
+
+554
+00:47:36,400 --> 00:47:38,285
+Good. So, I'm going to use this notation.
+
+555
+00:47:38,285 --> 00:47:42,340
+Eval var is the set of evaluations, the set of functions.
+
+556
+00:47:42,340 --> 00:47:51,880
+Yeah, an evaluation is a function. It's a set of functions over or for the set var.
+
+557
+00:47:51,880 --> 00:47:55,434
+Good. So, what's the condition? We know what are variables.
+
+558
+00:47:55,434 --> 00:48:01,080
+So, what is the set cond of var is the set of Boolean conditions on the variables.
+
+559
+00:48:01,080 --> 00:48:05,920
+So, things like this, right? maybe I can write down that the X is
+
+560
+00:48:05,920 --> 00:48:15,348
+larger than Y, and maybe Z equals 23, and S is something ak.
+
+561
+00:48:15,348 --> 00:48:21,080
+So, we have a string variable, we have an integer, and maybe we have two integers that we compare,
+
+562
+00:48:21,080 --> 00:48:23,520
+and the condition could be something like this.
+
+563
+00:48:23,520 --> 00:48:27,080
+So, this is a Boolean expression over variables.
+
+564
+00:48:27,080 --> 00:48:34,359
+So, another example over here, not X and Y less than Z plus three or W equals red.
+
+565
+00:48:34,359 --> 00:48:38,188
+Suppose that the X is a Boolean variable, so the domain is 0 1.
+
+566
+00:48:38,188 --> 00:48:41,788
+Y is an integer, so the domain is a natural number was a natural number.
+
+567
+00:48:41,788 --> 00:48:48,280
+The same holds for Z, and W is a color, in this case, the color of a traffic light.
+
+568
+00:48:48,280 --> 00:48:54,531
+And now what we define is we need to know for certain states whether we can take a transition.
+
+569
+00:48:54,531 --> 00:49:02,440
+What does that mean? Remember my example, I had the loop condition that says while X is larger than zero.
+
+570
+00:49:02,440 --> 00:49:07,400
+What am I going to check? I'm going to check whether this guard holds in the current state.
+
+571
+00:49:07,400 --> 00:49:13,960
+And whether it holds in that state is defined mathematically by this relation over here, and this is defined as
+
+572
+00:49:13,960 --> 00:49:17,800
+follows. So, I I do this by means of an example.
+
+573
+00:49:17,800 --> 00:49:23,760
+So, suppose that the current state tells you that X equals zero, Y equals three, and Z equals six.
+
+574
+00:49:23,760 --> 00:49:27,240
+And now I would like to check whether this condition holds.
+
+575
+00:49:27,240 --> 00:49:34,160
+Now, of course, not X holds because X equals zero, and of course, Y is less than Z because
+
+576
+00:49:34,160 --> 00:49:43,720
+three is less than six. That means that this state satisfies this formula.
+
+577
+00:49:43,720 --> 00:49:50,160
+That's the way to read this. Second example, same state, different formula.
+
+578
+00:49:50,160 --> 00:49:53,220
+X or Y equals Z. This is not true.
+
+579
+00:49:53,220 --> 00:49:58,440
+Why is it not true? Well, X is zero, so this disjunct is false.
+
+580
+00:49:58,440 --> 00:50:02,520
+Now, we maybe have luck and we have to check the second disjunct, Y equals Z.
+
+581
+00:50:02,520 --> 00:50:16,720
+But three is not equal to six and therefore this state does not satisfy this formula.
+
+582
+00:50:16,720 --> 00:50:20,153
+Good. So, what we now have is we now have a mechanism.
+
+583
+00:50:20,153 --> 00:50:24,480
+You give me a state. I look at the guard in my program, in my
+
+584
+00:50:24,480 --> 00:50:30,468
+program graph, and I can decide is the next assignment
+
+585
+00:50:30,468 --> 00:50:34,320
+While X larger than zero subtract X from one, is this assignment can it
+
+586
+00:50:34,320 --> 00:50:36,125
+now be executed or can it not be executed?
+
+587
+00:50:36,125 --> 00:50:40,880
+Because for a given state, I can decide whether the guard, in my case
+
+588
+00:50:40,880 --> 00:50:45,520
+X larger than zero, holds or whether it doesn't hold.
+
+589
+00:50:45,520 --> 00:50:50,880
+The next thing I have to do, what is the effect of executing an assignment?
+
+590
+00:50:50,880 --> 00:50:53,590
+This is relatively easy and formalized as follows.
+
+591
+00:50:53,590 --> 00:51:00,386
+So, we have a set of actions. Remember, actions are assignments that operate on the variables.
+
+592
+00:51:00,386 --> 00:51:05,320
+Then what's the effect? The effect is described by a function that tells you, okay, give me the
+
+593
+00:51:05,320 --> 00:51:11,520
+current values of all the variables. Give me the assignment I have to execute.
+
+594
+00:51:11,520 --> 00:51:18,560
+Then the effect function is going to tell you what is the new value of all the variables.
+
+595
+00:51:18,560 --> 00:51:23,920
+Mathematically speaking, this is a function. Remember, the values of all the variables is given by a
+
+596
+00:51:23,920 --> 00:51:29,422
+function mapping variables to values. This is an assignment.
+
+597
+00:51:29,422 --> 00:51:36,760
+So, this function effect takes an action, an assignment, plus a function and gives you back a function.
+
+598
+00:51:36,760 --> 00:51:42,640
+Namely, a function assigning to all the variables in your program a value.
+
+599
+00:51:42,640 --> 00:51:47,960
+Good. Example. I have three examples. The first example is the following.
+
+600
+00:51:47,960 --> 00:51:52,280
+Suppose that I take an action and this action corresponds to this assignment.
+
+601
+00:51:52,280 --> 00:51:55,200
+And suppose that the current state is something of the form X equals one, Y
+
+602
+00:51:55,200 --> 00:51:59,520
+equals three, and maybe there are some other variables, but they are not important here.
+
+603
+00:51:59,520 --> 00:52:04,142
+Then the effect of alpha on this state is the following.
+
+604
+00:52:04,142 --> 00:52:09,640
+Well, we have to execute this assignment. This execute assignment takes tells you, takes two times the
+
+605
+00:52:09,640 --> 00:52:14,760
+current value of X, which means two times one is two, plus Y is three, so
+
+606
+00:52:14,760 --> 00:52:17,480
+the next value of X will be five.
+
+607
+00:52:17,480 --> 00:52:23,600
+What happens to Y? Well, nothing, right? Because this assignment doesn't change Y.
+
+608
+00:52:23,600 --> 00:52:28,680
+So, that means that Y isn't changed. It's not changed.
+
+609
+00:52:28,680 --> 00:52:36,360
+Next example. Now, we have the action, which I call beta, is now the sequence of two assignments.
+
+610
+00:52:36,360 --> 00:52:39,160
+The first is the assignment we had in the previous example and the other one
+
+611
+00:52:39,160 --> 00:52:43,880
+says Y becomes one minus X. Now, I want to describe what's the effect of doing
+
+612
+00:52:43,880 --> 00:52:51,040
+those two assignments on the current state. Let's assume the current state is one and three for X and Y.
+
+613
+00:52:51,040 --> 00:52:55,120
+Good. What happens? X becomes two X plus Y.
+
+614
+00:52:55,120 --> 00:53:03,920
+Two times one plus three equals five. Then then we say Y becomes one minus X.
+
+615
+00:53:03,920 --> 00:53:12,040
+So, based on this five, we're going to say that Y becomes one minus five is minus four.
+
+616
+00:53:12,040 --> 00:53:14,840
+And that's why we get minus four here.
+
+617
+00:53:14,840 --> 00:53:21,560
+This has to do with the semicolon here that we take this assignment after we did the previous assignment.
+
+618
+00:53:21,560 --> 00:53:24,280
+We model this in this case by one action.
+
+619
+00:53:24,280 --> 00:53:32,480
+But that's why we here get minus four and not one minus one would be zero.
+
+620
+00:53:32,480 --> 00:53:38,640
+This is different in the following thing and here what I mean by this notation is a parallel assignment.
+
+621
+00:53:38,640 --> 00:53:45,040
+So, this is an assignment that takes X and Y as a pair and on the right-hand side says X
+
+622
+00:53:45,040 --> 00:53:48,840
+becomes two X plus Y and Y becomes one minus X.
+
+623
+00:53:48,840 --> 00:53:53,680
+Now, this is different from this statement over here in the following sense.
+
+624
+00:53:53,680 --> 00:53:59,359
+X is still to be two X plus Y, which means two times one plus three is five.
+
+625
+00:53:59,359 --> 00:54:06,760
+But Y is now one minus X based on the value of X before this assignment, which was one.
+
+626
+00:54:06,760 --> 00:54:10,400
+And now we get one minus one and now we get zero.
+
+627
+00:54:10,400 --> 00:54:20,120
+So, I'm going to use this syntax for parallel assignments and this is sequential assignments.
+
+628
+00:54:20,120 --> 00:54:27,480
+Good. But I hope the principle of this effect function has become clear.
+
+629
+00:54:27,480 --> 00:54:37,960
+Okay. Any questions so far? Question. is the sequential assignment is that decomposable into individual assignments?
+
+630
+00:54:37,960 --> 00:54:45,780
+Yes. Yeah. So, I have a first effect application and then a second effect application?
+
+631
+00:54:45,780 --> 00:54:51,680
+Yeah. Okay. Later, what we're going to see is if you look at multi-threaded programs, you
+
+632
+00:54:51,680 --> 00:54:58,040
+maybe would like to execute assignments atomically, which means in between those two assignments, you don't want to have
+
+633
+00:54:58,040 --> 00:55:03,440
+another thread doing a step while you are in the middle of doing those two assignments in a row.
+
+634
+00:55:03,440 --> 00:55:06,359
+And there it makes sense to model this as one action.
+
+635
+00:55:06,359 --> 00:55:10,440
+And that's why we're going to use this.
+
+636
+00:55:10,440 --> 00:55:16,920
+Okay. Any other questions? Doesn't seem to be the case.
+
+637
+00:55:16,920 --> 00:55:23,280
+So, let's now formalize what's a program graph and what's the transition system of a program graph.
+
+638
+00:55:23,280 --> 00:55:31,000
+A program graph is a couple of locations, a couple of actions, the effect function,
+
+639
+00:55:31,000 --> 00:55:35,960
+the function that tells you what's the effect on the variables if I take an action.
+
+640
+00:55:35,960 --> 00:55:40,480
+This is the edge relation of the of the program graph and remember those
+
+641
+00:55:40,480 --> 00:55:45,280
+were the dashed edges in my picture. I have a set of initial locations and we
+
+642
+00:55:45,280 --> 00:55:49,040
+have some initial condition on the variables G0.
+
+643
+00:55:49,040 --> 00:55:54,240
+So, formally, lock is a finite set of locations.
+
+644
+00:55:54,240 --> 00:56:00,560
+So, a transition system may have countably infinite number of states.
+
+645
+00:56:00,560 --> 00:56:03,725
+A program graph is always having a finite set of locations.
+
+646
+00:56:03,725 --> 00:56:06,840
+Why is this? Because a program is finite.
+
+647
+00:56:06,840 --> 00:56:10,800
+It has finitely number of lines. Period.
+
+648
+00:56:10,800 --> 00:56:14,680
+Good. I we can also call the locations and you can think about locations as control states.
+
+649
+00:56:14,680 --> 00:56:17,093
+But I would like to separate the two things.
+
+650
+00:56:17,093 --> 00:56:24,565
+Locations are the inputs of a program. States are the semantics of a program.
+
+651
+00:56:24,565 --> 00:56:28,011
+They tell you what's the program location plus the values.
+
+652
+00:56:28,011 --> 00:56:34,600
+These are two different concepts, right? Then there is a set of actions, assignments.
+
+653
+00:56:34,600 --> 00:56:40,960
+Then there is this effect function. Given the current values and a certain assignment, it tells you what are the
+
+654
+00:56:40,960 --> 00:56:44,720
+next, let's say the next values of your program.
+
+655
+00:56:44,720 --> 00:56:48,000
+So, this is a function that formalizes the effect of the actions.
+
+656
+00:56:48,000 --> 00:56:52,360
+We have seen already an example. This is another example that tells you that X becomes X plus Y.
+
+657
+00:56:52,360 --> 00:56:58,680
+In this state, you add just one plus seven, you give you eight, and Y of course is not changed.
+
+658
+00:56:58,680 --> 00:57:21,680
+Then we have this edge relation and maybe I should shortly remind you on this edge relation.
+
+659
+00:57:21,680 --> 00:57:24,304
+Maybe you take the example as we had before.
+
+660
+00:57:24,304 --> 00:57:33,359
+We had L1. We had L3. I think here was something like X is at most zero.
+
+661
+00:57:33,359 --> 00:57:40,760
+here we had an edge that says if X is larger than zero, then we do X becomes X
+
+662
+00:57:40,760 --> 00:57:44,800
+minus one. If I was not mistaken, you get to L2.
+
+663
+00:57:44,800 --> 00:57:48,000
+And in L2, we had an edge that went here.
+
+664
+00:57:48,000 --> 00:57:57,880
+And here we we said that true, basically, and then we do Y becomes Y plus one.
+
+665
+00:57:57,880 --> 00:58:01,780
+And here we basically said something like loop exit.
+
+666
+00:58:01,780 --> 00:58:10,280
+Mhm? This was called alpha. This action was called beta.
+
+667
+00:58:10,280 --> 00:58:18,920
+So, was the initial location. So, this relation over here is exactly the relation that goes from lock
+
+668
+00:58:18,920 --> 00:58:21,200
+conditions over the variables and act to lock.
+
+669
+00:58:21,200 --> 00:58:27,520
+So, for instance, in my example, a a an element of this thing is L1, right?
+
+670
+00:58:27,520 --> 00:58:35,400
+A condition, X larger than zero, an action, X becomes X minus one,
+
+671
+00:58:35,400 --> 00:58:39,480
+and another location, in my case L2.
+
+672
+00:58:39,480 --> 00:58:47,320
+So, this belongs to this relation and that corresponds exactly to this edge over here.
+
+673
+00:58:47,320 --> 00:58:51,160
+The way to write this is I mean, this is a bit awkward, so I'm going to
+
+674
+00:58:51,160 --> 00:58:54,820
+use a similar notation as I introduced by the transition system.
+
+675
+00:58:54,820 --> 00:58:58,720
+We say that L1 has an edge that goes to L2.
+
+676
+00:58:58,720 --> 00:59:10,520
+It's labeled with if X equals larger than zero, then we say X becomes X minus one.
+
+677
+00:59:10,520 --> 00:59:14,960
+Good. So, these are those kind of of edges.
+
+678
+00:59:14,960 --> 00:59:19,040
+We have a set of initial locations. In my case, I have only one initial location.
+
+679
+00:59:19,040 --> 00:59:22,040
+And we have an initial condition on the variables.
+
+680
+00:59:22,040 --> 00:59:29,600
+So, maybe in my example over here, maybe we have initially, I don't know, that X equals two
+
+681
+00:59:29,600 --> 00:59:36,720
+and Y equals zero. And we call this condition g0.
+
+682
+00:59:36,720 --> 00:59:42,240
+This is very precise. It uniquely defines what is the initial state or what is the possible value.
+
+683
+00:59:42,240 --> 00:59:46,600
+And another example could be something like g0 prime which says maybe
+
+684
+00:59:46,600 --> 00:59:51,760
+x equals 20 and the only thing we know about y is that y is larger than 0 and
+
+685
+00:59:51,760 --> 00:59:56,880
+maybe we also know that y is less than 10.
+
+686
+00:59:56,880 --> 00:59:59,240
+You know, this could also be a condition.
+
+687
+00:59:59,240 --> 01:00:04,280
+This specifies not a single initial state but the whole set of initial states.
+
+688
+01:00:04,280 --> 01:00:17,440
+Or a set of initial locations, actually.
+
+689
+01:00:17,440 --> 01:00:22,400
+Okay. Now what we have to do is we have to define a mapping
+
+690
+01:00:22,400 --> 01:00:26,040
+that tells you for every program graph we get a transition system.
+
+691
+01:00:26,040 --> 01:00:30,880
+So how does that work? This is what it defines as follows.
+
+692
+01:00:30,880 --> 01:00:36,600
+So what I intend to say, every program graph well, every behave I mean the behavior
+
+693
+01:00:36,600 --> 01:00:40,120
+of a program graph can be captured by a transition system.
+
+694
+01:00:40,120 --> 01:00:41,434
+And I'm going to illustrate this as follows.
+
+695
+01:00:41,434 --> 01:00:47,480
+I'm going to provide you a function that takes as input a program graph over a set of variables
+
+696
+01:00:47,480 --> 01:00:52,800
+and gives you as output a transition system that corresponds to this program.
+
+697
+01:00:52,800 --> 01:01:03,280
+Intention, the transition system is going to basically contain all possible behaviors of your program.
+
+698
+01:01:03,280 --> 01:01:10,440
+So very similar as the hardware circuit before, the transition system models all possible behaviors of the hardware circuit.
+
+699
+01:01:10,440 --> 01:01:15,160
+I now do the same but do for program graphs.
+
+700
+01:01:15,160 --> 01:01:22,080
+Now what are the states? Now I told you that the states actually contain two things, namely the program counter.
+
+701
+01:01:22,080 --> 01:01:27,360
+Program counter means locations. Those vertices over here.
+
+702
+01:01:27,360 --> 01:01:29,520
+Plus the values of all the variables.
+
+703
+01:01:29,520 --> 01:01:31,360
+What were the values of all the variables?
+
+704
+01:01:31,360 --> 01:01:39,600
+Well, those were functions, right? So these are functions eta that map values, I mean variables to values.
+
+705
+01:01:39,600 --> 01:01:48,160
+Good. So states are pairs. Mhm? Good. Then this is the input is a program graph.
+
+706
+01:01:48,160 --> 01:01:51,600
+This is the formalization of such a program graph and now I would like to
+
+707
+01:01:51,600 --> 01:02:00,040
+describe the transition system of P. So for this specific program, what is its transition system?
+
+708
+01:02:00,040 --> 01:02:05,560
+What is the representation of all its possible behaviors?
+
+709
+01:02:05,560 --> 01:02:08,160
+Good. We just have seen states are pairs.
+
+710
+01:02:08,160 --> 01:02:16,920
+So the state space is the Cartesian product of the set of locations plus all the evaluations of the variables.
+
+711
+01:02:16,920 --> 01:02:21,840
+Here there may be many unreachable states.
+
+712
+01:02:21,840 --> 01:02:26,720
+I simply take all possible states. You know, it could be the case that here
+
+713
+01:02:26,720 --> 01:02:32,160
+is a combination of the values of x and y for instance in my program that I will never reach.
+
+714
+01:02:32,160 --> 01:02:36,720
+But that's something that we are going to define by means of the transition relation.
+
+715
+01:02:36,720 --> 01:02:40,173
+What are the initial states? The initial states are where do we start?
+
+716
+01:02:40,173 --> 01:02:43,613
+Well, definitely we start here, right? So we start in the initial location.
+
+717
+01:02:43,613 --> 01:02:48,720
+So that's the first component. L is an initial location.
+
+718
+01:02:48,720 --> 01:02:55,600
+Then what I just said, maybe you have a an initial condition that allows you to have many initial values.
+
+719
+01:02:55,600 --> 01:02:59,720
+We have to consider then all possible initial values.
+
+720
+01:02:59,720 --> 01:03:02,240
+And this is indicated by the second component.
+
+721
+01:03:02,240 --> 01:03:08,360
+So I'm going to have a function eta and the only thing I'm going to require that this eta
+
+722
+01:03:08,360 --> 01:03:17,760
+must satisfy the initial condition. So in my case over here
+
+723
+01:03:17,760 --> 01:03:23,120
+I mean eta could be a function that says eta of x I don't have much choice here, right?
+
+724
+01:03:23,120 --> 01:03:28,000
+Because x needs to be 20. But for eta of y I have several choices
+
+725
+01:03:28,000 --> 01:03:33,000
+because the only thing I'm saying is it's strictly larger than 0 and strictly less than 10.
+
+726
+01:03:33,000 --> 01:03:36,960
+So now pick your choice. So maybe you say seven.
+
+727
+01:03:36,960 --> 01:03:41,730
+This is a possibility. And this eta function
+
+728
+01:03:41,730 --> 01:03:47,580
+This eta satisfies g0 prime. Of course I could make another pick.
+
+729
+01:03:47,580 --> 01:03:50,000
+If you like five better, you take five.
+
+730
+01:03:50,000 --> 01:03:55,805
+It's still satisfying the condition. That's okay. If you make the wrong pick, let's say 10,
+
+731
+01:03:55,805 --> 01:03:59,660
+10 is violating this condition. So now I have an eta that violates this condition.
+
+732
+01:03:59,660 --> 01:04:11,040
+You know, and the only initial states I allow are those that satisfy the initial condition.
+
+733
+01:04:11,040 --> 01:04:15,600
+Good. The hardest part is maybe the transition relation.
+
+734
+01:04:15,600 --> 01:04:17,937
+So what's the transition relation? This is given as follows.
+
+735
+01:04:17,937 --> 01:04:22,200
+So in the graph we go from L to L prime.
+
+736
+01:04:22,200 --> 01:04:28,920
+So let's make an example. In this graph I move from L to L prime.
+
+737
+01:04:28,920 --> 01:04:32,320
+I'm moving from L1 in my case to L2.
+
+738
+01:04:32,320 --> 01:04:37,359
+Let's suppose I take this edge. Okay? Good.
+
+739
+01:04:37,359 --> 01:04:41,520
+So that means I'm going to take this edge.
+
+740
+01:04:41,520 --> 01:04:44,760
+So in this thing this is my guard.
+
+741
+01:04:44,760 --> 01:04:48,160
+This x becomes x minus 1 is the action alpha.
+
+742
+01:04:48,160 --> 01:04:52,577
+Right? For the rest what I know I I have to define the relation on states.
+
+743
+01:04:52,577 --> 01:04:56,440
+So this is not enough. I only also have to fix what is the current value.
+
+744
+01:04:56,440 --> 01:04:59,120
+So let's suppose the current value is as follows.
+
+745
+01:04:59,120 --> 01:05:02,680
+Eta of x is now I don't God knows what, 19.
+
+746
+01:05:02,680 --> 01:05:09,040
+And eta of y is seven. So I'm going to consider the current now the state.
+
+747
+01:05:09,040 --> 01:05:14,120
+Now first of all we have to check does this satisfy the guard?
+
+748
+01:05:14,120 --> 01:05:20,920
+Now this thing this eta satisfies the guard x larger than 0.
+
+749
+01:05:20,920 --> 01:05:28,760
+That means we have this edge over here and we have an evaluation satisfying the current guard.
+
+750
+01:05:28,760 --> 01:05:34,359
+So we fulfill the conditions that are written above the straight line.
+
+751
+01:05:34,359 --> 01:05:35,706
+And then you should read this as follows.
+
+752
+01:05:35,706 --> 01:05:44,320
+If this condition above the straight line holds, then the condition below the line holds as well.
+
+753
+01:05:44,320 --> 01:05:48,674
+What does this condition tell you? Now I'm going to have a state in my transition system.
+
+754
+01:05:48,674 --> 01:05:55,600
+So now I'm going to look at my transition system.
+
+755
+01:05:55,600 --> 01:06:00,640
+So the transition system tells you you are currently in a state L1.
+
+756
+01:06:00,640 --> 01:06:09,800
+You currently have an evaluation eta. The evaluation that I told you there that eta of x is 19.
+
+757
+01:06:09,800 --> 01:06:16,920
+Eta of y is seven. Good. So this is what I have here.
+
+758
+01:06:16,920 --> 01:06:19,662
+Now what this rule tells you, you have an edge.
+
+759
+01:06:19,662 --> 01:06:25,020
+So in the transition system you can move from this state to that state by doing alpha.
+
+760
+01:06:25,020 --> 01:06:28,275
+Okay? So let's do alpha. What is alpha in my case?
+
+761
+01:06:28,275 --> 01:06:37,840
+So I can do here alpha. Alpha in my case is x becomes x minus 1.
+
+762
+01:06:37,840 --> 01:06:43,560
+What is my next state? Well, my next state contains of L prime.
+
+763
+01:06:43,560 --> 01:06:48,022
+What is L prime? Well, L prime is the value of the program counter after doing this.
+
+764
+01:06:48,022 --> 01:06:51,000
+So I can read this off from my graph.
+
+765
+01:06:51,000 --> 01:06:54,260
+So this L prime is actually exactly in my case L2, right?
+
+766
+01:06:54,260 --> 01:06:59,720
+Because we take the orange edge in my graph.
+
+767
+01:06:59,720 --> 01:07:03,120
+So what's the next evaluation? This is eta prime.
+
+768
+01:07:03,120 --> 01:07:09,400
+What is eta prime? Well, eta prime is the effect of what?
+
+769
+01:07:09,400 --> 01:07:14,960
+Well, of doing the action x becomes x minus 1 on what?
+
+770
+01:07:14,960 --> 01:07:21,280
+Well, on this evaluation eta. And this is what we already have seen.
+
+771
+01:07:21,280 --> 01:07:25,364
+So what this is going to do, we know that eta
+
+772
+01:07:25,364 --> 01:07:32,359
+Eta is this state x equals 19 and y equals 7.
+
+773
+01:07:32,359 --> 01:07:37,400
+And that means that eta prime is the following.
+
+774
+01:07:37,400 --> 01:07:39,706
+The only thing that happens is that x is decremented by 1.
+
+775
+01:07:39,706 --> 01:07:48,400
+So x is going to be 18. Y is not changed, so y is still seven.
+
+776
+01:07:48,400 --> 01:07:50,720
+It's exactly what I I think you expect.
+
+777
+01:07:50,720 --> 01:08:00,960
+It looks more complicated than it really is, but Okay.
+
+778
+01:08:00,960 --> 01:08:05,840
+So formally speaking actually this relation that we are going to define that we just defined is the smallest
+
+779
+01:08:05,840 --> 01:08:11,640
+relation such that and that's another way of writing it down in terms of the notation I have here.
+
+780
+01:08:11,640 --> 01:08:18,240
+If the condition above the line holds, then I can conclude the condition below.
+
+781
+01:08:18,240 --> 01:08:28,319
+So if this holds, the condition above the line, then I can conclude what is is below the line.
+
+782
+01:08:28,319 --> 01:08:31,588
+Smallest tells you only this. You cannot add new things.
+
+783
+01:08:31,588 --> 01:08:35,573
+You cannot, let's say, imagine new transitions that for some reason.
+
+784
+01:08:35,573 --> 01:08:39,400
+Yeah, it's really the smallest. Okay, so that's what we just have seen.
+
+785
+01:08:39,400 --> 01:08:43,120
+Last part, what are the atomic conditions or propositions?
+
+786
+01:08:43,120 --> 01:08:46,497
+Well, that's a bit I would say debatable.
+
+787
+01:08:46,497 --> 01:08:48,699
+I mean there are different ways to define this.
+
+788
+01:08:48,699 --> 01:08:54,359
+In this slide I said, "Okay, let's suppose that I can define what is the current location and
+
+789
+01:08:54,359 --> 01:08:59,033
+maybe we have conditions over the variables." So and then you have a labeling function.
+
+790
+01:08:59,033 --> 01:09:03,080
+So the labeling function takes a state of the transition system.
+
+791
+01:09:03,080 --> 01:09:08,719
+Remember these are pairs. in order to say in which location you are, you basically say this is the
+
+792
+01:09:08,719 --> 01:09:13,679
+location we are, namely the first component. What do we know about the evaluation?
+
+793
+01:09:13,679 --> 01:09:25,839
+We basically can take any conditions such that the current evaluation satisfies this condition.
+
+794
+01:09:25,839 --> 01:09:33,319
+Good. And that's it. This defines for every program graph the underlying transition system.
+
+795
+01:09:33,319 --> 01:09:38,600
+Mind, the transition system may have infinitely many states.
+
+796
+01:09:38,600 --> 01:09:44,200
+How can we get infinitely many states? Well, countably infinite many states because we said I only use things like
+
+797
+01:09:44,200 --> 01:09:50,120
+naturals, right? Or integers. No floating points, no reals, right?
+
+798
+01:09:50,120 --> 01:09:54,760
+That means that I get I could potentially have a program that just counts and this counter can be
+
+799
+01:09:54,760 --> 01:10:00,480
+arbitrarily large and therefore my program can have infinitely many states.
+
+800
+01:10:00,480 --> 01:10:04,335
+And that's reflected in this transition system. Good.
+
+801
+01:10:04,335 --> 01:10:06,173
+Now, how does this work for a typical language?
+
+802
+01:10:06,173 --> 01:10:13,560
+So, you can define something like a guarded command language defined by Dijkstra, which is a typical kind of
+
+803
+01:10:13,560 --> 01:10:20,080
+programming language that also contains non-deterministic choice. So, the idea is the following.
+
+804
+01:10:20,080 --> 01:10:26,222
+Every GCL program is can be I mean, there's a one-to-one mapping to a program graph.
+
+805
+01:10:26,222 --> 01:10:32,560
+And what we just have seen, every program graph can be mapped onto a transition system.
+
+806
+01:10:32,560 --> 01:10:37,600
+So, what this slide is basically saying, no matter which GCL program you give me,
+
+807
+01:10:37,600 --> 01:10:42,680
+in the end I can reduce it or map it onto a transition system, which is an
+
+808
+01:10:42,680 --> 01:10:47,760
+adequate representation of the possible behaviors of my program.
+
+809
+01:10:47,760 --> 01:10:51,400
+So, let's have a more detailed look at this guarded command language.
+
+810
+01:10:51,400 --> 01:10:55,385
+So, the the the way Dijkstra defined it was of the following form.
+
+811
+01:10:55,385 --> 01:10:58,360
+We have a guard and then a statement.
+
+812
+01:10:58,360 --> 01:11:02,960
+And this is only enabled if G is true.
+
+813
+01:11:02,960 --> 01:11:08,920
+And then there are loops. Loops in Dijkstra's notation were of the form do if this guard holds, execute the
+
+814
+01:11:08,920 --> 01:11:16,080
+statement od. So, in my notation would be something while G do statement.
+
+815
+01:11:16,080 --> 01:11:21,010
+In Dijkstra's notation it's like this. so, that's the way I would write it down probably.
+
+816
+01:11:21,010 --> 01:11:25,765
+If then else. So, this if G holds, statement one if not G, statement two.
+
+817
+01:11:25,765 --> 01:11:28,400
+So, you can write this down like this.
+
+818
+01:11:28,400 --> 01:11:33,420
+So, this symbol stands actually for a non-deterministic choice.
+
+819
+01:11:33,420 --> 01:11:39,400
+So, in particular, what you can write down in Dijkstra's notation is something like this.
+
+820
+01:11:39,400 --> 01:12:03,280
+do. then you say condition X is even.
+
+821
+01:12:03,280 --> 01:12:09,520
+Then you can do a statement. You say X becomes two times X.
+
+822
+01:12:09,520 --> 01:12:14,280
+Or you could say X larger than zero.
+
+823
+01:12:14,280 --> 01:12:18,200
+And then you say X becomes X minus one.
+
+824
+01:12:18,200 --> 01:12:23,880
+Od. This is perfectly well allowed in Dijkstra's notation.
+
+825
+01:12:23,880 --> 01:12:29,880
+The two guards are overlapping. There are of course even numbers which are strictly positive.
+
+826
+01:12:29,880 --> 01:12:35,240
+What is the program going to do if now X is for instance, let's say the value 10?
+
+827
+01:12:35,240 --> 01:12:39,200
+So, suppose I execute this program in the state where X equals 10.
+
+828
+01:12:39,200 --> 01:12:46,920
+The program non-deterministically is going to decide either to double X or increment X by one.
+
+829
+01:12:46,920 --> 01:12:53,840
+Non-deterministically. So, this is typically something that is allowed in the guarded command language,
+
+830
+01:12:53,840 --> 01:12:57,520
+but not in something like an ordinary programming language.
+
+831
+01:12:57,520 --> 01:13:02,880
+So, this is the syntax. You have assignments, you have sequential compositions, and then do and if.
+
+832
+01:13:02,880 --> 01:13:06,520
+And the semantics of a program is basically a program graph.
+
+833
+01:13:06,520 --> 01:13:09,880
+So, here is a very simple beverage machine.
+
+834
+01:13:09,880 --> 01:13:12,920
+And that's the the last example of today.
+
+835
+01:13:12,920 --> 01:13:17,491
+it's a machine that actually has only Sprite bottles and Coke bottles.
+
+836
+01:13:17,491 --> 01:13:25,680
+It's has a finite capacity. So, there can be max number of Sprite bottles and max number of Coke bottles.
+
+837
+01:13:25,680 --> 01:13:31,280
+So, if max is 100, you can have both 100 Coke and 100 Sprite bottles and 200 in total.
+
+838
+01:13:31,280 --> 01:13:38,400
+Then you can have actions. So, maybe do you flip in you you you insert a coin in a machine.
+
+839
+01:13:38,400 --> 01:13:41,800
+And you can get a Coke. Well, this of course is only possible if
+
+840
+01:13:41,800 --> 01:13:44,920
+there is at least one Coke bottle left.
+
+841
+01:13:44,920 --> 01:13:49,880
+that means if the number of Coke bottles is positive, then you take a Coke bottle.
+
+842
+01:13:49,880 --> 01:13:54,720
+The same for Sprite. when can you do a refill?
+
+843
+01:13:54,720 --> 01:13:58,645
+So, then in the cafeteria here something comes, opens this machine and refills.
+
+844
+01:13:58,645 --> 01:14:02,760
+My assumption is you refill up to the whole capacity.
+
+845
+01:14:02,760 --> 01:14:06,840
+So, this is always enabled. So, this is just sending true.
+
+846
+01:14:06,840 --> 01:14:12,440
+And then two things happen. I will both let's say put the maximal capacity on
+
+847
+01:14:12,440 --> 01:14:16,074
+Sprite and Coke bottles. When can you insert a coin?
+
+848
+01:14:16,074 --> 01:14:21,760
+That's always possible. Inserting a coin does not yet have an effect on the variables because you
+
+849
+01:14:21,760 --> 01:14:26,880
+first have to indicate, do you want to get Coke or do you want to get Sprite?
+
+850
+01:14:26,880 --> 01:14:31,120
+And then you can return your Coke or you return a machine, so it's a fair machine.
+
+851
+01:14:31,120 --> 01:14:34,120
+And that says, okay, if the machine is empty, you point in the Coke a coin,
+
+852
+01:14:34,120 --> 01:14:39,000
+then you get back your coin. And this has not an effect on the variables.
+
+853
+01:14:39,000 --> 01:14:42,000
+So, a program that does this looks as follows.
+
+854
+01:14:42,000 --> 01:14:46,040
+It is an an a loop, which actually has two possibilities.
+
+855
+01:14:46,040 --> 01:14:52,160
+The guard here is true, the guard there is true, which means this program is not going to terminate.
+
+856
+01:14:52,160 --> 01:14:56,905
+It's a non-terminating program. You can always insert a coin.
+
+857
+01:14:56,905 --> 01:15:02,280
+That's here. And if you insert a coin, then yeah, if there is no one if there is no
+
+858
+01:15:02,280 --> 01:15:06,440
+Coke and no Sprite, you get your coin back.
+
+859
+01:15:06,440 --> 01:15:13,090
+If there is at least a Coke bottle, then actually you can get a Coke bottle.
+
+860
+01:15:13,090 --> 01:15:16,320
+If there is at least a Sprite bottle, you can get a Sprite bottle.
+
+861
+01:15:16,320 --> 01:15:21,480
+And the second possibility in this loop is that you refill, which is always possible, so that the
+
+862
+01:15:21,480 --> 01:15:27,960
+guard is true. You refill, which means you refill both the number of Coke and the number of Sprite bottles.
+
+863
+01:15:27,960 --> 01:15:31,392
+So, this is user inserts a coin. No beverage available.
+
+864
+01:15:31,392 --> 01:15:35,680
+Select Coke, select Sprite, etc. I think this is clear.
+
+865
+01:15:35,680 --> 01:15:39,720
+so, this is the program again. this is a program graph that has two
+
+866
+01:15:39,720 --> 01:15:43,200
+variables, the number of Sprite bottles, the number of Coke bottles.
+
+867
+01:15:43,200 --> 01:15:45,800
+What are What's the graph? The graph looks as follows.
+
+868
+01:15:45,800 --> 01:16:01,560
+There are basically two locations. So, if I would draw the graph, it would look like something like this.
+
+869
+01:16:01,560 --> 01:16:07,240
+There are two locations. So, we have start.
+
+870
+01:16:07,240 --> 01:16:13,862
+And we have select. Then the initial location, what's the initial location?
+
+871
+01:16:13,862 --> 01:16:16,470
+Well, the start is on the left bottom.
+
+872
+01:16:16,470 --> 01:16:21,480
+So, this we start here. Good. What are the edges?
+
+873
+01:16:21,480 --> 01:16:24,377
+I'm not talking about the states yet. I'm only talking about the program graph, right?
+
+874
+01:16:24,377 --> 01:16:27,480
+What is possible in start? What are the two possibilities?
+
+875
+01:16:27,480 --> 01:16:31,120
+Let's first consider to the refill. What will be the refill?
+
+876
+01:16:31,120 --> 01:16:35,280
+The refill will be we have an edge moves here.
+
+877
+01:16:35,280 --> 01:16:38,560
+The guard says true. What can I do with the true?
+
+878
+01:16:38,560 --> 01:16:43,470
+I can true do a refill. We just have seen what is the effect of a refill.
+
+879
+01:16:43,470 --> 01:16:49,880
+The effect of the refill is maximal capacity of Coke, maximal capacity of Sprite.
+
+880
+01:16:49,880 --> 01:16:53,480
+so, this refill is nothing else than an action like my alphas and betas
+
+881
+01:16:53,480 --> 01:16:56,925
+before that act that actually tells you, right?
+
+882
+01:16:56,925 --> 01:17:03,360
+That the number of Coke bottles, becomes max.
+
+883
+01:17:03,360 --> 01:17:10,640
+And the assignment the number of Sprite bottles becomes max.
+
+884
+01:17:10,640 --> 01:17:13,760
+Then what else is possible? And you can insert a coin.
+
+885
+01:17:13,760 --> 01:17:16,700
+Okay, if you insert a coin, we go to the select edge.
+
+886
+01:17:16,700 --> 01:17:23,260
+So, you can insert a coin. When can you insert a coin?
+
+887
+01:17:23,260 --> 01:17:30,160
+Always. So, the guard is simply true. And then you can insert a coin.
+
+888
+01:17:30,160 --> 01:17:35,280
+And now we are in select. The select corresponds to the if statement, the innermost if statement.
+
+889
+01:17:35,280 --> 01:17:37,266
+What can you do with the innermost if if statement?
+
+890
+01:17:37,266 --> 01:17:42,200
+Well, if Sprite and the number of Coke bottles is zero, so we return the coin.
+
+891
+01:17:42,200 --> 01:17:47,471
+And where do we move? We move to the start location because we will quit the if then else statement.
+
+892
+01:17:47,471 --> 01:17:49,908
+And we go to the outermost while loop.
+
+893
+01:17:49,908 --> 01:17:55,680
+In terms of my program graph, it means I will have an edge going back here.
+
+894
+01:17:55,680 --> 01:18:06,320
+And this edge is labeled by number of Sprite equals number of Coke equals zero.
+
+895
+01:18:06,320 --> 01:18:11,240
+And what do I do? I do the action return coin.
+
+896
+01:18:11,240 --> 01:18:17,200
+What are the other two possibilities? If the number of Coke bottles is positive, you can get a Coke.
+
+897
+01:18:17,200 --> 01:18:24,200
+That goes back here. So, if the number of Coke is positive, you get Coke.
+
+898
+01:18:24,200 --> 01:18:36,280
+And here the same for Sprite. So, here says the number of Sprites, you get Sprite.
+
+899
+01:18:36,280 --> 01:18:40,880
+So, this is the program graph that one-to-one corresponds to this program.
+
+900
+01:18:40,880 --> 01:18:49,880
+And this is the transition system. With one caveat, the transition system, I assume that the maximum capacity is two.
+
+901
+01:18:49,880 --> 01:18:56,520
+So, if you assume that this max equals two, then the definition,
+
+902
+01:18:56,520 --> 01:19:01,320
+sorry, I gave you before, gives rise to this transition system.
+
+903
+01:19:01,320 --> 01:19:07,100
+So, first of all, you see the start the states are of the form which location we are.
+
+904
+01:19:07,100 --> 01:19:09,840
+So, it tells you we are in this location.
+
+905
+01:19:09,840 --> 01:19:14,840
+Initially, Coke are the the fat circled things.
+
+906
+01:19:14,840 --> 01:19:18,440
+If they are orange, it means they are filled and otherwise they're gone.
+
+907
+01:19:18,440 --> 01:19:21,880
+So, here we start with two Coke bottles and two Sprite bottles.
+
+908
+01:19:21,880 --> 01:19:29,200
+Of course, you can do a refill, but the refill will not change anything because the maximum capacity is two
+
+909
+01:19:29,200 --> 01:19:32,220
+and it's already completely filled. You can insert a coin.
+
+910
+01:19:32,220 --> 01:19:37,200
+Now, you can either get a Coke bottle, which means one Coke bottle less, or you can get a Sprite
+
+911
+01:19:37,200 --> 01:19:42,560
+bottle, which means one Sprite bottle less. You can then insert a coin again.
+
+912
+01:19:42,560 --> 01:19:46,032
+Here, you can still get a Coke or get a Sprite.
+
+913
+01:19:46,032 --> 01:19:51,080
+If you get a Coke, then you see there are no Cokes left and there are only Sprite bottles.
+
+914
+01:19:51,080 --> 01:19:54,258
+So, if you then insert a coin, the only thing you can do is get a Sprite and not get
+
+915
+01:19:54,258 --> 01:19:58,137
+a Coke and so forth. When can you do a refill?
+
+916
+01:19:58,137 --> 01:20:03,080
+You can always do a refill. So, for instance, in this state, you can do a refill and that
+
+917
+01:20:03,080 --> 01:20:07,690
+makes you go here. And this thing start thing, you can do a refill in there.
+
+918
+01:20:07,690 --> 01:20:12,720
+So, anytime you are in this location, you can refill, which means in any state where the
+
+919
+01:20:12,720 --> 01:20:16,280
+program counter is blue, I have a loop back.
+
+920
+01:20:16,280 --> 01:20:20,920
+So, also from this one, I can move and can move back and so forth.
+
+921
+01:20:20,920 --> 01:20:25,200
+This is for you not readable, neither for me, but this corresponds to the
+
+922
+01:20:25,200 --> 01:20:29,160
+state where the whole thing is empty. And from here, there is also a
+
+923
+01:20:29,160 --> 01:20:32,680
+refill, which is this arrow goes back here.
+
+924
+01:20:32,680 --> 01:20:35,800
+Okay, this brings me to the end of this lecture.
+
+925
+01:20:35,800 --> 01:20:39,520
+next lecture is on Tuesday morning 8:30.
+
+926
+01:20:39,520 --> 01:20:42,080
+See you then.

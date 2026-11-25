@@ -1,0 +1,2283 @@
+1
+00:00:02,399 --> 00:00:10,639
+so how do we get this well by definition we know that box psi equals not eventually not psi
+
+2
+00:00:10,639 --> 00:00:15,519
+for not i mean for now you look at the law for eventually psi you plug this in
+
+3
+00:00:15,519 --> 00:00:23,439
+for eventually not psi so what we get is not psi not psi or next eventually not psi that's exactly
+
+4
+00:00:23,439 --> 00:00:28,000
+what we get here now you can push any negation inside just the morgan
+
+5
+00:00:28,000 --> 00:00:35,440
+so we get not not psi and not next eventually not psi and now you can
+
+6
+00:00:35,440 --> 00:00:42,239
+of course simplify this to psi and you can push this negation inside why can you push this negation inside
+
+7
+00:00:42,239 --> 00:00:46,800
+because of this law that you can push this negation in there so if we do this
+
+8
+00:00:46,800 --> 00:00:51,840
+then exactly we get psi and well i did not push the negation yet i do that now
+
+9
+00:00:51,840 --> 00:00:56,480
+so now you push the negation in and now you see this is exactly the formula that we started with
+
+10
+00:00:56,480 --> 00:01:06,159
+here on the this side so we can replace this part by box and therefore you get this formula
+
+11
+00:01:06,159 --> 00:01:12,320
+good now what's the specific thing about these equivalences the specific thing is
+
+12
+00:01:12,320 --> 00:01:16,320
+that the formula on the left hand side also appears on the right hand side now
+
+13
+00:01:16,320 --> 00:01:21,600
+you see this here eventually psi occurs also here i mean nested in terms
+
+14
+00:01:21,600 --> 00:01:27,119
+of the next operator but you see the same operator occurs there so that means that in principle you
+
+15
+00:01:27,119 --> 00:01:33,920
+could apply the equivalence again on this subformula but then again you get a sub formula of
+
+16
+00:01:33,920 --> 00:01:38,880
+event to leap sign you can apply the equivalence again and again and again and again right
+
+17
+00:01:38,880 --> 00:01:44,799
+and then the question is where does it stop what is the interpretation basically of the evangelism psi
+
+18
+00:01:44,799 --> 00:01:49,840
+and mathematically speaking this means that these are actually fixed point equations
+
+19
+00:01:49,840 --> 00:01:55,200
+i explained last time what was a fixed point if i just have a function right then
+
+20
+00:01:55,200 --> 00:02:02,399
+for instance a function that maps real numbers onto real numbers then a fixed point
+
+21
+00:02:02,399 --> 00:02:11,039
+of f yeah x is a fixed point of f if and only if f of x equals x
+
+22
+00:02:11,039 --> 00:02:17,840
+so the function maps the the formula of the the point onto itself
+
+23
+00:02:17,840 --> 00:02:20,879
+now in our setting this is a little bit different because we don't have an
+
+24
+00:02:20,879 --> 00:02:26,480
+equality but we have an equivalent so we have formulas of the form f of x is equivalent to x
+
+25
+00:02:26,480 --> 00:02:30,879
+right in my case it's just written down the other way around so what i write down is
+
+26
+00:02:30,879 --> 00:02:38,661
+x is equivalent to f of x here is my x until and here is my f of x on
+
+27
+00:02:38,661 --> 00:02:46,560
+the right hand side yeah good now what is a special thing a function in general can have several
+
+28
+00:02:46,560 --> 00:02:53,599
+fixed points so in particular this equation can have several solutions and the question is which solution are
+
+29
+00:02:53,599 --> 00:03:02,959
+we looking for you know so here in this setting if you take the function f of x
+
+30
+00:03:02,959 --> 00:03:08,959
+yeah is something like i don't know what x square plus one yeah then
+
+31
+00:03:08,959 --> 00:03:13,760
+well x square is easier then the fixed points of this thing as for instance x equals zero
+
+32
+00:03:13,760 --> 00:03:18,080
+but also x equals one is a fixed point so this equation has at least two
+
+33
+00:03:18,080 --> 00:03:24,799
+solutions or in this case exactly two solutions good so we need to be much more precise
+
+34
+00:03:24,799 --> 00:03:30,879
+about what actually the solution of these equations are this is visualized again in this slide
+
+35
+00:03:30,879 --> 00:03:35,680
+you see that the formula on the left hand side also occurs on the right hand side
+
+36
+00:03:35,680 --> 00:03:42,720
+good so this does not yield as i was just mentioning a complete characterization
+
+37
+00:03:42,720 --> 00:03:48,080
+if you for instance take the last equation this one always psi or box psi
+
+38
+00:03:48,080 --> 00:03:56,640
+is equivalent to psi and xbox psi the following two formulas are both satisfying this equivalence
+
+39
+00:03:56,640 --> 00:04:05,519
+first plug in for the yellow part the formula false okay then what you get is that
+
+40
+00:04:05,519 --> 00:04:11,680
+false is equivalent to a and next false maybe you're a bit puzzled by the fact
+
+41
+00:04:11,680 --> 00:04:17,280
+that i replace something with box by false think about this yellow part as just x
+
+42
+00:04:17,280 --> 00:04:22,960
+right this is the formula that you plug into the equation right so it can be any arbitrary formula
+
+43
+00:04:22,960 --> 00:04:27,919
+in particular it can also be false so if you plug in false here then this
+
+44
+00:04:27,919 --> 00:04:34,000
+formula says false is equivalent to f of false which means psi and next false
+
+45
+00:04:34,000 --> 00:04:41,680
+and that's an equivalence which holds but if you plug in box a so you just
+
+46
+00:04:41,680 --> 00:04:50,320
+replace psi by a then also this equivalence is true so at least we have here two solutions
+
+47
+00:04:50,320 --> 00:04:54,639
+to the last equation the equation where you have the yellow box
+
+48
+00:04:54,639 --> 00:05:00,320
+so if we want to talk about box we have to talk about which equation are we considering
+
+49
+00:05:00,320 --> 00:05:04,880
+now in this case we have for instance let's assume these are all the possible solutions
+
+50
+00:05:04,880 --> 00:05:08,479
+then what we are going to do is we're going to look at the smallest or the
+
+51
+00:05:08,479 --> 00:05:12,400
+largest one and what we are going to see in a minute for this equation the last
+
+52
+00:05:12,400 --> 00:05:17,840
+one we are going to consider the largest one the largest one in terms of implication
+
+53
+00:05:17,840 --> 00:05:25,600
+and that means in this case box a good so box or box psi actually you can
+
+54
+00:05:25,600 --> 00:05:32,240
+also replace a by any arbitrary formula good what is the critical point of course
+
+55
+00:05:32,240 --> 00:05:35,759
+that's obvious i hope that those two formulas box a and false themselves are
+
+56
+00:05:35,759 --> 00:05:44,080
+not equivalent but they lead to the same let's say you can plug them in into the same equation
+
+57
+00:05:44,080 --> 00:05:48,000
+so what it turns out to be the case is that actually the two first formulas
+
+58
+00:05:48,000 --> 00:05:52,960
+will be least fixed points and the other one will be the greatest fixed point
+
+59
+00:05:52,960 --> 00:05:57,520
+so in this example we have f x is x square we have two fixed points
+
+60
+00:05:57,520 --> 00:06:02,639
+if we just restrict ourselves to the domain from zero to infinity what is the
+
+61
+00:06:02,639 --> 00:06:10,240
+smallest fixed point the smallest fixed point is x equals zero the largest fixed point is x equals one
+
+62
+00:06:10,240 --> 00:06:16,560
+largest with respect to what well with respect to the ordering on the real numbers which is just the ordering
+
+63
+00:06:16,560 --> 00:06:19,520
+that you are all familiar with the total ordering what is the ordering that we're
+
+64
+00:06:19,520 --> 00:06:25,039
+going to use here we're going to use implication or if you consider a formula as just
+
+65
+00:06:25,039 --> 00:06:32,800
+representing a set of objects which is the case right because a formula has a semantics a set
+
+66
+00:06:32,800 --> 00:06:40,400
+of traces then actually the ordering is just the subset inclusion the subset inclusion in terms of
+
+67
+00:06:40,400 --> 00:06:51,919
+the the set of traces that a formula describes good so the ltl formula phi until psi is what
+
+68
+00:06:51,919 --> 00:06:58,319
+we call the least fixed point the least solution of the following equation
+
+69
+00:06:58,319 --> 00:07:03,959
+psi this was my x if you want equivalent to f of x and this is f of x where
+
+70
+00:07:03,959 --> 00:07:10,160
+you just plug in x at this specific place good so the way that we showed this in
+
+71
+00:07:10,160 --> 00:07:13,840
+the last lecture and i will not repeat the proof but i only will repeat
+
+72
+00:07:13,840 --> 00:07:18,400
+basically the statement that we have shown is that we did not prove this in the
+
+73
+00:07:18,400 --> 00:07:25,440
+logical sense but we looked at this set of properties the set of traces i should say described
+
+74
+00:07:25,440 --> 00:07:37,440
+by an ltl formula so basically what we're doing we look at the words of phi until psi yeah good
+
+75
+00:07:37,440 --> 00:07:43,039
+so if you then look at this equation and consider everything now
+
+76
+00:07:43,039 --> 00:07:47,840
+in your mind as every formula is just a set then i hope you see that this
+
+77
+00:07:47,840 --> 00:07:57,120
+disjunction becomes just a union in terms of sets this psi becomes the set of traces described by this formula
+
+78
+00:07:57,120 --> 00:08:02,560
+So what remains is how can we capture this in terms of a set
+
+79
+00:08:02,560 --> 00:08:10,720
+so we do this as follows we take something that satisfies phi so we first look at the first conjunct
+
+80
+00:08:10,720 --> 00:08:17,415
+so that's weird so we take an infinite trace satisfying phi now what do we have to do in order
+
+81
+00:08:17,415 --> 00:08:22,560
+to satisfy the second conjunct we have to express that the the rest so the next
+
+82
+00:08:22,560 --> 00:08:26,960
+from the next one on psi should hold now if this is the sequence satisfying five
+
+83
+00:08:26,960 --> 00:08:35,680
+what is done the the next one well the next one is by just removing erasing the first symbol
+
+84
+00:08:35,680 --> 00:08:40,560
+i mean that that's exactly what i what i try to express here
+
+85
+00:08:40,560 --> 00:08:53,279
+you look now at the remaining sequence right so now the sequence is something of the form
+
+86
+00:08:53,279 --> 00:09:04,880
+So this was my sequence a0 a1 a2 a3 etc what this formula says okay this
+
+87
+00:09:04,880 --> 00:09:13,360
+satisfies phi so this whole thing this satisfies phi and now i would like to express next psi
+
+88
+00:09:13,360 --> 00:09:18,399
+what does that mean next means from this position on so i'm going to consider at the suffix
+
+89
+00:09:18,399 --> 00:09:28,880
+starting from this position yeah so i'm going to look at the suffix of a0 a1 etc
+
+90
+00:09:28,880 --> 00:09:35,600
+from one on and that's of course exactly a1 a2 a3 etc and i'm requiring that this
+
+91
+00:09:35,600 --> 00:09:41,120
+suffix needs to satisfy the formula again what does that mean in terms of so it
+
+92
+00:09:41,120 --> 00:09:48,800
+needs to fall to satisfy the formula well psi here again this we need to capture in terms of sets
+
+93
+00:09:48,800 --> 00:09:55,279
+so how are we going to do this we're going to say that you look at the suffix a1 a2
+
+94
+00:09:55,279 --> 00:10:00,080
+and does that must belong to e what is e well e is basically the left-hand side
+
+95
+00:10:00,080 --> 00:10:07,279
+which we kept it here as this e so this is the set theoretical i mean counterpart of this psi
+
+96
+00:10:07,279 --> 00:10:13,040
+so i hope that this formulation i got some questions afterwards after the last lecture that this is the the
+
+97
+00:10:13,040 --> 00:10:26,240
+let's say the set theoretical yeah equivalent of the logical formula which is on the top good
+
+98
+00:10:26,240 --> 00:10:32,880
+and what we have proven in the last lecture and this is what i'm not going to repeat repeat
+
+99
+00:10:32,880 --> 00:10:37,360
+because the important point is this least thing right so what we have proven
+
+100
+00:10:37,360 --> 00:10:42,320
+actually is that this the the formula itself because we want to show that this
+
+101
+00:10:42,320 --> 00:10:48,399
+formula phi and top psi is the least solution we have transformed this equation into a
+
+102
+00:10:48,399 --> 00:10:56,880
+set theoretical thing so now we're looking at the least solution of this thing of this equation
+
+103
+00:10:56,880 --> 00:11:00,399
+again it's a recursive equation because we have e a set on the left hand side
+
+104
+00:11:00,399 --> 00:11:05,120
+and e on the right hand side so it may have several solutions and now
+
+105
+00:11:05,120 --> 00:11:11,200
+we're looking at the least solution least in in terms of sets that means we look at the subset
+
+106
+00:11:11,200 --> 00:11:25,680
+ordering of those words so basically the domain is basically 2 to the power ap omega
+
+107
+00:11:25,680 --> 00:11:36,640
+and actually we have sets of those things right and we look at the subset ordering
+
+108
+00:11:36,640 --> 00:11:43,839
+so least with respect to this ordering the smallest set that satisfies the equation
+
+109
+00:11:43,839 --> 00:11:49,120
+and that's also the way we have proven it we have proven that this set is the smallest set
+
+110
+00:11:49,120 --> 00:12:00,480
+such that actually this equation satisfies we slightly have proven a somewhat stronger statement but that's basically the important thing
+
+111
+00:12:00,480 --> 00:12:08,480
+good are there remaining questions about this point the reason that i'm repeating this is
+
+112
+00:12:08,480 --> 00:12:12,720
+that this expansion law is very important later on in the model checking
+
+113
+00:12:12,720 --> 00:12:19,360
+algorithm for this logic as well for the logic ctl and that means this is one of the i
+
+114
+00:12:19,360 --> 00:12:27,440
+would say crucial parts of of ltl good so now i come to the the second
+
+115
+00:12:27,440 --> 00:12:31,839
+thing on the agenda of today so so far about the expansion law
+
+116
+00:12:31,839 --> 00:12:37,680
+and this is what we call the week until operator so what is the week until operator
+
+117
+00:12:37,680 --> 00:12:41,920
+it's a it's syntactic sugar so it will be an operator that we can define in all
+
+118
+00:12:41,920 --> 00:12:48,959
+the operators that we already familiar with but sometimes it's very useful so this is the definition
+
+119
+00:12:48,959 --> 00:12:59,920
+phi week until psi is defined as being well phi must hold until psi holds now this part says that
+
+120
+00:12:59,920 --> 00:13:06,399
+psi must halt at some point in the future now the weak thing is the second
+
+121
+00:13:06,399 --> 00:13:15,760
+disjunct it says well this week is also satisfied if the first argument that phi holds always
+
+122
+00:13:15,760 --> 00:13:23,839
+so whereas the strong until or this until as we called it insists on let's say establishing psi at some
+
+123
+00:13:23,839 --> 00:13:30,639
+point the weak until does not insist this anymore because it says okay it's always it's
+
+124
+00:13:30,639 --> 00:13:41,199
+also fine if phi holds always good so actually you can derive always and until also from week until
+
+125
+00:13:41,199 --> 00:13:58,320
+so what does that mean what i'm saying is the following our definition of ltl
+
+126
+00:13:58,320 --> 00:14:04,639
+was something of the form phi is semantically something like a true an atomic proposition you can have
+
+127
+00:14:04,639 --> 00:14:11,920
+negations you can have disjunctions you can have next of i and you can have phi until five or
+
+128
+00:14:11,920 --> 00:14:16,880
+more clearly phi one until phi two what i'm going to show you is that
+
+129
+00:14:16,880 --> 00:14:21,120
+actually you can also define this in the following way you remove this part
+
+130
+00:14:21,120 --> 00:14:28,639
+and you replace it by the week until this does not change the expressivity of the logic
+
+131
+00:14:28,639 --> 00:14:36,751
+it's just another basis basically to to define the logic ltl so how can you do this well what we
+
+132
+00:14:36,751 --> 00:14:44,959
+have done before is that in this scenario what we did is we defined eventually phi as being true
+
+133
+00:14:44,959 --> 00:14:52,399
+until phi and then we were saying okay box of phi is not eventually not fine
+
+134
+00:14:52,399 --> 00:14:57,040
+and now what we're going to do if this is the basis we first start by defining box
+
+135
+00:14:57,040 --> 00:15:02,160
+and then we define eventually in terms of box so basically we reverse the role
+
+136
+00:15:02,160 --> 00:15:08,240
+of box and things so how do we get a box of phi well that's not so difficult right
+
+137
+00:15:08,240 --> 00:15:16,320
+because you have this box office somewhere there so this is something of the form phi until false
+
+138
+00:15:16,320 --> 00:15:22,880
+yeah because if this is false then this until part will never become true and then exactly it will beget
+
+139
+00:15:22,880 --> 00:15:31,120
+box yeah and then you can also define until how can you define until in terms of the
+
+140
+00:15:31,120 --> 00:15:39,920
+week until well that can be defined as follows phi until psi so now i'm insisting of
+
+141
+00:15:39,920 --> 00:15:47,680
+basically having phi so that means phi weak until psi so that means phi until psi or always f
+
+142
+00:15:47,680 --> 00:15:53,920
+phi and now we have to make sure basically that psi we have to insist that psy be comes
+
+143
+00:15:53,920 --> 00:16:00,880
+through at some point in the future and that we do by i mean adding this extra conjunct yeah
+
+144
+00:16:00,880 --> 00:16:06,639
+so i hope you see it's easy to define until also in terms of week until
+
+145
+00:16:06,639 --> 00:16:11,600
+good what about weak until here is a small example transition system with three states
+
+146
+00:16:11,600 --> 00:16:20,160
+with atomic propositions a and b claim is this satisfies a and i mean weak until b
+
+147
+00:16:20,160 --> 00:16:23,680
+what how do we see this well we have to consider the transition system so we
+
+148
+00:16:23,680 --> 00:16:32,480
+have to consider all possible paths okay so there is a part that always cycles here that never establishes b
+
+149
+00:16:32,480 --> 00:16:37,600
+but for the week until this is fine because we have always a
+
+150
+00:16:37,600 --> 00:16:42,560
+and you see that for all the other computations either you move here directly which
+
+151
+00:16:42,560 --> 00:16:49,040
+means you take this cycle zero times or if you take this cycle finitely often and then move there you
+
+152
+00:16:49,040 --> 00:16:59,600
+establish actually a until b so therefore you have a what they sometimes call unless b weak until b
+
+153
+00:16:59,600 --> 00:17:06,959
+what about this formula and this satisfies a wb why is this well there is only one
+
+154
+00:17:06,959 --> 00:17:14,480
+execution of one part is maybe i mean going through this dime for this triangle
+
+155
+00:17:14,480 --> 00:17:22,079
+in a counterclockwise manner and that means that you always have a until b holds what about this
+
+156
+00:17:22,079 --> 00:17:28,559
+do we have a weak until b well definitely if we go here that's
+
+157
+00:17:28,559 --> 00:17:32,320
+established because we have a until b but this is the problem that if we now
+
+158
+00:17:32,320 --> 00:17:36,720
+go to the right we have a state that neither satisfies blue nor green
+
+159
+00:17:36,720 --> 00:17:43,520
+and that's always also the point that this is an example part that does not satisfy a wb
+
+160
+00:17:43,520 --> 00:17:53,840
+and therefore the transition system does not satisfy awb question in the first example if in the first
+
+161
+00:17:53,840 --> 00:18:03,760
+example we would change this week until into a strong until the transition system would not satisfy this
+
+162
+00:18:03,760 --> 00:18:11,360
+and you would like to change the transition system yeah but i mean
+
+163
+00:18:11,360 --> 00:18:16,559
+you want to establish a formula for a given transition system right so this transition system does not
+
+164
+00:18:16,559 --> 00:18:22,160
+satisfy a until b because of this cycle here where you never reach a green state
+
+165
+00:18:22,160 --> 00:18:26,240
+so in order to establish a until b you need to make sure that on every part you
+
+166
+00:18:26,240 --> 00:18:35,039
+reach at least a green state by first only visiting a blue state no
+
+167
+00:18:35,039 --> 00:18:42,400
+good so here is a simple communication protocol i think an example that we have seen before
+
+168
+00:18:42,400 --> 00:18:49,520
+if we look at this formula blue implies blue until delivered this is not true for this transition system
+
+169
+00:18:49,520 --> 00:18:55,120
+and the counter example is the dashed path so we move here and then we stay in
+
+170
+00:18:55,120 --> 00:19:02,400
+into this cycle which means okay you are blue you have also blue but you will never establish delivered
+
+171
+00:19:02,400 --> 00:19:08,080
+but it is it satisfies the formula it's always the case if blue holds then blue
+
+172
+00:19:08,080 --> 00:19:15,600
+weak until or unless delivered because this allows you to also cycle around infinitely often there that's no
+
+173
+00:19:15,600 --> 00:19:25,360
+longer a counter example anymore good actually this is something what they call sometimes constrained liveness and this
+
+174
+00:19:25,360 --> 00:19:30,720
+is actually a safety property if you look carefully at the w operator it's
+
+175
+00:19:30,720 --> 00:19:38,720
+this formula over here is a safety property good the two ones are dual
+
+176
+00:19:38,720 --> 00:19:43,919
+and what do i mean by dual and that's something we're going to use in the
+
+177
+00:19:43,919 --> 00:19:48,400
+sequel you can express the negation of an until formula in terms of
+
+178
+00:19:48,400 --> 00:19:54,000
+the week until and vice versa so we take the negation of an until
+
+179
+00:19:54,000 --> 00:20:03,600
+formula what does it mean to take a negation of the until formula good so we take
+
+180
+00:20:03,600 --> 00:20:20,720
+an infinite part again this is my infinite sigma right okay what do we know sigma satisfies
+
+181
+00:20:20,720 --> 00:20:31,600
+not phi until psi so what could be the reasons that this infinite run does not satisfy this formula okay
+
+182
+00:20:31,600 --> 00:20:37,520
+now there are actually two possibilities either what does this formula mean it's this
+
+183
+00:20:37,520 --> 00:20:42,080
+strong until right so you need to establish psi so one possibility to not
+
+184
+00:20:42,080 --> 00:20:49,280
+satisfy the formula so this is of course equivalent to sigma does not satisfy phi until psi
+
+185
+00:20:49,280 --> 00:20:54,480
+how is that possible well one possibility is that sigma will never establish this psi
+
+186
+00:20:54,480 --> 00:20:59,520
+so that means if phi holds here if phi holds there it holds phi at every state
+
+187
+00:20:59,520 --> 00:21:09,440
+but you never see apsai then we violate phi until good what's another possibility another possibility is that you have
+
+188
+00:21:09,440 --> 00:21:16,480
+somewhere you have a prefix where you have files and then i would call it a gap
+
+189
+00:21:16,480 --> 00:21:24,000
+So there is some kind of a gap and the gap means that neither phi knobs i holds no
+
+190
+00:21:24,000 --> 00:21:35,360
+so this is not phi and not psi not phi and not psi psi not phi and not psi
+
+191
+00:21:35,360 --> 00:21:42,640
+and maybe then psi holes that's okay so this gap is also i hope you see this is making
+
+192
+00:21:42,640 --> 00:21:47,360
+sure that you do not satisfy phi until psi right because this is the problematic
+
+193
+00:21:47,360 --> 00:21:50,880
+part and that's the first disjoint so the second disjunct was exactly the
+
+194
+00:21:50,880 --> 00:21:55,520
+first scenario you always set as 5 5 but you will not set a swipe psi
+
+195
+00:21:55,520 --> 00:22:03,440
+so you never reach psi and the second one is you have fives here there are defies but now until
+
+196
+00:22:03,440 --> 00:22:10,320
+a point that is the gap and the gap says okay phi neither fine knobs high holds
+
+197
+00:22:10,320 --> 00:22:18,400
+yeah and that's these are the two only possibilities so that you can violate an until formula
+
+198
+00:22:18,400 --> 00:22:24,960
+good okay so i hope this equivalence is intuitively at least clear
+
+199
+00:22:24,960 --> 00:22:30,640
+if you don't let's say see the intuition you can also prove this by by using the semantics
+
+200
+00:22:30,640 --> 00:22:35,440
+it's quite a bit of of work i would say so now we look at the shape and now
+
+201
+00:22:35,440 --> 00:22:38,799
+we do pattern matching with what is written down in the box here
+
+202
+00:22:38,799 --> 00:22:43,120
+so here you see this disjunction or box something right box something and here
+
+203
+00:22:43,120 --> 00:22:47,840
+this phi this file says phi and not psi and is exactly this phi and not psi so
+
+204
+00:22:47,840 --> 00:22:56,159
+you see hopefully immediately this is a w and this is phi and not psi
+
+205
+00:22:56,159 --> 00:23:04,480
+unless not phi and not psi so here you see that the negation of an entire formula can be
+
+206
+00:23:04,480 --> 00:23:11,360
+mapped or can be expressed in terms of the weak until another way of saying this is that the
+
+207
+00:23:11,360 --> 00:23:19,840
+weak until is in some sense the negation of a strong until in some sense good
+
+208
+00:23:19,840 --> 00:23:25,039
+the same you can do with with the negation of an w so the negation of a w
+
+209
+00:23:25,039 --> 00:23:31,280
+formula is equivalent to something with an until formula so the duality goes in both directions
+
+210
+00:23:31,280 --> 00:23:38,159
+that's why the top of the slide says duality of u and w now what's the
+
+211
+00:23:38,159 --> 00:23:43,200
+the fun part about u and w now we have the weak until and the strong until now
+
+212
+00:23:43,200 --> 00:23:48,640
+we can also look at the expansion law of the weak until operator
+
+213
+00:23:48,640 --> 00:23:54,480
+and what it turns out to be the case is that both satisfy the same expansion law
+
+214
+00:23:54,480 --> 00:23:59,919
+so this was the expansion now for until psy holds now or five holds now and from
+
+215
+00:23:59,919 --> 00:24:06,720
+the next position on you satisfy the until formula we have seen this was a fixed point
+
+216
+00:24:06,720 --> 00:24:14,799
+equation and what it turns out to be the case that w is also a solution of the same equation
+
+217
+00:24:14,799 --> 00:24:20,960
+so emphasizing again the fact that those fixed points equations can have several solutions
+
+218
+00:24:20,960 --> 00:24:26,960
+and phi unless i mean i call it typically unless psi is either psy holds
+
+219
+00:24:26,960 --> 00:24:37,520
+now or yeah then five should hold and from the next position on you have to establish phi w psi
+
+220
+00:24:37,520 --> 00:24:41,600
+good this is the smallest solution and the w turns out to be the largest
+
+221
+00:24:41,600 --> 00:24:51,279
+solution there are many solutions in between you could define your own let's say version of the until operator
+
+222
+00:24:51,279 --> 00:24:54,320
+and some people did this in the literature for instance release and this
+
+223
+00:24:54,320 --> 00:25:00,400
+is also a solution of a similar kind of equation so this is the largest solution
+
+224
+00:25:00,400 --> 00:25:05,760
+so this was the until was the smallest property yeah and that's what you have seen and
+
+225
+00:25:05,760 --> 00:25:15,279
+what was basically w so w is the largest property it's the largest set of traces such that
+
+226
+00:25:15,279 --> 00:25:20,880
+yeah similar as we had before the same equation holds which means
+
+227
+00:25:20,880 --> 00:25:26,080
+either psi holds or which was the the union here we have five holds now which
+
+228
+00:25:26,080 --> 00:25:30,000
+means this statement and then from the next point on until holds and that next
+
+229
+00:25:30,000 --> 00:25:34,640
+means was a1 a2 because we deleted the first symbol and we were
+
+230
+00:25:34,640 --> 00:25:46,320
+saying this must be an element in a good okay the proof of this last fact
+
+231
+00:25:46,320 --> 00:25:51,360
+goes in similar lines as the proof that i did in the previous lecture for the
+
+232
+00:25:51,360 --> 00:25:57,600
+statement about the smallest property good so bottom line w is basically a
+
+233
+00:25:57,600 --> 00:26:05,279
+kind of negation of until and w and until satisfy the same expansion law
+
+234
+00:26:05,279 --> 00:26:09,120
+good this is a smaller solution is the largest solution and this is in one
+
+235
+00:26:09,120 --> 00:26:15,360
+slide the overview of all of them this was the largest solution right the w
+
+236
+00:26:15,360 --> 00:26:30,640
+remember that we defined box phi as being what was it phi w false this
+
+237
+00:26:30,640 --> 00:26:40,080
+w this is the largest solution so therefore also this is the largest solution that's one way to remember
+
+238
+00:26:40,080 --> 00:26:48,559
+that box actually is a larger solution good and these two things are the smallest solution so this slide
+
+239
+00:26:48,559 --> 00:27:02,720
+summarizes in one shot all the the expansion law expansion laws for ltl okay good
+
+240
+00:27:02,720 --> 00:27:08,640
+so how we're going to use this this the fact that w is a kind of negated form of until
+
+241
+00:27:08,640 --> 00:27:16,000
+many people for several algorithms it's useful to to bring ltl formulas into a specific shape
+
+242
+00:27:16,000 --> 00:27:23,600
+and the intuition is that negations are typically the complicated part if they can occur at any point in your
+
+243
+00:27:23,600 --> 00:27:29,360
+formula then this may give rise to some certain complexity issues in the algorithms
+
+244
+00:27:29,360 --> 00:27:36,399
+so what many algorithms do is they basically restrict the positions where negations can occur
+
+245
+00:27:36,399 --> 00:27:43,840
+and the id by positive normal form is that negations can only occur adjacent to atomic propositions
+
+246
+00:27:43,840 --> 00:27:48,960
+So i can write down something like not a but i cannot write down any more not
+
+247
+00:27:48,960 --> 00:27:56,960
+open bracket a until b closing bracket i cannot negate an arbitrary until formula that's syntactically no longer allowed
+
+248
+00:27:56,960 --> 00:28:01,200
+so the negation is only on the level of literals or atomic propositions and it's
+
+249
+00:28:01,200 --> 00:28:07,440
+basically requires operations to be dual so this is the syntax of ltl and positive normal form
+
+250
+00:28:07,440 --> 00:28:14,080
+we have true anatomic propositions now we only have negation too literal so i also put false into here
+
+251
+00:28:14,080 --> 00:28:20,399
+because i can only put negations to literals then i have conjunction and disjunction
+
+252
+00:28:20,399 --> 00:28:28,399
+i have to put them both because i'm not allowed syntactically anymore to do negation of a conjunction
+
+253
+00:28:28,399 --> 00:28:32,159
+so why do i need both well this of course is the dual of this one and that
+
+254
+00:28:32,159 --> 00:28:36,399
+one is the dual of that one right dual in the sense of if you complement
+
+255
+00:28:36,399 --> 00:28:43,760
+them you get something in terms of disjunction and negation this is for propositional formulas
+
+256
+00:28:43,760 --> 00:28:47,440
+this of course is clear i hope not true is false and the negation of a
+
+257
+00:28:47,440 --> 00:28:51,520
+conjunction is a disjunction this is all known so what do we have to do for ltl
+
+258
+00:28:51,520 --> 00:28:56,000
+we do the same for propositional fragment but now we have to do the same for the next
+
+259
+00:28:56,000 --> 00:29:00,799
+so we need to do something with next or phi and we need something that is the dual
+
+260
+00:29:00,799 --> 00:29:08,080
+operator for next what's the dual operator of next so it's something that expresses the negation
+
+261
+00:29:08,080 --> 00:29:12,960
+ah but we have this law that says the negation of a next formula is a next
+
+262
+00:29:12,960 --> 00:29:17,360
+formula where we push in the negation and that means that the dual of a next
+
+263
+00:29:17,360 --> 00:29:25,120
+operator is the next operator itself so we don't have to change anything not for the next
+
+264
+00:29:25,120 --> 00:29:31,039
+so no need to add some operation no need for next so what about until we need
+
+265
+00:29:31,039 --> 00:29:38,880
+until plus we need to dual operator for until because syntactically we're not allowed to write down not
+
+266
+00:29:38,880 --> 00:29:43,440
+a until b so that's where we're going to use the w
+
+267
+00:29:43,440 --> 00:29:48,880
+because we have seen before the w is the negation of the until no
+
+268
+00:29:48,880 --> 00:29:53,439
+so here we see this again expressed not phi until phi 2.
+
+269
+00:29:53,439 --> 00:29:59,200
+2 was equivalent to i think i wrote prefer before phi 1 and not phi 2 w not phi 1
+
+270
+00:29:59,200 --> 00:30:09,520
+and not phi 2. good so now we're going to see that actually the expressiveness of this logic is the
+
+271
+00:30:09,520 --> 00:30:17,200
+same as for ltl so in terms of the set of lt properties or the lt properties that you can
+
+272
+00:30:17,200 --> 00:30:30,320
+describe these two logics are identical syntactically they are different but expressiveness are actually the same good
+
+273
+00:30:30,320 --> 00:30:33,600
+there is no need to get eventually in box because we can still express them in
+
+274
+00:30:33,600 --> 00:30:38,880
+terms of until and in terms of w now we can no longer define box of phi
+
+275
+00:30:38,880 --> 00:30:46,640
+as not eventually not phi because that's syntactically no longer allowed no but thanks of the w we define it
+
+276
+00:30:46,640 --> 00:30:55,520
+immediately like this and now every ltl formula can be transformed into an equivalent ltl formula in
+
+277
+00:30:55,520 --> 00:31:03,840
+positive normal form so what do we have to do if we have to transform an arbitrary ltl formula into
+
+278
+00:31:03,840 --> 00:31:15,919
+an equivalent ltl formula well think about something like i don't know what negation a until b and not c
+
+279
+00:31:15,919 --> 00:31:26,559
+i don't know what and not box c this is not a formula in positive normal form
+
+280
+00:31:26,559 --> 00:31:33,039
+so what do we have to do we have to push these negations in somehow inside
+
+281
+00:31:33,039 --> 00:31:39,200
+so that at the end we get a formula where only the negations are adjacent to the literals
+
+282
+00:31:39,200 --> 00:31:43,360
+so this can be done by a couple of i would say rewrite rules so we have some
+
+283
+00:31:43,360 --> 00:31:47,679
+rules that give an ltl formula as input and the idea is that we get an ltr
+
+284
+00:31:47,679 --> 00:31:54,480
+formula in positive normal form by successive application of the following rules now some rules are pretty
+
+285
+00:31:54,480 --> 00:32:00,320
+straightforward so the negation of true of course is false in negation of a negated formula is the formula itself
+
+286
+00:32:00,320 --> 00:32:05,039
+here we have of course the morgan the negation of a conjunction is the
+
+287
+00:32:05,039 --> 00:32:10,320
+negation of its parts and a disjunction this was the law we had for the next so
+
+288
+00:32:10,320 --> 00:32:16,320
+a negated next formula becomes a next of the negated formula and the until the negation of an until
+
+289
+00:32:16,320 --> 00:32:26,640
+becomes this w similarly for the w a negation of a w becomes an until now
+
+290
+00:32:26,640 --> 00:32:33,840
+you can easily now prove that this theorem holds but what you see is that there is an exponential blow-up
+
+291
+00:32:33,840 --> 00:32:40,840
+an exponential blow up because of the last line the formula on the right hand side is basically
+
+292
+00:32:40,840 --> 00:32:45,279
+yeah almost twice as long as the formula on the left-hand side and if you repeat
+
+293
+00:32:45,279 --> 00:32:56,559
+this rule again and again and again this formula will become exponentially longer good so let's look at an example
+
+294
+00:32:56,559 --> 00:33:02,880
+so suppose that we have this formula don't try to interpret this but you're just a negated formula
+
+295
+00:33:02,880 --> 00:33:06,960
+we don't allow negated formula so you have to push the negation inside so the
+
+296
+00:33:06,960 --> 00:33:10,640
+first thing we do is we get rid of the first negation the outermost negation
+
+297
+00:33:10,640 --> 00:33:14,720
+how do we get rid of this by means of this rule we push this inside by having
+
+298
+00:33:14,720 --> 00:33:39,519
+this eventually so that's what we do here so this negation now becomes at this position
+
+299
+00:33:39,519 --> 00:33:45,440
+the depths yes but you need to be careful because i mean these five
+
+300
+00:33:45,440 --> 00:33:53,120
+ones and five two themselves they are negated here right so this can again give rise to a blow up
+
+301
+00:33:53,120 --> 00:33:57,200
+i mean i mean depth you mean here is one until formula at the top level in some
+
+302
+00:33:57,200 --> 00:34:06,080
+sense and here is a w on the top level yeah but i mean if these formulas themselves are
+
+303
+00:34:06,080 --> 00:34:31,280
+again until formulas right phi one and phi two yeah yeah but it's the point that this this
+
+304
+00:34:31,280 --> 00:34:43,040
+is this is i mean this the not the depth but the yeah the breath is changing
+
+305
+00:34:43,040 --> 00:34:49,760
+so here we push the negation one level inside okay and now we have something of the
+
+306
+00:34:49,760 --> 00:34:55,200
+former disjunction now that's just the morgan so you can push this inside so this becomes a conjunction this becomes
+
+307
+00:34:55,200 --> 00:35:01,760
+negated that becomes negated and now we can push this negation inside because the next operator has this law
+
+308
+00:35:01,760 --> 00:35:06,960
+that this is equivalent to next not a on x not c in this example
+
+309
+00:35:06,960 --> 00:35:12,400
+and here we have a not a until b and now we can use the fact that
+
+310
+00:35:12,400 --> 00:35:18,320
+basically you can continue by replacing this by the by a w
+
+311
+00:35:18,320 --> 00:35:32,560
+so that's what i did here so here you see that the until formula is changed into this w good
+
+312
+00:35:32,560 --> 00:35:38,640
+and this is the formula in positive normal form okay the last part i like to deal with
+
+313
+00:35:38,640 --> 00:35:48,880
+today is is fairness so i first briefly recall what is action-based fairness
+
+314
+00:35:48,880 --> 00:35:56,480
+and then we're going to see how you can model action-based vendors in terms of ltl good so
+
+315
+00:35:56,480 --> 00:36:04,640
+remember what was fairness fairness was all about removing certain behaviors that from some perspective or another one
+
+316
+00:36:04,640 --> 00:36:13,040
+were not considered to be fair and what we were distinguishing were three different kind of fairness assumptions
+
+317
+00:36:13,040 --> 00:36:18,560
+because there are different flavors of fan as we said we focus on three different ones which were unconditional
+
+318
+00:36:18,560 --> 00:36:25,520
+fairness assumptions strong fairness assumptions and weak fairness assumptions how did we define them
+
+319
+00:36:25,520 --> 00:36:33,760
+we defined them in the following sense that actually a fairness assumption is a set of actions
+
+320
+00:36:33,760 --> 00:36:42,960
+of actually a set of sets of actions and we had basically allowed the arbitrary combination of those two things
+
+321
+00:36:42,960 --> 00:37:05,760
+so for instance if you have a fairness assumption of the following form so if the fairness assumption is
+
+322
+00:37:05,760 --> 00:37:16,000
+something like okay we have the f encode is something like a set that says alpha beta
+
+323
+00:37:16,000 --> 00:37:20,400
+and then we have another one which is maybe empty and then we have the last
+
+324
+00:37:20,400 --> 00:37:37,359
+one where basically we say it's alpha gamma and maybe delta you know so then this is the unconditional fairness
+
+325
+00:37:37,359 --> 00:37:47,119
+this is the strong fairness and this is the weak fairness then what does this mean
+
+326
+00:37:47,119 --> 00:37:52,720
+it means that from the unconditional fan as it says every run needs to visit alpha infinitely often
+
+327
+00:37:52,720 --> 00:38:04,960
+and it needs to visit a better infinitely often okay so infinitely often alpha i write it down like this
+
+328
+00:38:04,960 --> 00:38:12,000
+infinitely often alpha alpha is not an atomic proposition so therefore i put it in quotes plus you
+
+329
+00:38:12,000 --> 00:38:18,560
+have infinitely often better in this case what we were doing in the week
+
+330
+00:38:18,560 --> 00:38:22,960
+week was saying okay you have to be weak with respect to alpha gamma
+
+331
+00:38:22,960 --> 00:38:30,320
+so that means okay if from some point on if from some point on always yeah
+
+332
+00:38:30,320 --> 00:38:47,119
+either alpha or beta alpha or gamma is enabled no then we should take them infinitely often then infinitely often
+
+333
+00:38:47,119 --> 00:38:55,599
+take alpha or gamma and the delta was saying basically the same but now we say okay if from some
+
+334
+00:38:55,599 --> 00:39:21,200
+point on delta is enabled then infinitely often delta is taken good
+
+335
+00:39:21,200 --> 00:39:26,320
+so then we said that an execution was being fair if it satisfies basically all
+
+336
+00:39:26,320 --> 00:39:33,520
+the fairness assumptions in our in our triple so that means that for all sets in
+
+337
+00:39:33,520 --> 00:39:40,480
+the unconditional thing in my example the singleton set alpha and the singleton set beta on the left
+
+338
+00:39:40,480 --> 00:39:46,000
+it needs to be the case that you need to execute this alpha infinitely often so there needs to be
+
+339
+00:39:46,000 --> 00:39:54,079
+some position along the sequence such that we have such an element from a infinitely often
+
+340
+00:39:54,079 --> 00:40:00,720
+for the strong fairness it means that the premise says that you need to have infinitely many
+
+341
+00:40:00,720 --> 00:40:08,960
+positions where some action in a is enabled so some state in your run yeah
+
+342
+00:40:08,960 --> 00:40:17,119
+needs to be satisfying the fact that you can and execute this action i'm looking for my pointer which
+
+343
+00:40:17,119 --> 00:40:22,560
+is here because you need to have infinitely many of those states in which you can perform
+
+344
+00:40:22,560 --> 00:40:27,760
+this action and then you need to take this action infinitely often and with
+
+345
+00:40:27,760 --> 00:40:35,760
+weak fairness this was exactly what i explained that from some point on you only visit states where is where
+
+346
+00:40:35,760 --> 00:40:45,040
+where in one of the actions in a is enabled then you should take such an action infinitely often
+
+347
+00:40:45,040 --> 00:40:51,599
+good and then we define the satisfaction relation saying that okay a transition system satisfies an lt property e
+
+348
+00:40:51,599 --> 00:40:58,000
+under such a fairness assumption so under such a triple if and only if all the fair parts
+
+349
+00:40:58,000 --> 00:41:05,200
+so all the parts that are still remaining so that all satisfying the fairness assumption all those parts satisfy the
+
+350
+00:41:05,200 --> 00:41:11,280
+property that means the trace of such a part is included in the set e
+
+351
+00:41:11,280 --> 00:41:17,680
+what i want to do now is i want to basically lift this whole thing to ltl
+
+352
+00:41:17,680 --> 00:41:21,359
+so the first thing is that one example of fairness in which we call
+
+353
+00:41:21,359 --> 00:41:26,240
+process fairness is ltl definable so of course we know what is ltl
+
+354
+00:41:26,240 --> 00:41:29,599
+so we have seen examples already in one of the previous slides you can write
+
+355
+00:41:29,599 --> 00:41:36,560
+down things like infinitely often a process in the critical section and if you are waiting infinitely often so if
+
+356
+00:41:36,560 --> 00:41:42,000
+process i is infinitely often waiting it will be infinitely often in the critical section
+
+357
+00:41:42,000 --> 00:41:48,960
+similarly for weak fairness if from some point on you are always waiting process i is waiting then infinitely
+
+358
+00:41:48,960 --> 00:41:55,680
+often process i will be in the critical section now what's the difference with what i wrote on this
+
+359
+00:41:55,680 --> 00:42:03,200
+let's say blackboard and the slide is that these are statements about states right whereas the statements here on the
+
+360
+00:42:03,200 --> 00:42:09,280
+board are about actions actions that are going to be enabled so there is some kind of mismatch
+
+361
+00:42:09,280 --> 00:42:16,640
+between what is written down here these are atomic propositions that are valid in states and yeah the action-based fairness
+
+362
+00:42:16,640 --> 00:42:28,480
+assumption definition that we have introduced earlier so ltl fairness assumptions are just conjunctions of the following form and
+
+363
+00:42:28,480 --> 00:42:34,079
+that matches exactly what i wrote down on the on the blackboard unconditional fairness assumptions that
+
+364
+00:42:34,079 --> 00:42:41,920
+of this form eventually often i mean infinitely often you do phi if phi one holds infinitely often then
+
+365
+00:42:41,920 --> 00:42:46,160
+phi two must hold infinitely often if phi 1 holds from some point on then phi
+
+366
+00:42:46,160 --> 00:42:56,880
+2 must hold infinitely often good and now we can define the following so take such a fairness assumption
+
+367
+00:42:56,880 --> 00:43:03,520
+So you take a formula of one of these three different syntactic formats
+
+368
+00:43:03,520 --> 00:43:10,800
+you pick a state in my transition system and you have an ltl formula that basically my transition system
+
+369
+00:43:10,800 --> 00:43:18,960
+needs to fulfill then we define the following we say a state s satisfy in my transition system
+
+370
+00:43:18,960 --> 00:43:27,119
+satisfies the ltl formula phi under the fairness assumption fair right the ltl fairness assumption so
+
+371
+00:43:27,119 --> 00:43:32,800
+under well basically a conjunction of these formulas if and only if
+
+372
+00:43:32,800 --> 00:43:37,200
+similar as we had before if and if only for all the paths starting in s if the
+
+373
+00:43:37,200 --> 00:43:46,160
+part is fair then it needs to fulfill phi before i had something like the the
+
+374
+00:43:46,160 --> 00:43:50,560
+fair parts i cannot define here the fair part so i have to define it in the
+
+375
+00:43:50,560 --> 00:43:55,920
+following way that if the path pi is fair then it needs to fulfill phi
+
+376
+00:43:55,920 --> 00:44:03,599
+if it's not fair i don't care and that can be written down in terms of ltl as follows
+
+377
+00:44:03,599 --> 00:44:11,119
+so s satisfies under the ltl fairness assumption phi if and only if s satisfies the ltl formula if the
+
+378
+00:44:11,119 --> 00:44:22,560
+fairness assumption holds then you need to fulfill phi so this slide is basically saying that
+
+379
+00:44:22,560 --> 00:44:28,079
+all the fairness assumptions all the ltl fairness assumptions this fairness assumption here can all be put into the
+
+380
+00:44:28,079 --> 00:44:35,280
+formula and that means that if we have a model checking procedure for ltl so if we have an algorithm
+
+381
+00:44:35,280 --> 00:44:43,760
+checking automatically whether a state or a transition system satisfies an lto formula i can also apply the same algorithm
+
+382
+00:44:43,760 --> 00:44:51,440
+if i want to also check fairness you know because you basically push the fairness into the formula that you're
+
+383
+00:44:51,440 --> 00:44:59,760
+checking and then you're basically done good so here is an arbiter for motor
+
+384
+00:44:59,760 --> 00:45:05,520
+exclusion so we have two tasks or two transition systems that want to enter a critical section
+
+385
+00:45:05,520 --> 00:45:12,440
+then there is an arbiter that in the middle tosses a coin so we get either heads or tails
+
+386
+00:45:12,440 --> 00:45:24,960
+non-deterministically right then the parallel composition of the two transition systems with the arbiter looks as follows either
+
+387
+00:45:24,960 --> 00:45:30,160
+so they all start in the initial state then either the left one i mean this
+
+388
+00:45:30,160 --> 00:45:34,160
+flips the head and that means that actually it can do an enter one this
+
+389
+00:45:34,160 --> 00:45:38,000
+enter one synchronizes with this enter one and actually the first process the
+
+390
+00:45:38,000 --> 00:45:43,599
+process on the li on the left can enter the critical section and then release the critical section
+
+391
+00:45:43,599 --> 00:45:50,079
+and the right hand part is just a symmetric version of it this does not satisfy the property
+
+392
+00:45:50,079 --> 00:46:01,920
+infinitely often crit one and infinitely often create two why not well it is possible to just go
+
+393
+00:46:01,920 --> 00:46:07,920
+infinitely often here and for instance never go to the crit 2 to never reach this state
+
+394
+00:46:07,920 --> 00:46:14,880
+so maybe you want to impose a fairness assumption by by basically forbidding this
+
+395
+00:46:14,880 --> 00:46:18,800
+so what you could try to do is you could try to find an unconditional fairness
+
+396
+00:46:18,800 --> 00:46:24,079
+assumption like you this aperture in the middle needs to be fair in the following sense
+
+397
+00:46:24,079 --> 00:46:30,720
+that it infinitely often needs to flip a coin and gets heads and infinitely often it has to do tails
+
+398
+00:46:30,720 --> 00:46:36,000
+then it's not difficult to see that the transition system i had on the previous slide satisfies under this fairness
+
+399
+00:46:36,000 --> 00:46:44,552
+assumption this condition and the way to see that is that this is the same as we have seen on
+
+400
+00:46:44,552 --> 00:47:04,319
+the previous slide by showing yeah so that's the same as saying our t1
+
+401
+00:47:04,319 --> 00:47:15,280
+parallel t2 and terrible the arbiter satisfies the formula infinitely often heads and infinitely often tails yeah
+
+402
+00:47:15,280 --> 00:47:23,760
+implies and then the whole formula there infinitely often crit one and infinitely often crit two
+
+403
+00:47:23,760 --> 00:47:38,319
+that's equivalent to the formula we just have we have here good so for instance look at this
+
+404
+00:47:38,319 --> 00:47:41,839
+transition system suppose that we have the fairness assumption if if a holds
+
+405
+00:47:41,839 --> 00:47:49,520
+infinitely often i mean if a holds from some point on continuously then b holds infinitely often
+
+406
+00:47:49,520 --> 00:47:57,839
+and we want to check whether t satisfies next b under this fairness assumption right
+
+407
+00:47:57,839 --> 00:48:00,559
+then this is not the case why is this not the case
+
+408
+00:48:00,559 --> 00:48:03,920
+well in order to show that this is not the case it suffices to provide a
+
+409
+00:48:03,920 --> 00:48:08,160
+counterexample so take this part the first thing that we have to consider
+
+410
+00:48:08,160 --> 00:48:14,720
+is whether this part is fair or not well this is fair because there is no
+
+411
+00:48:14,720 --> 00:48:19,200
+position from which always a holds so the premise of the fairness condition
+
+412
+00:48:19,200 --> 00:48:29,599
+is vacuously true so this part is fair and it does not satisfy next b because this is not green
+
+413
+00:48:29,599 --> 00:48:38,000
+does it satisfy a until b this holds why does this hold well we need to establish first the fair
+
+414
+00:48:38,000 --> 00:48:45,760
+condition right so from if a always holds like this this would be a behavior violating a until b
+
+415
+00:48:45,760 --> 00:48:53,024
+but this behavior is not fair because it basically says that if you do a from some point on then
+
+416
+00:48:53,024 --> 00:48:57,200
+you also have to infinitely many b's and if you only cycle around between those two
+
+417
+00:48:57,200 --> 00:49:06,319
+states you'd never do a b and so forth so here is the third example a until box b
+
+418
+00:49:06,319 --> 00:49:14,720
+if and only if next a this is not true because we can find an encounter example
+
+419
+00:49:14,720 --> 00:49:18,480
+so the first thing is this is the part the first thing is we need to check
+
+420
+00:49:18,480 --> 00:49:25,280
+whether this is fair this is fair because of the fact that the premise doesn't hold we don't have a
+
+421
+00:49:25,280 --> 00:49:30,559
+position where only always a holds then we have to check so this is a fair
+
+422
+00:49:30,559 --> 00:49:37,520
+part now we have to show that this fair part violates this formula how can we see this
+
+423
+00:49:37,520 --> 00:49:43,520
+well this says that if b holds if and only if next a holds well here we have something where
+
+424
+00:49:43,520 --> 00:49:49,680
+a-holes but the next position does not let me we have a but the previous position is not green
+
+425
+00:49:49,680 --> 00:50:02,000
+so this is violating the right-hand side of this box operator good those formulas can be necessary to prove liveness
+
+426
+00:50:02,000 --> 00:50:07,359
+properties this should not be a surprise because we have seen before that fairness assumptions are only relevant
+
+427
+00:50:07,359 --> 00:50:14,000
+for liveness properties and not for safety properties i think i'm going to skip this a bit
+
+428
+00:50:14,000 --> 00:50:20,000
+so actually what you have is the following result which is a straightforward
+
+429
+00:50:20,000 --> 00:50:23,920
+lifting to the result that we have seen before suppose i have a transition
+
+430
+00:50:23,920 --> 00:50:31,119
+system t and an ltl formula which is characterizing a safety property what does that mean it means simply that
+
+431
+00:50:31,119 --> 00:50:39,760
+the ltl formula the set of traces that this ltl formula basically defines is a safety property
+
+432
+00:50:39,760 --> 00:50:48,000
+if and only if this transition system under a realizable fairness assumption satisfies this safety property what was
+
+433
+00:50:48,000 --> 00:50:59,119
+realizable fairness assumption it means that every reachable state needs to admit at least one fair execution
+
+434
+00:50:59,119 --> 00:51:12,960
+that's exactly the same result as we have seen before but now in terms of ltl good
+
+435
+00:51:12,960 --> 00:51:18,480
+so here we have an example of a strong fairness assumption infinitely often a and infinitely often b
+
+436
+00:51:18,480 --> 00:51:22,319
+here we have a transition system which has not any which has no terminal
+
+437
+00:51:22,319 --> 00:51:27,440
+states so it fits the framework we are always considering but this is not realizable
+
+438
+00:51:27,440 --> 00:51:30,480
+because you can see here that you get infinitely often a but if you have
+
+439
+00:51:30,480 --> 00:51:35,119
+infinity of an a you have to establish infinitely often b so this is a reachable state
+
+440
+00:51:35,119 --> 00:51:44,079
+from which no fair execution is starting and therefore this is not realizable
+
+441
+00:51:44,079 --> 00:51:50,000
+So it's not the case that every ltl or every strong fairness assumption is friends unrealizable because there are
+
+442
+00:51:50,000 --> 00:51:59,920
+this is a country example good so the last part i would like to spend on going from action-based
+
+443
+00:51:59,920 --> 00:52:07,760
+fairness to state-based fairness remember in this top most blackboard i was saying that eventually often
+
+444
+00:52:07,760 --> 00:52:14,400
+yeah some action is enabled and then infinitely often an action is taken now these are not the atomic
+
+445
+00:52:14,400 --> 00:52:22,079
+propositions that we are allowed to take into a formula so these are not let's say ltl fairness assumptions already
+
+446
+00:52:22,079 --> 00:52:25,440
+so how is it possible to get from the fairness assumptions we are familiar
+
+447
+00:52:25,440 --> 00:52:32,319
+with in actions in terms of ltl fairness so the id is relatively simple
+
+448
+00:52:32,319 --> 00:52:39,520
+we're going to introduce some new atomic propositions so a capital a is a set of actions
+
+449
+00:52:39,520 --> 00:52:44,720
+and we're going to say the atomic proposition enabled a is true in a state
+
+450
+00:52:44,720 --> 00:52:51,920
+that's written down here so the atomic proposition enabled a is true in state s intuitively speaking if
+
+451
+00:52:51,920 --> 00:52:58,720
+and only f s has the possibility to execute at least one of the actions in a
+
+452
+00:52:58,720 --> 00:53:06,480
+so if there is an outgoing edge labeled with alpha for some alpha in a similarly i define the atomic
+
+453
+00:53:06,480 --> 00:53:16,319
+proposition taken so a state s is labeled with the atomic proposition take an a if and only if
+
+454
+00:53:16,319 --> 00:53:26,839
+for all incoming transitions of s yeah so all transitions that lead to s are labeled with some action in
+
+455
+00:53:26,839 --> 00:53:33,760
+a so intuitive this means if i am in state s i know that i just have taken
+
+456
+00:53:33,760 --> 00:53:44,240
+action alpha and alpha is some action in a good so then you can define basically the following
+
+457
+00:53:44,240 --> 00:53:50,559
+ltl formulas or ltl fairness assumptions you can say okay infinitely often i have
+
+458
+00:53:50,559 --> 00:53:54,640
+to do an action in a now means infinitely often i need to be in a state
+
+459
+00:53:54,640 --> 00:54:05,520
+satisfying the atomic proposition take an a similarly for strong fairness you say i have to if
+
+460
+00:54:05,520 --> 00:54:12,160
+infinitely often an action in a is enabled then infinitely often this should be taken and the same
+
+461
+00:54:12,160 --> 00:54:19,520
+similarly for the weak fairness good now a small technical glitch is
+
+462
+00:54:19,520 --> 00:54:23,280
+that of course if i have a state a state can have several incoming transitions
+
+463
+00:54:23,280 --> 00:54:27,839
+not necessarily labeled all with the same action so here i have a state s
+
+464
+00:54:27,839 --> 00:54:32,400
+i can reach s via a better transition or i can reach s by one transition which is
+
+465
+00:54:32,400 --> 00:54:41,520
+labeled by alpha so how to deal with this is typically you make copies of the states
+
+466
+00:54:41,520 --> 00:54:47,920
+good so there are two alternatives one is an ad hoc solution i prefer the second alternative we're
+
+467
+00:54:47,920 --> 00:54:55,520
+going to do a systematic change of the given transition system that you can fully automate and then you can
+
+468
+00:54:55,520 --> 00:55:02,480
+basically introduce those two atomic propositions and you can cast every fairness assumption in terms of actions
+
+469
+00:55:02,480 --> 00:55:11,599
+then in terms of the new transition system good let's first look at an ad hoc scenario this is a
+
+470
+00:55:11,599 --> 00:55:18,160
+mute exclusion algorithm with a semaphore the semi-4 initially is one and in some scenario if you're in the critical
+
+471
+00:55:18,160 --> 00:55:27,280
+section it becomes zero so now you would like to say something like enter one is enabled
+
+472
+00:55:27,280 --> 00:55:30,960
+so an ad hoc way of doing this would be you just look at the states in which
+
+473
+00:55:30,960 --> 00:55:38,079
+enter one is enabled these are the two gray indicated states over here okay so they satisfy
+
+474
+00:55:38,079 --> 00:55:45,760
+basically enabled with the singleton set enter one now you would like to say when is enter
+
+475
+00:55:45,760 --> 00:55:51,119
+one taken well this is true in those two pink states because those are the two states that
+
+476
+00:55:51,119 --> 00:55:57,680
+you can reach by doing an enter transition so this actually corresponds and now what
+
+477
+00:55:57,680 --> 00:56:01,920
+you try to do is you cast this you i mean this atomic proposition as you can
+
+478
+00:56:01,920 --> 00:56:07,280
+see from the transition system is equivalent you would like to characterize the
+
+479
+00:56:07,280 --> 00:56:12,559
+two pink states well one way of characterizing them is by saying okay crit one holds
+
+480
+00:56:12,559 --> 00:56:18,240
+right so this is basically the same in this example in terms of quit one
+
+481
+00:56:18,240 --> 00:56:23,280
+similarly you can try to characterize the two gray states by saying okay i would like to express
+
+482
+00:56:23,280 --> 00:56:27,920
+that you enter one is enabled so what is characterizing the two gray states well
+
+483
+00:56:27,920 --> 00:56:32,720
+if you look carefully they both satisfy wait1 now you have to be careful because this
+
+484
+00:56:32,720 --> 00:56:38,079
+also is satisfying wait1 but you don't want to characterize this state so you have to add something
+
+485
+00:56:38,079 --> 00:56:56,880
+so you have to exclude this crit two and that you do by conjuncting it with not crit two
+
+486
+00:56:56,880 --> 00:57:00,720
+which is here not the case yes because here there i mean this is
+
+487
+00:57:00,720 --> 00:57:04,960
+exactly the point here is a state that has two com incoming arrows one with the
+
+488
+00:57:04,960 --> 00:57:10,400
+request and the other one with the enter exactly yeah so this is why i call this ad hoc
+
+489
+00:57:10,400 --> 00:57:19,119
+yeah and my strategy would be don't do it this way yeah because then you can define something
+
+490
+00:57:19,119 --> 00:57:22,720
+like this but you have to be very careful because now you can also i mean
+
+491
+00:57:22,720 --> 00:57:29,520
+this is basically you can also enter this yeah but for this fairness assumption in this example this works
+
+492
+00:57:29,520 --> 00:57:39,200
+yeah but not in general that's why i call it ad hoc it's not a general procedure good
+
+493
+00:57:39,200 --> 00:57:42,880
+so that was the ad hoc way the non-preferred way so let's try to
+
+494
+00:57:42,880 --> 00:57:47,440
+see to change the transition system and the way to do that is if you have
+
+495
+00:57:47,440 --> 00:57:52,400
+two or more incoming arrows labeled with different actions you just copy this state
+
+496
+00:57:52,400 --> 00:57:57,839
+so you're going to add an action component to the state so intuitively this works as follows
+
+497
+00:57:57,839 --> 00:58:03,920
+suppose this is here is my my transition system now what we're going to do we're going
+
+498
+00:58:03,920 --> 00:58:08,480
+to do the following trick or trick we just do the following construction
+
+499
+00:58:08,480 --> 00:58:11,599
+so here you see that you reached you can only reach suppose it is the only
+
+500
+00:58:11,599 --> 00:58:20,839
+incoming error for s prime then we're going to encode this beta into the state
+
+501
+00:58:20,839 --> 00:58:28,240
+welcome so what we do is we're going to take this we're going to build pairs of states
+
+502
+00:58:28,240 --> 00:58:33,520
+states with actions and the idea is that if you are in the state s prime beta it
+
+503
+00:58:33,520 --> 00:58:39,760
+means that you are currently in state s prime and you have just taken the action beta
+
+504
+00:58:39,760 --> 00:58:44,400
+to enter state s prime okay similarly here with s double prime
+
+505
+00:58:44,400 --> 00:58:53,680
+you enter it via gamma so now i get a pair s double prime gamma good
+
+506
+00:58:53,680 --> 00:58:59,440
+so this means that on the left hand side we can express fairness in terms of actions
+
+507
+00:58:59,440 --> 00:59:02,400
+so here we would like to express something like strong fairness with
+
+508
+00:59:02,400 --> 00:59:08,240
+respect to set a and that means that in the right hand side after the transforming nation of the transition
+
+509
+00:59:08,240 --> 00:59:14,799
+system we are going to express this strong a fairness in terms of strong ltl fairness
+
+510
+00:59:14,799 --> 00:59:22,640
+and then we are going to say infinitely often enabled a implies infinitely often taken a
+
+511
+00:59:22,640 --> 00:59:29,359
+good how do we define now officially formally this enabled a so we're going to look at structures of
+
+512
+00:59:29,359 --> 00:59:35,760
+this form so all the states are pairs of the form s alpha so this means i am
+
+513
+00:59:35,760 --> 00:59:41,599
+in state s and i have just taken action alpha to enter state s
+
+514
+00:59:41,599 --> 00:59:45,359
+and that means that we're going to say that this state is going to be labeled
+
+515
+00:59:45,359 --> 00:59:50,799
+with the atomic proposition enabled a if and only if yeah starting i mean from
+
+516
+00:59:50,799 --> 00:59:54,480
+s we have a better transition and here is the taken which is the most
+
+517
+00:59:54,480 --> 01:00:00,640
+important part i think that here you use the alpha so here you say this state is labeled
+
+518
+01:00:00,640 --> 01:00:05,359
+with the atomic proposition taken a if and only if this action alpha that i
+
+519
+01:00:05,359 --> 01:00:15,920
+just have taken is a member of the set a good so this is how this works
+
+520
+01:00:15,920 --> 01:00:20,000
+so here is an example and that here is the example where you have an exam state
+
+521
+01:00:20,000 --> 01:00:26,400
+s that has two incoming arrows one with delta the other one with gamma which are labeled differently
+
+522
+01:00:26,400 --> 01:00:32,079
+that was the situation that was just pointed out so what are we going to do we're going
+
+523
+01:00:32,079 --> 01:00:38,720
+to make a copy of this state so first you have to start somewhere so i'm assuming that s
+
+524
+01:00:38,720 --> 01:00:42,400
+well what is the action that we just have taken if we are starting an s well
+
+525
+01:00:42,400 --> 01:00:53,040
+nothing yeah so the way to encode this is to say okay i add an extra artificial action begin
+
+526
+01:00:53,040 --> 01:00:59,040
+and this is saying is without taking any action before now you can you have to look at the
+
+527
+01:00:59,040 --> 01:01:03,680
+transition from s to t is labeled with alpha now this is replaced by just again
+
+528
+01:01:03,680 --> 01:01:07,920
+an alpha transition but i replace the state by t alpha because i have just
+
+529
+01:01:07,920 --> 01:01:13,599
+reached t via taken action alpha i do the same for u so u becomes u beta
+
+530
+01:01:13,599 --> 01:01:22,079
+because u only has one incoming arrow over here good now we have to consider s
+
+531
+01:01:22,079 --> 01:01:26,240
+we can of course not reuse this state because this state was labeled with
+
+532
+01:01:26,240 --> 01:01:31,440
+begin and the next time you visit s you don't visit that by doing it begin so we have
+
+533
+01:01:31,440 --> 01:01:37,280
+to make copies of s how many copies do we need well there are two different incoming arrows
+
+534
+01:01:37,280 --> 01:01:41,839
+i mean labeled differently that is the important point and therefore we make two copies
+
+535
+01:01:41,839 --> 01:01:49,520
+so we make the copy s gamma and s delta this is the transition you you get to
+
+536
+01:01:49,520 --> 01:01:53,839
+this s gamma and now what we need to do is we need to copy all the behaviors of
+
+537
+01:01:53,839 --> 01:01:58,559
+s into this state right because as gamma can do all the behaviors that s can do
+
+538
+01:01:58,559 --> 01:02:02,240
+so this can do an alpha so this definitely is able to do an
+
+539
+01:02:02,240 --> 01:02:06,400
+alpha and move to t alpha but it can also do better and with the better it
+
+540
+01:02:06,400 --> 01:02:15,680
+can move to you better so i get those arrows again from s i can do an alpha
+
+541
+01:02:15,680 --> 01:02:19,760
+so that's moving this alpha or i can do a beta and this is this edge over here
+
+542
+01:02:19,760 --> 01:02:24,880
+and then move to u better the same applies to s delta so this is the transition system i
+
+543
+01:02:24,880 --> 01:02:35,440
+obtain after this transformation good are there any questions on this transformation any need for a formal definition or you
+
+544
+01:02:35,440 --> 01:02:42,079
+think that this is pretty clear right good okay so what's the strong fairness if i
+
+545
+01:02:42,079 --> 01:02:47,839
+would like to express strong fairness for bel for better right so here it's clear then we just
+
+546
+01:02:47,839 --> 01:02:55,520
+say okay we have a strong fairness assumption with the singleton set that contains the singleton set beta
+
+547
+01:02:55,520 --> 01:03:00,160
+now we express this in terms of this transition system and now we can express
+
+548
+01:03:00,160 --> 01:03:09,119
+this by saying infinitely often enabled beta implies infinitely often taken beta and that's basically the states that where
+
+549
+01:03:09,119 --> 01:03:15,680
+beta is enabled are the three green states because those are the only state that have an outcoming better transition
+
+550
+01:03:15,680 --> 01:03:22,160
+the dest the dashed lines over here and what are the states that are taken
+
+551
+01:03:22,160 --> 01:03:25,920
+beta well those are the states where the second component of those pairs is a
+
+552
+01:03:25,920 --> 01:03:30,319
+beta so there is one state that satisfies taken beta which is the pink
+
+553
+01:03:30,319 --> 01:03:40,880
+state over here and that satisfies the atomic proposition taken better so the message of this construction is that
+
+554
+01:03:40,880 --> 01:03:47,280
+before we have seen action-based fairness on transition systems if we want to capture this in terms of
+
+555
+01:03:47,280 --> 01:03:52,559
+linear temporal logic we have to do this in terms of state predicates
+
+556
+01:03:52,559 --> 01:03:56,720
+how can i transform the actions that i had before into those state predicates
+
+557
+01:03:56,720 --> 01:04:07,119
+by building pairs of states and actions and then expressing this in terms of this enabled and taken predicates good
+
+558
+01:04:07,119 --> 01:04:11,520
+so here is the the semaphore example that was mentioned before how to do this
+
+559
+01:04:11,520 --> 01:04:16,880
+let's say consistently on the example we had before this is i think a fragment
+
+560
+01:04:16,880 --> 01:04:22,480
+that i had before so here you see the action begin this is the labeled request one so here
+
+561
+01:04:22,480 --> 01:04:27,119
+you have request one i think here i omitted the label but this is something like request two so
+
+562
+01:04:27,119 --> 01:04:31,440
+there is request two enter one enter one and so forth so here you have those pairs
+
+563
+01:04:31,440 --> 01:04:38,400
+of states on the original transition system and those actions and now you see that i had to copy those
+
+564
+01:04:38,400 --> 01:04:43,520
+states that was the remark that was mentioned before here was the crit one way two that i
+
+565
+01:04:43,520 --> 01:04:48,880
+can reach either via enter one from this state or via that state or i can reach
+
+566
+01:04:48,880 --> 01:04:54,720
+the same state crit one way to y equals zero by means of a request to
+
+567
+01:04:54,720 --> 01:05:00,480
+so i basically copy the states if you are able to reach them by several actions
+
+568
+01:05:00,480 --> 01:05:06,079
+and now you can express yeah the fairness assumptions that we have all seen before in previous
+
+569
+01:05:06,079 --> 01:05:20,319
+lectures on this mute exclusion algorithm also in terms of ltl good any questions on this construction no good okay
+
+570
+01:05:20,319 --> 01:05:28,533
+that's it for today thanks have a nice weekend and hope to see you back next tuesday morning 8 30.
+
+571
+01:05:28,533 --> 01:05:30,280
+thank you

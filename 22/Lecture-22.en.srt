@@ -1,0 +1,2855 @@
+﻿1
+00:00:02,440 --> 00:00:06,800
+Good morning. Welcome to the last lecture.
+
+2
+00:00:06,800 --> 00:00:11,360
+so the final lecture of model checking is about the following.
+
+3
+00:00:11,360 --> 00:00:17,285
+it's about bisimulation. So I'm going to explain what bisimulation is.
+
+4
+00:00:17,285 --> 00:00:22,720
+I think most of you have probably already seen this in Maude.
+
+5
+00:00:22,720 --> 00:00:31,080
+Is this correct? Good. And the main result that we're going to see today is the following theorem.
+
+6
+00:00:31,080 --> 00:00:41,720
+And that says that basically bisimulation and actually the notion we are considering is sometimes called a strong bisimulation
+
+7
+00:00:41,720 --> 00:00:45,328
+because actually there is a whole zoo of notions of bisimulation.
+
+8
+00:00:45,328 --> 00:00:57,320
+There are several variations of it. this coincides with
+
+9
+00:00:57,320 --> 00:01:07,480
+CTL equivalence. So that means if I have two states or even two transition systems which are CTL equivalent
+
+10
+00:01:07,480 --> 00:01:11,840
+then they are bisimilar and the other way around.
+
+11
+00:01:11,840 --> 00:01:16,880
+If they are strong bisimilar, they satisfy the same CTL formulas.
+
+12
+00:01:16,880 --> 00:01:26,040
+And this coincides also with CTL star equivalence.
+
+13
+00:01:26,040 --> 00:01:30,200
+And that's perhaps a little bit surprising. We have seen the logic CTL star
+
+14
+00:01:30,200 --> 00:01:34,880
+which contains LTL and CTL and is strictly more expressive than both of them.
+
+15
+00:01:34,880 --> 00:01:39,605
+But the equivalence induced by this logic coincides with CTL equivalence.
+
+16
+00:01:39,605 --> 00:01:47,000
+So if I have two states that I cannot distinguish by a CTL formula
+
+17
+00:01:47,000 --> 00:01:49,790
+then I can also not distinguish them by a CTL star formula.
+
+18
+00:01:49,790 --> 00:01:55,640
+Well, that's maybe obvious to understand. But then the other way around, if I cannot
+
+19
+00:01:55,640 --> 00:02:02,840
+distinguish two states by a CTL star formula, so there is no CTL star formula that holds for one state
+
+20
+00:02:02,840 --> 00:02:08,800
+but not for the other, then it's also no CTL.
+
+21
+00:02:08,800 --> 00:02:16,680
+And see, this is also equivalent to CTL without until equivalence.
+
+22
+00:02:16,680 --> 00:02:23,760
+So, even if I take CTL, I remove until, which means I remove box, I remove diamond.
+
+23
+00:02:23,760 --> 00:02:26,800
+The only thing I have is next.
+
+24
+00:02:26,800 --> 00:02:32,840
+That's all. These three equivalents all coincide with strong bisimulation.
+
+25
+00:02:32,840 --> 00:02:34,672
+Now, I have to be a little bit more precise.
+
+26
+00:02:34,672 --> 00:02:45,800
+This is all true for finitely branching transition systems.
+
+27
+00:02:45,800 --> 00:02:56,480
+That means, intuitively speaking, any state, so the the the transition system itself may have countably infinite many states, right?
+
+28
+00:02:56,480 --> 00:03:01,239
+But every state only can have finitely many direct successors.
+
+29
+00:03:01,239 --> 00:03:09,239
+That's the point. But if that's the case, then actually those four things all coincide.
+
+30
+00:03:09,239 --> 00:03:18,040
+Good. Let's start by first arguing that trace equivalence does not
+
+31
+00:03:18,040 --> 00:03:24,239
+fit well with CTL, which is something I think we have already mentioned before in one of the earlier lectures.
+
+32
+00:03:24,239 --> 00:03:33,120
+So, here is a a counterexample, and that's a typical counterexample for distinguishing trace equivalence with bisimulation equivalence.
+
+33
+00:03:33,120 --> 00:03:39,306
+Here you see that it has a trace gray gray red and then continuing red and gray gray blue.
+
+34
+00:03:39,306 --> 00:03:43,320
+This has the same set of traces, but the difference is that here
+
+35
+00:03:43,320 --> 00:03:47,000
+is a state in the middle that has both a red successor and a blue successor,
+
+36
+00:03:47,000 --> 00:03:49,080
+which is not present in the left one.
+
+37
+00:03:49,080 --> 00:03:55,800
+So, they have the same traces. but if you now consider a CTL formula,
+
+38
+00:03:55,800 --> 00:04:01,600
+there exists a next state which has both a red successor and a blue successor.
+
+39
+00:04:01,600 --> 00:04:05,948
+That's a formula that holds in the right transition system, but not in the left transition system.
+
+40
+00:04:05,948 --> 00:04:12,708
+So, we have two trace equivalent transition systems, but we can distinguish them by CTL.
+
+41
+00:04:12,708 --> 00:04:17,480
+So, conclusion, trace equivalent is not compatible with CTL.
+
+42
+00:04:17,480 --> 00:04:22,760
+Good. So, what we're interested actually is, and that's the main reason also of this
+
+43
+00:04:22,760 --> 00:04:26,400
+theorem, is this what is written down in the lower box.
+
+44
+00:04:26,400 --> 00:04:29,640
+That is, what you would like to do is you would like to define something like
+
+45
+00:04:29,640 --> 00:04:34,480
+an equivalence relation such that if you take a transition system that satisfies
+
+46
+00:04:34,480 --> 00:04:43,040
+a formula if and only if that transition system under that equivalence relation satisfies the formula as well.
+
+47
+00:04:43,040 --> 00:04:49,680
+Now, think in terms of a finite state automaton, this is the quotient, the minimal deterministic finite state automaton.
+
+48
+00:04:49,680 --> 00:04:51,666
+Here, the same thing. You have a transition system.
+
+49
+00:04:51,666 --> 00:04:57,519
+We're going to see under strong bisimulation, how do you get the quotient?
+
+50
+00:04:57,519 --> 00:05:03,320
+You just group all equivalent states, and you represent it by a single state.
+
+51
+00:05:03,320 --> 00:05:11,240
+Good. And the good thing about bisimulation is you can compute this quotient very efficiently.
+
+52
+00:05:11,240 --> 00:05:17,919
+Good. So, what we know is about trace equivalences are things like
+
+53
+00:05:17,919 --> 00:05:23,919
+this, that if I have the finite traces of T1 are included in the finite
+
+54
+00:05:23,919 --> 00:05:28,590
+traces of T2, then we know that this preserves safety properties.
+
+55
+00:05:28,590 --> 00:05:34,960
+If T2 is safe, then T1 is safe as well, because it has less finite traces,
+
+56
+00:05:34,960 --> 00:05:41,280
+and therefore there are no counterexamples. the same for infinite traces, but that
+
+57
+00:05:41,280 --> 00:05:49,840
+means then for all LTL properties, if T2 satisfies an LTL formula, then T1 satisfies an LTL formula.
+
+58
+00:05:49,840 --> 00:05:54,780
+None of the LT relations like trace, inclusion, trace equivalence is compatible with CTL.
+
+59
+00:05:54,780 --> 00:06:00,480
+That's what the previous example showed us. And what furthermore is important to to
+
+60
+00:06:00,480 --> 00:06:06,240
+take into account that checking those LT relations, for instance, checking whether two transition systems exhibit
+
+61
+00:06:06,240 --> 00:06:09,080
+the same set of traces is PSPACE complete.
+
+62
+00:06:09,080 --> 00:06:13,960
+So, that's an intrinsically hard problem. For bisimulation, this can be done in polynomial time.
+
+63
+00:06:13,960 --> 00:06:23,040
+Actually, checking whether two finite transition systems are strongly bisimilar is PTIME complete.
+
+64
+00:06:23,040 --> 00:06:26,184
+Good. Now, there are all variations. I'm going to skip this slide.
+
+65
+00:06:26,184 --> 00:06:28,186
+This is also the only there for completeness.
+
+66
+00:06:28,186 --> 00:06:32,480
+So, what are we going to do? We're going to look at the bisimulation, which is defined
+
+67
+00:06:32,480 --> 00:06:37,006
+you can define it in several possible ways, but suppose I have two transition systems.
+
+68
+00:06:37,006 --> 00:06:43,200
+The actions are not relevant. The only important thing is they have the same set of atomic propositions.
+
+69
+00:06:43,200 --> 00:06:55,040
+So the same labelings. Good. And then the bisimulation requires that T1 and T2 mutually can simulate each other.
+
+70
+00:06:55,040 --> 00:07:01,800
+So, this is a definition of bisimulation for the pair transition systems T1 T2.
+
+71
+00:07:01,800 --> 00:07:04,699
+We look at relations that contains pairs of states.
+
+72
+00:07:04,699 --> 00:07:09,880
+States in T1 are coupled to states in T2.
+
+73
+00:07:09,880 --> 00:07:14,919
+So, it's just a binary relation, but this binary relation, in order to be a bisimulation, has to fulfill the
+
+74
+00:07:14,919 --> 00:07:21,457
+following properties. For any pair of states in the relation, we have a couple of properties.
+
+75
+00:07:21,457 --> 00:07:25,200
+First, the two states that are related must be labeled the same.
+
+76
+00:07:25,200 --> 00:07:30,040
+I hope that's something that is obvious because if they're not labeled the same, it's easy to distinguish them
+
+77
+00:07:30,040 --> 00:07:33,160
+by an atomic proposition. That's not what we want.
+
+78
+00:07:33,160 --> 00:07:38,080
+The second condition says the following. For every direct successor of S1, and
+
+79
+00:07:38,080 --> 00:07:39,751
+the best is to look at this picture.
+
+80
+00:07:39,751 --> 00:07:46,520
+So, suppose that S1 and S2 are in the relation and S1 has a direct successor S1 prime.
+
+81
+00:07:46,520 --> 00:07:54,120
+Then in order for being a bisimulation, it means that this picture implies that S2
+
+82
+00:07:54,120 --> 00:08:04,880
+has a direct successor S2 prime. And this S2 prime is mimicking the direct successor of S1 by R.
+
+83
+00:08:04,880 --> 00:08:11,360
+So, basically what people sometimes call this is a co-inductive definition because you you are telling me for any
+
+84
+00:08:11,360 --> 00:08:17,360
+pair of states in the relation, something has to hold for their successors.
+
+85
+00:08:17,360 --> 00:08:22,360
+For S1 prime and S2 prime. And this also has to go in the other direction.
+
+86
+00:08:22,360 --> 00:08:28,560
+Because it's a bisimulation. That means for every S2 prime being a successor of S2, I think that's on the
+
+87
+00:08:28,560 --> 00:08:35,520
+next line. So, if S2 has a direct successor S2 prime then S1 needs to be able to mimic this
+
+88
+00:08:35,520 --> 00:08:42,960
+step by having a direct successor S1 prime such that the two successors are related.
+
+89
+00:08:42,960 --> 00:08:45,960
+Good. Now, the only thing that is left is that we have to say something about
+
+90
+00:08:45,960 --> 00:08:49,720
+the initial states of the transition systems and that's the last condition.
+
+91
+00:08:49,720 --> 00:08:54,560
+So, basically this says for every initial state in the first transition system, there needs to be an initial
+
+92
+00:08:54,560 --> 00:08:59,600
+state in the second one such that they are related and vice versa.
+
+93
+00:08:59,600 --> 00:09:03,760
+For every initial state on the second one, there needs to be a one in the initial one
+
+94
+00:09:03,760 --> 00:09:13,200
+that are related. So, it is fixed that we start basically in similar states.
+
+95
+00:09:13,200 --> 00:09:22,920
+Good. So, that's what defines when a bisimulation when a relation of those pairs is a bisimulation.
+
+96
+00:09:22,920 --> 00:09:26,360
+so, that's what we just have seen.
+
+97
+00:09:26,360 --> 00:09:33,960
+And now we define the following relation. This is what they call a bisimulation equivalence.
+
+98
+00:09:33,960 --> 00:09:43,280
+And this bisimulation equivalence is indicated by this triggle symbol, and this says T1 is bisimulation equivalent to T2
+
+99
+00:09:43,280 --> 00:09:51,280
+if and only if there exist a bisimulation relation for T1 and T2.
+
+100
+00:09:51,280 --> 00:10:00,120
+So you can think think about this as the union of all bisimulations on that pair of transition systems.
+
+101
+00:10:00,120 --> 00:10:01,820
+Good. So, I hope you understand the difference.
+
+102
+00:10:01,820 --> 00:10:05,314
+There is a definition of when a relation is a bisimulation.
+
+103
+00:10:05,314 --> 00:10:07,840
+So, either relation is it or is not.
+
+104
+00:10:07,840 --> 00:10:14,360
+And then we have a special kind of relation, namely this bisimulation equivalence, that says there must exist
+
+105
+00:10:14,360 --> 00:10:20,260
+at least one bisimulation. Good. and that's the same.
+
+106
+00:10:20,260 --> 00:10:23,600
+You can also lift this for states, but that's basically similar.
+
+107
+00:10:23,600 --> 00:10:26,000
+Good. So, let's look at the small example.
+
+108
+00:10:26,000 --> 00:10:30,600
+Here there are two beverage machines. The atomic propositions are indicated by the colors.
+
+109
+00:10:30,600 --> 00:10:35,760
+And the the claim is that these two things are bisimilar.
+
+110
+00:10:35,760 --> 00:10:43,000
+And that's not difficult to see because basically what you see is that this whole picture is included here.
+
+111
+00:10:43,000 --> 00:10:48,740
+This only option has an extra Coke option here on the left, and then go back to blue.
+
+112
+00:10:48,740 --> 00:10:55,760
+so, what's the bisimulation relation? I mean, this this state is related to that state.
+
+113
+00:10:55,760 --> 00:10:58,424
+This gray state is related to this gray state.
+
+114
+00:10:58,424 --> 00:11:02,240
+Basically, every equally colored state is related to every equally colored state.
+
+115
+00:11:02,240 --> 00:11:06,320
+For instance, this Coke one can move to a blue state, but that can be mimicked by
+
+116
+00:11:06,320 --> 00:11:12,280
+this one by going to a blue state, and vice versa.
+
+117
+00:11:12,280 --> 00:11:16,160
+Good. Here is the example we have seen before.
+
+118
+00:11:16,160 --> 00:11:20,131
+these two things were trace equivalent, but they're not bisimilar.
+
+119
+00:11:20,131 --> 00:11:24,880
+What is the point? The point is that here is a state that has both a yellow and a green
+
+120
+00:11:24,880 --> 00:11:32,080
+direct successor. In the left transition system, there is no gray state which has a direct yellow
+
+121
+00:11:32,080 --> 00:11:36,062
+and a direct green successor. So, how is this formal materialized?
+
+122
+00:11:36,062 --> 00:11:40,960
+So, we say they are not bisimilar because there does not exist a bisimulation relation.
+
+123
+00:11:40,960 --> 00:11:45,560
+How can we fill this? Because there is no state in T1 that has both a successor
+
+124
+00:11:45,560 --> 00:11:53,360
+labeled with this yellow and and green. So, there is no state on the left which can mimic the
+
+125
+00:11:53,360 --> 00:12:00,040
+behavior of this state on the right.
+
+126
+00:12:00,040 --> 00:12:10,520
+Good. Any questions? No? Good. So, we have seen that this is the important
+
+127
+00:12:10,520 --> 00:12:15,440
+condition of a bisimulation that if S1 has a direct successor S1 prime, then S2
+
+128
+00:12:15,440 --> 00:12:19,506
+must be able to mimic this and go to a successor which is related to the successor.
+
+129
+00:12:19,506 --> 00:12:23,440
+And actually, this can be lifted to paths, and those paths can be
+
+130
+00:12:23,440 --> 00:12:27,400
+finite or infinite in the in the obvious way by an inductive argument.
+
+131
+00:12:27,400 --> 00:12:33,880
+So, suppose that we have S1 being related to S2 and assumed R is a bisimulation relation.
+
+132
+00:12:33,880 --> 00:12:39,720
+And S1 has some kind of computation starting in S1.
+
+133
+00:12:39,720 --> 00:12:42,371
+Good. Then this can picture can be completed to this one.
+
+134
+00:12:42,371 --> 00:12:45,720
+The first test. If this one is related to that one, that
+
+135
+00:12:45,720 --> 00:12:49,391
+one has a successor, that this S2 must be able to mimic this.
+
+136
+00:12:49,391 --> 00:12:55,280
+So, S2 will be able to move to a state S21 which is related to S11.
+
+137
+00:12:55,280 --> 00:12:59,480
+And now you can apply the same reasoning to those two states.
+
+138
+00:12:59,480 --> 00:13:04,839
+So, that means that actually because because this one has a direct successor
+
+139
+00:13:04,839 --> 00:13:09,760
+S12, that one needs to have a direct successor which is able to mimic this state.
+
+140
+00:13:09,760 --> 00:13:12,320
+So, you get this, you get this, and so forth.
+
+141
+00:13:12,320 --> 00:13:17,360
+So, what does it mean? If I have two states which are bisimilar,
+
+142
+00:13:17,360 --> 00:13:22,440
+if I take a computation starting from one of them, the other one is able to mimic this in a
+
+143
+00:13:22,440 --> 00:13:29,160
+stepwise fashion. It is able to move to the next state still being bisimilar to
+
+144
+00:13:29,160 --> 00:13:33,600
+the successor of the other state. Good.
+
+145
+00:13:33,600 --> 00:13:37,760
+Immediate conclusion. Give me two states which are bisimilar.
+
+146
+00:13:37,760 --> 00:13:43,200
+They exhibit the same traces. Must be.
+
+147
+00:13:43,200 --> 00:13:55,160
+Immediate consequence of this thing. So, they satisfy the same LTL formulas.
+
+148
+00:13:55,160 --> 00:14:01,320
+Good. So, now I'm focusing in on this bisimulation equivalence.
+
+149
+00:14:01,320 --> 00:14:05,520
+On the previous slide this holds for any bisimulation relation.
+
+150
+00:14:05,520 --> 00:14:09,720
+But, what is specific about bisimulation equivalence is the following.
+
+151
+00:14:09,720 --> 00:14:14,620
+first of all, it's an equivalence, which means it's a reflexive, transitive, and symmetric.
+
+152
+00:14:14,620 --> 00:14:18,720
+So, how can you see this? So, first of all, we need to guarantee
+
+153
+00:14:18,720 --> 00:14:21,221
+that T is bisimilar to to T.
+
+154
+00:14:21,221 --> 00:14:25,560
+How do we have to prove this? Well, this means there needs to be a bisimulation
+
+155
+00:14:25,560 --> 00:14:30,600
+relation that relates T to itself. How would that bisimulation relation look like?
+
+156
+00:14:30,600 --> 00:14:38,920
+Well, just the identity. So, this is not so difficult that if you just take the identity relation,
+
+157
+00:14:38,920 --> 00:14:45,160
+you can easily check that this satisfies all the properties of being a bisimulation for T
+
+158
+00:14:45,160 --> 00:14:51,600
+when you compare T with itself. It's also symmetry, so that's is the obvious requirement.
+
+159
+00:14:51,600 --> 00:14:59,960
+How do I prove this? Well, you start from assuming that T1 is bisimulation equivalent to T2, so
+
+160
+00:14:59,960 --> 00:15:05,480
+there is a bisimulation relation R relating T1 to T2.
+
+161
+00:15:05,480 --> 00:15:12,880
+Proof obligation. You have to find a bisimulation relation that is relating the opposite.
+
+162
+00:15:12,880 --> 00:15:15,480
+How do you get this? You take the inverse of the relation.
+
+163
+00:15:15,480 --> 00:15:22,840
+So, that's pretty easy. Similar transitivity. If you know that T1 and T2 are bisimilar
+
+164
+00:15:22,840 --> 00:15:29,920
+and T2 is bisimilar to T3, then transitivity says T1 is bisimilar to T3.
+
+165
+00:15:29,920 --> 00:15:33,097
+So, how do you show this? Well, you have to show this relation.
+
+166
+00:15:33,097 --> 00:15:37,320
+So, you start from this relation because there needs to be a bisimulation relation.
+
+167
+00:15:37,320 --> 00:15:40,280
+You start with that relation and then what you do is in order to get
+
+168
+00:15:40,280 --> 00:15:44,080
+the relation here, you take the composition of the two relations.
+
+169
+00:15:44,080 --> 00:15:46,994
+And then you can prove again that this thing is there.
+
+170
+00:15:46,994 --> 00:15:53,800
+So, it's written down here. Suppose R12 relates one and two to three relates to one and three and
+
+171
+00:15:53,800 --> 00:16:01,120
+now you simply build a relation that relates states in the first with the third transition system by saying,
+
+172
+00:16:01,120 --> 00:16:04,720
+"Okay, there needs to be some kind of intermediate state S2 which is related
+
+173
+00:16:04,720 --> 00:16:09,160
+via one two and to S3 with R23."
+
+174
+00:16:09,160 --> 00:16:15,640
+Now, what you have to prove that this is a bisimulation, but that's pretty straightforward.
+
+175
+00:16:15,640 --> 00:16:24,520
+So, it's good to understand that not every bisimulation relation is an equivalence, but this one is.
+
+176
+00:16:24,520 --> 00:16:29,955
+Good. So, here is an example. Question, are those two bisimilar?
+
+177
+00:16:29,955 --> 00:16:35,305
+So, what do we need to find? We need to find a bisimulation relation and this is not the case.
+
+178
+00:16:35,305 --> 00:16:39,240
+Why is it not the case? Well, what you see is that S1
+
+179
+00:16:39,240 --> 00:16:44,520
+can move to blue state, but this would be able to mimic by S2, but S2
+
+180
+00:16:44,520 --> 00:16:48,840
+cannot move to a blue state. So, that cannot be mimic.
+
+181
+00:16:48,840 --> 00:16:54,640
+So, S1 and S2 are not bisimilar. What about these two?
+
+182
+00:16:54,640 --> 00:16:58,560
+well, you have to be a bit careful.
+
+183
+00:16:58,560 --> 00:17:02,000
+So, here you can move to those two yellow states, but those two yellow states are
+
+184
+00:17:02,000 --> 00:17:05,520
+basically copies of this one. This blue state is a copy of the other
+
+185
+00:17:05,520 --> 00:17:09,520
+blue state and we have copied the red state twice.
+
+186
+00:17:09,520 --> 00:17:15,234
+so, this looks pretty okay. So, in order to prove this, you have to find a bisimulation relation.
+
+187
+00:17:15,234 --> 00:17:21,160
+The obvious thing is to pair those ones that are colored equally.
+
+188
+00:17:21,160 --> 00:17:25,146
+And of course then you have to prove that all the properties hold, but that's obvious.
+
+189
+00:17:25,146 --> 00:17:28,814
+For instance, if you look at U, U can move to S1.
+
+190
+00:17:28,814 --> 00:17:35,400
+Can this be mimicked by Y? Yes, it can be mimicked by either going to here or going to there.
+
+191
+00:17:35,400 --> 00:17:39,120
+And vice versa, this one can move for instance to S2 prime, but that can be
+
+192
+00:17:39,120 --> 00:17:44,846
+mimicked by U by moving to S1. So, that's in both directions.
+
+193
+00:17:44,846 --> 00:17:52,626
+That's fulfilled. Good. Some other examples, but that's not not so much important.
+
+194
+00:17:52,626 --> 00:17:56,520
+So, bisimulation versus trace equivalence, I actually already mentioned this.
+
+195
+00:17:56,520 --> 00:18:00,514
+that if two transition systems are bisimilar, then they exhibit the same traces.
+
+196
+00:18:00,514 --> 00:18:04,200
+This was this lifting of the relation to paths.
+
+197
+00:18:04,200 --> 00:18:08,240
+But not the other way around. That's the same example as we have seen before.
+
+198
+00:18:08,240 --> 00:18:11,915
+this state has a direct successor which is red and green.
+
+199
+00:18:11,915 --> 00:18:18,680
+This one has not. The two are trace equivalent, but not bisimilar.
+
+200
+00:18:18,680 --> 00:18:29,640
+Good. Now, we have defined bisimulation equivalence as a relation that compares two transition systems.
+
+201
+00:18:29,640 --> 00:18:34,320
+It's sometimes convenient to define it as a relation on a single transition system.
+
+202
+00:18:34,320 --> 00:18:39,540
+Why is this? Well, basically what we would like to have is a result as follows.
+
+203
+00:18:39,540 --> 00:18:46,560
+Suppose I have a transition system, I need to check whether it satisfies a CTL state formula phi.
+
+204
+00:18:46,560 --> 00:18:55,440
+I would like to have something like if and only if if T, under bisimulation equivalence satisfies
+
+205
+00:18:55,440 --> 00:18:59,480
+phi as well. So, what I would like to have is I
+
+206
+00:18:59,480 --> 00:19:07,120
+would like to have a relation that is able to to to to compare states in the same transition system.
+
+207
+00:19:07,120 --> 00:19:11,360
+And we would also like to be able to compare states in these two, and that's
+
+208
+00:19:11,360 --> 00:19:16,640
+the relation we just have seen. Then you would have to show that actually there is a relationship between
+
+209
+00:19:16,640 --> 00:19:24,497
+these two transition systems. Some people define it directly on a single transition system, but that's basically the same thing.
+
+210
+00:19:24,497 --> 00:19:26,470
+So, we defined it in the following way.
+
+211
+00:19:26,470 --> 00:19:33,360
+We compare T1 and T2. but you can also relate it on the states of one single transition system
+
+212
+00:19:33,360 --> 00:19:41,240
+T. So, then you say that S1 is bisimilar to S2 inside a single transition system if and
+
+213
+00:19:41,240 --> 00:19:46,400
+only if the transition system that you obtain from this one by declaring S1 as an
+
+214
+00:19:46,400 --> 00:19:49,760
+initial state is bisimilar to the transition system that you obtain from
+
+215
+00:19:49,760 --> 00:19:55,360
+that one by declaring S2 to be the initial state.
+
+216
+00:19:55,360 --> 00:19:59,920
+Good. And that means that that's equivalent that there exists a bisimulation relation for S1.
+
+217
+00:19:59,920 --> 00:20:06,148
+So, what you do is you compare TS1 with TS2, and then you can compare the two transition systems.
+
+218
+00:20:06,148 --> 00:20:10,568
+So, it's very easy to change between the two perspectives.
+
+219
+00:20:10,568 --> 00:20:15,560
+You compare two transition systems, or you compare states within a single transition system.
+
+220
+00:20:15,560 --> 00:20:20,480
+Conceptually, that's not much of a big difference.
+
+221
+00:20:20,480 --> 00:20:24,840
+Good. I'm going to skip this because I basically said this already.
+
+222
+00:20:24,840 --> 00:20:33,360
+Now, we have seen already that this bisimulation equivalence is a special relation because it's an equivalence.
+
+223
+00:20:33,360 --> 00:20:36,720
+but it's the following relation which makes it even more interesting.
+
+224
+00:20:36,720 --> 00:20:43,666
+It's the coarsest bisimulation on T. That means the following.
+
+225
+00:20:43,666 --> 00:20:47,920
+For any bisimulation relation that you can find,
+
+226
+00:20:47,920 --> 00:20:51,386
+This will always be finer than this one.
+
+227
+00:20:51,386 --> 00:21:00,000
+So, that means that suppose I would like to So, intuitively speaking, this simply
+
+228
+00:21:00,000 --> 00:21:05,840
+means that it yields the least number of equivalence classes.
+
+229
+00:21:05,840 --> 00:21:12,760
+So, in terms of if you would like to do things like minimization, suppose this is huge,
+
+230
+00:21:12,760 --> 00:21:17,440
+And this is 10 to the power whatever, 26 states.
+
+231
+00:21:17,440 --> 00:21:24,400
+If I am able to minimize my transition system with respect to bisimulation,
+
+232
+00:21:24,400 --> 00:21:30,200
+and if I'm able to prove that this holds,
+
+233
+00:21:30,200 --> 00:21:33,240
+Then, thanks to the theorem we're going to see they are preserved the same CTL
+
+234
+00:21:33,240 --> 00:21:37,040
+formulas, so it makes sense then to do the model checking in this way.
+
+235
+00:21:37,040 --> 00:21:39,910
+And this one can be much smaller.
+
+236
+00:21:39,910 --> 00:21:45,720
+How small can it be? Now, because this is the coarsest bisimulation,
+
+237
+00:21:45,720 --> 00:21:50,240
+It's the smallest transition system that you can get.
+
+238
+00:21:50,240 --> 00:21:54,040
+Which still satisfies the same CTL formulas.
+
+239
+00:21:54,040 --> 00:22:00,080
+You cannot make it smaller without violating, I mean, sacrificing the correctness.
+
+240
+00:22:00,080 --> 00:22:08,920
+That's what this theorem says. And that's why bisimulation equivalence is such a nice relationship.
+
+241
+00:22:08,920 --> 00:22:12,800
+So, it's the coarsest relation that satisfies all the constraints of a bisimulation relation.
+
+242
+00:22:12,800 --> 00:22:20,360
+That's what this slide basically tells you. Good.
+
+243
+00:22:20,360 --> 00:22:23,835
+I'm going to skip this because this is basically Okay.
+
+244
+00:22:23,835 --> 00:22:30,600
+So, what's the aim now? The aim is now that we can define the bisimulation quotient.
+
+245
+00:22:30,600 --> 00:22:39,880
+So, that's pretty straightforward. we start with a transition system, and this transition system could be infinite.
+
+246
+00:22:39,880 --> 00:22:41,704
+And we are interested in the bisimulation quotient.
+
+247
+00:22:41,704 --> 00:22:47,360
+What's the idea? We're basically going to collapse bisimulation equivalent states.
+
+248
+00:22:47,360 --> 00:22:54,800
+So, how does it work formally? We're interested in the transition system modulo this bisimulation relation.
+
+249
+00:22:54,800 --> 00:23:00,560
+And this is defined as follows. The state space is simply the set of equivalence classes under bisimulation.
+
+250
+00:23:00,560 --> 00:23:06,280
+The equivalence classes, of course, in the original transition system.
+
+251
+00:23:06,280 --> 00:23:12,000
+What is the set of initial states? You take the equivalence classes of the initial states of the original
+
+252
+00:23:12,000 --> 00:23:20,840
+transition system. What is the labeling function? Well, the labeling function L prime of such an a representative of this
+
+253
+00:23:20,840 --> 00:23:26,840
+equivalence class is equal to the labeling of Well, you take You can pick any state
+
+254
+00:23:26,840 --> 00:23:33,760
+of the equivalence class, because one of the constraints in bisimulation says all states need to be equally labeled.
+
+255
+00:23:33,760 --> 00:23:40,845
+So, we know that all the states in this set are equally labeled, so you can pick any arbitrary one.
+
+256
+00:23:40,845 --> 00:23:43,560
+And that means that this is well defined.
+
+257
+00:23:43,560 --> 00:23:47,960
+I think that's written down here. And the transition relation is as follows.
+
+258
+00:23:47,960 --> 00:23:53,000
+if there is a transition from S to S prime, then this induces a transition
+
+259
+00:23:53,000 --> 00:23:57,080
+between the equivalence class of S and the equivalence class of S prime.
+
+260
+00:23:57,080 --> 00:24:01,560
+The actions are not relevant. I mentioned already before the actions do not play any role.
+
+261
+00:24:01,560 --> 00:24:05,245
+So, if this would be some action alpha, you can rename it if you want.
+
+262
+00:24:05,245 --> 00:24:09,040
+It doesn't really make that much of a difference.
+
+263
+00:24:09,040 --> 00:24:17,680
+Good. Then, the essential thing is you can prove now that T is strongly bisimilar to its quotient.
+
+264
+00:24:17,680 --> 00:24:25,680
+How would you prove such a thing? Well, in order to prove that T is bisimulation equivalent to T
+
+265
+00:24:25,680 --> 00:24:29,760
+thing, so we have to prove T is bisimilar to this thing.
+
+266
+00:24:29,760 --> 00:24:36,560
+How would you proceed? Well, in order to prove this, we have to find a bisimulation relation R that's
+
+267
+00:24:36,560 --> 00:24:41,080
+going to relate this transition system and that transition system, right?
+
+268
+00:24:41,080 --> 00:24:43,920
+So, how would that look like? Well, the obvious candidate is you're going to
+
+269
+00:24:43,920 --> 00:24:46,702
+pair a state with its equivalence class.
+
+270
+00:24:46,702 --> 00:24:50,560
+So, you're going to take the the thing where you take S and you
+
+271
+00:24:50,560 --> 00:24:56,320
+take S the equivalence class with respect to this for all S in S.
+
+272
+00:24:56,320 --> 00:25:05,560
+And it's not difficult to check that this is a bisimulation relation.
+
+273
+00:25:05,560 --> 00:25:12,920
+So, the obvious candidate here will work, and that shows this important result that T is bisimilar to T
+
+274
+00:25:12,920 --> 00:25:24,720
+modulo bisimulation equivalence. Example. Suppose that we have a couple of printers all running in parallel.
+
+275
+00:25:24,720 --> 00:25:29,720
+So, we have n printers in parallel. Every printer is just a two-state transition system.
+
+276
+00:25:29,720 --> 00:25:37,000
+It's ready or it's printing. and we have atomic propositions that basically count the number of printers
+
+277
+00:25:37,000 --> 00:25:41,400
+that are available. So, either there's nothing available or all printers are available.
+
+278
+00:25:41,400 --> 00:25:48,640
+And then the transition system for the case that we have n equals three is a transition system
+
+279
+00:25:48,640 --> 00:25:51,674
+that looks as follows. So, we start in initial state.
+
+280
+00:25:51,674 --> 00:25:55,720
+All printers are ready indicated by this triple R.
+
+281
+00:25:55,720 --> 00:25:58,680
+Then one of the printers can start printing.
+
+282
+00:25:58,680 --> 00:26:02,680
+either the first printer starts printing or the second one or the third.
+
+283
+00:26:02,680 --> 00:26:08,400
+Then another one can start printing. For instance, from this state you can move there or this printer releases is
+
+284
+00:26:08,400 --> 00:26:13,440
+released and then you go back to the initial state and so forth.
+
+285
+00:26:13,440 --> 00:26:20,017
+Good. So, these are the atomic propositions. It's just counting the number of P's in a state.
+
+286
+00:26:20,017 --> 00:26:24,955
+Right? so, all these states are pink because they all have two P's.
+
+287
+00:26:24,955 --> 00:26:29,448
+So, two printers are occupied. And the bisimulation quotient looks like this.
+
+288
+00:26:29,448 --> 00:26:33,640
+So, if I take this as the set of atomic propositions, so the only
+
+289
+00:26:33,640 --> 00:26:36,920
+thing that I observe are the colors.
+
+290
+00:26:36,920 --> 00:26:40,590
+Then the the bisimulation quotient is you just group all the states.
+
+291
+00:26:40,590 --> 00:26:44,000
+So, for instance, we take all the pink states.
+
+292
+00:26:44,000 --> 00:26:50,240
+They are equivalent. So, we represent them by a single equivalence class which is represented here.
+
+293
+00:26:50,240 --> 00:26:52,668
+We have here a transition from pink to yellow.
+
+294
+00:26:52,668 --> 00:26:55,548
+So, there is a transition here from pink to yellow.
+
+295
+00:26:55,548 --> 00:27:00,080
+There is a transition from pink to green, so there is a transition from pink to green.
+
+296
+00:27:00,080 --> 00:27:07,560
+And those are the only transitions which are there, so they're only the transitions in the quotient.
+
+297
+00:27:07,560 --> 00:27:13,368
+Good. In general, this leads quite a couple of reductions because on the left-hand side, we have exponentially many states.
+
+298
+00:27:13,368 --> 00:27:17,400
+On the right-hand side, we have only linearly many states.
+
+299
+00:27:17,400 --> 00:27:25,160
+So this exponent this reduction can take I mean, you can reduce things quite drastically.
+
+300
+00:27:25,160 --> 00:27:31,760
+A nicer example to my opinion is even the example of the bakery algorithm.
+
+301
+00:27:31,760 --> 00:27:36,720
+So, the bakery algorithm is an algorithm developed for mutual exclusion by Leslie Lamport.
+
+302
+00:27:36,720 --> 00:27:40,348
+And the idea is the following. It's like on Saturday morning, you go to a bakery shop.
+
+303
+00:27:40,348 --> 00:27:43,960
+It's very occupied. When is your turn? Your turn is you have to get a
+
+304
+00:27:43,960 --> 00:27:48,000
+ticket when you enter the the shop, and this ticket gives you a number.
+
+305
+00:27:48,000 --> 00:27:51,960
+And when the number is on the screen, I guess you all know this scenario, it's your turn
+
+306
+00:27:51,960 --> 00:27:55,560
+to be served. Good. So, that's the idea here as well.
+
+307
+00:27:55,560 --> 00:27:58,440
+So, that's why it's called the bakery algorithm.
+
+308
+00:27:58,440 --> 00:28:01,053
+So, we have I just I showed you this for two processes.
+
+309
+00:28:01,053 --> 00:28:07,680
+You can easily generalize it for more. There are two additional shared variables, X1 and X2.
+
+310
+00:28:07,680 --> 00:28:12,415
+And X1 is basically the ticket of process one when it enters the shop.
+
+311
+00:28:12,415 --> 00:28:16,640
+X2 is the ticket of process two when it enters the shop.
+
+312
+00:28:16,640 --> 00:28:22,973
+Good. If P1 and P2 are waiting, the following scenarios can happen.
+
+313
+00:28:22,973 --> 00:28:27,640
+Well, if X1 is a lower number than X2, then P1 enters the critical section.
+
+314
+00:28:27,640 --> 00:28:30,560
+P1 is the next person to be served.
+
+315
+00:28:30,560 --> 00:28:34,400
+If it's the other way around, then P2 is the next person to be served.
+
+316
+00:28:34,400 --> 00:28:39,080
+that two people get the same number, this is unavoid- This is cannot happen.
+
+317
+00:28:39,080 --> 00:28:42,840
+So, we assume this is an ideal machine.
+
+318
+00:28:42,840 --> 00:28:49,400
+You will not have the same number. And now, the bakery algorithm by Lam- Lamport, it's a bit simplified, but
+
+319
+00:28:49,400 --> 00:28:52,120
+that's basically the core of it, says the following.
+
+320
+00:28:52,120 --> 00:28:56,640
+This is the algorithm for P1. It's an infinite loop.
+
+321
+00:28:56,640 --> 00:29:00,480
+because if you leave the bakery shop, you have forgotten something and you go
+
+322
+00:29:00,480 --> 00:29:03,171
+back because you want to buy something else.
+
+323
+00:29:03,171 --> 00:29:08,440
+So this is infinite loop. you first do something non-critical because you're chatting with your
+
+324
+00:29:08,440 --> 00:29:12,800
+neighbor, you're not doing something interesting. At some point you say, "Well, I want to have my ticket."
+
+325
+00:29:12,800 --> 00:29:19,400
+So, what's your ticket? Your ticket is one larger than the ticket of your opponents in the bakery shop.
+
+326
+00:29:19,400 --> 00:29:23,360
+Then you wait until your number is smaller than the one of the neighbor.
+
+327
+00:29:23,360 --> 00:29:28,080
+Or the neighbor has basically left the shop.
+
+328
+00:29:28,080 --> 00:29:34,245
+X2 equals zero. If this is the case, you will be served, which means you enter the critical section.
+
+329
+00:29:34,245 --> 00:29:39,400
+If you are finished by being served, you set your local variable to zero.
+
+330
+00:29:39,400 --> 00:29:48,520
+Such that your opponent, right, has the chance to being served because this disjunct becomes then true.
+
+331
+00:29:48,520 --> 00:29:53,720
+Good. Symmetrically, it's P2. And initially, X1 and X2 equal zero.
+
+332
+00:29:53,720 --> 00:30:07,920
+What is the size of the state space of this protocol?
+
+333
+00:30:07,920 --> 00:30:11,400
+I would say unbounded because there's no limit on X.
+
+334
+00:30:11,400 --> 00:30:17,800
+I would say unbounded, too. Because you can enter the system, the other one is still there.
+
+335
+00:30:17,800 --> 00:30:22,760
+And that one is being served, but before the other one is being served,
+
+336
+00:30:22,760 --> 00:30:26,040
+you the other one enters the shop as well and gets the next ticket.
+
+337
+00:30:26,040 --> 00:30:30,360
+So we start with zero zero, the first one gets one, the other one gets two.
+
+338
+00:30:30,360 --> 00:30:35,200
+Then the number one is served first, but then immediately enters the shop again, so gets number three.
+
+339
+00:30:35,200 --> 00:30:41,200
+Two is being served. leaves the shop, but immediately wants to enter the shop again, gets number four.
+
+340
+00:30:41,200 --> 00:30:45,306
+So this grows unboundedly. So, the state space is actually infinite.
+
+341
+00:30:45,306 --> 00:30:49,600
+So, these are the program graphs. And this is the state space.
+
+342
+00:30:49,600 --> 00:30:53,315
+Well, it doesn't fit on the slide, so that's why there are many dots here.
+
+343
+00:30:53,315 --> 00:30:57,480
+This goes on up to infinity. And the scenario I just explained to you is that the two
+
+344
+00:30:57,480 --> 00:31:04,421
+counters are 0 0, then it becomes 0 1, then at some point you can get 2 1, right?
+
+345
+00:31:04,421 --> 00:31:09,520
+And from 2 1 you can get 2 0 and then 2 3 and so forth.
+
+346
+00:31:09,520 --> 00:31:15,640
+So, this counter goes grows unbounded. So, we have to deal with an infinitely I mean countably infinite
+
+347
+00:31:15,640 --> 00:31:23,051
+transition system. Good. this is a run I'm going to to skip this.
+
+348
+00:31:23,051 --> 00:31:26,680
+I think the scenario is basically clear. Now, the interesting thing is this is an
+
+349
+00:31:26,680 --> 00:31:33,382
+infinite transition system, but it has a finite bisimulation quotient provided you're interested in certain properties.
+
+350
+00:31:33,382 --> 00:31:37,920
+I mean, it depends always on the set of atomic propositions that you're interested in.
+
+351
+00:31:37,920 --> 00:31:41,920
+so, if the atomic propositions are only you are in a non-critical section,
+
+352
+00:31:41,920 --> 00:31:46,760
+you are waiting, or you're in the critical section, which were the atomic propositions we
+
+353
+00:31:46,760 --> 00:31:56,400
+have used so far always for the mutual exclusion algorithms, then actually this is the finite bisimulation quotient
+
+354
+00:31:56,400 --> 00:32:00,560
+because what's the real relation? The only relation that you really need is
+
+355
+00:32:00,560 --> 00:32:06,440
+whether two states I mean, two things have the same number, zero,
+
+356
+00:32:06,440 --> 00:32:10,960
+this one is zero and this is strictly positive or the symmetric one.
+
+357
+00:32:10,960 --> 00:32:16,320
+Here the ordering is that one has a higher number than two, or two has a higher number than one.
+
+358
+00:32:16,320 --> 00:32:20,788
+And that's basically all you need to know about the counter.
+
+359
+00:32:20,788 --> 00:32:25,600
+So, basically we abstract from the value of the ticket you get.
+
+360
+00:32:25,600 --> 00:32:29,154
+It's not important whether you got 28 and your neighbor has 29.
+
+361
+00:32:29,154 --> 00:32:34,000
+It's only important whether your number is lower or higher than the one of your neighbor.
+
+362
+00:32:34,000 --> 00:32:44,880
+And by means of bisimulation with respect to those atomic propositions, you get this as a quotient.
+
+363
+00:32:44,880 --> 00:32:49,920
+Good. Which means think about this theorem.
+
+364
+00:32:49,920 --> 00:32:54,640
+You want to prove for the infinitely big I mean the bakery algorithm with an
+
+365
+00:32:54,640 --> 00:33:00,840
+infinite transition system whether it satisfies a CTL formula or CTL star formula.
+
+366
+00:33:00,840 --> 00:33:06,440
+We know that T is bisimilar to its quotient.
+
+367
+00:33:06,440 --> 00:33:10,080
+Now we can check the CTL formula on the quotient and that's trivial because it
+
+368
+00:33:10,080 --> 00:33:17,440
+only has a finite the many states and even less than 10 states.
+
+369
+00:33:17,440 --> 00:33:24,880
+Good. I think we I don't have to recall CTL and CTL star.
+
+370
+00:33:24,880 --> 00:33:30,760
+I basically want to spend the rest of the lecture on this theorem that I put here
+
+371
+00:33:30,760 --> 00:33:34,280
+and I would like to show why this theorem holds.
+
+372
+00:33:34,280 --> 00:33:39,320
+Good. So, what I want to prove is actually let's ignore C for the moment.
+
+373
+00:33:39,320 --> 00:33:41,168
+I will make a remark about C later.
+
+374
+00:33:41,168 --> 00:33:47,560
+So, for the moment just ignore C. I want to prove that strong bisimulation coincides with CTL equivalence and
+
+375
+00:33:47,560 --> 00:33:54,480
+coincides with CTL star equivalence. Good. So, the first thing I'm going to show is the following.
+
+376
+00:33:54,480 --> 00:34:01,760
+So, basically the proof is as follows. That this relation which is actually the relation on a
+
+377
+00:34:01,760 --> 00:34:20,120
+single transition system on the slide this is with the subscript TS implies CTL star equivalence and that implies
+
+378
+00:34:20,120 --> 00:34:34,560
+CTL equivalence and that implies TS. I I in German this is called a ring device.
+
+379
+00:34:34,560 --> 00:34:43,720
+Mhm. Good. So, what's the easy part?
+
+380
+00:34:43,720 --> 00:34:47,890
+Well, this is the easy part. That CTL star equivalence implies CTL equivalence.
+
+381
+00:34:47,890 --> 00:34:54,560
+This is easy. because CTL is a subset of CTL star.
+
+382
+00:34:54,560 --> 00:35:02,600
+So, that's given. At least one step is given here for free.
+
+383
+00:35:02,600 --> 00:35:07,520
+So, let me start with the first step, which is this step.
+
+384
+00:35:07,520 --> 00:35:14,960
+And then we're going to see the second step, which is this step, that CTL equivalence implies
+
+385
+00:35:14,960 --> 00:35:21,920
+strong bisimilarity or bisimilarity. Good. So, one.
+
+386
+00:35:21,920 --> 00:35:24,640
+So, how would you do the proof of one?
+
+387
+00:35:24,640 --> 00:35:34,640
+Then basically you take two parts. namely we have to prove the following.
+
+388
+00:35:34,640 --> 00:35:48,320
+If S1 is bisimilar to S2, this implies for all state formulas in CTL star,
+
+389
+00:35:48,320 --> 00:35:54,800
+S1 satisfies phi if and only if S2 satisfies phi.
+
+390
+00:35:54,800 --> 00:36:02,360
+So, this is in CTL star.
+
+391
+00:36:02,360 --> 00:36:12,600
+And we also have to show B. If pi1 is bisimilar to pi2, this implies
+
+392
+00:36:12,600 --> 00:36:21,880
+that for all path formulas in CTL star, we have that pi1 satisfies phi if and
+
+393
+00:36:21,880 --> 00:36:33,080
+only if pi2 satisfies phi. Good. What do I mean by this?
+
+394
+00:36:33,080 --> 00:36:37,840
+By that I mean the following. Suppose I have pi one.
+
+395
+00:36:37,840 --> 00:36:42,120
+Intuitively speaking, they are pairwise, I mean state-wise, they are bisimilar.
+
+396
+00:36:42,120 --> 00:36:54,280
+So, if pi one is something of the form S10, S11, S12, S13, etc. Then we have pi two.
+
+397
+00:36:54,280 --> 00:37:08,200
+And that's something of the form 20, 21, 22, 23, etc. I'm saying that those two things are bisimilar
+
+398
+00:37:08,200 --> 00:37:17,120
+if and only if they're state-wise bisimilar. So, that means basically for all I, I have that S1I
+
+399
+00:37:17,120 --> 00:37:24,166
+is bisimilar to S 2. S Y 2 is a 2Y 1.
+
+400
+00:37:24,166 --> 00:37:32,960
+Well, I mean, I first number them with the number one Y is the same as 2Y.
+
+401
+00:37:32,960 --> 00:37:39,240
+So, this one is related to that one, that one, that one, that one, etc.
+
+402
+00:37:39,240 --> 00:37:42,916
+That's what I mean by this pi one, etc. Good.
+
+403
+00:37:42,916 --> 00:37:45,040
+So, we have to prove this A and B.
+
+404
+00:37:45,040 --> 00:38:01,880
+So, how to prove this is by the proof is by simultaneous induction simultaneous induction on state formulas and
+
+405
+00:38:01,880 --> 00:38:21,706
+so, on phi and phi respectively. Good.
+
+406
+00:38:21,706 --> 00:38:24,300
+I'm skipping the standard things like the basis and so on.
+
+407
+00:38:24,300 --> 00:38:27,800
+Let's just look at an in an induction step.
+
+408
+00:38:27,800 --> 00:38:36,400
+So, an example of an induction step is the following.
+
+409
+00:38:36,400 --> 00:38:55,360
+let phi be a CTL star state formula for which A holds.
+
+410
+00:38:55,360 --> 00:39:10,200
+And let phi be a CTL path formula for which B holds.
+
+411
+00:39:10,200 --> 00:39:12,175
+Good. And now can we distinguish several cases?
+
+412
+00:39:12,175 --> 00:39:15,800
+So, for instance, we can look at the following case.
+
+413
+00:39:15,800 --> 00:39:25,240
+Simple case. Let's for instance look at the case that phi is existentially phi.
+
+414
+00:39:25,240 --> 00:40:00,760
+Good. Then it suffices to prove by symmetry that S1 satisfies existentially phi implies S2 satisfies existentially phi.
+
+415
+00:40:00,760 --> 00:40:10,280
+So let S1 be bisimilar to S2.
+
+416
+00:40:10,280 --> 00:40:39,200
+Assume S1 satisfies existentially phi. That means that for some path pi one from S one
+
+417
+00:40:39,200 --> 00:40:43,840
+we have that pi one satisfies the path formula phi.
+
+418
+00:40:43,840 --> 00:41:07,680
+And that's exactly what this formula says. We know by path lifting there is some
+
+419
+00:41:07,680 --> 00:41:17,840
+pi two which is a path starting from S two such that pi one is step-wise bisimilar to pi
+
+420
+00:41:17,840 --> 00:41:22,920
+two. All right, that was the argument I showed you that if you have S one that
+
+421
+00:41:22,920 --> 00:41:27,400
+is bisimilar to S two, this one can go to S one prime then this one can go to
+
+422
+00:41:27,400 --> 00:41:32,000
+S two prime, then this one can go to what is it?
+
+423
+00:41:32,000 --> 00:41:36,904
+S one double prime and this one can follow to S two double prime and so forth.
+
+424
+00:41:36,904 --> 00:41:41,000
+So we have that if this one has a path, that one needs to be able to This
+
+425
+00:41:41,000 --> 00:41:48,400
+is pi one. This is pi two. Then that needs to be able to to have this situation.
+
+426
+00:41:48,400 --> 00:41:59,880
+By induction hypothesis on B so I'm using this hypothesis here.
+
+427
+00:41:59,880 --> 00:42:09,280
+it follows that pi two satisfies phi.
+
+428
+00:42:09,280 --> 00:42:32,880
+But then S two satisfies existentially phi. The key point here is not I mean the the
+
+429
+00:42:32,880 --> 00:42:37,160
+proof is really straightforward, but the key point is that you do simultaneous induction over the state formulas and
+
+430
+00:42:37,160 --> 00:42:41,960
+the path formulas. And you have to do that because here you would like to prove something for the
+
+431
+00:42:41,960 --> 00:42:47,680
+state formula, but this of course depends on this path formula and therefore you need to be able to
+
+432
+00:42:47,680 --> 00:42:53,480
+apply this inductive argument to the path formula.
+
+433
+00:42:53,480 --> 00:42:55,080
+And the same is the other way around.
+
+434
+00:42:55,080 --> 00:43:01,160
+So, if you look for instance another case, let's say you look at the case phi
+
+435
+00:43:01,160 --> 00:43:08,140
+equals phi one until phi two. And maybe it's good to remember phi is a CTL star formula.
+
+436
+00:43:08,140 --> 00:43:13,520
+So, in CTL star you can have path formulas until a path formula.
+
+437
+00:43:13,520 --> 00:43:18,320
+Now, if you do a couple of steps of the proof, then basically what you would like to
+
+438
+00:43:18,320 --> 00:43:24,840
+show is that you say let pi one be bisimilar to pi two.
+
+439
+00:43:24,840 --> 00:43:32,560
+And then you say and pi one satisfies this formula.
+
+440
+00:43:32,560 --> 00:43:36,080
+So, what does that mean? It basically means the following.
+
+441
+00:43:36,080 --> 00:43:44,760
+Pi one satisfies this formula if and only if semantics pi one starting from some index J
+
+442
+00:43:44,760 --> 00:43:58,640
+satisfies the second part and for all I strictly less than J you satisfy the phi one.
+
+443
+00:43:58,640 --> 00:44:03,360
+And that's the semantics of the until formula and now the inductive argument comes into play
+
+444
+00:44:03,360 --> 00:44:09,930
+because now what you need to see is, I know that pi one is bisimilar to pi two.
+
+445
+00:44:09,930 --> 00:44:15,885
+Right? That's my assumption. But that means that for all K Mhm?
+
+446
+00:44:15,885 --> 00:44:24,160
+pi one starting from position K is bisimilar to pi two starting from position K.
+
+447
+00:44:24,160 --> 00:44:28,880
+And that means that now I can apply the inductive argument here and I can apply
+
+448
+00:44:28,880 --> 00:44:32,840
+the inductive argument there. And then I hope you see that you can
+
+449
+00:44:32,840 --> 00:44:38,680
+complete the proof and show that pi two satisfies the until formula as well.
+
+450
+00:44:38,680 --> 00:44:42,800
+But the key property is this.
+
+451
+00:44:42,800 --> 00:44:54,960
+So that means that if and only if pi two satisfies phi two and pi two
+
+452
+00:44:54,960 --> 00:45:40,640
+satisfies the alpha formula. And this pi two satisfies phi one until phi two.
+
+453
+00:45:40,640 --> 00:45:45,720
+So what did we show? We showed already this part.
+
+454
+00:45:45,720 --> 00:45:52,880
+This part is already shown. This one was easy and that's what we just have shown
+
+455
+00:45:52,880 --> 00:45:57,960
+by means of this simultaneous induction. What is left is step two.
+
+456
+00:45:57,960 --> 00:46:05,360
+CTL equivalence implies bisimulation. The first thing that we need we need to
+
+457
+00:46:05,360 --> 00:46:10,828
+observe is now sufficient to look at CTL because CTL star equivalence implies CTL equivalence.
+
+458
+00:46:10,828 --> 00:46:18,600
+We don't have to look with we don't have to let's say look at the full generality of CTL star.
+
+459
+00:46:18,600 --> 00:46:29,680
+Good. What else is important? In this proof, I did not use any assumption about the transition system.
+
+460
+00:46:29,680 --> 00:46:35,160
+Being a finite, being an infinite, being an infinitely branching with infinite branching that does not play any role.
+
+461
+00:46:35,160 --> 00:46:47,800
+So, actually this part one holds for any transition system.
+
+462
+00:46:47,800 --> 00:46:51,800
+This part, of course, also holds for any transition system.
+
+463
+00:46:51,800 --> 00:46:55,508
+Where does the restriction to finitely branching come into the play?
+
+464
+00:46:55,508 --> 00:47:17,800
+It comes here, Y2. So, here we going to see only for finitely branching transition systems.
+
+465
+00:47:17,800 --> 00:47:23,920
+What is a finitely branching transition system? It simply means that for all states in my transition system,
+
+466
+00:47:23,920 --> 00:47:26,986
+the set of direct successors of S, right?
+
+467
+00:47:26,986 --> 00:47:35,040
+The cardinality of this is finite. So, I cannot have infinite branching.
+
+468
+00:47:35,040 --> 00:47:39,120
+I can have infinitely many states, but not infinitely branching.
+
+469
+00:47:39,120 --> 00:47:47,680
+Good. So, we come to two. I want to show that if two states are CTL equivalent,
+
+470
+00:47:47,680 --> 00:48:00,280
+This implies that S1 is strong bisimilar on my transition system for S2, and this holds for any finitely
+
+471
+00:48:00,280 --> 00:48:24,000
+branching TS. Good. So, what we can do is of course we can assume that we have two states which
+
+472
+00:48:24,000 --> 00:48:27,120
+are CTL equivalent, but we have to prove this.
+
+473
+00:48:27,120 --> 00:48:29,028
+What do we need to do to prove this?
+
+474
+00:48:29,028 --> 00:48:35,480
+We need to find a bisimulation relation containing the pair S1 and S2.
+
+475
+00:48:35,480 --> 00:48:39,440
+What would be the obvious candidate? The obvious candidate is Well, this is
+
+476
+00:48:39,440 --> 00:48:44,000
+what we know, so why don't we pair all the states for which this is true?
+
+477
+00:48:44,000 --> 00:48:47,640
+And then let's see whether we get along with the proof.
+
+478
+00:48:47,640 --> 00:48:50,880
+If not, we maybe have to twist it a bit or tweak it a bit.
+
+479
+00:48:50,880 --> 00:48:58,640
+So, let R be an equi- a relation that says S1 S2
+
+480
+00:48:58,640 --> 00:49:06,040
+belongs to S * S such that S1 is CTL equivalent to S2.
+
+481
+00:49:06,040 --> 00:49:12,520
+Good. It's obvious to see that this is reflexive, transitive, and etc., but we
+
+482
+00:49:12,520 --> 00:49:14,720
+have to prove that this is a bisimulation.
+
+483
+00:49:14,720 --> 00:49:37,920
+Proof obligation. is a bisimulation relation. Good.
+
+484
+00:49:37,920 --> 00:49:43,546
+On TS. Remember that I mentioned we defined it originally on two transition systems.
+
+485
+00:49:43,546 --> 00:49:48,491
+Here we consider a single one. So, this is the version that we need for the single one.
+
+486
+00:49:48,491 --> 00:49:55,960
+On TS. Good. So, this works as follows.
+
+487
+00:49:55,960 --> 00:50:10,840
+A First, as S1 is CTL equivalent to S2, it holds that S1 satisfies A
+
+488
+00:50:10,840 --> 00:50:19,800
+for some atomic proposition A if and only if S2 satisfies A for all A in AP.
+
+489
+00:50:19,800 --> 00:50:25,480
+Because I can write for any atomic proposition a formula down for this atomic proposition.
+
+490
+00:50:25,480 --> 00:50:36,905
+hence L1 of L of S1 equals L of S2.
+
+491
+00:50:36,905 --> 00:50:42,880
+They need to be labeled with the same atomic propositions.
+
+492
+00:50:42,880 --> 00:50:46,040
+Good. That's the first condition. That's the easy one.
+
+493
+00:50:46,040 --> 00:50:52,880
+Now, we have to prove the following. That was the simulation condition that says, "Okay,
+
+494
+00:50:52,880 --> 00:51:00,000
+if S1 can move to S1 prime, then S2 can mimic this, so there needs to be
+
+495
+00:51:00,000 --> 00:51:06,280
+an S2 prime such that S2 can mimic this to S2 prime."
+
+496
+00:51:06,280 --> 00:51:19,640
+So, here I should have written down, of course, let S1 S2 be in the relation, right?
+
+497
+00:51:19,640 --> 00:51:33,320
+Then S2 can move this, and the successive things are related.
+
+498
+00:51:33,320 --> 00:51:50,480
+We're going to show this by contraposition. So, that's the following.
+
+499
+00:51:50,480 --> 00:51:56,480
+We're going to say let S1 S2 in R as we had before.
+
+500
+00:51:56,480 --> 00:52:01,008
+And I'm going to consider the transition from S1 to S1 prime.
+
+501
+00:52:01,008 --> 00:52:27,000
+And we're going to assume that there is no successor of S2 which is related by R to S1 prime.
+
+502
+00:52:27,000 --> 00:52:32,440
+So this is the situation. S1 has a direct successor S1 prime.
+
+503
+00:52:32,440 --> 00:52:38,106
+S2 may have several direct successors. How many?
+
+504
+00:52:38,106 --> 00:52:46,960
+Finitely many because it's finitely branching. But none of these is bisimilar to is not in R with
+
+505
+00:52:46,960 --> 00:52:54,028
+respect to S1 prime. That's the assumption. So, what do we know?
+
+506
+00:52:54,028 --> 00:52:58,960
+What's the situation? We have S1 having a direct successor S1 prime.
+
+507
+00:52:58,960 --> 00:53:03,960
+We have S2 which maybe has a couple of successors.
+
+508
+00:53:03,960 --> 00:53:10,400
+Let's call them whatever T2 T1 T2 etc. But we know that there are finitely many.
+
+509
+00:53:10,400 --> 00:53:38,760
+That means the K is finite here. So, since TS is finitely branching post S2 is finite say post
+
+510
+00:53:38,760 --> 00:53:56,760
+S2 is T1 up to TK. Now, the assumption was by assumption
+
+511
+00:53:56,760 --> 00:54:05,800
+TJ is not related to S1. So, that means that S1 prime, sorry, and TJ are not in
+
+512
+00:54:05,800 --> 00:54:12,720
+the relation. Right? For any J at most K.
+
+513
+00:54:12,720 --> 00:54:21,240
+Right? That was the assumption. None of those successor states are related to S1.
+
+514
+00:54:21,240 --> 00:54:25,120
+All these relations, they are not there.
+
+515
+00:54:25,120 --> 00:54:47,960
+So, that's what we can use now. But now it follows from the definition of R
+
+516
+00:54:47,960 --> 00:55:04,760
+that for some CTL formula let's call this formula psi J it holds that S1 prime satisfies psi J
+
+517
+00:55:04,760 --> 00:55:11,520
+but T J does not satisfy psi J.
+
+518
+00:55:11,520 --> 00:55:17,320
+They're not in a relation, so there needs to be at least one CTL formula that can distinguish between
+
+519
+00:55:17,320 --> 00:55:37,000
+the two states. consider now the formula phi which says there exist next psi one and psi
+
+520
+00:55:37,000 --> 00:55:57,720
+K. so we have that S1 prime satisfies psi1 psi K.
+
+521
+00:55:57,720 --> 00:56:23,680
+So, S1 satisfies phi. But, as TJ phi J for all J it follows that S2 does not satisfy phi.
+
+522
+00:56:23,680 --> 00:56:31,000
+But, then S1 S2 should not be in the relation.
+
+523
+00:56:31,000 --> 00:56:59,800
+And, this is a contradiction because our starting point was let's assume they are in this relation.
+
+524
+00:56:59,800 --> 00:57:05,440
+So here we use the the finitely branching thing so that we can reason about all direct
+
+525
+00:57:05,440 --> 00:57:09,485
+successors of S2. Why is it needed to have a finitely branching thing?
+
+526
+00:57:09,485 --> 00:57:13,440
+That means that we can build a finite formula like this.
+
+527
+00:57:13,440 --> 00:57:18,640
+So, it would be infinitely many this would construction would not work anymore because we get a formula which
+
+528
+00:57:18,640 --> 00:57:25,680
+is infinite has infinite size. for the rest what is important to observe is basically that the only thing
+
+529
+00:57:25,680 --> 00:57:45,880
+we need is a next Good. I come back to this in a minute.
+
+530
+00:57:45,880 --> 00:57:54,020
+And that concludes the proof of the of the whole theorem.
+
+531
+00:57:54,020 --> 00:58:04,720
+So, let's go back to the theorem. What do we know What did we establish?
+
+532
+00:58:04,720 --> 00:58:13,680
+We established the following. Bisimulation, this relation on a transition system is equivalent to CTL equivalence, and that's equivalent to
+
+533
+00:58:13,680 --> 00:58:24,872
+CTL star equivalence. Good. What are the consequences of this theorem?
+
+534
+00:58:24,872 --> 00:58:30,720
+For finitely branching TS, right? Because we have seen this last step.
+
+535
+00:58:30,720 --> 00:58:35,800
+this from this to there, it only works for finitely branching.
+
+536
+00:58:35,800 --> 00:58:44,640
+a few remarks about this theorem. first, the remark that I already made in the beginning.
+
+537
+00:58:44,640 --> 00:58:51,680
+we have that CTL is a sub logic from CTL star.
+
+538
+00:58:51,680 --> 00:59:00,760
+So, strictly less expressive. But, the equivalence induced by this logic is I mean, coinciding with the equivalence
+
+539
+00:59:00,760 --> 00:59:11,880
+induced by CTL star. So, despite the fact that this logic is more expressive, it's not able to distinguish
+
+540
+00:59:11,880 --> 00:59:14,832
+states in a better or in a worse way.
+
+541
+00:59:14,832 --> 00:59:21,600
+It I mean, it can characterize states in the same way as CTL can do.
+
+542
+00:59:21,600 --> 00:59:26,360
+Good. What else? What are the other consequences?
+
+543
+00:59:26,360 --> 00:59:43,280
+So, consequences. So, we have seen CTL star is the same equivalence is the same as CTL star equivalence despite
+
+544
+00:59:43,280 --> 01:00:03,386
+that CTL star is strictly more expressive. What else is the consequence?
+
+545
+01:00:03,386 --> 01:00:12,360
+The consequence is that if S1 is not bisimilar to S2, so suppose you are giving a transition
+
+546
+01:00:12,360 --> 01:00:18,080
+system, you are asked to say, "Well, are these two states bisimilar or not?"
+
+547
+01:00:18,080 --> 01:00:20,520
+And your argument would be, "Well, they are not."
+
+548
+01:00:20,520 --> 01:00:33,840
+One way to prove this if then for some CTL star formula phi,
+
+549
+01:00:33,840 --> 01:00:41,240
+S1 satisfies phi, but S2 does not satisfy phi.
+
+550
+01:00:41,240 --> 01:00:44,680
+So, in order to show that two things are not bisimilar, you give me one CTL
+
+551
+01:00:44,680 --> 01:00:48,480
+formula that holds for one not for the other, argument done.
+
+552
+01:00:48,480 --> 01:00:54,280
+Now you may say, "Well, it's not easy to find a CTL star formula because of very rich logic."
+
+553
+01:00:54,280 --> 01:01:01,160
+But we have seen that actually it's the same as saying for some CTL formula,
+
+554
+01:01:01,160 --> 01:01:07,280
+S1 satisfies phi, but S2 does not satisfy phi.
+
+555
+01:01:07,280 --> 01:01:14,720
+Can I find even a smaller logical fragment such that still this argument holds?
+
+556
+01:01:14,720 --> 01:01:18,290
+Yes, you can because in the proof we have seen we don't use until.
+
+557
+01:01:18,290 --> 01:01:21,274
+So, why don't we get rid of until?
+
+558
+01:01:21,274 --> 01:01:32,880
+Indeed, you can even show there is no CTL for some CTL minus until formula phi S1 satisfies phi, but
+
+559
+01:01:32,880 --> 01:01:40,880
+S2 does not satisfy phi. So, this is gives you a very powerful
+
+560
+01:01:40,880 --> 01:01:44,240
+way to prove that two things are not bisimilar.
+
+561
+01:01:44,240 --> 01:01:49,200
+You give me a very tiny logic, a logic CTL without until.
+
+562
+01:01:49,200 --> 01:01:52,680
+So, the only things you have are things like true.
+
+563
+01:01:52,680 --> 01:02:03,200
+You have atomic propositions, things like conjunctions, negation, existential next, of a state formula,
+
+564
+01:02:03,200 --> 01:02:08,840
+and and that's it. That's all.
+
+565
+01:02:08,840 --> 01:02:15,080
+So, in this logic, if you can find a formula in that logic that can distinguish the two states,
+
+566
+01:02:15,080 --> 01:02:22,440
+your argument the conclusion of this result is that the two states are not bisimilar.
+
+567
+01:02:22,440 --> 01:02:26,640
+This is a very important result in the in the literature, in particular
+
+568
+01:02:26,640 --> 01:02:41,760
+also the CTL without until, and this logic actually therefore deserves a special name, and it's called Hennessy-Milner logic.
+
+569
+01:02:41,760 --> 01:02:47,360
+It uses a slightly different syntax, but that's basically the same thing.
+
+570
+01:02:47,360 --> 01:02:52,120
+And this is known as the Hennessy-Milner theorem.
+
+571
+01:02:52,120 --> 01:03:00,280
+Milner unfortunately passed away a couple of years ago, but Matthew Hennessy is still alive and kicking,
+
+572
+01:03:00,280 --> 01:03:12,120
+and living in Ireland, and they're well known for this theorem.
+
+573
+01:03:12,120 --> 01:03:40,400
+Any questions so far? Yeah. you said the formula is CTL Yeah.
+
+574
+01:03:40,400 --> 01:03:51,400
+Well, you define this relation, right? As saying, well, two transition systems are basically this relation exists
+
+575
+01:03:51,400 --> 01:04:07,640
+because it's defined as being the union of all R's such that R is a bisimulation on TS, right?
+
+576
+01:04:07,640 --> 01:04:11,613
+Good. I wrote it down by saying this relation holds if there exists a relation.
+
+577
+01:04:11,613 --> 01:04:14,120
+That's another way of writing down the same thing.
+
+578
+01:04:14,120 --> 01:04:19,320
+But that's basically what it is.
+
+579
+01:04:19,320 --> 01:04:46,760
+Other questions? Yes. Yes. Yeah. Yeah. Absolutely. So, the direction basically from the logical side
+
+580
+01:04:46,760 --> 01:04:52,280
+to the bisimulation side, that requires this finite branchingness property.
+
+581
+01:04:52,280 --> 01:04:58,520
+Whether you start with CTL or CTL star or even CTL without until, it doesn't really matter.
+
+582
+01:04:58,520 --> 01:05:02,560
+And the the thing to see that is in the proof.
+
+583
+01:05:02,560 --> 01:05:07,280
+So, that was the point point I tried to highlight.
+
+584
+01:05:07,280 --> 01:05:09,630
+ice gone. I mean, it's already gone.
+
+585
+01:05:09,630 --> 01:05:14,560
+It was on this board. but I used in the proof this construction that
+
+586
+01:05:14,560 --> 01:05:20,680
+this construction there exists next something of the form psi one blah blah blah blah and psi k
+
+587
+01:05:20,680 --> 01:05:23,840
+where k was the number of successes of S2.
+
+588
+01:05:23,840 --> 01:05:26,240
+And that's what I explicitly used here.
+
+589
+01:05:26,240 --> 01:05:30,440
+If this becomes infinite, this proof construction doesn't work.
+
+590
+01:05:30,440 --> 01:05:38,590
+We can now finish with the counterexample why it doesn't work for infinitely branching things.
+
+591
+01:05:38,590 --> 01:05:44,400
+That's Unless there are other questions so far.
+
+592
+01:05:44,400 --> 01:05:54,160
+No? Good. are there any other consequences I should mention?
+
+593
+01:05:54,160 --> 01:06:02,000
+Well, in particular, what we know is so maybe consequence C, we know that
+
+594
+01:06:02,000 --> 01:06:06,320
+a TS is bisimilar to its quotient.
+
+595
+01:06:06,320 --> 01:06:12,160
+That's something we have seen before. So, what does that mean in practice?
+
+596
+01:06:12,160 --> 01:06:17,080
+You have a CTL formula or a CTL* formula or a Hennessy-Milner logic formula, you
+
+597
+01:06:17,080 --> 01:06:20,840
+want to check it on this transition system.
+
+598
+01:06:20,840 --> 01:06:24,670
+What you're going to do is you're going to construct this quotient.
+
+599
+01:06:24,670 --> 01:06:30,200
+I didn't tell you how to construct it, but it's similar to minimization of automata.
+
+600
+01:06:30,200 --> 01:06:36,400
+And the algorithm to do that has a complexity which is m log n.
+
+601
+01:06:36,400 --> 01:06:41,068
+n is the number of states. This is the number of transitions.
+
+602
+01:06:41,068 --> 01:06:45,520
+So, this is the cardinality of the transition relation.
+
+603
+01:06:45,520 --> 01:06:53,000
+and that means you can very efficiently starting from this transition system, you can efficiently compute the
+
+604
+01:06:53,000 --> 01:06:57,200
+quotient. And now, thanks to this result, you do the model checking on the quotient.
+
+605
+01:06:57,200 --> 01:06:59,360
+And we know that all results carry over.
+
+606
+01:06:59,360 --> 01:07:02,582
+If the model checking result here is negative, here it is negative.
+
+607
+01:07:02,582 --> 01:07:06,760
+If here is positive, there is positive.
+
+608
+01:07:06,760 --> 01:07:12,080
+You laugh because there are other abstraction techniques that try to collapse more and then you don't
+
+609
+01:07:12,080 --> 01:07:18,520
+preserve positive and negative anymore and then you get things like spurious counter examples and so forth
+
+610
+01:07:18,520 --> 01:07:21,480
+because you would like to reduce the state space any further but that means
+
+611
+01:07:21,480 --> 01:07:30,560
+that you go beyond bisimulations and you look like things like simulation relations or partial reduction and so forth.
+
+612
+01:07:30,560 --> 01:07:35,720
+Why doesn't it work for infinitely branching?
+
+613
+01:07:35,720 --> 01:07:42,600
+I mean I was arguing why the proof construction doesn't work but now of course this doesn't show that
+
+614
+01:07:42,600 --> 01:07:47,560
+this is a a kind of general argument so let's try to see whether we can have a counter example
+
+615
+01:07:47,560 --> 01:08:10,640
+of an infinitely branching transition system. So example of an infinitely branching such that
+
+616
+01:08:10,640 --> 01:08:24,480
+S1 is not bisimilar to S2 but S1 is for instance CTL equivalent to S2.
+
+617
+01:08:24,480 --> 01:08:35,359
+So we take a set of atomic propositions which is infinite.
+
+618
+01:08:35,359 --> 01:08:46,759
+Then I have I take subsets of AP and I have states of the form S1 and S2.
+
+619
+01:08:46,759 --> 01:08:54,440
+This is my state space together with states of the form TA where A is a subset of AP.
+
+620
+01:08:54,440 --> 01:09:01,684
+So this gives me infinitely many states. Maybe a picture will do.
+
+621
+01:09:01,684 --> 01:09:08,120
+I mean, S1, S2. They are labeled with empty set.
+
+622
+01:09:08,120 --> 01:09:21,240
+And then there are these TA states. So, let's call them TA1, TA2, whatever, TA3.
+
+623
+01:09:21,240 --> 01:09:30,000
+And finally, we have the state TAP that contains basically all atomic propositions.
+
+624
+01:09:30,000 --> 01:09:33,654
+The labeling of these states is simply the set A.
+
+625
+01:09:33,654 --> 01:09:46,240
+So, the labeling of TA is A. So, this is labeled with A1, A2, A3, P.
+
+626
+01:09:46,240 --> 01:09:50,400
+And the transition system the structure looks as follows.
+
+627
+01:09:50,400 --> 01:10:04,200
+I have to be careful. S1 has a transition to all those TAs, except the last one.
+
+628
+01:10:04,200 --> 01:10:13,535
+So, this one is not there. For S2, similar.
+
+629
+01:10:13,535 --> 01:10:20,800
+So, it has a transition to this one, to that one, to that one, but also to the last one.
+
+630
+01:10:20,800 --> 01:10:26,760
+So, here there are many. Here there are many.
+
+631
+01:10:26,760 --> 01:10:36,240
+So, this one also has a transition to this one, but not to the last one.
+
+632
+01:10:36,240 --> 01:10:49,080
+So, post S1 are all the states TA such that A subset of AP, but A differs from AP.
+
+633
+01:10:49,080 --> 01:10:59,560
+And post S2 are basically all the TAs.
+
+634
+01:10:59,560 --> 01:11:07,240
+Then, are transitions back. Basically, I think from all the states you can go back to the S1.
+
+635
+01:11:07,240 --> 01:11:10,280
+So, basically it means that from here I can go back.
+
+636
+01:11:10,280 --> 01:11:13,613
+From here I can go back. From there one I can go back.
+
+637
+01:11:13,613 --> 01:11:25,760
+So, we basically have that post TA is the singleton S1.
+
+638
+01:11:25,760 --> 01:11:45,480
+Good. Clearly, S1 is not bisimilar to S2 since S2 has a transition to TAP
+
+639
+01:11:45,480 --> 01:12:04,720
+and that cannot be mimicked by S1. Simply because there is only one state labeled with AP
+
+640
+01:12:04,720 --> 01:12:19,000
+and this transition is missing. But, S1 is CTL equivalent to S2
+
+641
+01:12:19,000 --> 01:12:37,640
+as the set of finite of this the set of atomic propositions in any CTL formula is finite.
+
+642
+01:12:37,640 --> 01:13:00,600
+And S1 is bisimilar to S2 for any finite subset let's call it AP prime of AP.
+
+643
+01:13:00,600 --> 01:13:15,520
+Ah, so you want a counter example which has countably many ah I have to think about this but
+
+644
+01:13:15,520 --> 01:13:27,920
+it's a good point. I I I I I have to think about this
+
+645
+01:13:27,920 --> 01:13:31,653
+because that's not something that I can at the top of my head.
+
+646
+01:13:31,653 --> 01:13:41,840
+No. No, good question. This brings me to the end of this lecture series on model checking.
+
+647
+01:13:41,840 --> 01:13:49,640
+I only want to to say a few words about possible further directions.
+
+648
+01:13:49,640 --> 01:13:57,720
+So in the next semester, winter semester 18/19 I'm going to give a course which is called model checking
+
+649
+01:13:57,720 --> 01:14:08,880
+of probabilistic systems. So there the question is not can we reach a deadlock situation?
+
+650
+01:14:08,880 --> 01:14:15,880
+Is it possible to violate mutual exclusion? But then the question is with which probability do those phenomena happen?
+
+651
+01:14:15,880 --> 01:14:22,800
+This is used quite a lot for instance in safety analysis.
+
+652
+01:14:22,800 --> 01:14:26,560
+And then think about autonomous cars and you would like to know what is
+
+653
+01:14:26,560 --> 01:14:34,080
+the probability that some kind of accident happens because of the autonomous software running in a wrong way.
+
+654
+01:14:34,080 --> 01:14:41,593
+So here we will be confronted with logics that are able to express something about probabilities.
+
+655
+01:14:41,593 --> 01:14:47,560
+So for instance you can express something like with probability at least a half
+
+656
+01:14:47,560 --> 01:14:52,120
+you can reach a B state via only visiting A states.
+
+657
+01:14:52,120 --> 01:14:57,640
+And now I would like to check whether a state satisfies this formula or not.
+
+658
+01:14:57,640 --> 01:15:00,560
+How am I going to do this?
+
+659
+01:15:00,560 --> 01:15:08,560
+And therefore, what we need is techniques from numerical mathematics to solve these kind of things.
+
+660
+01:15:08,560 --> 01:15:14,960
+So, the way we going to do this is we going to solve linear equation systems.
+
+661
+01:15:14,960 --> 01:15:22,360
+for more richer models that also have non-determinism, we going to solve I
+
+662
+01:15:22,360 --> 01:15:27,488
+mean, we're going to do linear programming.
+
+663
+01:15:27,488 --> 01:15:35,640
+Solving linear inequation systems. if you have models that have parameters, so things like this,
+
+664
+01:15:35,640 --> 01:15:38,920
+you have a a state and you can move from that state to that state with
+
+665
+01:15:38,920 --> 01:15:44,880
+probability P square plus Q. You don't know P, you don't know Q.
+
+666
+01:15:44,880 --> 01:15:49,320
+Right? But I want that my system satisfies this property.
+
+667
+01:15:49,320 --> 01:15:54,280
+Can you synthesize for which P and Q the system satisfies these properties?
+
+668
+01:15:54,280 --> 01:16:01,240
+And that means that we have to deal with rational functions.
+
+669
+01:16:01,240 --> 01:16:08,194
+We have to apply satisfiability modulo theory to solve these kind of things.
+
+670
+01:16:08,194 --> 01:16:13,440
+So, if you think this is cool, then you are welcome to to attend this.
+
+671
+01:16:13,440 --> 01:16:22,240
+Then the other lecture I'm going to give is what is called probabilistic programming.
+
+672
+01:16:22,240 --> 01:16:26,760
+This has not much to do with model checking.
+
+673
+01:16:26,760 --> 01:16:32,400
+You all know object-oriented programming, aspect-oriented programming, functional programming, logical programming.
+
+674
+01:16:32,400 --> 01:16:40,400
+this is programs that can also every now and then flip a coin.
+
+675
+01:16:40,400 --> 01:16:44,060
+And then questions arise that they are infinite state.
+
+676
+01:16:44,060 --> 01:16:47,600
+So a very simple example is the following example.
+
+677
+01:16:47,600 --> 01:16:50,600
+We have a line and the line has points.
+
+678
+01:16:50,600 --> 01:16:56,760
+zero one two three four etc. Let's suppose I start somewhere.
+
+679
+01:16:56,760 --> 01:17:02,080
+Let's suppose we start at 10. And now my program does the following.
+
+680
+01:17:02,080 --> 01:17:11,040
+While X is larger than zero then what we do, we're going to flip a coin.
+
+681
+01:17:11,040 --> 01:17:16,400
+And we're going to say X minus minus with probability a half.
+
+682
+01:17:16,400 --> 01:17:21,320
+or X plus plus with probability a half.
+
+683
+01:17:21,320 --> 01:17:27,360
+So this means in this position I go here with probability a half I end up in nine.
+
+684
+01:17:27,360 --> 01:17:31,400
+With probability a half I end up in 11.
+
+685
+01:17:31,400 --> 01:17:40,000
+Question, does this terminate? be more precise, does it terminate with probability one?
+
+686
+01:17:40,000 --> 01:17:44,160
+Which means termination means we have to hit zero.
+
+687
+01:17:44,160 --> 01:17:49,040
+Good, and that means that you will have to require proof techniques for programs
+
+688
+01:17:49,040 --> 01:17:53,800
+to show that these programs terminate. How we going to do this?
+
+689
+01:17:53,800 --> 01:17:59,880
+It's a difficult problem. It's undecidable and it's more undecidable than the halting problem.
+
+690
+01:17:59,880 --> 01:18:02,360
+And that's something I want to show in the lecture.
+
+691
+01:18:02,360 --> 01:18:05,040
+How much more undecidable it will be.
+
+692
+01:18:05,040 --> 01:18:07,411
+how you can still prove these kind of techniques.
+
+693
+01:18:07,411 --> 01:18:13,160
+So I can assure you this program terminates with probability one.
+
+694
+01:18:13,160 --> 01:18:16,480
+And I have one other question before I let you go.
+
+695
+01:18:16,480 --> 01:18:23,200
+How many steps does this program need to do on average to terminate?
+
+696
+01:18:23,200 --> 01:18:28,760
+This looks like a silly question because an ordinary program if it terminates it needs finitely many steps to terminate,
+
+697
+01:18:28,760 --> 01:18:36,760
+right? Otherwise it doesn't terminate. Right? This terminates with probability one, but the number of steps to
+
+698
+01:18:36,760 --> 01:18:45,400
+terminate on average is infinite. Good. If you think this is cool, then
+
+699
+01:18:45,400 --> 01:18:48,600
+If you think this isn't cool, then you should go go to Why is this important?
+
+700
+01:18:48,600 --> 01:18:51,176
+this is a very abstract This is a random walk.
+
+701
+01:18:51,176 --> 01:18:53,840
+A mathematician would immediately say this is a random walk and so on.
+
+702
+01:18:53,840 --> 01:18:59,320
+This is hard and we know this. probabilistic programs is nowadays on vogue.
+
+703
+01:18:59,320 --> 01:19:07,360
+why? Machine learning. so, there are models like Bayes networks.
+
+704
+01:19:07,360 --> 01:19:13,560
+Bayes networks are a simple model used in machine learning.
+
+705
+01:19:13,560 --> 01:19:17,712
+And I will show in the lecture there is a one-to-one correspondence between Bayes networks and probabilistic programs.
+
+706
+01:19:17,712 --> 01:19:21,240
+You can use program verification to analyze Bayes networks.
+
+707
+01:19:21,240 --> 01:19:24,880
+And actually in my group we do a lot of research.
+
+708
+01:19:24,880 --> 01:19:30,560
+Marcel in the back is doing research as well on this area on probabilistic programs.
+
+709
+01:19:30,560 --> 01:19:34,800
+Not only those theoretical questions, but also applications towards Bayes networks.
+
+710
+01:19:34,800 --> 01:19:37,200
+how can you prove certain properties about these programs?
+
+711
+01:19:37,200 --> 01:19:42,600
+And that's enormous challenging field. And if you think this is interesting, then
+
+712
+01:19:42,600 --> 01:19:46,120
+visit this lecture starting in the winter semester.
+
+713
+01:19:46,120 --> 01:19:49,920
+Good. Thanks for your attendance. A lot of success with the exam.
+
+714
+01:19:49,920 --> 01:19:54,840
+And hope to see you at some point for whatever reason.

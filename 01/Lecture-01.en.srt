@@ -1,0 +1,4231 @@
+﻿1
+00:00:02,360 --> 00:00:05,720
+Can you hear me in the back? Yeah, that's okay.
+
+2
+00:00:05,720 --> 00:00:12,760
+Okay. welcome to the first lecture on introduction to model checking.
+
+3
+00:00:12,760 --> 00:00:21,040
+my name is Joost Pieter Katoen. I'm a professor here in Aachen since about 2004.
+
+4
+00:00:21,040 --> 00:00:25,000
+And in my group, what we try to do is we try to find bugs.
+
+5
+00:00:25,000 --> 00:00:28,160
+Bugs in hardware, but in particular in software.
+
+6
+00:00:28,160 --> 00:00:35,280
+and as we all know, software becomes more and more important in our daily lives.
+
+7
+00:00:35,280 --> 00:00:40,000
+And sometimes bugs are not very catastrophic.
+
+8
+00:00:40,000 --> 00:00:46,520
+I mean, it's a bit annoying maybe if if your laptop is not working completely correctly.
+
+9
+00:00:46,520 --> 00:00:53,360
+But if you have a piece of software controlling nuclear power plant, then it's crucial that this software
+
+10
+00:00:53,360 --> 00:01:03,440
+works correctly. Yeah. Now, there are different techniques to prove rigorously that software has no mistakes.
+
+11
+00:01:03,440 --> 00:01:08,320
+And one of the favorite techniques that we work on, and also one of the I
+
+12
+00:01:08,320 --> 00:01:12,600
+would say one of the most popular techniques nowadays is called model checking.
+
+13
+00:01:12,600 --> 00:01:15,880
+And what I'm going to do today is I will give you a bit of motivation
+
+14
+00:01:15,880 --> 00:01:21,480
+background and also explain you a bit about the the course organization.
+
+15
+00:01:21,480 --> 00:01:27,240
+before I start, what you see is that the actually the lectures will be recorded.
+
+16
+00:01:27,240 --> 00:01:34,160
+I think there are recordings, but already from quite some years ago, 2011 or so.
+
+17
+00:01:34,160 --> 00:01:39,320
+that means that actually thanks to the video archive of the Fachschaft,
+
+18
+00:01:39,320 --> 00:01:49,693
+they will make those videos available. Okay. so, I would start with some examples.
+
+19
+00:01:49,693 --> 00:01:57,360
+And one example is a bit old, but it's still illustrating the effects of what bugs in
+
+20
+00:01:57,360 --> 00:02:04,560
+software can can cause. So, here on the on the left you see a radiation machine.
+
+21
+00:02:04,560 --> 00:02:10,840
+A radiation machine in a in a hospital, and in particular for cancer patients.
+
+22
+00:02:10,840 --> 00:02:15,033
+So, the cancer patient comes to this hospital.
+
+23
+00:02:15,033 --> 00:02:23,040
+They would like to diagnose where is the basically the the cancer, but also would like to give a therapy.
+
+24
+00:02:23,040 --> 00:02:27,240
+And the therapy then tries to basically based on the location of
+
+25
+00:02:27,240 --> 00:02:31,480
+the tumor, tries to do radiation treatment.
+
+26
+00:02:31,480 --> 00:02:36,120
+And actually this was already as I mentioned in the '80s, and at least
+
+27
+00:02:36,120 --> 00:02:42,560
+six cases of overdoses were reported. and not just a bit of overdoses, no,
+
+28
+00:02:42,560 --> 00:02:51,040
+an overdose is of about 100 times let's say the intensity which was supposed to be.
+
+29
+00:02:51,040 --> 00:02:54,508
+And unfortunately three peop- people died because of this.
+
+30
+00:02:54,508 --> 00:02:59,280
+So, this is actually very serious a serious issue.
+
+31
+00:02:59,280 --> 00:03:07,240
+And the source, after investigating carefully the whole system, the hardware, the software, the radiation machine,
+
+32
+00:03:07,240 --> 00:03:12,280
+it turned out to be the case that there was a design error in the control software.
+
+33
+00:03:12,280 --> 00:03:16,440
+And a bug which is known to be as a a race condition.
+
+34
+00:03:16,440 --> 00:03:21,640
+And intuitively speaking, this is something like you have a multi-threaded system,
+
+35
+00:03:21,640 --> 00:03:29,600
+and one task, let's call it A, is waiting for B, but B, vice versa, is in a similar state
+
+36
+00:03:29,600 --> 00:03:36,360
+and waits for A. Then they call this a race condition, and then you can imagine that this has
+
+37
+00:03:36,360 --> 00:03:44,040
+some can have some consequences. At that time, the software was written in some kind of assembly language, especially
+
+38
+00:03:44,040 --> 00:03:52,600
+for performance reasons. nowadays, of course, we use most of the time, not always, the other languages.
+
+39
+00:03:52,600 --> 00:03:57,180
+another example a bit later was the AT&T telephone network in the US.
+
+40
+00:03:57,180 --> 00:03:59,880
+It was a big problem in New York.
+
+41
+00:03:59,880 --> 00:04:04,640
+it was a 9-hour outage of large parts of the telephone networks.
+
+42
+00:04:04,640 --> 00:04:08,840
+And remember in those days we did not have hand- mobile phones, right?
+
+43
+00:04:08,840 --> 00:04:13,520
+so, the telephone network was the basic means of communication.
+
+44
+00:04:13,520 --> 00:04:20,120
+this had a severe cost. at those days, 100 million US dollars.
+
+45
+00:04:20,120 --> 00:04:25,120
+but that's already 30 years ago. I mean, now this is of course quite a bit more.
+
+46
+00:04:25,120 --> 00:04:29,280
+And actually it turned out that there was a software in a piece of C code,
+
+47
+00:04:29,280 --> 00:04:33,160
+and there was a wrong interpretation of the break statement in a loop.
+
+48
+00:04:33,160 --> 00:04:36,080
+You know, what does exactly does a break statement do?
+
+49
+00:04:36,080 --> 00:04:42,280
+And apparently this led to a bug.
+
+50
+00:04:42,280 --> 00:04:49,560
+the example that most people use if they talk about software mistakes, then it's the Ariane 5 crash
+
+51
+00:04:49,560 --> 00:04:57,560
+in 1996. this was a European Ariane 5 missile, European, which means it's
+
+52
+00:04:57,560 --> 00:05:06,360
+supported by the European Space Agency. And this was launched, I think, in French Guiana in South America.
+
+53
+00:05:06,360 --> 00:05:11,040
+And it crashed after, well, pretty short. I mean, it within 1 or 2 minutes
+
+54
+00:05:11,040 --> 00:05:13,971
+after the after it was launched, it crashed.
+
+55
+00:05:13,971 --> 00:05:21,680
+So, here you see the launching, and if you look carefully, here you see that it's basically here it crashes.
+
+56
+00:05:21,680 --> 00:05:25,760
+cost more than 500 million US dollars.
+
+57
+00:05:25,760 --> 00:05:29,388
+What was the bug? The bug was a software flaw in the control software.
+
+58
+00:05:29,388 --> 00:05:33,560
+What was the idea? They took basically it was a legacy problem.
+
+59
+00:05:33,560 --> 00:05:37,840
+So, they took the software of the Ariane 4.
+
+60
+00:05:37,840 --> 00:05:44,200
+That worked okay. they built on top of this a couple of new features for the Ariane 5.
+
+61
+00:05:44,200 --> 00:05:51,480
+But in the meanwhile, what they did forgot was a kind of data conversion that actually converted
+
+62
+00:05:51,480 --> 00:05:56,120
+a 64-bit floating point to a 16-bit signed integer.
+
+63
+00:05:56,120 --> 00:06:02,120
+So, you lose some information, and this losing information was essential because it was about the angle of the of
+
+64
+00:06:02,120 --> 00:06:08,920
+basically of this missile. And if the angle is not correct, there is a kind of auto-correction
+
+65
+00:06:08,920 --> 00:06:12,513
+taking place in the missile, which basically then is a kind of self-explosion.
+
+66
+00:06:12,513 --> 00:06:18,400
+Okay? So, you make a measurement. These measurements say, "Well, we're not on the right trajectory.
+
+67
+00:06:18,400 --> 00:06:23,594
+Boom. It is safe to just explode." good.
+
+68
+00:06:23,594 --> 00:06:29,840
+This was safe This was actually written in the programming language Ada.
+
+69
+00:06:29,840 --> 00:06:35,000
+Good. there was some software handler, also there was some exception handling,
+
+70
+00:06:35,000 --> 00:06:41,600
+but the engineers found it to be more efficient to switch off to disable this exception handling mechanism.
+
+71
+00:06:41,600 --> 00:06:48,880
+So, there were basically two causes, right? This conversion plus that the exception handling was not switched on.
+
+72
+00:06:48,880 --> 00:06:53,360
+Good. Just for your information, the French Space Agency at the moment is
+
+73
+00:06:53,360 --> 00:06:57,840
+investing a lot of money in the new Ariane, Ariane 6.
+
+74
+00:06:57,840 --> 00:07:05,800
+and maybe it's good to know that to understand that the space agencies are very conservative.
+
+75
+00:07:05,800 --> 00:07:11,720
+So, you buy at the Media Markt in Aachen a laptop with at least a dual-core or quad-core,
+
+76
+00:07:11,720 --> 00:07:16,320
+right? I mean, this is nowadays standard. And Ariane 6, they're going to use for
+
+77
+00:07:16,320 --> 00:07:20,760
+the first time in a missile a dual-core machine.
+
+78
+00:07:20,760 --> 00:07:23,880
+And not because they would like to accelerate things, no, only because the
+
+79
+00:07:23,880 --> 00:07:26,960
+fact that one core fails, you still have one core left.
+
+80
+00:07:26,960 --> 00:07:31,360
+Yeah, I mean, just to illustrate, this is the way that this industry looks.
+
+81
+00:07:31,360 --> 00:07:37,280
+And why do they do this? Because they want to have more than 100% guarantees that things work correctly.
+
+82
+00:07:37,280 --> 00:07:41,994
+And the way they do this now is that I mean, those engineers know exactly how to program these things.
+
+83
+00:07:41,994 --> 00:07:50,100
+So, they are very conservative. They used it's not surprising that indeed this this bug was there.
+
+84
+00:07:50,100 --> 00:08:01,200
+I mean, they use pretty for computer scientists pretty old-fashioned microcontrollers, old-fashioned programming languages, and old-fashioned techniques
+
+85
+00:08:01,200 --> 00:08:05,200
+to check the correctness of software. It's changing a bit, but I think there's
+
+86
+00:08:05,200 --> 00:08:12,400
+much, much more work to be done. This is a hardware bug of the Pentium floating-point division unit.
+
+87
+00:08:12,400 --> 00:08:20,000
+What turned out to be the case, some people that were actually doing floating-point division operations,
+
+88
+00:08:20,000 --> 00:08:26,040
+this all worked fine until at some point people were really looking into
+
+89
+00:08:26,040 --> 00:08:31,640
+big experiments, and the accuracy of the results turned out to be very important.
+
+90
+00:08:31,640 --> 00:08:40,599
+And it turned out that one in 9 billion floating-point operations divides and provide produces inaccurate results.
+
+91
+00:08:40,599 --> 00:08:44,920
+So, it took a very long time before this bug was found, actually.
+
+92
+00:08:44,920 --> 00:08:52,008
+And once it was found, Intel had to basically call back all those microprocessors, and had to replace them.
+
+93
+00:08:52,008 --> 00:08:56,880
+So, this was an enormous thing. So, this was about Well, this is an estimate, but about 500
+
+94
+00:08:56,880 --> 00:09:00,005
+million US dollars, and an enormous image loss.
+
+95
+00:09:00,005 --> 00:09:04,680
+It's not only the economic loss, but it's in particular also the image loss of such a
+
+96
+00:09:04,680 --> 00:09:09,891
+company, which is then very severe. Good. What was the source?
+
+97
+00:09:09,891 --> 00:09:15,680
+The source was the realization of this floating-point division, which was not doing
+
+98
+00:09:15,680 --> 00:09:23,480
+exactly what it was supposed to do. I have some later examples on on
+
+99
+00:09:23,480 --> 00:09:29,400
+where some from some I think examples where model checking has been used to improve those kind of
+
+100
+00:09:29,400 --> 00:09:35,760
+situations. but I think those examples already show you that there is the
+
+101
+00:09:35,760 --> 00:09:39,497
+that software correctness is simply important.
+
+102
+00:09:39,497 --> 00:09:46,800
+People don't realize that if you buy a washing machine nowadays, 1 megabyte of software is not an exception.
+
+103
+00:09:46,800 --> 00:09:53,160
+so, most of the bugs in a washing machine nowadays are actually bugs in software.
+
+104
+00:09:53,160 --> 00:10:01,120
+and I like to illustrate this statement by Henk Barendregt.
+
+105
+00:10:01,120 --> 00:10:05,760
+Henk Barendregt is a Dutch professor from University of Nijmegen.
+
+106
+00:10:05,760 --> 00:10:13,720
+For those people that are interested in functional programming, the underlying theory of functional programming is lambda calculus.
+
+107
+00:10:13,720 --> 00:10:16,910
+And he is he wrote the main book on on lambda calculus.
+
+108
+00:10:16,910 --> 00:10:23,560
+And he gave a talk at the 50-year celebration of the Center of Mathematics and Computer Science in Amsterdam.
+
+109
+00:10:23,560 --> 00:10:27,920
+And he put it after very good to the point by saying it's
+
+110
+00:10:27,920 --> 00:10:35,720
+fair to state that in this digital era correct systems for information processing are more valuable than gold.
+
+111
+00:10:35,720 --> 00:10:46,600
+So stressing the point that it's simply important to make sure that systems are bug-free.
+
+112
+00:10:46,600 --> 00:10:56,120
+Good. So what we see is a rapidly increasing integration of information and communication technology in different applications.
+
+113
+00:10:56,120 --> 00:10:59,880
+I mean, embedded systems. I already mentioned the washing machine.
+
+114
+00:10:59,880 --> 00:11:07,560
+you can also think about robots. robots assembling your new car, for instance.
+
+115
+00:11:07,560 --> 00:11:13,600
+communication protocols. the way that communication takes place.
+
+116
+00:11:13,600 --> 00:11:19,120
+So my colleague Klaus Weerli here in the department develops protocols.
+
+117
+00:11:19,120 --> 00:11:28,142
+communication protocols. And actually he also has projects to prove to check that those protocol implementations are correct.
+
+118
+00:11:28,142 --> 00:11:30,611
+That they are doing what they are supposed to do.
+
+119
+00:11:30,611 --> 00:11:38,280
+Because according to him, the main problem is that different computers, different engines don't communicate
+
+120
+00:11:38,280 --> 00:11:42,080
+correctly with each other if you don't make sure that the software running on
+
+121
+00:11:42,080 --> 00:11:44,500
+those things is adhering to a certain standard.
+
+122
+00:11:44,500 --> 00:11:53,440
+A standard that describes the communication protocol. So also there you see that correctness plays an important role.
+
+123
+00:11:53,440 --> 00:11:58,680
+And then there is transportation systems. Don't mention the autonomous cars.
+
+124
+00:11:58,680 --> 00:12:06,360
+Self-driving cars. It's clear that the software needs to be correct, right?
+
+125
+00:12:06,360 --> 00:12:11,851
+Nowadays they use machine learning techniques to you have sensors on those cars.
+
+126
+00:12:11,851 --> 00:12:19,200
+Those sensors they detect certain objects. And now you have to check whether those objects are human beings.
+
+127
+00:12:19,200 --> 00:12:25,579
+Are they moving? Are they obstacles which stand at a certain position and are basically fixed there?
+
+128
+00:12:25,579 --> 00:12:32,360
+Are they static? And based on that information, the software controlling the car makes certain decisions.
+
+129
+00:12:32,360 --> 00:12:36,600
+Now how do you guarantee that this works correctly?
+
+130
+00:12:36,600 --> 00:12:39,180
+Yeah, and this is a big issue at the moment.
+
+131
+00:12:39,180 --> 00:12:45,200
+And therefore people are looking into verification techniques more and more.
+
+132
+00:12:45,200 --> 00:12:50,320
+So it's fair to state that reliability increasingly depends on software.
+
+133
+00:12:50,320 --> 00:12:56,080
+And we have also already seen that defects can be fatal and extremely costly.
+
+134
+00:12:56,080 --> 00:13:05,200
+Safety-critical systems are of course, I mean, autonomous cars, nuclear power plants, these kind of things are of course safety-critical.
+
+135
+00:13:05,200 --> 00:13:13,440
+but also think about small products which are distributed among masses.
+
+136
+00:13:13,440 --> 00:13:16,731
+And So there are projects subject to mass production.
+
+137
+00:13:16,731 --> 00:13:23,080
+One of the first examples we worked on was a a communication protocol between a control unit, so an infrared
+
+138
+00:13:23,080 --> 00:13:28,720
+control unit, with a television set. Okay, now you might say, "Okay, if it
+
+139
+00:13:28,720 --> 00:13:31,874
+doesn't work, I just simply push the button twice, right?
+
+140
+00:13:31,874 --> 00:13:36,480
+If it then works, it's still okay." So those bugs are of course not very costly.
+
+141
+00:13:36,480 --> 00:13:41,720
+They're a bit annoying, perhaps. nonetheless, by means of model checking we found some bugs there and
+
+142
+00:13:41,720 --> 00:13:47,440
+that was for the Dutch company Philips. And they actually at those days it was not easy to really
+
+143
+00:13:47,440 --> 00:13:51,330
+do the software patches like you would do do now.
+
+144
+00:13:51,330 --> 00:13:55,640
+where basically you have to download every day now a new update of your
+
+145
+00:13:55,640 --> 00:13:58,960
+whatever kind of software because a bug has been found and a patch has been made.
+
+146
+00:13:58,960 --> 00:14:06,462
+but there they really had to basically call back those infrared remote control units.
+
+147
+00:14:06,462 --> 00:14:09,460
+And they are very cheap on their own.
+
+148
+00:14:09,460 --> 00:14:17,440
+Yeah, but if you have sold a million of them, then of course this becomes an issue.
+
+149
+00:14:17,440 --> 00:14:22,285
+So what is system verification? So here is a folklore definition.
+
+150
+00:14:22,285 --> 00:14:29,839
+So what you would like to do is you check whether a system fulfills the requirements that have been identified.
+
+151
+00:14:29,839 --> 00:14:34,704
+So typically if you look at engineers, engineers write requirements.
+
+152
+00:14:34,704 --> 00:14:41,079
+These are typically thick documents where the requirements are written down in some natural language.
+
+153
+00:14:41,079 --> 00:14:46,440
+Don't mention logic mention logics there. They're just natural language.
+
+154
+00:14:46,440 --> 00:14:55,040
+And then based on these requirement documents, typically documents of 100 pages or more, they start building the system.
+
+155
+00:14:55,040 --> 00:14:58,959
+And then in the end you have built your system and you would like to check
+
+156
+00:14:58,959 --> 00:15:04,760
+whether the system works correctly and that means does it meet the requirements we started from?
+
+157
+00:15:04,760 --> 00:15:13,000
+Good. So verification is yeah, check that we're building the thing right.
+
+158
+00:15:13,000 --> 00:15:19,120
+That means basically that we are doing the right thing and sometimes people call validation that check whether we are
+
+159
+00:15:19,120 --> 00:15:22,800
+building the right thing, which is sometimes a bit different.
+
+160
+00:15:22,800 --> 00:15:26,200
+So what kind of technique are people using in the in industry?
+
+161
+00:15:26,200 --> 00:15:33,600
+if you look at software, then the typical step that people do is by peer reviewing.
+
+162
+00:15:33,600 --> 00:15:37,040
+So you have a team of developers, they develop the software.
+
+163
+00:15:37,040 --> 00:15:39,140
+You like to check whether this software is running correctly.
+
+164
+00:15:39,140 --> 00:15:43,440
+What are the people doing? You give this software after doing some static analysis and
+
+165
+00:15:43,440 --> 00:15:46,560
+some standard stuff, you give it to another team.
+
+166
+00:15:46,560 --> 00:15:50,079
+Those people that were not involved in developing the software.
+
+167
+00:15:50,079 --> 00:15:54,720
+And then basically you they do a manual code inspection.
+
+168
+00:15:54,720 --> 00:16:03,760
+Manual. and they find already about between 31 and 93% of the defects
+
+169
+00:16:03,760 --> 00:16:10,440
+with a median of about 60%. These data actually come from the studies of electric German software companies a
+
+170
+00:16:10,440 --> 00:16:14,395
+couple of years ago. But of course there are subtle errors.
+
+171
+00:16:14,395 --> 00:16:18,822
+I call them corner cases. And those corner cases are hard to catch.
+
+172
+00:16:18,822 --> 00:16:24,040
+Maybe if you have a very experienced programmer, they will find these kind of bugs.
+
+173
+00:16:24,040 --> 00:16:27,520
+and those but typically you don't find them.
+
+174
+00:16:27,520 --> 00:16:32,379
+And we're talking about defects in algorithms, but in particular also defects in concurrency when you have multi-threading.
+
+175
+00:16:32,379 --> 00:16:39,640
+And I have one example later on. Another technique that people use a lot is testing.
+
+176
+00:16:39,640 --> 00:16:46,280
+So what is testing? You take your implementation, your piece of code.
+
+177
+00:16:46,280 --> 00:16:50,800
+You would like to check does it work as it is supposed to be working?
+
+178
+00:16:50,800 --> 00:16:53,920
+What do you do? You just issue a couple of tests.
+
+179
+00:16:53,920 --> 00:17:00,120
+And then you try to see whether the output conforms to the requirement.
+
+180
+00:17:00,120 --> 00:17:04,828
+Okay, but of course in order to do this exhaustively, you need many and many tests.
+
+181
+00:17:04,828 --> 00:17:08,486
+In particular, it could be the case that you need infinitely many tests.
+
+182
+00:17:08,486 --> 00:17:14,640
+So people take some arbitrary set, some do some selection, and based on that they decide whether the software
+
+183
+00:17:14,640 --> 00:17:18,473
+is okay or not. So this is a dynamic technique.
+
+184
+00:17:18,473 --> 00:17:21,959
+You really run the software. That's the difference with the peer reviewing.
+
+185
+00:17:21,959 --> 00:17:27,480
+but of course you're limited to the to the test cases you are considering.
+
+186
+00:17:27,480 --> 00:17:33,320
+So if you look at the software project cost, about 30 to 50% is devoted to testing.
+
+187
+00:17:33,320 --> 00:17:40,760
+And more time and effort is spent actually on checking whether you're doing the right thing rather than on constructing.
+
+188
+00:17:40,760 --> 00:17:47,920
+And this trend is something that you might question.
+
+189
+00:17:47,920 --> 00:17:53,840
+And what's the defect density? This is a number of Microsoft and I get back to Microsoft a bit later.
+
+190
+00:17:53,840 --> 00:18:00,400
+At those days and this was I think Windows 95, Microsoft said, "Well, the software
+
+191
+00:18:00,400 --> 00:18:04,520
+is okay if we have about one defect on every 1,000 code lines."
+
+192
+00:18:04,520 --> 00:18:08,826
+And 1,000 code lines I mean the code lines without documentation, so without the comments and so on.
+
+193
+00:18:08,826 --> 00:18:15,640
+So the real code lines. But I get back to this later about Windows.
+
+194
+00:18:15,640 --> 00:18:22,440
+So here is a picture and this is not really a linear scale, but it's only you
+
+195
+00:18:22,440 --> 00:18:28,840
+have different phases. so it's not I mean, it's not indicating that every phase takes equally long.
+
+196
+00:18:28,840 --> 00:18:32,114
+so you typically have some analysis of the problem.
+
+197
+00:18:32,114 --> 00:18:36,893
+Then you do some requirement specification. Then you do conceptual design of your system.
+
+198
+00:18:36,893 --> 00:18:41,320
+Then you start real programming. Then you maybe do some unit testing, so you test
+
+199
+00:18:41,320 --> 00:18:45,600
+the individual parts of the system or the individual parts of your program.
+
+200
+00:18:45,600 --> 00:18:51,240
+Then maybe you do the testing of the entire system where the units need to cooperate.
+
+201
+00:18:51,240 --> 00:18:53,960
+And then maybe the system is in operation.
+
+202
+00:18:53,960 --> 00:18:58,365
+So as I said, don't take the length of every phase as equally long.
+
+203
+00:18:58,365 --> 00:19:02,720
+I just want to illustrate that you have those different phases.
+
+204
+00:19:02,720 --> 00:19:08,088
+And this is the time, right? Good. And now there are two Y axis.
+
+205
+00:19:08,088 --> 00:19:13,640
+Here on the left, it tells you what is the percentage of errors.
+
+206
+00:19:13,640 --> 00:19:19,520
+Okay? So what you see is that the according to this curve, and this is based on empirical studies,
+
+207
+00:19:19,520 --> 00:19:23,360
+most of the errors are introduced in the conceptual design and during the programming.
+
+208
+00:19:23,360 --> 00:19:28,120
+But here you see that the number of errors is actually going down.
+
+209
+00:19:28,120 --> 00:19:34,679
+Good. Then the green curve tells you when the errors are being detected.
+
+210
+00:19:34,679 --> 00:19:36,853
+So initially of course bugs will be detected here.
+
+211
+00:19:36,853 --> 00:19:42,080
+Bugs are detected, but most bugs are detected, well, some of them during unit testing, but most of
+
+212
+00:19:42,080 --> 00:19:46,480
+them if you test the entire system. Which is not so surprising, perhaps.
+
+213
+00:19:46,480 --> 00:19:52,885
+And then the red curve is now we have to look at this Y axis.
+
+214
+00:19:52,885 --> 00:20:01,400
+This is the cost of correction one single error in the unit is 1,000 US dollar.
+
+215
+00:20:01,400 --> 00:20:05,480
+So if you find a error here, it's relatively cheap, right?
+
+216
+00:20:05,480 --> 00:20:12,680
+Close to zero to repair the error. If however, the error occurs here, then you're already in the phase of
+
+217
+00:20:12,680 --> 00:20:19,133
+system testing, then it is more Yeah, it is more involved to basically fix the error.
+
+218
+00:20:19,133 --> 00:20:23,560
+And therefore, it's more costly. And of course, if the system is already in operation,
+
+219
+00:20:23,560 --> 00:20:29,960
+so you have launched the product on the market, then it's even more costly as you can imagine.
+
+220
+00:20:29,960 --> 00:20:35,840
+Yeah, and then the estimates here was were about 12,500 US dollars, which to my opinion is still
+
+221
+00:20:35,840 --> 00:20:39,800
+a kind of underestimation, but So the slogan here is and that's also
+
+222
+00:20:39,800 --> 00:20:43,280
+the top of my slide, bug hunting the sooner the better.
+
+223
+00:20:43,280 --> 00:20:49,560
+What you would like to do preferably is to bring basically to close the gap between
+
+224
+00:20:49,560 --> 00:20:52,502
+put it bluntly, the blue curve and the green curve.
+
+225
+00:20:52,502 --> 00:21:01,520
+Try to bring them closer together so that you are earlier in your design, you're able to find the bugs.
+
+226
+00:21:01,520 --> 00:21:05,040
+So what I'm going to say here is that not model checking is the silver bullet.
+
+227
+00:21:05,040 --> 00:21:10,520
+It's not the solution to all problems. But here you typically have already some
+
+228
+00:21:10,520 --> 00:21:13,240
+models and maybe it's good already to check properties on models.
+
+229
+00:21:13,240 --> 00:21:16,920
+Later you have code, it's also good to check properties on code.
+
+230
+00:21:16,920 --> 00:21:22,760
+And then maybe you then do an installation on hardware and maybe then it's good to do testing.
+
+231
+00:21:22,760 --> 00:21:24,790
+So I'm not saying one is much better than the other one.
+
+232
+00:21:24,790 --> 00:21:28,320
+I think you need definitely all of them.
+
+233
+00:21:28,320 --> 00:21:35,360
+But techniques like model checking help a lot to to bring these things together.
+
+234
+00:21:35,360 --> 00:21:39,200
+So I'm working in the field of formal methods.
+
+235
+00:21:39,200 --> 00:21:42,960
+I call them always they are applied mathematics.
+
+236
+00:21:42,960 --> 00:21:46,400
+So in this course what we are going to do, we're going to talk about graphs,
+
+237
+00:21:46,400 --> 00:21:51,680
+we're going to talk about automata, we're going to talk about logics because that's what underneath.
+
+238
+00:21:51,680 --> 00:22:00,160
+So it's for modeling and analysis ICT systems, information and communication technology systems.
+
+239
+00:22:00,160 --> 00:22:07,120
+Some people believe that formal methods offer a large potential to indeed do this early integration.
+
+240
+00:22:07,120 --> 00:22:13,920
+Remember the two curves? You would like to do verification and modeling as soon as possible in the design process.
+
+241
+00:22:13,920 --> 00:22:19,000
+You would like to get a verification techniques which provides you with a higher coverage.
+
+242
+00:22:19,000 --> 00:22:25,800
+You would like to find more bugs than just doing by testing or by doing peer reviewing.
+
+243
+00:22:25,800 --> 00:22:29,731
+And in the end, you also would like to reduce the verification time.
+
+244
+00:22:29,731 --> 00:22:37,040
+Remember 30 to 50% in a software development process is based on is devoted to testing or to code
+
+245
+00:22:37,040 --> 00:22:47,800
+inspection or to static analysis. The use of formal methods nowadays is also in standards highly recommended.
+
+246
+00:22:47,800 --> 00:22:54,920
+So you have standardization bodies. So this is the Federal Aviation Authority.
+
+247
+00:22:54,920 --> 00:23:00,480
+So this is a standardization body that is about airplanes in the US.
+
+248
+00:23:00,480 --> 00:23:05,040
+And they have different criticality levels of software.
+
+249
+00:23:05,040 --> 00:23:13,800
+And for the two highest levels of software criticality, they recommend to use formal methods like model checking.
+
+250
+00:23:13,800 --> 00:23:24,280
+NASA actually also uses formal methods and actually advocates the use of formal methods in safety critical software.
+
+251
+00:23:24,280 --> 00:23:28,360
+And there is a standard for self-autonomous cars.
+
+252
+00:23:28,360 --> 00:23:35,120
+So there is a standard called ISO, which stands for the International Standardization Organization.
+
+253
+00:23:35,120 --> 00:23:41,280
+And then there is a number 26262. If you Google this, you get tons of hits.
+
+254
+00:23:41,280 --> 00:23:45,600
+it's a new standard and actually the car manufacturers have to adhere to this
+
+255
+00:23:45,600 --> 00:23:48,040
+standard I think by the end of this year.
+
+256
+00:23:48,040 --> 00:23:54,280
+And this means that car manufacturers and of course, everybody knows the importance of car manufacturing in Germany,
+
+257
+00:23:54,280 --> 00:24:03,600
+are seriously now looking at these standards. And in these standards, they have different levels in different levels of integrity.
+
+258
+00:24:03,600 --> 00:24:08,880
+They call this ASIL levels. I think you have something like ASIL A to D.
+
+259
+00:24:08,880 --> 00:24:13,120
+And the highest level D, that means that your system is only allowed to have
+
+260
+00:24:13,120 --> 00:24:18,820
+about I think I do this at the top of my head, 10 to the power minus nine errors, right?
+
+261
+00:24:18,820 --> 00:24:27,048
+During the run time. So very low. And the standard is advocating to use formal verification like model checking.
+
+262
+00:24:27,048 --> 00:24:36,880
+So there is more interest actually also by the German car manufacturers to look at model checking.
+
+263
+00:24:36,880 --> 00:24:43,160
+Good. So there are different techniques to do formal verification and I just want to basically illustrate the difference
+
+264
+00:24:43,160 --> 00:24:48,480
+between them very globally. So there are what they call deductive methods.
+
+265
+00:24:48,480 --> 00:24:53,880
+One of the deductive methods that you probably familiar with is you take a program.
+
+266
+00:24:53,880 --> 00:24:56,840
+You'd like to prove that this program is correct.
+
+267
+00:24:56,840 --> 00:25:00,240
+Now in the lectures on programming, you have learned that you can then and to my
+
+268
+00:25:00,240 --> 00:25:04,600
+opinion, you should define a precondition and a postcondition.
+
+269
+00:25:04,600 --> 00:25:07,102
+And what's the hard part to reason about programs?
+
+270
+00:25:07,102 --> 00:25:10,400
+The hard part is to reason about loops.
+
+271
+00:25:10,400 --> 00:25:12,692
+Yeah, you would like to capture the behavior of a loop.
+
+272
+00:25:12,692 --> 00:25:15,240
+And what do you need for doing this?
+
+273
+00:25:15,240 --> 00:25:19,742
+A loop invariant. Now in general, it's undecidable to find a loop invariant.
+
+274
+00:25:19,742 --> 00:25:25,880
+That's why the problem of program verification is in general computationally intractable.
+
+275
+00:25:25,880 --> 00:25:30,800
+but you can of course try to support this.
+
+276
+00:25:30,800 --> 00:25:34,679
+And for instance, one of the ways to do that is that you basically use theorem
+
+277
+00:25:34,679 --> 00:25:42,656
+provers or proof assistants to assist you as a user to prove for instance small lemmas already about your program.
+
+278
+00:25:42,656 --> 00:25:47,580
+You basically have a guess, well, the property should be that well, X is always at least Y.
+
+279
+00:25:47,580 --> 00:25:53,560
+Let's try to prove this. And then the theorem prover can assist you whether this is the case or not.
+
+280
+00:25:53,560 --> 00:25:58,080
+And And this is definitely applicable, but one of the drawbacks of deductive
+
+281
+00:25:58,080 --> 00:26:04,679
+methods is that there is a high I would say interaction with the with the human.
+
+282
+00:26:04,679 --> 00:26:09,520
+So these techniques and I think I have a slide on this have been developed
+
+283
+00:26:09,520 --> 00:26:12,751
+actually the first paper was by Turing end of the 40s.
+
+284
+00:26:12,751 --> 00:26:18,440
+And then later in the 60s, people have developed these deductive methods.
+
+285
+00:26:18,440 --> 00:26:22,560
+And then early 80s, two pairs of people, I come to them in a
+
+286
+00:26:22,560 --> 00:26:25,440
+minute, have developed the technique of model checking.
+
+287
+00:26:25,440 --> 00:26:29,679
+And there the idea was is not basically to look at the syntax of your program.
+
+288
+00:26:29,679 --> 00:26:32,744
+That's what you do if you write pre-post conditions and loop invariants.
+
+289
+00:26:32,744 --> 00:26:36,440
+You don't run the program, you don't build an automaton of the program, you just
+
+290
+00:26:36,440 --> 00:26:39,000
+look at this at the at the code, right?
+
+291
+00:26:39,000 --> 00:26:44,800
+That's all. In model checking, they thought, well, why don't we make a model?
+
+292
+00:26:44,800 --> 00:26:51,240
+And why are we not going to analyze this model and systematically do this by means of algorithms?
+
+293
+00:26:51,240 --> 00:26:53,982
+This is maybe of course not complete, right?
+
+294
+00:26:53,982 --> 00:26:58,880
+There are cases that we cannot cover, but I hope we can find many bugs.
+
+295
+00:26:58,880 --> 00:27:04,080
+So we systematically check a certain property P and you do this for instance
+
+296
+00:27:04,080 --> 00:27:08,080
+in all states of the model and think about an automaton kind of model.
+
+297
+00:27:08,080 --> 00:27:11,080
+And there are several tools that actually do this.
+
+298
+00:27:11,080 --> 00:27:16,080
+And this is of course applicable if you can find a finite model of your system.
+
+299
+00:27:16,080 --> 00:27:21,080
+During this lecture, we will also learn that for some infinite state models, you can still do things.
+
+300
+00:27:21,080 --> 00:27:24,948
+And then there is another technique which is called model-based simulation or testing.
+
+301
+00:27:24,948 --> 00:27:28,900
+And that's what I already mentioned. This is this test by exploring possible behaviors.
+
+302
+00:27:28,900 --> 00:27:32,320
+Why do I mention this as formal verification?
+
+303
+00:27:32,320 --> 00:27:35,520
+This is a sentence which is slipped off here below.
+
+304
+00:27:35,520 --> 00:27:39,880
+if you have a formal model of your system, you can use this formal model to
+
+305
+00:27:39,880 --> 00:27:46,840
+do automated test generation. So it's not the case that an engineer on Sunday says, okay, let's test this.
+
+306
+00:27:46,840 --> 00:27:55,000
+No, you use the formal model, basically the requirements to steer the test generation process.
+
+307
+00:27:55,000 --> 00:28:06,720
+Good. Milestones in formal verification. The first paper that mentioned the need for mathematical program correctness was by Turing.
+
+308
+00:28:06,720 --> 00:28:10,280
+At those days, programs were data flow diagrams.
+
+309
+00:28:10,280 --> 00:28:13,342
+so no textual format, just a visual format.
+
+310
+00:28:13,342 --> 00:28:19,640
+And he literally gives a proof why this data flow program is correct in
+
+311
+00:28:19,640 --> 00:28:24,520
+the sense that it adheres to the specification.
+
+312
+00:28:24,520 --> 00:28:29,840
+In the 60s, there were several people. Floyd was one of them.
+
+313
+00:28:29,840 --> 00:28:35,360
+But I only mention Hoare here. There the idea was to do syntax-based techniques.
+
+314
+00:28:35,360 --> 00:28:41,560
+So you take a program code. And what you try to do, you annotate the program with postconditions,
+
+315
+00:28:41,560 --> 00:28:49,200
+preconditions, loop invariants. And based on that, you prove that the system, for every state satisfying the
+
+316
+00:28:49,200 --> 00:28:55,440
+precondition, the program terminates and it establishes the postcondition.
+
+317
+00:28:55,440 --> 00:29:00,040
+And what you do there is you use mathematical logic to re I mean, predicate logic,
+
+318
+00:29:00,040 --> 00:29:03,530
+so typically first-order logic to reason about these kind of things.
+
+319
+00:29:03,530 --> 00:29:10,000
+So that core questions was given certain input, does the program generate the correct output?
+
+320
+00:29:10,000 --> 00:29:14,720
+Or are for all possible inputs generating the correct output?
+
+321
+00:29:14,720 --> 00:29:19,045
+And I mentioned they have proof rules and I have one on some of them on the next slide.
+
+322
+00:29:19,045 --> 00:29:23,840
+And the strength of this technique is that it is compositional.
+
+323
+00:29:23,840 --> 00:29:29,919
+What does that mean? Now if I have a program consisting of several parts,
+
+324
+00:29:29,919 --> 00:29:37,159
+So suppose very schematically I have a program P followed by a program Q followed by I don't know, while
+
+325
+00:29:37,159 --> 00:29:46,360
+X larger than zero R. Then what this technique can do is it basically can make a statement about P.
+
+326
+00:29:46,360 --> 00:29:53,280
+So you first try to formally verify P, then you formally verify Q, and then you formally verify this part.
+
+327
+00:29:53,280 --> 00:29:57,440
+And then you can combine the results. So, the strength of this technique is
+
+328
+00:29:57,440 --> 00:30:04,880
+that you can look at the components of the program in isolation, analyze them in isolation,
+
+329
+00:30:04,880 --> 00:30:13,120
+and then combine the results to get a result about the entire program.
+
+330
+00:30:13,120 --> 00:30:21,520
+Good. This was for sequential programs. And then actually Amir Pnueli from Israel, he developed a syntax-based technique.
+
+331
+00:30:21,520 --> 00:30:24,680
+So, he tried to extend this for concurrent programs.
+
+332
+00:30:24,680 --> 00:30:28,920
+So, he was saying, "Now, we don't have a sequential program, but maybe we have
+
+333
+00:30:28,920 --> 00:30:33,720
+this program as a threat, and this threat runs in parallel to some other
+
+334
+00:30:33,720 --> 00:30:38,280
+program that does I don't know what Q followed by by T."
+
+335
+00:30:38,280 --> 00:30:46,120
+And his philosophy was similar. Can we now analyze this part in isolation of this part as far as
+
+336
+00:30:46,120 --> 00:30:51,720
+possible, and then try to combine the results?
+
+337
+00:30:51,720 --> 00:30:55,864
+And he was the father of introducing actually temporal logics.
+
+338
+00:30:55,864 --> 00:31:00,360
+And temporal logics are the logic that we are going to use in this lecture as well.
+
+339
+00:31:00,360 --> 00:31:07,920
+So, here it was predicate logic. It was enough to make statements about the precondition, the start of the program,
+
+340
+00:31:07,920 --> 00:31:14,800
+the postcondition, the end of the program. Pnueli developed a technique where he was
+
+341
+00:31:14,800 --> 00:31:20,994
+mentioning and he was stressing the fact that it's also important to make statements about what happens during the program.
+
+342
+00:31:20,994 --> 00:31:25,240
+And for that, he actually used temporal logic.
+
+343
+00:31:25,240 --> 00:31:26,856
+He is not a developer of temporal logics.
+
+344
+00:31:26,856 --> 00:31:31,840
+Temporal logics have already been developed for instance in philosophy in the '50s, but he was one
+
+345
+00:31:31,840 --> 00:31:34,680
+of the first to introduce it into computer science.
+
+346
+00:31:34,680 --> 00:31:46,200
+Famous paper in 1977 Fox. Okay? So, basically Pnueli generalized what what Hoare was doing, but then for concurrent programs.
+
+347
+00:31:46,200 --> 00:31:50,360
+And then people found out that maybe what we would like to do is to do an
+
+348
+00:31:50,360 --> 00:31:58,440
+automated verification, because these two techniques are you have to find invariants, you have to find those properties yourself,
+
+349
+00:31:58,440 --> 00:32:01,235
+maybe with the assistance of a theorem prover, but it's hard.
+
+350
+00:32:01,235 --> 00:32:06,748
+Maybe we can do a little bit more modest, try to restrict ourselves to finite instances.
+
+351
+00:32:06,748 --> 00:32:09,340
+So, we're not going to solve the entire problem.
+
+352
+00:32:09,340 --> 00:32:17,240
+Of course not, because that's undecidable. But try to restrict ourselves to finite instances.
+
+353
+00:32:17,240 --> 00:32:26,200
+typically hardware has finitely many states. So, the first actually popular application was hardware verification, not software verification.
+
+354
+00:32:26,200 --> 00:32:33,640
+And there the idea was rather than using proof rules, we're going to use models of the system.
+
+355
+00:32:33,640 --> 00:32:40,400
+And then the question is does a model of for instance a concurrent program satisfy a certain property?
+
+356
+00:32:40,400 --> 00:32:48,600
+And these properties are typically specified in logic, and there are people are using different variations of temporal logics.
+
+357
+00:32:48,600 --> 00:32:54,920
+So, here are some slides of Here's one example of the rules that This is the Hoare approach.
+
+358
+00:32:54,920 --> 00:33:02,640
+So, this is the approach here, the syntax-based technique for sequential programs, later extended by Pnueli.
+
+359
+00:33:02,640 --> 00:33:07,650
+And what you see here is that for instance what can you say about an assignment?
+
+360
+00:33:07,650 --> 00:33:11,160
+So, the way to read this is that if the top is true, you can
+
+361
+00:33:11,160 --> 00:33:14,720
+conclude what is written down below the line.
+
+362
+00:33:14,720 --> 00:33:17,560
+If there is nothing, it simply means true.
+
+363
+00:33:17,560 --> 00:33:21,160
+So, the premise here is true, and the proof rule says suppose that I look at
+
+364
+00:33:21,160 --> 00:33:26,560
+an assignment that that I basically assign to X the expression E.
+
+365
+00:33:26,560 --> 00:33:33,265
+Now, if my postcondition is a formula A, then what is the precondition?
+
+366
+00:33:33,265 --> 00:33:38,640
+This is A where you basically have replaced X by E.
+
+367
+00:33:38,640 --> 00:33:40,504
+So, the way is that you reason backwards.
+
+368
+00:33:40,504 --> 00:33:45,679
+That's maybe a bit counterintuitive for you, but you start with the postcondition, and you are
+
+369
+00:33:45,679 --> 00:33:49,920
+going to argue if this holds, what is then the the precondition?
+
+370
+00:33:49,920 --> 00:33:53,760
+Here is something for a loop. Suppose that the loop body is P,
+
+371
+00:33:53,760 --> 00:34:00,920
+and suppose we know that if I stands for an invariant, and Boolean condition B holds when P
+
+372
+00:34:00,920 --> 00:34:07,840
+starts, P will terminate and will establish the postcondition, it will still the invariant will still hold.
+
+373
+00:34:07,840 --> 00:34:10,892
+What can you then say about the loop while B do P?
+
+374
+00:34:10,892 --> 00:34:18,120
+Then you can say the following. If the while loop starts in a state satisfying the invariant,
+
+375
+00:34:18,120 --> 00:34:26,000
+then on termination, the invariant will still hold, and because the loop has terminated, also the negation of the guard
+
+376
+00:34:26,000 --> 00:34:32,146
+has to hold. Good. The same you see here something about sequential composition.
+
+377
+00:34:32,146 --> 00:34:40,080
+If I want to prove that P followed by Q establishes C when it starts in a state A,
+
+378
+00:34:40,080 --> 00:34:42,186
+one way to prove this is by means of the following rule.
+
+379
+00:34:42,186 --> 00:34:47,600
+You take the two components, remember compositionality. I would like to prove something about P, I
+
+380
+00:34:47,600 --> 00:34:50,120
+would like to prove something about Q, and then combine.
+
+381
+00:34:50,120 --> 00:34:56,760
+That's what this rule illustrates. So, I try to prove this for P, I try to prove this for Q,
+
+382
+00:34:56,760 --> 00:35:03,520
+and what's essential is that this postcondition is equal to this precondition.
+
+383
+00:35:03,520 --> 00:35:08,400
+And of course you can also do I mean you have logical rules that say
+
+384
+00:35:08,400 --> 00:35:13,560
+for instance if I would like to if I know that P starting in a state
+
+385
+00:35:13,560 --> 00:35:20,680
+satisfying A prime will terminate and then establishes B prime, and suppose I can prove that A implies A
+
+386
+00:35:20,680 --> 00:35:25,080
+prime, then I can replace this A prime by A.
+
+387
+00:35:25,080 --> 00:35:29,280
+Because I know if for every state that A prime it starts with it will
+
+388
+00:35:29,280 --> 00:35:33,560
+establish B prime, then of course if A implies A prime, then also for every
+
+389
+00:35:33,560 --> 00:35:38,800
+state where A where it starts in A, P will establish in the end well, B
+
+390
+00:35:38,800 --> 00:35:43,040
+prime, but if B prime implies B, I can also put B there.
+
+391
+00:35:43,040 --> 00:35:46,560
+So, here you see that you do not always have to have exactly B, but this
+
+392
+00:35:46,560 --> 00:35:50,680
+rule allows you to actually do also implications.
+
+393
+00:35:50,680 --> 00:35:54,800
+Good. I don't want to go in depth in this, but this is only to illustrate
+
+394
+00:35:54,800 --> 00:36:00,120
+these techniques, and these were the techniques before model checking started.
+
+395
+00:36:00,120 --> 00:36:02,380
+And don't get me wrong, these techniques do still exist.
+
+396
+00:36:02,380 --> 00:36:05,320
+They have their existence in their own right.
+
+397
+00:36:05,320 --> 00:36:10,359
+Absolutely. I only want to schedule here or or tell you what have been the developments of
+
+398
+00:36:10,359 --> 00:36:18,000
+formal verification over the years. by the way, all these people I mean apart from Turing himself, Hoare,
+
+399
+00:36:18,000 --> 00:36:24,760
+Pnueli, the people for that developed model checking, they all received the Turing Award.
+
+400
+00:36:24,760 --> 00:36:30,600
+So, here is an overview of what model checking does.
+
+401
+00:36:30,600 --> 00:36:37,000
+And this is also giving you some indication what we are going to do in this in this lecture series.
+
+402
+00:36:37,000 --> 00:36:39,840
+So, the idea is that you start with requirements.
+
+403
+00:36:39,840 --> 00:36:43,840
+You have to formalize them. Why do you have to formalize them?
+
+404
+00:36:43,840 --> 00:36:48,560
+Because I want my to know exactly the property that we need to check.
+
+405
+00:36:48,560 --> 00:36:50,640
+It cannot be some kind of vague statement.
+
+406
+00:36:50,640 --> 00:37:01,320
+It needs to be a precise unambiguous formulation where we start from.
+
+407
+00:37:01,320 --> 00:37:05,620
+This is the phase that we are not going to take in this lecture series.
+
+408
+00:37:05,620 --> 00:37:11,200
+We will start from a property specification, and this it will be done in terms of logics.
+
+409
+00:37:11,200 --> 00:37:16,560
+I only want to stress that this part in practice turns out to be very hard.
+
+410
+00:37:16,560 --> 00:37:22,920
+So, we we recently last year did two case studies for Ford, the car manufacturer,
+
+411
+00:37:22,920 --> 00:37:29,160
+and we looked at the software of about 5,000 to 10,000 lines of code.
+
+412
+00:37:29,160 --> 00:37:34,520
+And the the the question by Ford was can you do formal verification of our thing?
+
+413
+00:37:34,520 --> 00:37:37,160
+Okay, we said, "Okay, give us the requirements."
+
+414
+00:37:37,160 --> 00:37:45,480
+So, they gave us a thick document. 40% of all the things we found were bugs, inconsistencies, unclarities in
+
+415
+00:37:45,480 --> 00:37:53,440
+the requirements. So, because we had to do this, and of course certain requirements were incomplete.
+
+416
+00:37:53,440 --> 00:37:56,120
+Yeah, yeah, then the engineers said, "Yeah, yeah, but this is common knowledge."
+
+417
+00:37:56,120 --> 00:38:01,040
+Yeah, common knowledge maybe by the engineers, but not if you want to do formal verification, right?
+
+418
+00:38:01,040 --> 00:38:03,880
+So, what I'm saying is that this is a phase that we are not going to confront
+
+419
+00:38:03,880 --> 00:38:08,440
+with in this lecture, but it's not something that you should neglect.
+
+420
+00:38:08,440 --> 00:38:13,400
+Then the system is modeled by some system model, typically a kind of transition system.
+
+421
+00:38:13,400 --> 00:38:19,720
+And then the both the property specification and the model are given to a model checker.
+
+422
+00:38:19,720 --> 00:38:24,240
+And now typically there are three possible outcomes.
+
+423
+00:38:24,240 --> 00:38:29,920
+So, here are many algorithms. And in this lecture we are going to focus basically on what is in this
+
+424
+00:38:29,920 --> 00:38:39,000
+yellow box. There are possible outcomes satisfied. Satisfied means this model satisfies this property.
+
+425
+00:38:39,000 --> 00:38:46,400
+If you do this wrong, rubbish in, rubbish out.
+
+426
+00:38:46,400 --> 00:38:51,760
+If the model is not the model you want to check, no guarantees about the results of the
+
+427
+00:38:51,760 --> 00:38:56,840
+model checking. So, the assumption is always the model is an adequate representation of the system, the
+
+428
+00:38:56,840 --> 00:39:03,480
+property is an adequate representation of the requirement, and then you can do model checking.
+
+429
+00:39:03,480 --> 00:39:05,508
+So, this means the model satisfies the property.
+
+430
+00:39:05,508 --> 00:39:09,520
+It does not mean the system satisfies the property.
+
+431
+00:39:09,520 --> 00:39:12,560
+It could be the case that the property is violated.
+
+432
+00:39:12,560 --> 00:39:17,320
+And then the strength of model checking is that model checking will also give you a counterexample.
+
+433
+00:39:17,320 --> 00:39:23,680
+So, it will give you diagnostic information why the model is violating the property.
+
+434
+00:39:23,680 --> 00:39:28,800
+And this is very helpful. And this is why some people actually claim
+
+435
+00:39:28,800 --> 00:39:33,320
+that model checking is most useful as a kind of a clever debugging technique.
+
+436
+00:39:33,320 --> 00:39:37,720
+Because if it's you find a bug, you get some information, and maybe you can fix
+
+437
+00:39:37,720 --> 00:39:42,520
+at least what you're doing. So, typically you get a counterexample, you can simulate the counterexample,
+
+438
+00:39:42,520 --> 00:39:45,400
+hopefully get some information about where is the bug.
+
+439
+00:39:45,400 --> 00:39:49,400
+and then help this is helpful maybe to fix what you're supposed to do.
+
+440
+00:39:49,400 --> 00:39:51,697
+Sometimes this means that you have to fix the model.
+
+441
+00:39:51,697 --> 00:39:55,057
+Sometimes it turns out that you're not checking the property you want to check.
+
+442
+00:39:55,057 --> 00:39:58,040
+So, maybe you made a mistake here and you have to go back.
+
+443
+00:39:58,040 --> 00:40:02,840
+And sometimes you found a real mistake. That's also possible.
+
+444
+00:40:02,840 --> 00:40:05,720
+And then there is a third possible outcome.
+
+445
+00:40:05,720 --> 00:40:12,720
+this says it's insufficient memory. this simply means a segmentation fault core dump.
+
+446
+00:40:12,720 --> 00:40:16,120
+This simply means that your model is too big to be handled.
+
+447
+00:40:16,120 --> 00:40:23,280
+So, one of the main issues in model checking is try to treat the largest models possible.
+
+448
+00:40:23,280 --> 00:40:28,440
+And models are millions of states, billions of states, trillions of states.
+
+449
+00:40:28,440 --> 00:40:37,760
+Okay? So, there actually clever techniques are needed to reduce these kind of outcomes.
+
+450
+00:40:37,760 --> 00:40:42,760
+Okay, I just want to show you the influence of model checking by a couple of results.
+
+451
+00:40:42,760 --> 00:40:45,680
+And I mention here a couple of awards.
+
+452
+00:40:45,680 --> 00:40:49,120
+And one of the award is the Paris Kanellakis Theory and Practice Award.
+
+453
+00:40:49,120 --> 00:40:56,120
+Paris Kanellakis was a famous Greek researcher in algorithmics.
+
+454
+00:40:56,120 --> 00:40:59,280
+Unfortunately, he died in an in an airplane crash.
+
+455
+00:40:59,280 --> 00:41:04,760
+but after that there were initiated this Paris Kanellakis and Theory Award.
+
+456
+00:41:04,760 --> 00:41:11,200
+And these four people, Randy Bryant, Ed Clarke, Allen Emerson, and Ken McMillan, they received this prize.
+
+457
+00:41:11,200 --> 00:41:16,280
+And I took this text for the invention of a model checking technique which is called symbolic.
+
+458
+00:41:16,280 --> 00:41:23,973
+And this is a technique that actually is used heavily to try to combat this state space explosion problem.
+
+459
+00:41:23,973 --> 00:41:28,240
+So, to deal with enormous large state spaces.
+
+460
+00:41:28,240 --> 00:41:34,640
+Still finite, but enormous large. So, what they do is symbolic model checking a method of formally
+
+461
+00:41:34,640 --> 00:41:39,560
+checking system designs, which is widely used in the computer hardware industry.
+
+462
+00:41:39,560 --> 00:41:43,480
+And this is 1998, right? So, 20 years ago.
+
+463
+00:41:43,480 --> 00:41:49,440
+Hardware industry. and starts to show significant promise also in software verification.
+
+464
+00:41:49,440 --> 00:41:55,560
+So, I will tell you that later. Nowadays, in software verification, I have some examples, people are using
+
+465
+00:41:55,560 --> 00:42:00,000
+more and more model checking. Some other winners of the same prize to give you some indication about the
+
+466
+00:42:00,000 --> 00:42:06,200
+importance of this prize. Page Tajan. Page Tajan developed things like
+
+467
+00:42:06,200 --> 00:42:12,640
+balanced trees, play trees, all kind of data structures that you can use to do efficient operations.
+
+468
+00:42:12,640 --> 00:42:19,560
+depth-first search, one of the key algorithms for graphs, is developed by Robert Tarjan.
+
+469
+00:42:19,560 --> 00:42:24,840
+minimization algorithms for automata, which is a standard kind of technique.
+
+470
+00:42:24,840 --> 00:42:27,840
+They developed a very efficient algorithm to do this.
+
+471
+00:42:27,840 --> 00:42:30,776
+Which is logarithmically in the number of states.
+
+472
+00:42:30,776 --> 00:42:36,640
+Page Tajan partition refinement algorithm. Rivest, RSA cryptography.
+
+473
+00:42:36,640 --> 00:42:41,948
+Rivest, the R is from Rivest. So, this is some indication about this prize.
+
+474
+00:42:41,948 --> 00:42:46,320
+Another one is the Gödel Prize. Gödel Prize is an important prize in mathematics.
+
+475
+00:42:46,320 --> 00:42:52,000
+this has been awarded in 2000 to Moshe Vardi and Pierre Wolper.
+
+476
+00:42:52,000 --> 00:42:55,600
+Moshe Vardi is someone from Israel.
+
+477
+00:42:55,600 --> 00:43:00,080
+He's currently in the US. he's a famous guy in theory.
+
+478
+00:43:00,080 --> 00:43:05,280
+Logics, automata, games, AI, knowledge logics, and so forth.
+
+479
+00:43:05,280 --> 00:43:08,920
+Pierre Wolper is in actually in Liège, around the corner here.
+
+480
+00:43:08,920 --> 00:43:13,440
+He's currently the dean of the of the engineering department there.
+
+481
+00:43:13,440 --> 00:43:17,360
+And they divide the they got this prize for work on model checking with finite automata.
+
+482
+00:43:17,360 --> 00:43:23,937
+So, they were the first to use old-fashioned finite state automata to do model model checking.
+
+483
+00:43:23,937 --> 00:43:27,320
+And that's the theory we also going to see in this lecture.
+
+484
+00:43:27,320 --> 00:43:32,880
+Some other winners. this is this is hard to pronounce.
+
+485
+00:43:32,880 --> 00:43:39,280
+he proved that something about deterministic pushdown automaton versus non-deterministic pushdown automata.
+
+486
+00:43:39,280 --> 00:43:43,240
+Agrawal et al. are those famous people from India that showed that if you would
+
+487
+00:43:43,240 --> 00:43:48,320
+like to check whether a number is prime, you can do this in polynomial time.
+
+488
+00:43:48,320 --> 00:43:52,560
+And Shor did something in quantum computing. He showed that certain algorithms can be much much faster if
+
+489
+00:43:52,560 --> 00:43:59,440
+you have quantum computing. What I like personally a lot is not just theory, but also to bring this theory
+
+490
+00:43:59,440 --> 00:44:06,160
+into practice. And there is the ACM System Software Award, an annual award awarded by the
+
+491
+00:44:06,160 --> 00:44:12,874
+largest society in computer science, ACM. They award this prize to the things you are aware of.
+
+492
+00:44:12,874 --> 00:44:19,280
+The developers of tech, the developers of PostScript, the developers of Unix, TCP/IP, Java, Smalltalk.
+
+493
+00:44:19,280 --> 00:44:20,550
+maybe you don't know what is Smalltalk.
+
+494
+00:44:20,550 --> 00:44:26,275
+Smalltalk is an object-oriented language that was the pre-pre-pre-predecessor of C++ and so forth.
+
+495
+00:44:26,275 --> 00:44:36,359
+They all got this award. Holzmann, he is the person that actually built the first model checker.
+
+496
+00:44:36,359 --> 00:44:37,906
+I'm not sure whether this is completely true.
+
+497
+00:44:37,906 --> 00:44:40,880
+The first large model checker, let's put it that way.
+
+498
+00:44:40,880 --> 00:44:42,854
+that's called Spin. You can download it.
+
+499
+00:44:42,854 --> 00:44:47,440
+If you want to play with model checking, I strongly advise you to download this tool.
+
+500
+00:44:47,440 --> 00:44:51,800
+there's also a book called the Spin Model Checker that gives the details.
+
+501
+00:44:51,800 --> 00:44:58,160
+And Spin is a popular open-source software tool used by thousands of people worldwide that is used for the
+
+502
+00:44:58,160 --> 00:45:06,300
+formal verification of distributed software systems. Good. And the last thing that I already mentioned was the Turing Awards.
+
+503
+00:45:06,300 --> 00:45:09,840
+Clarke, Emerson, and Sifakis. And this is a bit of a story.
+
+504
+00:45:09,840 --> 00:45:14,650
+So, in 1981, there were two papers. One paper written by Clarke.
+
+505
+00:45:14,650 --> 00:45:18,760
+And at those days, his PhD student, Allen Emerson.
+
+506
+00:45:18,760 --> 00:45:22,520
+And there was another paper written by two French people.
+
+507
+00:45:22,520 --> 00:45:31,840
+Joseph Sifakis, Grenoble, and his student, Queille. Queille, very soon after his PhD, quit science.
+
+508
+00:45:31,840 --> 00:45:35,280
+maybe that's the reason why he's not mentioned here.
+
+509
+00:45:35,280 --> 00:45:40,680
+but those three people got the Turing Award in actually in 2007.
+
+510
+00:45:40,680 --> 00:45:45,320
+And for their role in developing model checking into a highly effective verification technique widely adopted
+
+511
+00:45:45,320 --> 00:45:49,840
+now in hardware and software. So, you see the change from 1998, hardware.
+
+512
+00:45:49,840 --> 00:45:54,880
+10 years later, also software. Other winners of the Turing Award, I guess you know them all.
+
+513
+00:45:54,880 --> 00:46:05,000
+Edsger Dijkstra, Stephen Cook, Tony Hoare, Robin Scott, non-deterministic automata, etc. Okay.
+
+514
+00:46:05,000 --> 00:46:07,280
+So, what is model checking in a nutshell?
+
+515
+00:46:07,280 --> 00:46:11,440
+model checking is an automated technique, so we will talk a lot about
+
+516
+00:46:11,440 --> 00:46:17,520
+algorithms, that takes as input a finite state model, a formal property, typically written down in terms of a
+
+517
+00:46:17,520 --> 00:46:23,240
+temporal logic, in a logical formula. And what it does, it systematically checks whether the
+
+518
+00:46:23,240 --> 00:46:27,000
+property holds for that model or for a given state.
+
+519
+00:46:27,000 --> 00:46:29,280
+For instance, the state in which the system will start.
+
+520
+00:46:29,280 --> 00:46:34,920
+That's the typical kind of thing. What are models?
+
+521
+00:46:34,920 --> 00:46:38,400
+This is a model of a mutual exclusion algorithm.
+
+522
+00:46:38,400 --> 00:46:42,554
+There are two threads. there's an algorithm that we're going to describe later in detail.
+
+523
+00:46:42,554 --> 00:46:46,840
+It's called Peterson's Bakery Algorithm. what is a bakery algorithm?
+
+524
+00:46:46,840 --> 00:46:50,680
+You go to on Saturday morning, you go to a bakery shop.
+
+525
+00:46:50,680 --> 00:46:52,906
+Everybody wants to get fresh bread on Saturday, right?
+
+526
+00:46:52,906 --> 00:46:55,146
+So, there's a long queue. So, what do you have to do?
+
+527
+00:46:55,146 --> 00:47:00,640
+You have to get your ticket. There's those numbers on the screen that tells you when it's your turn.
+
+528
+00:47:00,640 --> 00:47:02,560
+So, you come in, you pick a new ticket.
+
+529
+00:47:02,560 --> 00:47:07,160
+And if it's your ticket is shown on the display, you get your turn.
+
+530
+00:47:07,160 --> 00:47:10,680
+So, this is the core actually of this Peterson's algorithm.
+
+531
+00:47:10,680 --> 00:47:16,359
+And what is this? This is a for two threads, but it also generalizes to many more threads.
+
+532
+00:47:16,359 --> 00:47:22,293
+And this is a transition system, so then automaton, where you keep track of the states of every thread.
+
+533
+00:47:22,293 --> 00:47:25,233
+So, the subscript one tells you something about thread number one.
+
+534
+00:47:25,233 --> 00:47:28,306
+Subscript two tells you something about thread number two.
+
+535
+00:47:28,306 --> 00:47:31,020
+And apparently, thread number one has a variable called X1.
+
+536
+00:47:31,020 --> 00:47:36,160
+Thread number two has a variable X2. These are the ticket numbers.
+
+537
+00:47:36,160 --> 00:47:41,800
+We start with zero. And then you see those ticket numbers increase, zero, two, zero, three, etc. This is actually
+
+538
+00:47:41,800 --> 00:47:45,760
+a model which is infinite. So, this is an automaton or a transition
+
+539
+00:47:45,760 --> 00:47:51,640
+system, as we're going to call it, which is infinite, countably infinite many states.
+
+540
+00:47:51,640 --> 00:47:54,280
+and this is an example of a model.
+
+541
+00:47:54,280 --> 00:47:57,970
+Okay? what are we going to learn?
+
+542
+00:47:57,970 --> 00:48:02,200
+So, we're going to learn in this lecture series that these models are called transition systems.
+
+543
+00:48:02,200 --> 00:48:06,620
+What are transition systems in a nutshell? And we get to the formal definitions, of course, in the next lecture.
+
+544
+00:48:06,620 --> 00:48:13,400
+We have states. States are labeled with some basic properties propositions, properties.
+
+545
+00:48:13,400 --> 00:48:18,320
+Maybe in this in this state, we would like to say that X1 is
+
+546
+00:48:18,320 --> 00:48:21,480
+is at least zero or X2 is less than 10.
+
+547
+00:48:21,480 --> 00:48:27,120
+These are kind of elementary basic properties. So, these are logical statements about
+
+548
+00:48:27,120 --> 00:48:31,800
+the state of your program, the state of your hardware, the state of your traffic light,
+
+549
+00:48:31,800 --> 00:48:40,040
+the state of your car, etc. You have transitions between states that tells you how the system evolves.
+
+550
+00:48:40,040 --> 00:48:46,400
+By for instance, in terms of a program executing a statement, and you go to the next state.
+
+551
+00:48:46,400 --> 00:48:49,314
+And these transitions actually are labeled. And why is this?
+
+552
+00:48:49,314 --> 00:48:56,320
+Because I would like to build those automata, those systems like this, not as this big spaghetti structure,
+
+553
+00:48:56,320 --> 00:49:00,320
+but I hope to be able to start with the model for thread number one, the model
+
+554
+00:49:00,320 --> 00:49:04,051
+for thread number two. Hopefully, they are concise and comprehensible.
+
+555
+00:49:04,051 --> 00:49:10,240
+And then I would like to have means to combine these models into one model which looks like this.
+
+556
+00:49:10,240 --> 00:49:14,293
+So, compositionality, but not in this sense, but in the sense of combining models.
+
+557
+00:49:14,293 --> 00:49:19,440
+And that's what we're going to do by means of labeling those transitions with actions.
+
+558
+00:49:19,440 --> 00:49:24,640
+So, it's not an automaton that you feed with a word, and based on the next symbol that
+
+559
+00:49:24,640 --> 00:49:32,880
+automaton makes a decision. Here the symbols will be used to combine things.
+
+560
+00:49:32,880 --> 00:49:37,893
+Okay, what we are going to see, and we're going to start with this next week.
+
+561
+00:49:37,893 --> 00:49:45,400
+I'm going to show you that transition systems are the model that is key to model all kind of different
+
+562
+00:49:45,400 --> 00:49:49,960
+things. So if you like computer programs, we're going to see that actually a computer
+
+563
+00:49:49,960 --> 00:49:52,840
+program can be represented by a transition system.
+
+564
+00:49:52,840 --> 00:49:57,640
+So we're going to see how you can map from code to a transition system.
+
+565
+00:49:57,640 --> 00:50:01,182
+Then we're going to show that multi-threading. So you have now parallelism.
+
+566
+00:50:01,182 --> 00:50:05,440
+Also this can be modeled by means of transition systems.
+
+567
+00:50:05,440 --> 00:50:13,840
+Even if those threads are communicating which means either they have a shared variable or they have some communication means
+
+568
+00:50:13,840 --> 00:50:18,280
+like a channel and one thread can send a message to another thread.
+
+569
+00:50:18,280 --> 00:50:20,280
+This can all be represented by transition systems.
+
+570
+00:50:20,280 --> 00:50:25,560
+I'm going to show you that you can model hardware circuits as transition systems.
+
+571
+00:50:25,560 --> 00:50:32,104
+So actually what this means we're going to focus from there on on model checking transition systems.
+
+572
+00:50:32,104 --> 00:50:34,640
+So the models that we're going to use are transition systems.
+
+573
+00:50:34,640 --> 00:50:41,685
+And the first thing I'm going to show this that many things not all but many things are transition systems.
+
+574
+00:50:41,685 --> 00:50:45,240
+If you like Petri nets, Petri nets are transition systems.
+
+575
+00:50:45,240 --> 00:50:51,080
+etc. So these are models. What are properties?
+
+576
+00:50:51,080 --> 00:50:53,960
+Now let's first look at some example properties.
+
+577
+00:50:53,960 --> 00:50:58,753
+you would like to check whether the system can at some point reach a deadlock situation.
+
+578
+00:50:58,753 --> 00:51:03,680
+A a situation where no progress can be made.
+
+579
+00:51:03,680 --> 00:51:09,560
+Yeah, this is typically bad. Typically. Termination of a program is also a
+
+580
+00:51:09,560 --> 00:51:11,520
+state where you do not make any further progress.
+
+581
+00:51:11,520 --> 00:51:19,080
+That's typically good, not bad. can two processes so think about something that you have a system
+
+582
+00:51:19,080 --> 00:51:25,880
+that is sharing a resource and you would like to have that only one
+
+583
+00:51:25,880 --> 00:51:28,960
+process at a time can use the shared resource.
+
+584
+00:51:28,960 --> 00:51:35,120
+Things like mutual exclusion. You would like to check can two processes ever be simultaneously in a critical section?
+
+585
+00:51:35,120 --> 00:51:38,040
+That's a situation you typically like to avoid.
+
+586
+00:51:38,040 --> 00:51:41,120
+So this is a property that you like to express.
+
+587
+00:51:41,120 --> 00:51:44,960
+So actually we're going to use quite a couple of mutual exclusion algorithms
+
+588
+00:51:44,960 --> 00:51:48,880
+and typical kind of properties to to show how this works.
+
+589
+00:51:48,880 --> 00:51:52,600
+If the program has terminated, does the program provide the correct end output?
+
+590
+00:51:52,600 --> 00:51:57,280
+That means is the output corresponding to the post condition?
+
+591
+00:51:57,280 --> 00:52:01,080
+And what we're going to do in this lecture, we're going to use logics.
+
+592
+00:52:01,080 --> 00:52:12,080
+So we're going to use propositional logic and or negation etc. standard stuff.
+
+593
+00:52:12,080 --> 00:52:15,240
+And we're going to equip this with some model operators.
+
+594
+00:52:15,240 --> 00:52:23,440
+things like always, it's always true that a certain property holds or this thing is called eventually
+
+595
+00:52:23,440 --> 00:52:30,720
+which means eventually you reach a state that satisfies the property in quotes eventually.
+
+596
+00:52:30,720 --> 00:52:36,040
+the main paradigm shift with the lecture you are con- I mean you're aware
+
+597
+00:52:36,040 --> 00:52:44,640
+of in automata theory is actually now we go from finite words finite state automata to infinite words.
+
+598
+00:52:44,640 --> 00:52:52,920
+So actually we're going to interpret these kind of formulas not on finite sequences but on infinite sequences.
+
+599
+00:52:52,920 --> 00:52:56,592
+Yeah. That's one paradigm. They call this the linear paradigm.
+
+600
+00:52:56,592 --> 00:53:05,960
+They have linear temporal logics that are interpreted over linear structures and our linear structures will be infinite sequences of
+
+601
+00:53:05,960 --> 00:53:12,600
+states. There is also the possibility to interpret logics over infinite trees.
+
+602
+00:53:12,600 --> 00:53:17,440
+and then what we call we we call these logics branching logics.
+
+603
+00:53:17,440 --> 00:53:27,520
+And what we're going to do we also going to see some logics that actually are interpreted over infinite trees.
+
+604
+00:53:27,520 --> 00:53:34,000
+Good. I have a one example. It's it's a piece of code from the NASA's Deep Space One spacecraft
+
+605
+00:53:34,000 --> 00:53:42,240
+abstracted a lot. And people have used in particular Holzmann and his team, the guy that developed Spin.
+
+606
+00:53:42,240 --> 00:53:47,760
+by the way, he is the head of the group in the Jet Propulsion Laboratory in Pasadena
+
+607
+00:53:47,760 --> 00:53:51,800
+which is part of NASA. So he's now applying this kind of stuff to to NASA
+
+608
+00:53:51,800 --> 00:53:53,714
+and actually at those days he was already doing this.
+
+609
+00:53:53,714 --> 00:53:59,400
+This is the a picture of the NASA Deep Space One spacecraft spacecraft and he has applied
+
+610
+00:53:59,400 --> 00:54:03,800
+model checking to several modules of this spacecraft.
+
+611
+00:54:03,800 --> 00:54:06,220
+So one example I like to give you is this program fragment.
+
+612
+00:54:06,220 --> 00:54:10,120
+We have three threads and one shared variable.
+
+613
+00:54:10,120 --> 00:54:14,880
+The shared variable is called X here. And the property we're interested in is
+
+614
+00:54:14,880 --> 00:54:19,440
+X always between and including 0 and 200.
+
+615
+00:54:19,440 --> 00:54:24,520
+So in terms of a logical formula we're later going to see we're going to express this as box
+
+616
+00:54:24,520 --> 00:54:28,616
+0 at most X at most 200.
+
+617
+00:54:28,616 --> 00:54:37,359
+That's the property. And what's the system? The system is a three-threaded system.
+
+618
+00:54:37,359 --> 00:54:41,560
+We have a thread inc. It says it's an infinite loop.
+
+619
+00:54:41,560 --> 00:54:46,400
+If X is strictly less than 200, increment X by 1.
+
+620
+00:54:46,400 --> 00:54:48,866
+The second thread is similar but decrements X.
+
+621
+00:54:48,866 --> 00:54:52,280
+So it says okay, I have an infinite loop.
+
+622
+00:54:52,280 --> 00:54:58,800
+If X is larger than 0, then decrement X by 1.
+
+623
+00:54:58,800 --> 00:55:01,840
+And here you have a process reset.
+
+624
+00:55:01,840 --> 00:55:06,040
+It says if X is 200, then we start in 0 again.
+
+625
+00:55:06,040 --> 00:55:18,920
+Okay. My question to you is the property is X always between 0 and 200 true?
+
+626
+00:55:18,920 --> 00:55:25,693
+if X is 200 and then the inc was X is 200.
+
+627
+00:55:25,693 --> 00:55:29,680
+Yes? Yeah, and then the second process was executed.
+
+628
+00:55:29,680 --> 00:55:32,325
+The second process test whether X is larger than 0.
+
+629
+00:55:32,325 --> 00:55:38,093
+So the critical section but then the last thread was executed.
+
+630
+00:55:38,093 --> 00:55:43,720
+This one executes first, X becomes 0. Yeah, and then the X becomes And then X goes down.
+
+631
+00:55:43,720 --> 00:55:48,800
+So X becomes minus 1. Yeah. Agree?
+
+632
+00:55:48,800 --> 00:55:51,320
+Yeah. Now you can also model check this.
+
+633
+00:55:51,320 --> 00:55:55,200
+So this is the code that you can put into the Spin model checker.
+
+634
+00:55:55,200 --> 00:55:59,680
+the input language is called Promela. I only use a fragment of it and that's my
+
+635
+00:55:59,680 --> 00:56:02,114
+quote of the fragment. It's a nano fragment of Promela.
+
+636
+00:56:02,114 --> 00:56:06,215
+So here you see initially we have a global variable X set to 0.
+
+637
+00:56:06,215 --> 00:56:09,880
+We have three threads inc, dec, and reset.
+
+638
+00:56:09,880 --> 00:56:15,320
+And we have the main module. The main module says okay, you run inc,
+
+639
+00:56:15,320 --> 00:56:20,120
+you run dec, and you run reset. And I do this automatically which means I don't
+
+640
+00:56:20,120 --> 00:56:24,262
+want to have any difference between first starting inc then first starting dec.
+
+641
+00:56:24,262 --> 00:56:27,600
+I would like to start them at the same time basically.
+
+642
+00:56:27,600 --> 00:56:30,850
+so this could make already one step and that could make one step.
+
+643
+00:56:30,850 --> 00:56:37,200
+I first would like that those threads are doing a step if only they have started all together.
+
+644
+00:56:37,200 --> 00:56:40,300
+That's why I use this atomic statement. Good.
+
+645
+00:56:40,300 --> 00:56:44,840
+The rest of the code is literally a one-to-one correspondence to what we have seen before.
+
+646
+00:56:44,840 --> 00:56:49,520
+Do stands for while. So do what is a loop.
+
+647
+00:56:49,520 --> 00:56:57,120
+If the guard is true, then if X is strictly less than 200, increment X by 1.
+
+648
+00:56:57,120 --> 00:56:59,750
+This is the decrement thing. It says okay, infinite loop.
+
+649
+00:56:59,750 --> 00:57:04,160
+If X is larger than 0, decrement X by 1.
+
+650
+00:57:04,160 --> 00:57:06,910
+And you have the reset that says okay, infinite loop.
+
+651
+00:57:06,910 --> 00:57:10,240
+If X equals 200, then set X to 0.
+
+652
+00:57:10,240 --> 00:57:16,000
+So the syntax here is that one equal sign means assignment.
+
+653
+00:57:16,000 --> 00:57:21,480
+I hate this. I mean assignment is not the same as equality, right?
+
+654
+00:57:21,480 --> 00:57:25,840
+It's the two different things to my opinion but okay, let's let's let's keep that.
+
+655
+00:57:25,840 --> 00:57:31,860
+and then you have to make another syntax for equality and then you get double this symbol.
+
+656
+00:57:31,860 --> 00:57:35,520
+Okay, you run this in your model checker.
+
+657
+00:57:35,520 --> 00:57:40,420
+how do you check this? First I have to express this property.
+
+658
+00:57:40,420 --> 00:57:43,173
+Now I did not introduce you temporal logics yet.
+
+659
+00:57:43,173 --> 00:57:45,920
+So what we're going to do is the following.
+
+660
+00:57:45,920 --> 00:57:57,480
+We're doing a small trick. And this trick is the following.
+
+661
+00:57:57,480 --> 00:58:04,040
+We're going to take inc. Then we had basically parallel I write it down here symbolically if dec.
+
+662
+00:58:04,040 --> 00:58:09,240
+And we had this reset process. And I take this whole system
+
+663
+00:58:09,240 --> 00:58:13,440
+and I'm going to put in parallel what I call a monitor.
+
+664
+00:58:13,440 --> 00:58:18,680
+So this is a kind of a process that has no side effects
+
+665
+00:58:18,680 --> 00:58:24,600
+but is going basically to check what are the other three inc, dec, and reset doing.
+
+666
+00:58:24,600 --> 00:58:29,000
+So syntactically this and this process is going to check.
+
+667
+00:58:29,000 --> 00:58:36,626
+So the idea is basically that this is a checker of what?
+
+668
+00:58:36,626 --> 00:58:43,120
+Well, that X is this. So the way to write this down in syntax
+
+669
+00:58:43,120 --> 00:58:47,300
+here is that okay, I call this process not monitor but check.
+
+670
+00:58:47,300 --> 00:58:56,582
+And what it does it asserts. Assert means you're going to check for all possible scenarios that this condition holds.
+
+671
+00:58:56,582 --> 00:58:59,080
+And this is exactly the condition we were interested in, right?
+
+672
+00:58:59,080 --> 00:59:03,840
+That X is between 0 and 200 including the bounds.
+
+673
+00:59:03,840 --> 00:59:09,400
+And now I changed my core. The core is now you inc, dec, reset, and the checker.
+
+674
+00:59:09,400 --> 00:59:15,126
+So basically you start this process. So think of this as a kind of a watchdog.
+
+675
+00:59:15,126 --> 00:59:20,165
+It monitors what's going on and it is going to raise an alarm if something goes wrong.
+
+676
+00:59:20,165 --> 00:59:28,200
+So it's going to raise an alarm if these three processes reach a state where X is not satisfying this
+
+677
+00:59:28,200 --> 00:59:32,720
+Boolean expression. So we run and this is the output.
+
+678
+00:59:32,720 --> 00:59:38,360
+So, that the problem Spin says error assertion violated.
+
+679
+00:59:38,360 --> 00:59:45,080
+Good. So, this means the model that we put into the model checker violates this assertion, which means
+
+680
+00:59:45,080 --> 00:59:50,760
+this monitor has found a state where X is not between these bounds.
+
+681
+00:59:50,760 --> 00:59:54,280
+Good. That's good to know. Now, you like to know why.
+
+682
+00:59:54,280 --> 00:59:58,013
+As already was pointed out, this is exactly this scenario that the model checker generates.
+
+683
+00:59:58,013 --> 01:00:01,000
+So, here you see it needs a couple of steps to do that.
+
+684
+01:00:01,000 --> 01:00:04,720
+So, it needed 600 so many steps to find this scenario.
+
+685
+01:00:04,720 --> 01:00:09,680
+But, it did this completely automated.
+
+686
+01:00:09,680 --> 01:00:14,120
+So, the crucial point is the following. You see here that there's exactly this
+
+687
+01:00:14,120 --> 01:00:20,600
+scenario that was sketched in line 609. The token was get So, reset the process reset was scheduled.
+
+688
+01:00:20,600 --> 01:00:23,920
+And it checks that X equals 200, which seems to be true.
+
+689
+01:00:23,920 --> 01:00:27,270
+And you can see that this is true because here you see that X was less than 200.
+
+690
+01:00:27,270 --> 01:00:34,320
+X is incremented by one, and apparently this was the last increment that made just X equal to 200.
+
+691
+01:00:34,320 --> 01:00:38,280
+So, equal X X here is just 200.
+
+692
+01:00:38,280 --> 01:00:41,560
+Now, you reset X to one to zero.
+
+693
+01:00:41,560 --> 01:00:48,240
+And then you see that basically decrements checked already before, namely here
+
+694
+01:00:48,240 --> 01:00:51,200
+decrement checked that here X is larger than zero.
+
+695
+01:00:51,200 --> 01:00:54,800
+This was true. This was true because X is equal to 100.
+
+696
+01:00:54,800 --> 01:00:58,160
+So, but you see the crucial point is that this has been reset to zero before
+
+697
+01:00:58,160 --> 01:01:01,520
+you decrement, and then X becomes minus one.
+
+698
+01:01:01,520 --> 01:01:04,080
+So, it's exactly the scenario you pointed out.
+
+699
+01:01:04,080 --> 01:01:08,840
+And now Spin also has the possibility to find you the shortest counterexample.
+
+700
+01:01:08,840 --> 01:01:12,880
+Maybe a counterexample that does not need to have 600 so many steps.
+
+701
+01:01:12,880 --> 01:01:15,857
+but gives you a shorter thing.
+
+702
+01:01:15,857 --> 01:01:23,160
+So, what you see here is that you get diagnostic information why the system does not satisfy the property.
+
+703
+01:01:23,160 --> 01:01:28,720
+And we're going to see how What is the machinery underneath to get these kind of counterexamples?
+
+704
+01:01:28,720 --> 01:01:31,920
+Good. How can you fix the error? What is the problem?
+
+705
+01:01:31,920 --> 01:01:38,400
+The problem is you test X. And then somebody else I mean, somebody else means another thread can come,
+
+706
+01:01:38,400 --> 01:01:42,314
+change X, and then you executed. You just checked the guard.
+
+707
+01:01:42,314 --> 01:01:49,160
+You executed the body. And in order to avoid this, you can fix this by saying for instance atomic if
+
+708
+01:01:49,160 --> 01:01:53,400
+you which means if you Everything that is in between those two braces
+
+709
+01:01:53,400 --> 01:01:58,655
+means that you do the test and the change of X as one atomic statement.
+
+710
+01:01:58,655 --> 01:02:02,770
+In terms of an atomic one transition. Okay?
+
+711
+01:02:02,770 --> 01:02:08,560
+So, now the scenario that was just sketched before that this thread checks whether X is
+
+712
+01:02:08,560 --> 01:02:13,080
+larger than zero, then this one checks that X equals 200, sets X to zero, and
+
+713
+01:02:13,080 --> 01:02:17,240
+then this one gets to minus one is not possible anymore.
+
+714
+01:02:17,240 --> 01:02:20,600
+Good. And now you can model check this.
+
+715
+01:02:20,600 --> 01:02:24,560
+And the model checker says property is satisfied.
+
+716
+01:02:24,560 --> 01:02:31,760
+Okay? Good. Okay. So, how do people use model checking?
+
+717
+01:02:31,760 --> 01:02:35,680
+So, I have three phases. First, you have to model your system.
+
+718
+01:02:35,680 --> 01:02:38,920
+You maybe can do some simulations to check whether the model is really as a
+
+719
+01:02:38,920 --> 01:02:43,240
+kind of first sanity check whether the model is really modeling your system.
+
+720
+01:02:43,240 --> 01:02:47,520
+Then you formalize the property to be checked in logics.
+
+721
+01:02:47,520 --> 01:02:52,320
+Now, you run the model checker. This is push button.
+
+722
+01:02:52,320 --> 01:03:00,125
+I recently gave a was giving a talk about model checking at at Bosch R&D.
+
+723
+01:03:00,125 --> 01:03:04,411
+and I told them, "Yeah, it's push button, but you need to know which which button to push."
+
+724
+01:03:04,411 --> 01:03:08,480
+I mean, typically it's not just one button, but you get a whole menu of buttons.
+
+725
+01:03:08,480 --> 01:03:10,048
+And you have to know which button to push.
+
+726
+01:03:10,048 --> 01:03:13,440
+but then the the hard part is actually the analysis.
+
+727
+01:03:13,440 --> 01:03:20,640
+If the property is satisfied, okay, fine. You can check the next property if there is anything left.
+
+728
+01:03:20,640 --> 01:03:25,815
+If the property is violated, yeah. Then, okay, this counterexample is useful.
+
+729
+01:03:25,815 --> 01:03:27,864
+So, you are going to check this counterexample.
+
+730
+01:03:27,864 --> 01:03:32,640
+Maybe you're going to use simulation to check what is exactly the scenario, or maybe you're going to
+
+731
+01:03:32,640 --> 01:03:37,680
+look exactly at this text. Now, this looks still a bit comprehensible, but remember there are
+
+732
+01:03:37,680 --> 01:03:41,560
+600 so many lines before, right? You have to find the right spot.
+
+733
+01:03:41,560 --> 01:03:47,200
+then you have to maybe refine your model.
+
+734
+01:03:47,200 --> 01:03:51,640
+Maybe your model is not adequate. You found maybe a counterexample, which is a
+
+735
+01:03:51,640 --> 01:03:55,960
+behavior that the real system does not have, but your model has.
+
+736
+01:03:55,960 --> 01:04:02,120
+How can this be? Yeah, maybe you made a mistake in making your model.
+
+737
+01:04:02,120 --> 01:04:08,560
+Maybe the property Maybe the your counterexample is giving some scenario that you still like,
+
+738
+01:04:08,560 --> 01:04:11,200
+but maybe you did not check the right property.
+
+739
+01:04:11,200 --> 01:04:16,185
+Could be. so, I maybe you have to check your design.
+
+740
+01:04:16,185 --> 01:04:21,080
+Maybe it's a real bug, and maybe you really have to to to change your system.
+
+741
+01:04:21,080 --> 01:04:25,000
+Good. So, this means that you have to do this, and this is typically done by human beings, right?
+
+742
+01:04:25,000 --> 01:04:31,640
+This is not automated. And then, of course, you can have the message segmentation fault code, but yeah.
+
+743
+01:04:31,640 --> 01:04:36,720
+Then you have to try to reduce the model and try again.
+
+744
+01:04:36,720 --> 01:04:41,359
+Good. model checking is not a solution to everything.
+
+745
+01:04:41,359 --> 01:04:44,687
+it has several advantages, so I listed here some.
+
+746
+01:04:44,687 --> 01:04:51,800
+It's widely applicable. Many applications. You can check for what I call partial verification.
+
+747
+01:04:51,800 --> 01:04:56,760
+If two properties are the prime properties, you only check those two, but you don't check the rest.
+
+748
+01:04:56,760 --> 01:05:02,480
+It's potentially push button. It's a rapidly increasing industrial interest.
+
+749
+01:05:02,480 --> 01:05:08,880
+I think the strength is in particular if you if your property is violated, you get this counterexample.
+
+750
+01:05:08,880 --> 01:05:13,944
+what I like a lot is that of course there are many mathematical foundations.
+
+751
+01:05:13,944 --> 01:05:20,984
+It really builds on discrete algorithms and and I mean data structures and algorithms.
+
+752
+01:05:20,984 --> 01:05:24,455
+It builds on top of graph theory. It builds on top of automata theory.
+
+753
+01:05:24,455 --> 01:05:27,733
+It builds on top of logics, and those things are coming together.
+
+754
+01:05:27,733 --> 01:05:33,120
+And therefore, I think this is a very nice application of these kind of different fields.
+
+755
+01:05:33,120 --> 01:05:36,772
+And the strength is in particular it's not biased to the most possible scenarios.
+
+756
+01:05:36,772 --> 01:05:43,760
+It's not biased to those scenarios that maybe you used for testing your design.
+
+757
+01:05:43,760 --> 01:05:52,840
+It's biased to nothing. Because it checks basically it does a systematic check of all possibilities.
+
+758
+01:05:52,840 --> 01:05:59,154
+There are also cons. So, mainly it's focused on control intensive.
+
+759
+01:05:59,154 --> 01:06:05,920
+So, less about data. This is shifting a bit, but it's basically about is the control structure of your system
+
+760
+01:06:05,920 --> 01:06:09,660
+correct? I already mentioned rubbish in rubbish out.
+
+761
+01:06:09,660 --> 01:06:14,280
+Model checking is as good as the model.
+
+762
+01:06:14,280 --> 01:06:19,520
+No guarantee about the completeness of results in the sense that you check now 10 properties.
+
+763
+01:06:19,520 --> 01:06:26,840
+this does not give any guarantee for property number 11, property number 12, etc. it's
+
+764
+01:06:26,840 --> 01:06:31,879
+in general impossible to check generalizations. what do I mean by this?
+
+765
+01:06:31,879 --> 01:06:34,885
+Suppose that you have a distributed system.
+
+766
+01:06:34,885 --> 01:06:38,680
+And then suppose you have a system that contains is a ring.
+
+767
+01:06:38,680 --> 01:06:44,200
+Maybe this ring has five processes, and processes can send messages around like this.
+
+768
+01:06:44,200 --> 01:06:49,280
+And maybe if you're lucky, you can model this in in Spin, and you can do model checking.
+
+769
+01:06:49,280 --> 01:06:54,640
+So, what do you do then? You check a property for a system consisting of five processes.
+
+770
+01:06:54,640 --> 01:06:57,920
+Maybe you can do it for six. Maybe you can do it for seven.
+
+771
+01:06:57,920 --> 01:07:06,720
+But, I'm in general not able to make a conclusion that by induction it also holds for any arbitrarily size.
+
+772
+01:07:06,720 --> 01:07:10,400
+So, these kind of generalizations are in general There are exceptions.
+
+773
+01:07:10,400 --> 01:07:19,160
+In general, not possible. Nevertheless, model checking is a very effective technique to expose a potential design errors.
+
+774
+01:07:19,160 --> 01:07:22,640
+I would like to give you to my opinion some striking examples where people have
+
+775
+01:07:22,640 --> 01:07:30,400
+used model checking to find bugs. So, the first example is an encryption protocol developed by Needham and Schroeder.
+
+776
+01:07:30,400 --> 01:07:34,460
+I think developed in I think what was it 79?
+
+777
+01:07:34,460 --> 01:07:43,800
+Was it 79? Something 79 early '80s. So, this is a encryption protocol that has been used in extensively.
+
+778
+01:07:43,800 --> 01:07:54,080
+Implemented extensively. And after 17 years, Gavin Lowe, Oxford University, made a model of this protocol.
+
+779
+01:07:54,080 --> 01:08:00,400
+Did exhaustive model checking, and found a corner case that was a bug.
+
+780
+01:08:00,400 --> 01:08:03,474
+Okay. Now, you might say it has been implemented.
+
+781
+01:08:03,474 --> 01:08:06,440
+It has been running for 12 years. Who cares?
+
+782
+01:08:06,440 --> 01:08:09,040
+Well, if you're interested in encryption, you do care.
+
+783
+01:08:09,040 --> 01:08:14,120
+Even if you don't have this found this bug already by running the system for 12 years.
+
+784
+01:08:14,120 --> 01:08:18,609
+transportation. There is a a nice case study.
+
+785
+01:08:18,609 --> 01:08:24,200
+I think it was in Denmark where they built a train model of so many states.
+
+786
+01:08:24,200 --> 01:08:27,000
+Try to imagine how many this is, right?
+
+787
+01:08:27,000 --> 01:08:31,280
+It's enormous, right? I mentioned already you need to cover many many states.
+
+788
+01:08:31,280 --> 01:08:36,400
+They did very clever techniques, compositionality, symbolic structures, and so forth to be able to
+
+789
+01:08:36,400 --> 01:08:40,440
+check properties on a train model of so many states.
+
+790
+01:08:40,440 --> 01:08:46,319
+there are model checkers for not only for models, but nowadays I already mentioned the shift from
+
+791
+01:08:46,319 --> 01:08:55,600
+hardware to software. Nowadays, actually there are direct model checkers that actually check C code, Java code, C++ code.
+
+792
+01:08:55,600 --> 01:09:01,040
+and they're used by several companies. Microsoft, I have some slides on this in a minute.
+
+793
+01:09:01,040 --> 01:09:08,560
+Digital, NASA. And I will tell you something about their success in in Microsoft about device drivers.
+
+794
+01:09:08,560 --> 01:09:11,920
+so, what we did in the last 5 years in my group is we built a model checker
+
+795
+01:09:11,920 --> 01:09:19,613
+for Siemens, German company. they were interested in verifying what they call a programmable logic controllers.
+
+796
+01:09:19,613 --> 01:09:25,000
+These are small pieces of programs. Typically a few hundred lines of code.
+
+797
+01:09:25,000 --> 01:09:32,480
+They control machines. And what we found is we found in two examples of bugs.
+
+798
+01:09:32,480 --> 01:09:35,279
+And then okay, their alarm bells were going off.
+
+799
+01:09:35,279 --> 01:09:38,880
+And then they said maybe we have to invest in formal verification.
+
+800
+01:09:38,880 --> 01:09:41,840
+And actually they funded the project with two PhD students.
+
+801
+01:09:41,840 --> 01:09:44,799
+One was located and still is located in Aachen.
+
+802
+01:09:44,799 --> 01:09:49,240
+and what we did is we built for Siemens a model checker.
+
+803
+01:09:49,240 --> 01:09:55,120
+The model checker takes as input PLC code and tries to check and find bugs in PLC code.
+
+804
+01:09:55,120 --> 01:10:01,120
+So you see that also in those industrial partners industrial companies
+
+805
+01:10:01,120 --> 01:10:04,200
+more and more interest is in in in verification.
+
+806
+01:10:04,200 --> 01:10:06,960
+I will tell you a bit about this example because I like it.
+
+807
+01:10:06,960 --> 01:10:10,160
+It's a Dutch storm surge barrier in the Nieuwe Waterweg.
+
+808
+01:10:10,160 --> 01:10:13,980
+and there is software in several generations of the space missiles.
+
+809
+01:10:13,980 --> 01:10:21,920
+I already mentioned the Deep Space 1. But this is the group of of Holzmann Jet Propulsion Laboratory in Pasadena.
+
+810
+01:10:21,920 --> 01:10:27,440
+He is head of the last group. And this last group does a model checking.
+
+811
+01:10:27,440 --> 01:10:30,617
+There's a very nice paper of him 2000 I think 14.
+
+812
+01:10:30,617 --> 01:10:37,160
+Maybe you remember this Mars rover. It was something that was was supposed to land on Mars but it crashed.
+
+813
+01:10:37,160 --> 01:10:40,760
+I mean the landing went wrong. So what they did and there is a nice paper
+
+814
+01:10:40,760 --> 01:10:48,480
+about this that analyzes what went wrong in the software and they then unfortunately a posteriori
+
+815
+01:10:48,480 --> 01:10:54,420
+checked this by model checking and indeed were able to replay what went wrong.
+
+816
+01:10:54,420 --> 01:10:59,946
+Yeah. Okay, this is the kind of application areas of of Holzmann.
+
+817
+01:10:59,946 --> 01:11:02,680
+So let's look at this storm surge barrier.
+
+818
+01:11:02,680 --> 01:11:08,360
+So let me as a Dutch guy try to learn you something about the Netherlands.
+
+819
+01:11:08,360 --> 01:11:13,880
+So if you look at the Netherlands very schematically it's something like this, right?
+
+820
+01:11:13,880 --> 01:11:19,720
+Very schematic. Here is Aachen. Yeah, here is Aachen.
+
+821
+01:11:19,720 --> 01:11:25,160
+Yeah, it's almost on the border. What is specific about the Netherlands
+
+822
+01:11:25,160 --> 01:11:29,720
+is that a lot of the surface of the Netherlands is below sea level.
+
+823
+01:11:29,720 --> 01:11:35,560
+Now I don't know exactly how much but I would guess something like this is below sea level.
+
+824
+01:11:35,560 --> 01:11:42,600
+So here we are safe. Yeah. but in 1953 there was a flooding.
+
+825
+01:11:42,600 --> 01:11:49,393
+And this flooding I think yeah, hundreds of people were were killed.
+
+826
+01:11:49,393 --> 01:11:54,456
+And basically because this area and this is a bit schematic but here are some islands.
+
+827
+01:11:54,456 --> 01:11:59,040
+It's called Zeeland. A very popular holiday resort for Germans.
+
+828
+01:11:59,040 --> 01:12:02,726
+here. And here was actually the flooding.
+
+829
+01:12:02,726 --> 01:12:09,240
+And actually many people were killed. And then the Dutch government decided to build what they call the Delta Works.
+
+830
+01:12:09,240 --> 01:12:18,080
+The Delta Works are many many dams and many let's say yeah, dikes etc. to prevent the country from
+
+831
+01:12:18,080 --> 01:12:24,880
+such a flood again. And one of the last building blocks was what they call the storm surge barrier.
+
+832
+01:12:24,880 --> 01:12:27,100
+And it is close to Rotterdam. So here is Rotterdam.
+
+833
+01:12:27,100 --> 01:12:30,280
+Rotterdam one of the largest harbors of the world.
+
+834
+01:12:30,280 --> 01:12:35,480
+And here the ships come in and get into here into Rotterdam and go back.
+
+835
+01:12:35,480 --> 01:12:39,680
+So what they built as part of this was the Maeslantkering.
+
+836
+01:12:39,680 --> 01:12:44,960
+What is the Maeslantkering? Here I have this is a prototype model.
+
+837
+01:12:44,960 --> 01:12:48,840
+So here is two arms. Right? Here is one arm.
+
+838
+01:12:48,840 --> 01:12:52,880
+And that's one arm. If this system is closed as it is depicted here
+
+839
+01:12:52,880 --> 01:12:56,320
+so think about here is the sea. There is Rotterdam.
+
+840
+01:12:56,320 --> 01:13:00,560
+The idea is that if the if the weather forecast is bad, if the water tight is
+
+841
+01:13:00,560 --> 01:13:05,640
+very high etc. then there is a decision that this thing is going to be closed.
+
+842
+01:13:05,640 --> 01:13:15,160
+Okay? They at those days 1996 1997 decided that the these decisions to close these kind of things should be
+
+843
+01:13:15,160 --> 01:13:19,115
+software controlled. Whether this is a good decision or not let's not debate this here.
+
+844
+01:13:19,115 --> 01:13:24,013
+This was the decision that was taken. And the idea was in particular to also use model checking techniques.
+
+845
+01:13:24,013 --> 01:13:26,948
+So SPIN the model checker by Holzmann was used here partially.
+
+846
+01:13:26,948 --> 01:13:31,600
+Not for the complete code but for the let's say the critical parts of the software.
+
+847
+01:13:31,600 --> 01:13:37,720
+To give you some impression if you push the button then it takes 5 hours to close those arms.
+
+848
+01:13:37,720 --> 01:13:39,148
+So it's not something that is very similar.
+
+849
+01:13:39,148 --> 01:13:43,840
+It's a very simple. And one such arm is as big as the Eiffel Tower.
+
+850
+01:13:43,840 --> 01:13:46,800
+So you have some idea about the size of these things, right?
+
+851
+01:13:46,800 --> 01:13:50,260
+So and then there is of course an economic effect.
+
+852
+01:13:50,260 --> 01:13:53,056
+the harbor is unreachable if this thing is closed.
+
+853
+01:13:53,056 --> 01:13:57,680
+So actually nowadays it's headline news in the Netherlands if these things are going to be closed.
+
+854
+01:13:57,680 --> 01:14:02,765
+Typically it's once per year because that means that for a a certain period the harbor is not reachable.
+
+855
+01:14:02,765 --> 01:14:06,640
+That means economic loss and that's a severe loss.
+
+856
+01:14:06,640 --> 01:14:08,880
+So here is a picture of the real thing.
+
+857
+01:14:08,880 --> 01:14:14,280
+So here you see such an arm again and here you see one over here.
+
+858
+01:14:14,280 --> 01:14:18,571
+And indeed there is a paper 1996 that used that called formal methods in design.
+
+859
+01:14:18,571 --> 01:14:21,786
+They used the model checking to to find bugs in the software.
+
+860
+01:14:21,786 --> 01:14:28,120
+I can I can confess you that they found several bugs in the software.
+
+861
+01:14:28,120 --> 01:14:29,900
+I'm not saying there are no bugs anymore.
+
+862
+01:14:29,900 --> 01:14:35,400
+I'm only saying they found several bugs in the software by then.
+
+863
+01:14:35,400 --> 01:14:42,440
+Good. The last example I give you success of model checking is a a big project in Microsoft.
+
+864
+01:14:42,440 --> 01:14:50,040
+So Microsoft XP in 2003 they found out that 85% of the crashes
+
+865
+01:14:50,040 --> 01:14:56,040
+of Windows XP was caused by bugs in actually the device drivers.
+
+866
+01:14:56,040 --> 01:15:01,320
+Now device drivers are typically the things that let's say Microsoft themselves do not
+
+867
+01:15:01,320 --> 01:15:06,600
+develop but they are device drivers by for instance HP if you use a HP printer
+
+868
+01:15:06,600 --> 01:15:13,120
+or some other kind of company. so this is this was a
+
+869
+01:15:13,120 --> 01:15:19,920
+a big warning and from that point on Microsoft decided we are going to big a big project.
+
+870
+01:15:19,920 --> 01:15:23,560
+And a big project in terms of Microsoft means real big.
+
+871
+01:15:23,560 --> 01:15:27,520
+So they basically I don't know exactly the size of the team but they hired
+
+872
+01:15:27,520 --> 01:15:33,520
+several people and the aim of that people of that group was build a model checker to find these bugs.
+
+873
+01:15:33,520 --> 01:15:40,160
+Period. So what they do is they build the model checker called SLAM.
+
+874
+01:15:40,160 --> 01:15:44,280
+And what it does it automatically checks device drivers for properties.
+
+875
+01:15:44,280 --> 01:15:49,480
+And the specification is of course I mean Windows define I mean uses APIs and
+
+876
+01:15:49,480 --> 01:15:56,040
+those APIs basically specify how the device driver should react and how it should react if certain stimuli is being
+
+877
+01:15:56,040 --> 01:16:00,240
+sent. So the specification was given by those device drivers APIs.
+
+878
+01:16:00,240 --> 01:16:06,960
+And actually nowadays this SLAM model checker is has been made in model in in in Windows by Microsoft.
+
+879
+01:16:06,960 --> 01:16:12,220
+It has made it to be a standard component like you use a compiler.
+
+880
+01:16:12,220 --> 01:16:16,180
+Yeah, like you use a static analyzer in C like clang.
+
+881
+01:16:16,180 --> 01:16:23,680
+the people in Microsoft use SLAM as a standard verification tool for device drivers.
+
+882
+01:16:23,680 --> 01:16:27,240
+So what they do is they take a C program as input.
+
+883
+01:16:27,240 --> 01:16:32,760
+The C program development basically device driver. They abstract this into a Boolean program.
+
+884
+01:16:32,760 --> 01:16:36,280
+And then they apply what they call abstraction refinement.
+
+885
+01:16:36,280 --> 01:16:40,120
+And then actually they also support recursion. And how do they do this?
+
+886
+01:16:40,120 --> 01:16:45,560
+Actually they do not only do model checking based on automata but actually they use pushdown automata.
+
+887
+01:16:45,560 --> 01:16:48,986
+you know from automata theory that they are much much harder than finite state automata.
+
+888
+01:16:48,986 --> 01:16:52,333
+They use symbolic model checking techniques to combat the state space explosion.
+
+889
+01:16:52,333 --> 01:16:58,146
+They do some analysis of pointers. Can pointer X point to something else at some point?
+
+890
+01:16:58,146 --> 01:17:05,480
+And they concentrate on safety properties. In lecture number three I'm going to precisely tell you what is a safety
+
+891
+01:17:05,480 --> 01:17:08,430
+property. But think about for the moment it's a kind of a monitor.
+
+892
+01:17:08,430 --> 01:17:11,520
+It's very similar to the No, it's gone here.
+
+893
+01:17:11,520 --> 01:17:14,400
+similar to the monitor we had over here.
+
+894
+01:17:14,400 --> 01:17:18,640
+and that's what they do. Here is a is a graphical representation.
+
+895
+01:17:18,640 --> 01:17:22,006
+So they have a program. Then they make an abstraction.
+
+896
+01:17:22,006 --> 01:17:25,451
+They check a property on the abstraction. If the property holds you're done.
+
+897
+01:17:25,451 --> 01:17:28,155
+If the property does not hold you maybe have to do some refinement.
+
+898
+01:17:28,155 --> 01:17:32,360
+So the way to do that is they do not do they do not take the C
+
+899
+01:17:32,360 --> 01:17:41,720
+program but the first thing they do they abstract and just presume or assume that everything is simply Boolean.
+
+900
+01:17:41,720 --> 01:17:44,445
+So you don't have the information anymore that X equals 20.
+
+901
+01:17:44,445 --> 01:17:49,440
+You only know whether X is maybe less than 20 and larger than 20.
+
+902
+01:17:49,440 --> 01:17:54,120
+Boolean. So you you abstract from any information.
+
+903
+01:17:54,120 --> 01:17:56,600
+And of course you may abstract too much.
+
+904
+01:17:56,600 --> 01:18:02,320
+Then you have to refine. But if you abstract enough to just check the property you're done and that's what
+
+905
+01:18:02,320 --> 01:18:07,600
+they do here. so they used this for the development of Windows 7.
+
+906
+01:18:07,600 --> 01:18:14,135
+They found 270 bugs. 270 in 140 device drivers.
+
+907
+01:18:14,135 --> 01:18:17,530
+So two bugs roughly on average for every device driver.
+
+908
+01:18:17,530 --> 01:18:21,822
+And the the code that they are checking is about 30,000 lines of C code.
+
+909
+01:18:21,822 --> 01:18:25,360
+So the code of a device driver is about that size.
+
+910
+01:18:25,360 --> 01:18:28,473
+Maximally that can be treated by SLAM. Good.
+
+911
+01:18:28,473 --> 01:18:34,840
+If you're interested in more information there is a nice paper Communications of the ACM which is a
+
+912
+01:18:34,840 --> 01:18:46,480
+popular I mean scientific popular magazine to that does actually gives a report on this on this model checking success.
+
+913
+01:18:46,480 --> 01:18:49,136
+the story I like a lot is the following.
+
+914
+01:18:49,136 --> 01:18:52,680
+It's this company. The company is called Monoidics.
+
+915
+01:18:52,680 --> 01:18:55,868
+This was developed by those four people. This is Peter O'Hearn.
+
+916
+01:18:55,868 --> 01:19:03,560
+That's Dino De Stefano and the other two people I don't know but these is our professors from university in
+
+917
+01:19:03,560 --> 01:19:08,153
+in London. And what they developed is they started their own company called Monoidics.
+
+918
+01:19:08,153 --> 01:19:16,360
+And what they were doing is they were interested in proving properties about programs that manipulate pointers.
+
+919
+01:19:16,360 --> 01:19:22,840
+Now I hope that you have ever written a C program with pointers and you know how
+
+920
+01:19:22,840 --> 01:19:25,760
+difficult it is to get all the bugs out.
+
+921
+01:19:25,760 --> 01:19:31,200
+Right? So, what they try to do is why can we not develop a checker, a model checker,
+
+922
+01:19:31,200 --> 01:19:36,005
+that can check automatically whether you never have a dangling reference.
+
+923
+01:19:36,005 --> 01:19:41,600
+So, you never say you dereference X and X is pointing to nowhere, which gives a bug.
+
+924
+01:19:41,600 --> 01:19:46,240
+These kind of properties. So, no pointer exceptions, memory leaks.
+
+925
+01:19:46,240 --> 01:19:50,585
+and they started this company, they developed a software for 4 5 years.
+
+926
+01:19:50,585 --> 01:19:53,600
+At some point they launched a company in the US.
+
+927
+01:19:53,600 --> 01:20:00,640
+And then in 2013 it was headlines in the UK because Facebook acquired the assets of this company.
+
+928
+01:20:00,640 --> 01:20:08,680
+So, nowadays Peter O'Hearn and Dino Distefano are heading the formal verification group in Facebook.
+
+929
+01:20:08,680 --> 01:20:13,400
+Now, I'm not sure whether nowadays Facebook is good to mention with all the information about
+
+930
+01:20:13,400 --> 01:20:19,800
+but I think it's impressive to see that those kind of companies are investing in model checking.
+
+931
+01:20:19,800 --> 01:20:25,000
+One of the developers or one of the people involved in this device driving is actually nowadays at Amazon,
+
+932
+01:20:25,000 --> 01:20:29,960
+and he told me recently they have a group of 15 people, which for Amazon is very small.
+
+933
+01:20:29,960 --> 01:20:36,080
+But you can imagine that they have a group working on model checking and formal verification in Amazon.
+
+934
+01:20:36,080 --> 01:20:41,560
+Which I think is fascinating. Good. what are we going to do in this course?
+
+935
+01:20:41,560 --> 01:20:43,542
+I'm going to tell you first what are models.
+
+936
+01:20:43,542 --> 01:20:45,645
+So, I'm going to explain you transition models.
+
+937
+01:20:45,645 --> 01:20:50,120
+We going to see how you can transform a program into a transition system.
+
+938
+01:20:50,120 --> 01:20:54,560
+We can show you how you can go from a hardware circuit to a transition system.
+
+939
+01:20:54,560 --> 01:20:59,880
+I'm going to explain you things like multi-threading, communication, etc. on the model level.
+
+940
+01:20:59,880 --> 01:21:05,000
+And we have an example modeling language, which is the a nano version of of Promela.
+
+941
+01:21:05,000 --> 01:21:08,160
+Then I'm going to explain you what are properties.
+
+942
+01:21:08,160 --> 01:21:14,440
+We first are going to take, I would say, the simplistic view, everything is linear, so infinite sequences.
+
+943
+01:21:14,440 --> 01:21:20,200
+And we going to see that safety and liveness properties are very important.
+
+944
+01:21:20,200 --> 01:21:24,520
+Actually, what we are going to see that every property is either a safety or a
+
+945
+01:21:24,520 --> 01:21:28,840
+liveness property or is equivalent to the conjunction of both.
+
+946
+01:21:28,840 --> 01:21:32,960
+And I'm going to explain you what is fairness.
+
+947
+01:21:32,960 --> 01:21:38,200
+Then we going to first check regular properties, regular in the sense of regular languages.
+
+948
+01:21:38,200 --> 01:21:42,440
+So, this is just to start easy with finite state automata.
+
+949
+01:21:42,440 --> 01:21:46,720
+Then we going to a model where you accept infinite words, and I'm going to
+
+950
+01:21:46,720 --> 01:21:50,400
+use one of these kind of models which are called Büchi automata.
+
+951
+01:21:50,400 --> 01:21:55,120
+Büchi automata are not regular, but they are omega-regular, and I'm going to explain you what that means.
+
+952
+01:21:55,120 --> 01:21:59,656
+And we going to see an algorithm which is based on depth-first, but it's a nested depth-first.
+
+953
+01:21:59,656 --> 01:22:04,680
+It's a depth-first search, and inside the depth-first there is another depth-first search.
+
+954
+01:22:04,680 --> 01:22:10,960
+Interesting, I hope. Then we going to see how you can express properties, and there we going to use
+
+955
+01:22:10,960 --> 01:22:16,720
+logics. So, the first, I would say, 7 8 lectures are not without logic not with logics,
+
+956
+01:22:16,720 --> 01:22:21,720
+but then we start introducing logics. So, I'm going to introduce linear temporal logic,
+
+957
+01:22:21,720 --> 01:22:28,120
+the logic developed by Pnueli in 1977. Syntax, semantics, what can you express
+
+958
+01:22:28,120 --> 01:22:29,680
+in this logic, what can you not express.
+
+959
+01:22:29,680 --> 01:22:33,400
+Then we going to deal, and that will be the core, how to do model checking of a
+
+960
+01:22:33,400 --> 01:22:40,360
+transition system versus LTL. I'm going to give you the connection between LTL and Büchi automata.
+
+961
+01:22:40,360 --> 01:22:46,000
+And we going to see that the complexity, complexity in terms of is it n squared,
+
+962
+01:22:46,000 --> 01:22:54,680
+is it exponential in n, plus complexity in terms of is it PSPACE-complete, is it in co-NP, etc.
+
+963
+01:22:54,680 --> 01:22:59,240
+Then we going to have another logic where the where you going to interpret this not on
+
+964
+01:22:59,240 --> 01:23:03,685
+sequences, but on infinite trees, and I'm going to use that computation tree logic.
+
+965
+01:23:03,685 --> 01:23:09,520
+This is the logic that Clarke and Emerson in 1981 originally proposed.
+
+966
+01:23:09,520 --> 01:23:15,280
+Syntax and semantics. What can you express? In particular, we going to see that this logic
+
+967
+01:23:15,280 --> 01:23:21,480
+the expressive power is incomparable to LTL. which means certain properties you
+
+968
+01:23:21,480 --> 01:23:25,560
+can express in CTL, but not in LTL and vice versa, and they have a common
+
+969
+01:23:25,560 --> 01:23:30,440
+fragment, and there's also something nice that you can say about this common fragment.
+
+970
+01:23:30,440 --> 01:23:35,640
+We going to show algorithms, complexity, fairness. Then I'm going to explain you a bit how
+
+971
+01:23:35,640 --> 01:23:43,120
+you can make models a bit smaller. And that's based on equivalence relations, pre-order relations, bisimulation.
+
+972
+01:23:43,120 --> 01:23:47,200
+then if you make the model smaller, which properties are still preserved
+
+973
+01:23:47,200 --> 01:23:50,120
+such that if you do the model checking on the smaller model, what conclusion
+
+974
+01:23:50,120 --> 01:23:55,224
+can you draw about the original model? And I'm going to explain you a bit about minimization.
+
+975
+01:23:55,224 --> 01:23:58,800
+The course material is based on this book.
+
+976
+01:23:58,800 --> 01:24:04,513
+Good. Lectures. There are two lectures a week, Tuesdays and Fridays, but try to regularly check the course webpage.
+
+977
+01:24:04,513 --> 01:24:08,920
+For instance, next Tuesday 8:30 there will be no lecture.
+
+978
+01:24:08,920 --> 01:24:13,640
+Maybe it's good, maybe not, but and the next lecture will be next Friday.
+
+979
+01:24:13,640 --> 01:24:20,800
+but the best way to keep track on when is the next lecture, go to the website.
+
+980
+01:24:20,800 --> 01:24:27,080
+And the website you find here. The slides are available on that website.
+
+981
+01:24:27,080 --> 01:24:30,080
+I now understand that this is a chicken and egg problem, right?
+
+982
+01:24:30,080 --> 01:24:35,640
+the best is to go to my website of my group, and there you can find a bullet
+
+983
+01:24:35,640 --> 01:24:43,240
+teaching, and then you see immediately the courses we teach this semester, and one of them is model checking.
+
+984
+01:24:43,240 --> 01:24:48,680
+And there is all the information. So, we don't use L2P, right?
+
+985
+01:24:48,680 --> 01:24:51,560
+Some people ask me, why are you not using L2P?
+
+986
+01:24:51,560 --> 01:24:55,240
+because the drawback of L2P is it's not publicly available.
+
+987
+01:24:55,240 --> 01:25:00,520
+I like to make what we are doing also in teaching available to the entire
+
+988
+01:25:00,520 --> 01:25:03,200
+world and not only to the students in Aachen.
+
+989
+01:25:03,200 --> 01:25:07,000
+So, those slides are available to everybody, and that I think that's good.
+
+990
+01:25:07,000 --> 01:25:12,160
+I will have lecture slides. I will make them available every time before the lecture.
+
+991
+01:25:12,160 --> 01:25:15,800
+And before means before. Could be 2 minutes before, could be half a day
+
+992
+01:25:15,800 --> 01:25:25,320
+before, but typically not a week before. The book, I already mentioned something that you didn't hear before,
+
+993
+01:25:25,320 --> 01:25:29,440
+but you can also, if you really want the book, there are many copies in the library.
+
+994
+01:25:29,440 --> 01:25:34,880
+So, don't get me wrong, I'm not using this course to make royalties.
+
+995
+01:25:34,880 --> 01:25:38,840
+So that I can buy a second house in Hawaii because I'm not going to do this,
+
+996
+01:25:38,840 --> 01:25:41,280
+I just only want to make this very clear.
+
+997
+01:25:41,280 --> 01:25:45,280
+Exercises. There is an exercise class every week on Monday.
+
+998
+01:25:45,280 --> 01:25:49,520
+We start on April 30. Still some time to go.
+
+999
+01:25:49,520 --> 01:25:54,240
+Christian Hensel and Matthias Volk are the two people that are going to assist you there.
+
+1000
+01:25:54,240 --> 01:26:00,020
+the idea is that you get weekly exercise series that are supposed to be worked on with two people.
+
+1001
+01:26:00,020 --> 01:26:04,400
+I'm by the way very happy that there are so many people in this lecture.
+
+1002
+01:26:04,400 --> 01:26:10,840
+I hope you all take this course. That means that you are supposed to work
+
+1003
+01:26:10,840 --> 01:26:17,960
+on groups of two students. We will make every Monday the next exercise series available via
+
+1004
+01:26:17,960 --> 01:26:23,600
+the website, and the first time we going to do this is on April 23rd.
+
+1005
+01:26:23,600 --> 01:26:29,160
+You have to hand in your solutions a week later before the exercise class.
+
+1006
+01:26:29,160 --> 01:26:33,520
+okay, this is 10, this is 12 is also fine.
+
+1007
+01:26:33,520 --> 01:26:38,920
+The exam, there the exam is on the last day of August, and then there is a
+
+1008
+01:26:38,920 --> 01:26:42,331
+reher I mean, the next exam on the 21st of September.
+
+1009
+01:26:42,331 --> 01:26:52,600
+This is a written exam. the you are eligible to participate in the exam if you have
+
+1010
+01:26:52,600 --> 01:26:57,720
+gathered at least 40% of all the exercise points.
+
+1011
+01:26:57,720 --> 01:27:04,440
+We are not going to be a police agent and going to check whether you copy your solution from your
+
+1012
+01:27:04,440 --> 01:27:08,760
+neighbor. If we really see this regularly happen, it might be the case that at
+
+1013
+01:27:08,760 --> 01:27:11,840
+some point you will get an appointment in my office, that's okay.
+
+1014
+01:27:11,840 --> 01:27:16,480
+Or maybe it's not okay, but but what I'm saying is that
+
+1015
+01:27:16,480 --> 01:27:20,560
+if you want to discuss with your other group members, please do so.
+
+1016
+01:27:20,560 --> 01:27:26,920
+But don't make it on Sunday evening that you just copy it because you will not
+
+1017
+01:27:26,920 --> 01:27:31,040
+pass the exam if you don't do the exercises yourself and not think about those exercises yourself.
+
+1018
+01:27:31,040 --> 01:27:35,280
+This is maybe an open door, but I would like to stress this.
+
+1019
+01:27:35,280 --> 01:27:39,400
+you get a bonus of one grade if you have at least 70%.
+
+1020
+01:27:39,400 --> 01:27:46,800
+So, rather than 2.7, you can get a 2.3 for the exam if you do this.
+
+1021
+01:27:46,800 --> 01:27:52,514
+and then I think I get to the bonus of the last part, then I get to your question.
+
+1022
+01:27:52,514 --> 01:27:55,114
+It's about the theoretical foundations of model checking.
+
+1023
+01:27:55,114 --> 01:28:02,200
+So, today I was giving you more a kind what's the impact of model checking, why is model checking important.
+
+1024
+01:28:02,200 --> 01:28:08,520
+From next for on is theory. So, I'm not going to explain how to use the Spin model checker.
+
+1025
+01:28:08,520 --> 01:28:13,520
+I'm not going to explain how to go from industrial requirements to formal requirements.
+
+1026
+01:28:13,520 --> 01:28:17,168
+It's not part of this course, the course is really about theory.
+
+1027
+01:28:17,168 --> 01:28:23,085
+Automata, language theory, regular words, finite state automata, automata for infinite words.
+
+1028
+01:28:23,085 --> 01:28:26,200
+We going to see quite a few algorithms.
+
+1029
+01:28:26,200 --> 01:28:34,360
+depth-first search already mentioned, some other graph algorithms, algorithms to find counterexamples.
+
+1030
+01:28:34,360 --> 01:28:43,160
+we get some data structures, some some about compatibility and complexity theory, in particular complexity theory for LTL
+
+1031
+01:28:43,160 --> 01:28:54,280
+model checking, and logics. Good. If you have taken this course, what can you do else?
+
+1032
+01:28:54,280 --> 01:28:59,656
+Well, a lot. So, I sometimes give a course which is called advanced model checking.
+
+1033
+01:28:59,656 --> 01:29:07,680
+Next semester I give a course on how to do model checking of systems where you have random things.
+
+1034
+01:29:07,680 --> 01:29:11,120
+So, then you're not only interested in can my system eventually reach to a
+
+1035
+01:29:11,120 --> 01:29:15,440
+deadlock, but you would like to know what is the probability that this happens.
+
+1036
+01:29:15,440 --> 01:29:18,168
+I also give a course on probabilistic programming next semester.
+
+1037
+01:29:18,168 --> 01:29:21,822
+There are lectures There are various lectures by Christoph Luding.
+
+1038
+01:29:21,822 --> 01:29:27,520
+One of them is automata and infinite words, which goes much more in-depth on things like Büchi automata
+
+1039
+01:29:27,520 --> 01:29:34,040
+and variations of it. There is a lecture by Professor Erika Abraham about satisfiability checking
+
+1040
+01:29:34,040 --> 01:29:39,800
+where you actually one of the applications of satisfiability checking is to do model checking.
+
+1041
+01:29:39,800 --> 01:29:44,960
+she also extends this to hybrid systems, systems where you have discrete and continuous things.
+
+1042
+01:29:44,960 --> 01:29:48,880
+And actually in that course he does also verification or model checking of hybrid systems.
+
+1043
+01:29:48,880 --> 01:29:53,640
+And there are various seminars in various groups.
+
+1044
+01:29:53,640 --> 01:29:58,400
+Questions? Yes. Is it possible to work in groups of more than three?
+
+1045
+01:29:58,400 --> 01:30:02,520
+Yes, it's possible to work in larger groups, but I would say up to three.
+
+1046
+01:30:02,520 --> 01:30:10,560
+and given this number of students, I would be happy if you adhere to at least two.
+
+1047
+01:30:10,560 --> 01:30:14,720
+I know that sometimes people ask, "Can I also do it alone?"
+
+1048
+01:30:14,720 --> 01:30:19,826
+I prefer not to do this in this course given the number of students here.
+
+1049
+01:30:19,826 --> 01:30:29,720
+Are there any other questions? Yeah, sorry. how do we submit How do we submit exercises?
+
+1050
+01:30:29,720 --> 01:30:38,280
+we will make a post box at my chair and you can put your solutions in that post box.
+
+1051
+01:30:38,280 --> 01:30:43,480
+Yeah. I will check with my assistants where they also do allow PDFs or whatever.
+
+1052
+01:30:43,480 --> 01:30:48,760
+that's also possible. Can we maybe also hand them in just before the Yes, you can hand them in
+
+1053
+01:30:48,760 --> 01:30:50,760
+just before the I made I made a typo.
+
+1054
+01:30:50,760 --> 01:30:55,320
+The 10:00 hour 10:00 I mean, if you hand them in before the exercise class because the idea is that
+
+1055
+01:30:55,320 --> 01:31:00,960
+in the exercise class we will give you the solutions to those exercises.
+
+1056
+01:31:00,960 --> 01:31:05,725
+Are we supposed to hand in all last week's work for the whole group?
+
+1057
+01:31:05,725 --> 01:31:12,795
+Yes. Yeah. Yeah. Other questions? No? Thanks a lot.
+
+1058
+01:31:12,795 --> 01:31:17,800
+Hope to see you next week. Friday is the next lecture.

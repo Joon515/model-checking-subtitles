@@ -1,0 +1,2727 @@
+1
+00:00:02,400 --> 00:00:11,040
+good morning., before I start with the topic of today, I'd like to remind you that
+
+2
+00:00:11,040 --> 00:00:19,240
+the official date to register for the exam the deadline for this is finishing to today.
+
+3
+00:00:19,240 --> 00:00:28,080
+So, in case you are willing and intending to participate to the exam, it's better to
+
+4
+00:00:28,080 --> 00:00:33,320
+register yourself via the the usual means.
+
+5
+00:00:33,320 --> 00:00:37,834
+Today, the the topic is omega regular properties.
+
+6
+00:00:37,834 --> 00:00:50,280
+So, what we have seen last time is we have seen that in order to check a regular safety property
+
+7
+00:00:50,280 --> 00:01:06,640
+against a finite transition system the procedure was as follows.
+
+8
+00:01:06,640 --> 00:01:17,200
+The idea is that for this regular safety property, we have what we call a bad prefix automaton.
+
+9
+00:01:17,200 --> 00:01:27,720
+And this is because the bad prefixes constitute a regular language, a standard off-the-shelf non-deterministic finite state machine.
+
+10
+00:01:27,720 --> 00:01:34,480
+And then the idea was that we combine this transition system with this non-deterministic finite state machine
+
+11
+00:01:34,480 --> 00:01:40,440
+to compose a new transition system, which was something like the synchronous product of the two
+
+12
+00:01:40,440 --> 00:01:45,640
+if I call this A of the transition system and this bad prefix automaton.
+
+13
+00:01:45,640 --> 00:02:04,080
+And then the question was whether this satisfies the invariant always not F where F are the accepting states
+
+14
+00:02:04,080 --> 00:02:15,840
+of the NFA A. So, what we like to do now is to extend this paradigm
+
+15
+00:02:15,840 --> 00:02:20,506
+not to just regular safety properties, but to have larger class of properties.
+
+16
+00:02:20,506 --> 00:02:26,200
+So, now what I'm interested in I'm not only interested in regular safety properties, but I'm interested
+
+17
+00:02:26,200 --> 00:02:34,400
+actually in a larger class and this larger class which I'm going to call omega regular properties.
+
+18
+00:02:34,400 --> 00:02:54,040
+And they include, for instance, liveness properties. A large class of liveness properties.
+
+19
+00:02:54,040 --> 00:03:00,440
+What is the problem or the challenge if we are considering liveness properties?
+
+20
+00:03:00,440 --> 00:03:07,520
+Well, we know by definition counterexamples to liveness properties are no longer finite words.
+
+21
+00:03:07,520 --> 00:03:15,640
+But they're actually infinite words. So, that means we cannot use non-deterministic finite state automata anymore
+
+22
+00:03:15,640 --> 00:03:26,000
+and we're going to replace this thing by actually an automaton which is called a Büchi automaton.
+
+23
+00:03:26,000 --> 00:03:33,400
+An automaton that accepts not finite words, but infinite words.
+
+24
+00:03:33,400 --> 00:03:39,280
+And that's the automaton model that I'm going to introduce today.
+
+25
+00:03:39,280 --> 00:03:45,000
+Good. As we're going to see, this has a specific kind of peculiarities, this kind of model.
+
+26
+00:03:45,000 --> 00:03:49,560
+And then later, we're going to see that actually we're going to build again the structure of this thing.
+
+27
+00:03:49,560 --> 00:03:55,560
+We're not going to check this property, but a different property, but the whole paradigm is the same.
+
+28
+00:03:55,560 --> 00:04:00,360
+So, the main difference is we want to check a larger class of properties.
+
+29
+00:04:00,360 --> 00:04:07,720
+In order to do so, we need another type of automata model.
+
+30
+00:04:07,720 --> 00:04:12,160
+Good. So, this is basically what I already explained before.
+
+31
+00:04:12,160 --> 00:04:17,880
+And the idea that I'm going to introduce today are two new notions, which are omega
+
+32
+00:04:17,880 --> 00:04:22,680
+automata that are automata that accept infinite words.
+
+33
+00:04:22,680 --> 00:04:27,680
+There are many different classes of them. I'm going to concentrate to Büchi automata.
+
+34
+00:04:27,680 --> 00:04:33,480
+And we are going to concentrate on omega regular expressions.
+
+35
+00:04:33,480 --> 00:04:41,720
+You know from automata theory that regular expressions and non-deterministic finite state machines are equally expressive.
+
+36
+00:04:41,720 --> 00:04:50,760
+Here today, we're going to see that non-deterministic Büchi automata and omega regular expressions are equally expressive.
+
+37
+00:04:50,760 --> 00:04:55,440
+Good. So, just a short recap of what are regular expressions.
+
+38
+00:04:55,440 --> 00:05:02,960
+Suppose I give you an alphabet sigma containing symbols like capital A, B, etc. Then a regular expressions over this
+
+39
+00:05:02,960 --> 00:05:09,400
+alphabet are according to the following grammar. We either have empty set.
+
+40
+00:05:09,400 --> 00:05:14,405
+We have the empty symbol. Then we have the singleton symbol A.
+
+41
+00:05:14,405 --> 00:05:21,400
+We have a plus. We have concatenation and we have the Kleene star.
+
+42
+00:05:21,400 --> 00:05:29,240
+A, of course, is a symbol in the alphabet and actually any regular expression describes a language of
+
+43
+00:05:29,240 --> 00:05:39,480
+finite words. So, actually what we have is we have a function that maps any arbitrary regular expression to
+
+44
+00:05:39,480 --> 00:05:46,520
+the set of words, the set of finite words described by this regular expression.
+
+45
+00:05:46,520 --> 00:05:51,800
+This is defined by induction on the structure of the regular expression.
+
+46
+00:05:51,800 --> 00:05:54,960
+So, we start with the first case, the empty set.
+
+47
+00:05:54,960 --> 00:05:58,645
+What is the set of finite words described by the empty set?
+
+48
+00:05:58,645 --> 00:06:02,520
+It's the empty set. This is the empty set of the set
+
+49
+00:06:02,520 --> 00:06:06,360
+of finite words, but this is the regular expression empty set.
+
+50
+00:06:06,360 --> 00:06:14,880
+They're two different things. Then the empty regular expression or the empty the symbol is actually language
+
+51
+00:06:14,880 --> 00:06:20,080
+described by this is the singleton set containing the empty word.
+
+52
+00:06:20,080 --> 00:06:27,200
+So, here you see the explicit difference between this regular expression and the second regular expression.
+
+53
+00:06:27,200 --> 00:06:31,960
+I hope it's easy to understand that the language of the symbol A
+
+54
+00:06:31,960 --> 00:06:39,320
+is just the set of finite words only containing the word A.
+
+55
+00:06:39,320 --> 00:06:48,360
+Plus, which stands for a choice, amounts to the union of the two languages of the two constituting parts.
+
+56
+00:06:48,360 --> 00:06:54,160
+A concatenation the language of alpha one concatenate with alpha two is the language of alpha
+
+57
+00:06:54,160 --> 00:06:57,800
+one concatenated with the language of alpha two.
+
+58
+00:06:57,800 --> 00:07:05,320
+And Kleene closure the language of alpha star, which means zero or more times alpha, is equiv- is
+
+59
+00:07:05,320 --> 00:07:08,520
+equal or is defined by the language of alpha star.
+
+60
+00:07:08,520 --> 00:07:16,880
+So, you take the set of words described by alpha and you can repeat them zero or more times.
+
+61
+00:07:16,880 --> 00:07:24,360
+I hope this is basically an aha aletheia for you from automata theory and not something new.
+
+62
+00:07:24,360 --> 00:07:30,760
+Good. Now, what we're going to do is we're going to define omega regular expressions.
+
+63
+00:07:30,760 --> 00:07:32,880
+So, here we have seen the syntax of regular expressions.
+
+64
+00:07:32,880 --> 00:07:36,248
+Now, I'm going to introduce omega regular expressions in a nutshell.
+
+65
+00:07:36,248 --> 00:07:40,840
+They are regular expressions plus one extra bit.
+
+66
+00:07:40,840 --> 00:07:46,840
+And this is this omega operator, where alpha to the power omega.
+
+67
+00:07:46,840 --> 00:07:54,880
+And that intuitively means you look at the regular expression alpha and now you can repeat any word in the
+
+68
+00:07:54,880 --> 00:07:59,880
+set of words described by alpha infinitely many times.
+
+69
+00:07:59,880 --> 00:08:05,216
+So, it's different from the Kleene star, where you say zero or more times, but finitely many.
+
+70
+00:08:05,216 --> 00:08:10,840
+Omega says infinitely many. Good. That's what I just said.
+
+71
+00:08:10,840 --> 00:08:17,280
+So, how is this defined? If you give me a set of finite words over some alphabet sigma
+
+72
+00:08:17,280 --> 00:08:23,800
+then L of omega is defined as the set of infinite words such that
+
+73
+00:08:23,800 --> 00:08:30,506
+you take some word in finite word from the language L and you concatenate them.
+
+74
+00:08:30,506 --> 00:08:38,763
+So, for instance, first I take W1 then I take W2 then I take W3 and so forth, and every
+
+75
+00:08:38,763 --> 00:08:46,680
+W here is a finite word contained in L.
+
+76
+00:08:46,680 --> 00:08:57,000
+Good. Notice that L omega is contained in sigma omega.
+
+77
+00:08:57,000 --> 00:09:06,800
+So, this definition what we just have seen, if however, the empty word is not in the language.
+
+78
+00:09:06,800 --> 00:09:09,417
+Good. So, what's the syntax of an omega regular expression?
+
+79
+00:09:09,417 --> 00:09:15,933
+And then we will see several examples. So, an omega regular expression is defined as follows.
+
+80
+00:09:15,933 --> 00:09:21,960
+You give me a alphabet, which is a finite set of symbols.
+
+81
+00:09:21,960 --> 00:09:29,920
+Then we define an omega regular expression, in this case gamma which is defined over n terms.
+
+82
+00:09:29,920 --> 00:09:38,080
+It's a summation of n terms. Every term consists of two parts alpha and a beta.
+
+83
+00:09:38,080 --> 00:09:42,200
+So, this alpha is just an ordinary regular expression.
+
+84
+00:09:42,200 --> 00:09:47,120
+And then you say concatenated with an ordinary regular expression beta one,
+
+85
+00:09:47,120 --> 00:09:49,920
+but this beta one is to the power omega.
+
+86
+00:09:49,920 --> 00:09:56,274
+So, it means you take the regular expression alpha and then you take beta one omega.
+
+87
+00:09:56,274 --> 00:10:00,160
+And then you have several of those summons.
+
+88
+00:10:00,160 --> 00:10:11,120
+Good. There is one small technical thing, namely, these betas do not contain the empty word.
+
+89
+00:10:11,120 --> 00:10:17,440
+Good. And then the semantics of a regular expression is now defined in terms of the semantics of ordinary
+
+90
+00:10:17,440 --> 00:10:27,748
+regular expressions. So, the set of infinite words described by gamma is defined as the following.
+
+91
+00:10:27,748 --> 00:10:31,520
+First, I have to consider all these end terms.
+
+92
+00:10:31,520 --> 00:10:38,400
+So, a plus corresponds to a union. Therefore, I get a union over all these terms.
+
+93
+00:10:38,400 --> 00:10:45,000
+N pieces. What is the set of infinite words described by one single term?
+
+94
+00:10:45,000 --> 00:10:54,124
+Now, consider such a term. Now, you look at alpha i, and L of alpha i is the set of
+
+95
+00:10:54,124 --> 00:10:59,960
+finite words described by alpha i. Remember, alpha is just an ordinary regular expression.
+
+96
+00:10:59,960 --> 00:11:04,120
+So, it's a set of finite words. And then it's concatenated with the set
+
+97
+00:11:04,120 --> 00:11:11,480
+of finite words of beta i to the power omega.
+
+98
+00:11:11,480 --> 00:11:18,200
+Good. And this is actually an infinite language, so a set of infinite words.
+
+99
+00:11:18,200 --> 00:11:23,440
+And the set is contained in the set of infinite words that I can can can
+
+100
+00:11:23,440 --> 00:11:40,280
+construct over the alphabet sigma. Good. So, a very easy, I hope, first example a star b omega.
+
+101
+00:11:40,280 --> 00:11:45,240
+So, this is something of the form where alpha is empty, and you have some beta,
+
+102
+00:11:45,240 --> 00:11:49,839
+and beta is alpha star dot b, and that's to the power omega.
+
+103
+00:11:49,839 --> 00:11:53,920
+Good. What's the language of this term?
+
+104
+00:11:53,920 --> 00:11:59,320
+Now, intuitively, what does this term mean? It means you take zero or more times a b,
+
+105
+00:11:59,320 --> 00:12:03,360
+and then have an a, sorry, and then you have a b.
+
+106
+00:12:03,360 --> 00:12:08,160
+So, this contains words of the following form.
+
+107
+00:12:08,160 --> 00:12:14,620
+This language consists, for instance, contains the word b b b b, infinitely many b's.
+
+108
+00:12:14,620 --> 00:12:24,360
+You always take zero times an a. It also contains the word b a b, a a b,
+
+109
+00:12:24,360 --> 00:12:31,080
+a a a b, a a a a b, and so forth.
+
+110
+00:12:31,080 --> 00:12:38,360
+Yeah, every time you increase the number of b's between two successive a's between two successive b's.
+
+111
+00:12:38,360 --> 00:12:42,680
+what is not contained is something like this.
+
+112
+00:12:42,680 --> 00:12:53,080
+a a a a a. This is not contained in the language of this regular expression omega regular expression.
+
+113
+00:12:53,080 --> 00:12:57,240
+Because this requires that you can do only finitely many times an a, and then
+
+114
+00:12:57,240 --> 00:13:01,480
+you have to do a b. And this pattern has to repeat it infinitely often.
+
+115
+00:13:01,480 --> 00:13:07,755
+And this is not the case here. Good.
+
+116
+00:13:07,755 --> 00:13:15,800
+So, it's the set of infinite words over the alphabet a b containing infinitely many b's.
+
+117
+00:13:15,800 --> 00:13:19,720
+Yeah, this does not contain infinitely many b's, therefore it's not contained.
+
+118
+00:13:19,720 --> 00:13:24,200
+Even if you would add a prefix where you have a finitely many b's, this is not
+
+119
+00:13:24,200 --> 00:13:31,520
+contained because this omega really tells you that you should have infinitely many b's.
+
+120
+00:13:31,520 --> 00:13:36,474
+What's the language of this term? So, here is a omega expression of two things.
+
+121
+00:13:36,474 --> 00:13:50,680
+So, this is of the shape gamma is alpha one beta one omega plus alpha two beta two omega, right?
+
+122
+00:13:50,680 --> 00:14:00,560
+Alpha one is empty. Beta one, in my case, is a star dot b.
+
+123
+00:14:00,560 --> 00:14:10,400
+Alpha two is also empty, and beta two is actually b star a omega.
+
+124
+00:14:10,400 --> 00:14:14,088
+Good. So, you hope you see the symmetry here between a and b here.
+
+125
+00:14:14,088 --> 00:14:17,560
+Just the role of b's and a's have changed.
+
+126
+00:14:17,560 --> 00:14:31,640
+So, this is the set of language that contains infinitely many b's or infinitely many a's.
+
+127
+00:14:31,640 --> 00:14:39,120
+Good. And that's actually all words you can build, all infinite words that you can build over sigma.
+
+128
+00:14:39,120 --> 00:14:45,120
+Good. We call a language, so now you give me a set of infinite words,
+
+129
+00:14:45,120 --> 00:14:50,040
+and this language, this set of infinite words, is called omega regular if and
+
+130
+00:14:50,040 --> 00:14:55,440
+only if you can describe this language by means of an omega regular expression.
+
+131
+00:14:55,440 --> 00:15:03,760
+That means there exists an omega regular expression omega gamma such that the set of infinite words described by
+
+132
+00:15:03,760 --> 00:15:11,040
+gamma equals the language of infinite words you give me.
+
+133
+00:15:11,040 --> 00:15:17,959
+Good. So, some examples. Suppose that we are given the finite alphabet a b.
+
+134
+00:15:17,959 --> 00:15:26,959
+I'm interested in the set of all infinite words over sigma containing only finitely many a's.
+
+135
+00:15:26,959 --> 00:15:31,000
+So, how can I write this down? This looks like a term as follows.
+
+136
+00:15:31,000 --> 00:15:39,360
+a plus b star dot b omega. This means you can take any arbitrarily, but finitely many times
+
+137
+00:15:39,360 --> 00:15:43,140
+an a or a b. That's what the star tells you.
+
+138
+00:15:43,140 --> 00:15:47,600
+And at some point, you only have b's.
+
+139
+00:15:47,600 --> 00:15:56,440
+So, these are words that have infinitely many b's, but only finitely many a's.
+
+140
+00:15:56,440 --> 00:16:01,640
+The set of all infinite words where each a is followed immediately by b.
+
+141
+00:16:01,640 --> 00:16:05,760
+So, that's something of the form a b and then omega.
+
+142
+00:16:05,760 --> 00:16:08,640
+But you have to be a little bit careful.
+
+143
+00:16:08,640 --> 00:16:11,319
+so, this is the way you can write it down.
+
+144
+00:16:11,319 --> 00:16:15,600
+So, here you have this pattern that every a is immediately followed by a b.
+
+145
+00:16:15,600 --> 00:16:20,880
+This a itself, of course, can be preceded by arbitrarily many, but finitely many b's.
+
+146
+00:16:20,880 --> 00:16:27,760
+This pattern can repeat, but this whole sentence doesn't say anything about the fact how many a's can occur.
+
+147
+00:16:27,760 --> 00:16:31,880
+So, we're going to distinguish the case where we only have finitely many a's,
+
+148
+00:16:31,880 --> 00:16:35,360
+or the case where we have infinitely many a's.
+
+149
+00:16:35,360 --> 00:16:38,520
+This is the case where we have finitely many a's.
+
+150
+00:16:38,520 --> 00:16:42,404
+That means that we have finitely many a's which are immediately followed by a b.
+
+151
+00:16:42,404 --> 00:16:46,600
+But at some point, we only see b's.
+
+152
+00:16:46,600 --> 00:16:51,040
+And this is the similar pattern. So, again, this a can be preceded by fin-
+
+153
+00:16:51,040 --> 00:16:55,999
+finitely many b's, but if this a comes, it of course needs to be immediately followed by a b.
+
+154
+00:16:55,999 --> 00:16:59,760
+And this pattern happens in in infinitely often.
+
+155
+00:16:59,760 --> 00:17:07,026
+So, what is important here is that the first term refers to the fact that a happens finitely many times.
+
+156
+00:17:07,026 --> 00:17:15,480
+The second summand refers to the fact that a occurs infinitely many times.
+
+157
+00:17:15,480 --> 00:17:22,480
+The set of all infinite words where each a is followed by b, but not immediately followed at some
+
+158
+00:17:22,480 --> 00:17:29,800
+point later. Maybe not at the first position, maybe at the first fifth position, maybe on the 21st position.
+
+159
+00:17:29,800 --> 00:17:33,840
+So, this is written down as follows. So, again, a similar pattern.
+
+160
+00:17:33,840 --> 00:17:41,360
+We distinguish between finitely many a's, or infinitely many a's.
+
+161
+00:17:41,360 --> 00:17:46,000
+Now, we're going to change the pattern that a is immediately followed by b by
+
+162
+00:17:46,000 --> 00:17:49,136
+saying we have an a at least one.
+
+163
+00:17:49,136 --> 00:17:54,760
+A plus means a followed by a star.
+
+164
+00:17:54,760 --> 00:17:58,280
+So, this means that we have an a, maybe it's followed by a couple of other a's,
+
+165
+00:17:58,280 --> 00:18:06,600
+and only then the b comes. So, it's not That's the difference between immediately and at some position later.
+
+166
+00:18:06,600 --> 00:18:14,440
+And the pattern repeats here, and you see that here this means that a happens infinitely often.
+
+167
+00:18:14,440 --> 00:18:18,840
+The case where you have to distinguish between finitely many times and infinitely many times in one regular
+
+168
+00:18:18,840 --> 00:18:25,679
+expression is is a is a pattern that you see very often in these omega regular expressions.
+
+169
+00:18:25,679 --> 00:18:30,311
+Good. You In this case, you can simplify this term a bit.
+
+170
+00:18:30,311 --> 00:18:34,280
+So, I started from this, and then I generalized this to this setting.
+
+171
+00:18:34,280 --> 00:18:37,800
+from here, it's not difficult to see that now you get something of the form a
+
+172
+00:18:37,800 --> 00:18:44,280
+star dot b omega, because you say, "Okay, there can be an a.
+
+173
+00:18:44,280 --> 00:18:48,480
+there can be zero or more times an a, and that can be at some point
+
+174
+00:18:48,480 --> 00:18:57,120
+followed by a b." Okay. Now, we're going to apply these two properties.
+
+175
+00:18:57,120 --> 00:19:01,679
+Remember, our idea was that we do not only have regular safety properties, but
+
+176
+00:19:01,679 --> 00:19:04,840
+we're going to restrict or enlarge the class to omega regular.
+
+177
+00:19:04,840 --> 00:19:10,200
+So, I'm going to consider an LT property, which is a set of infinite traces,
+
+178
+00:19:10,200 --> 00:19:19,480
+and we call E an omega regular property, if it can be described by an omega regular expression.
+
+179
+00:19:19,480 --> 00:19:24,480
+So, that means there is an omega regular expression gamma such that the property
+
+180
+00:19:24,480 --> 00:19:35,280
+we are interested in is exactly the set of infinite words described by the omega regular expression gamma.
+
+181
+00:19:35,280 --> 00:19:39,928
+So, it's not, as before, the set of bad prefixes that I can describe by a regular expression.
+
+182
+00:19:39,928 --> 00:19:46,440
+Now, it's the property itself that we can describe by an omega regular expression.
+
+183
+00:19:46,440 --> 00:19:53,320
+Good. So, examples. Suppose that I have the alphabet small a and small b, which are the atomic propositions.
+
+184
+00:19:53,320 --> 00:19:59,880
+And I like to check always or I would like to express always A or not B.
+
+185
+00:19:59,880 --> 00:20:03,600
+This is the omega regular expression that does as follows.
+
+186
+00:20:03,600 --> 00:20:12,280
+Always A or not B. So, I'm going to take all the subsets of AB that satisfy this formula.
+
+187
+00:20:12,280 --> 00:20:16,040
+The first subset that satisfies this formula is the empty set.
+
+188
+00:20:16,040 --> 00:20:23,760
+Right? Because it satisfies not B. The second set that satisfies this formula is single the singleton set A
+
+189
+00:20:23,760 --> 00:20:28,400
+because it satisfies A. And then also, of course, every extension thereof.
+
+190
+00:20:28,400 --> 00:20:35,600
+So, A, B is satisfying the formula. Any of these formulas is fine.
+
+191
+00:20:35,600 --> 00:20:39,777
+And now I can repeat any of them infinitely often.
+
+192
+00:20:39,777 --> 00:20:43,680
+So, I get infinitely often this thing.
+
+193
+00:20:43,680 --> 00:20:49,320
+So, what does this mean? It means that I can make any mixture of those three ingredients in an infinite
+
+194
+00:20:49,320 --> 00:20:53,960
+sequence. So, I can start with empty set a couple of times, then maybe I have an
+
+195
+00:20:53,960 --> 00:20:59,000
+A, then I have AB, then again I have a lot couple of times on
+
+196
+00:20:59,000 --> 00:21:04,960
+empty set, then I have AB, and then maybe have A, and maybe from here on I only have As.
+
+197
+00:21:04,960 --> 00:21:10,000
+This is a possible word in this language.
+
+198
+00:21:10,000 --> 00:21:15,320
+And I hope you see this is satisfying the fact that always along
+
+199
+00:21:15,320 --> 00:21:17,960
+this sequence A holds or not B holds.
+
+200
+00:21:17,960 --> 00:21:46,280
+Question? This is the empty set that is part of the regular expression.
+
+201
+00:21:46,280 --> 00:21:51,240
+And I use a smaller zero a smaller circle if I talk about the set of words
+
+202
+00:21:51,240 --> 00:21:56,280
+that is the empty set. In that way I tried I tried to distinguish between the two.
+
+203
+00:21:56,280 --> 00:21:57,944
+I did this also on the previous slide.
+
+204
+00:21:57,944 --> 00:22:04,640
+If you look carefully the empty set symbol in the as a regular expression is smaller than the one that
+
+205
+00:22:04,640 --> 00:22:10,440
+is the semantics, which is the set of empty set of words.
+
+206
+00:22:10,440 --> 00:22:12,840
+But it's a good point. It's an overloading in in some sense of this
+
+207
+00:22:12,840 --> 00:22:18,520
+symbol and you have to make precise what this symbol means in which setting.
+
+208
+00:22:18,520 --> 00:22:22,200
+So, this means actually every invariant is omega regular.
+
+209
+00:22:22,200 --> 00:22:27,240
+because for every invariant condition you can write something like this down.
+
+210
+00:22:27,240 --> 00:22:30,933
+So, this is written down here. Suppose I give you an invariant.
+
+211
+00:22:30,933 --> 00:22:35,120
+Remember, the invariant is given by some propositional logical formula.
+
+212
+00:22:35,120 --> 00:22:41,840
+So, suppose that the set of atomic propositions satisfying this propositional formula is A1 up to AK,
+
+213
+00:22:41,840 --> 00:22:48,440
+then the invariant always phi holds is simply written down as either A1 or
+
+214
+00:22:48,440 --> 00:22:58,240
+A2 etc. or AK, and this pattern repeats infinitely often.
+
+215
+00:22:58,240 --> 00:23:04,506
+Good. infinitely often A. This is a regular expression that looks as follows.
+
+216
+00:23:04,506 --> 00:23:08,960
+Remember, the original set of atomic propositions is AB.
+
+217
+00:23:08,960 --> 00:23:15,011
+Infinitely often A. That means we allow any set containing A infinitely often.
+
+218
+00:23:15,011 --> 00:23:20,760
+What are the sets that contain A? Well, either it's a singleton set or it's the set AB.
+
+219
+00:23:20,760 --> 00:23:29,120
+Right? This pattern repeats infinitely often. And this can be preceded by any
+
+220
+00:23:29,120 --> 00:23:33,560
+finite period where B or A doesn't or sorry, where A does not occur, and the
+
+221
+00:23:33,560 --> 00:23:37,720
+sets where A does not occur is the empty set and the singleton set B.
+
+222
+00:23:37,720 --> 00:23:47,040
+So, finitely many times I have this pattern followed by this pattern, and this can repeat infinitely often.
+
+223
+00:23:47,040 --> 00:23:51,920
+Eventually A. A happens at some point in the future or now.
+
+224
+00:23:51,920 --> 00:23:55,880
+This is written down in the regular expression as follows.
+
+225
+00:23:55,880 --> 00:24:00,662
+You have some finite prefix. Right? Where basically you allow everything.
+
+226
+00:24:00,662 --> 00:24:05,080
+So, think about this as just true. True applies finitely often.
+
+227
+00:24:05,080 --> 00:24:09,544
+Then you have some pattern that says, "Okay, you have to have an A."
+
+228
+00:24:09,544 --> 00:24:13,080
+So, either A in the singleton set or A in the set AB.
+
+229
+00:24:13,080 --> 00:24:20,760
+And then afterwards, if A has occurred, it's basically doesn't matter what happens afterwards, and that's two to the power
+
+230
+00:24:20,760 --> 00:24:27,840
+AP omega again. Two to the power AP is simply the sum of all possibilities.
+
+231
+00:24:27,840 --> 00:24:33,910
+Of all subsets of AB. Good. From some moment on always A.
+
+232
+00:24:33,910 --> 00:24:38,080
+That means you have some finite prefix. There can be As and Bs around all the
+
+233
+00:24:38,080 --> 00:24:41,160
+places, and at some point you only see an A.
+
+234
+00:24:41,160 --> 00:24:43,451
+In terms of a regular expression, this looks as follows.
+
+235
+00:24:43,451 --> 00:24:47,920
+You have a finite prefix where you see any arbitrary subset.
+
+236
+00:24:47,920 --> 00:24:50,053
+From some point on we only see As.
+
+237
+00:24:50,053 --> 00:24:54,640
+That means either we see this or we see that.
+
+238
+00:24:54,640 --> 00:25:01,700
+Good. Actually, I used preferred to use formulas rather than those sums of sets and so on.
+
+239
+00:25:01,700 --> 00:25:07,360
+So, for instance, this was the invariant. I will use the abbreviation A or not B
+
+240
+00:25:07,360 --> 00:25:12,080
+omega as being an abbreviation of this right-hand side.
+
+241
+00:25:12,080 --> 00:25:16,280
+By saying this property holds infinitely often at every position.
+
+242
+00:25:16,280 --> 00:25:20,324
+Infinitely often A. I will use this expression typically.
+
+243
+00:25:20,324 --> 00:25:23,737
+It says, "Okay, I have some positions where A does not occur."
+
+244
+00:25:23,737 --> 00:25:26,411
+And this happens finitely often, and then A occurs.
+
+245
+00:25:26,411 --> 00:25:35,040
+And this pattern repeats infinitely often. So, this is a shorthand for this expression on the right-hand side.
+
+246
+00:25:35,040 --> 00:25:42,480
+Similarly, from some moment on always A. This is something of the form, "Yeah, you have some finite prefix
+
+247
+00:25:42,480 --> 00:25:49,440
+where you do not have any imposed not any restrictions, and from some point on you only see As."
+
+248
+00:25:49,440 --> 00:25:54,080
+And things like this, whenever A then B will hold some time later.
+
+249
+00:25:54,080 --> 00:25:58,760
+This can be expressed by this complicated term.
+
+250
+00:25:58,760 --> 00:26:02,808
+This says, "Okay, it's a very similar pattern as we have seen before.
+
+251
+00:26:02,808 --> 00:26:08,720
+We have A, then we have some finite prefix, and at some point later we have B.
+
+252
+00:26:08,720 --> 00:26:13,600
+And this is the case where A happens only finitely often.
+
+253
+00:26:13,600 --> 00:26:17,000
+And this is the case where A happens infinitely often.
+
+254
+00:26:17,000 --> 00:26:22,679
+That means this A can maybe preceded by some prefix where A only holds finitely finitely
+
+255
+00:26:22,679 --> 00:26:29,960
+where not A holds finitely often. Then between A and B there can be some finite word
+
+256
+00:26:29,960 --> 00:26:33,760
+between As and Bs, and this repeats infinitely often.
+
+257
+00:26:33,760 --> 00:26:40,960
+This is a huge expression. and we use typically symbols logical symbols for this.
+
+258
+00:26:40,960 --> 00:26:45,240
+So, this is concluding the fact on omega regular expressions.
+
+259
+00:26:45,240 --> 00:26:54,120
+Now, you know from automata theory that NFAs are equally expressive than regular expressions.
+
+260
+00:26:54,120 --> 00:26:58,200
+Hm? What does that mean? it means in both directions, if you
+
+261
+00:26:58,200 --> 00:27:03,480
+give me an NFA, the language is always can be written down as a regular expression.
+
+262
+00:27:03,480 --> 00:27:09,560
+And the other way around, if you give me a regular expression, there exist an NFA that accepts exactly
+
+263
+00:27:09,560 --> 00:27:23,360
+that language. Now, what we're going to see now, the same thing holds for omega regular expressions.
+
+264
+00:27:23,360 --> 00:27:29,520
+With another automaton model, and this automaton model is called an NBA.
+
+265
+00:27:29,520 --> 00:27:45,679
+And that's a non-deterministic Büchi automaton. The name Büchi comes from the inventor of this type of automata somewhere in
+
+266
+00:27:45,679 --> 00:27:53,200
+the 1950s. Büchi invented these kind of models, and they're they're called non-deterministic Büchi automata.
+
+267
+00:27:53,200 --> 00:28:00,480
+So, this automaton model is equally expressive as omega regular expressions, as we're going to see.
+
+268
+00:28:00,480 --> 00:28:06,480
+And vice versa. So, that means that every omega regular expression can be modeled by an automaton accepting that
+
+269
+00:28:06,480 --> 00:28:19,760
+language, and vice versa, the language of every non-deterministic Büchi automaton can be written down as an omega regular expression.
+
+270
+00:28:19,760 --> 00:28:24,960
+Good. So, the syntax is the same as for NFAs.
+
+271
+00:28:24,960 --> 00:28:29,531
+But the interpretation will be different in terms that we are going to accept infinite words.
+
+272
+00:28:29,531 --> 00:28:34,000
+So, we're going to look at infinite runs and infinite words.
+
+273
+00:28:34,000 --> 00:28:36,919
+So, the syntax is the same as what we had before.
+
+274
+00:28:36,919 --> 00:28:42,760
+Set of states, alphabet, etc. Nothing special. But now what we have is we feed this
+
+275
+00:28:42,760 --> 00:28:52,120
+automaton with an infinite word. So, the word A0 A1 A2 is an element of the alphabet omega.
+
+276
+00:28:52,120 --> 00:28:55,679
+Good. And now we say that we have a run.
+
+277
+00:28:55,679 --> 00:28:59,771
+So, what's a run for this word? This is again a state sequence like an ordinary automaton.
+
+278
+00:28:59,771 --> 00:29:09,694
+We have to start an initial state. And every successor state QI + 1 must be a successor of QI
+
+279
+00:29:09,694 --> 00:29:15,800
+when I read in this state QI the next input symbol A of I.
+
+280
+00:29:15,800 --> 00:29:22,440
+Same as before, difference being infinite words. So, infinite runs.
+
+281
+00:29:22,440 --> 00:29:33,960
+When do we call a run accepting? A run is accepting if we visit some accepting state infinitely often.
+
+282
+00:29:33,960 --> 00:29:55,360
+Okay? Good. Let's do maybe some example. So, the first example is this automaton here, and then we go here.
+
+283
+00:29:55,360 --> 00:30:00,240
+This is A and this is A. Okay?
+
+284
+00:30:00,240 --> 00:30:04,920
+Good. What is the set of infinite words accepted by this automaton?
+
+285
+00:30:04,920 --> 00:30:07,251
+Well, we have to visit the accepting state infinitely often.
+
+286
+00:30:07,251 --> 00:30:10,720
+So, we have to visit this state infinitely often.
+
+287
+00:30:10,720 --> 00:30:23,600
+So, if this is automaton A1, then the language of A1 is the set of words
+
+288
+00:30:23,600 --> 00:30:32,720
+that contains A omega. So, it's the regular expression A omega, if you want.
+
+289
+00:30:32,720 --> 00:30:57,386
+Good. What about this automaton? Okay? good.
+
+290
+00:30:57,386 --> 00:31:08,320
+Sorry for the break. unexpected break. So, the the example I was just discussing before the fire alarm started
+
+291
+00:31:08,320 --> 00:31:15,320
+was in this automaton we agreed on the fact that this accepts the word A omega.
+
+292
+00:31:15,320 --> 00:31:26,840
+what about this automaton? No, it does not Yeah.
+
+293
+00:31:26,840 --> 00:31:34,880
+So, it's really A omega, which means basically the only infinite only infinite word is accepted
+
+294
+00:31:34,880 --> 00:31:39,240
+by this automaton, which is an infinite string of A's.
+
+295
+00:31:39,240 --> 00:31:45,360
+Good. What about this automaton over here?
+
+296
+00:31:45,360 --> 00:31:48,440
+Now, we have to visit this state infinitely often.
+
+297
+00:31:48,440 --> 00:31:52,440
+The problem here is that if we visit once, we can never visit it again.
+
+298
+00:31:52,440 --> 00:31:58,560
+So, the language of this automaton, if I call this A2, is the empty set.
+
+299
+00:31:58,560 --> 00:32:03,240
+It does not contain any infinite word.
+
+300
+00:32:03,240 --> 00:32:08,600
+Good. So, this is the the the the Büchi automaton view,
+
+301
+00:32:08,600 --> 00:32:14,820
+And actually, officially I should write down L omega and L omega.
+
+302
+00:32:14,820 --> 00:32:22,240
+Good. Now, consider the same automata. So, this was the NBA view.
+
+303
+00:32:22,240 --> 00:32:28,000
+Now, consider the same automata, but now as finite state automata.
+
+304
+00:32:28,000 --> 00:32:35,480
+So, what's the language, the set of finite words of A1?
+
+305
+00:32:35,480 --> 00:32:38,520
+Now, it accepts a word which has one A.
+
+306
+00:32:38,520 --> 00:32:42,760
+It accepts a word that has two A's, three A's, four A's, etc. So, the
+
+307
+00:32:42,760 --> 00:32:51,880
+language accepted by this thing is something of the form A n + 1, where n is a natural number.
+
+308
+00:32:51,880 --> 00:32:58,410
+Okay? What about this automaton? We have to reach the final state only once, right?
+
+309
+00:32:58,410 --> 00:33:05,720
+So, when can we reach this? After one A, after two A's, after three A's, etc. So, the language
+
+310
+00:33:05,720 --> 00:33:16,440
+of this automaton is the same. It's A n + 1 for any natural number n.
+
+311
+00:33:16,440 --> 00:33:26,080
+So, this means that these two automata are equivalent if from a finite automaton perspective, but they are different
+
+312
+00:33:26,080 --> 00:33:37,920
+from the Büchi perspective. Okay? Good. Now, let's look at another example.
+
+313
+00:33:37,920 --> 00:33:41,920
+And the next example is let's say A3.
+
+314
+00:33:41,920 --> 00:33:51,520
+There is an automaton that looks as follows.
+
+315
+00:33:51,520 --> 00:34:00,120
+Okay? Again, I make two views. One is the Büchi automaton view, and the other one is the finite state
+
+316
+00:34:00,120 --> 00:34:09,226
+automaton perspective. Good. What is the set of infinite words accepted by this automaton?
+
+317
+00:34:09,226 --> 00:34:12,440
+Well, we have to visit this state infinitely often.
+
+318
+00:34:12,440 --> 00:34:15,720
+The only way to do this is take the cycle infinitely often.
+
+319
+00:34:15,720 --> 00:34:27,879
+So, the language, the set of infinite words accepted by this automaton, is A omega.
+
+320
+00:34:27,879 --> 00:34:35,600
+Okay? We have to cycle infinitely often the the cycle, and then we accept infinite word.
+
+321
+00:34:35,600 --> 00:34:45,919
+And now look at A4, which is the same automaton, but I swapped the order of the two states.
+
+322
+00:34:45,919 --> 00:34:50,320
+So, I make this non-accepting, I make this accepting.
+
+323
+00:34:50,320 --> 00:34:56,251
+Again, what's the accepted set of accepted infinite words accepted by this automaton?
+
+324
+00:34:56,251 --> 00:34:59,400
+We have to visit this state infinitely often.
+
+325
+00:34:59,400 --> 00:35:02,560
+That means we have to take this cycle infinitely often.
+
+326
+00:35:02,560 --> 00:35:15,200
+So, this is A omega. That means these two automata are equivalent if you consider the set of infinite
+
+327
+00:35:15,200 --> 00:35:23,040
+words they accepted. Now, let's consider the finite words accepted by these automata.
+
+328
+00:35:23,040 --> 00:35:27,960
+What's the set of words accepted by A3?
+
+329
+00:35:27,960 --> 00:35:36,280
+Now, we have to visit this state. We can visit this after one A, after one, two, three A's,
+
+330
+00:35:36,280 --> 00:35:41,600
+five, seven, nine. So, after an odd number of A's, every word which has an
+
+331
+00:35:41,600 --> 00:35:46,640
+odd number of A's is accepting. So, this is something of the form A to the power
+
+332
+00:35:46,640 --> 00:35:51,880
+2n + 1 for any natural number n.
+
+333
+00:35:51,880 --> 00:35:57,280
+What about this? This accepts first the empty word, then accepts a word that has two A's, four
+
+334
+00:35:57,280 --> 00:36:10,120
+A's, six A's, etc. So, this automaton accepts the set A 2n, where n is a natural number.
+
+335
+00:36:10,120 --> 00:36:15,440
+So, here these two automata are different.
+
+336
+00:36:15,440 --> 00:36:22,240
+Whereas here, they are equal. They accept the same set of infinite words, but we cannot conclude from that that
+
+337
+00:36:22,240 --> 00:36:28,680
+also they accept the same finite words, because here you see a counterexample.
+
+338
+00:36:28,680 --> 00:36:40,120
+Okay, any questions about these examples? No? Good.
+
+339
+00:36:40,120 --> 00:36:42,450
+Good. So, the language is the set of infinite words.
+
+340
+00:36:42,450 --> 00:36:44,880
+Fine. So, I use the same notation as before.
+
+341
+00:36:44,880 --> 00:36:47,145
+I already skipped this by means of example.
+
+342
+00:36:47,145 --> 00:36:52,560
+So, here is another example. this the alphabet is AB.
+
+343
+00:36:52,560 --> 00:37:00,160
+We have to visit Q1 infinitely often. You can only reach Q1 by doing an A.
+
+344
+00:37:00,160 --> 00:37:03,040
+All the incoming arrows are labeled with A.
+
+345
+00:37:03,040 --> 00:37:07,680
+So, we have to do infinitely often an A.
+
+346
+00:37:07,680 --> 00:37:16,880
+Or in terms of a regular expression, what you see is you can do finitely many times a B
+
+347
+00:37:16,880 --> 00:37:20,800
+by cycling around. I will look for my pointer.
+
+348
+00:37:20,800 --> 00:37:25,320
+so, you can do finitely many times a B, and sometimes you do an A.
+
+349
+00:37:25,320 --> 00:37:28,840
+You can go back, but you have to go infinitely often to Q1, so you have to do
+
+350
+00:37:28,840 --> 00:37:34,760
+infinitely often an A. what about this automaton?
+
+351
+00:37:34,760 --> 00:37:39,160
+So, what you see here is you can do an A, here you can cycle with A's, and then
+
+352
+00:37:39,160 --> 00:37:44,040
+you can do a B. You have to visit this state infinitely often.
+
+353
+00:37:44,040 --> 00:37:46,880
+You can only do that by doing this A.
+
+354
+00:37:46,880 --> 00:37:50,360
+So, this actually has accepted words of the following form.
+
+355
+00:37:50,360 --> 00:37:54,040
+You can do an A and A and then a B, and then an A and an A
+
+356
+00:37:54,040 --> 00:37:58,080
+and a B again, or you can do something like only A's.
+
+357
+00:37:58,080 --> 00:38:07,160
+and actually, this is the the language where every B is preceded by a positive even number of A's.
+
+358
+00:38:07,160 --> 00:38:14,485
+Every B is preceded by a positive even number.
+
+359
+00:38:14,485 --> 00:38:19,840
+So, two, four, six, right? Either it's two, or you take this cycle again,
+
+360
+00:38:19,840 --> 00:38:25,040
+or you take this or this thing. If B doesn't occur, then this is trivially fulfilled, right?
+
+361
+00:38:25,040 --> 00:38:26,685
+Then you have just have infinitely many A's.
+
+362
+00:38:26,685 --> 00:38:31,920
+But you know that every B is preceded by a positive even number of A's.
+
+363
+00:38:31,920 --> 00:38:36,400
+Good. And you can write down in this in terms of a regular expression,
+
+364
+00:38:36,400 --> 00:38:43,212
+where you have an even number of A's, positive amount, then you can do a B, and you can
+
+365
+00:38:43,212 --> 00:38:52,400
+repeat this infinitely often. Or you have you do this finitely many times, so zero or more times, and then
+
+366
+00:38:52,400 --> 00:38:58,400
+you do only A's. So, this is the regular expression, the same pattern as we have seen before.
+
+367
+00:38:58,400 --> 00:39:04,600
+This is the pattern where A where basically B occurs infinitely
+
+368
+00:39:04,600 --> 00:39:07,680
+often, and this is the term where B occurs finitely often.
+
+369
+00:39:07,680 --> 00:39:11,000
+And you always have to distinguish these two cases.
+
+370
+00:39:11,000 --> 00:39:15,468
+Good. So, what we're going to do is the same as in the previous lecture.
+
+371
+00:39:15,468 --> 00:39:19,000
+The alphabet is something of the form 2 to the power AP.
+
+372
+00:39:19,000 --> 00:39:26,160
+So, these NBAs will get as input sets of atomic propositions.
+
+373
+00:39:26,160 --> 00:39:28,733
+Good. So, this is for instance a property.
+
+374
+00:39:28,733 --> 00:39:31,850
+Again, I use the logical notation, so I use true.
+
+375
+00:39:31,850 --> 00:39:37,480
+Suppose that AP is AB. Then true means any subset of AB.
+
+376
+00:39:37,480 --> 00:39:40,348
+Not A means any subset that does not contain A.
+
+377
+00:39:40,348 --> 00:39:45,120
+Same logical notation as we have seen in the previous lecture.
+
+378
+00:39:45,120 --> 00:39:47,017
+What is the language accepted by this automaton?
+
+379
+00:39:47,017 --> 00:39:50,880
+We have to visit this state infinitely often.
+
+380
+00:39:50,880 --> 00:39:55,120
+So, that means okay, this means you do one times a true, then
+
+381
+00:39:55,120 --> 00:39:57,405
+you you have not A, and then you don't care.
+
+382
+00:39:57,405 --> 00:40:01,720
+So, this is something of the form next, I mean in the next position, not
+
+383
+00:40:01,720 --> 00:40:10,600
+the current position, next position, not A must hold, and then actually everything is fine because the self-loop says true,
+
+384
+00:40:10,600 --> 00:40:16,760
+which means every subset. So, this is the regular expression true not A true.
+
+385
+00:40:16,760 --> 00:40:21,680
+The next position must fulfill not A, and that's it.
+
+386
+00:40:21,680 --> 00:40:26,280
+What about this? this is one automaton.
+
+387
+00:40:26,280 --> 00:40:29,500
+it contains two initial states and two accepting states.
+
+388
+00:40:29,500 --> 00:40:37,320
+When does it accept? Well, either if A holds now or if not B holds now.
+
+389
+00:40:37,320 --> 00:40:42,120
+So, the regular expression accepted by this automaton is A or not B hold now,
+
+390
+00:40:42,120 --> 00:40:48,680
+and what comes afterwards is actually everything is fine, so it's true omega.
+
+391
+00:40:48,680 --> 00:40:58,000
+So, you see that this automaton is an automaton representation of the property A or not B holds now.
+
+392
+00:40:58,000 --> 00:40:59,537
+Of course, this is not the unique automaton.
+
+393
+00:40:59,537 --> 00:41:02,440
+You can also give me another automaton expressing the same property.
+
+394
+00:41:02,440 --> 00:41:09,760
+This is just an example. things like this you have to visit this state
+
+395
+00:41:09,760 --> 00:41:13,360
+infinitely often, which means infinitely often an A, and you see as soon as A or
+
+396
+00:41:13,360 --> 00:41:16,308
+not B holds, you get to this state, but then you never get back.
+
+397
+00:41:16,308 --> 00:41:19,480
+So, then actually you will not accept anymore.
+
+398
+00:41:19,480 --> 00:41:26,640
+So, this accepts always A. something like this, you have to visit Q1 infinitely often.
+
+399
+00:41:26,640 --> 00:41:30,120
+You can only reach Q1 by doing an A.
+
+400
+00:41:30,120 --> 00:41:33,600
+So, definitely you have something of the form infinitely often A.
+
+401
+00:41:33,600 --> 00:41:37,600
+What else do you know? Well, you know that either A or B holds.
+
+402
+00:41:37,600 --> 00:41:42,640
+So, this is something like infinitely often A and always A or B.
+
+403
+00:41:42,640 --> 00:41:48,240
+Yeah, because always A holds by taking any transition or a B holds.
+
+404
+00:41:48,240 --> 00:41:50,040
+And that's why you get something of this form.
+
+405
+00:41:50,040 --> 00:41:54,680
+So, you can do A or B finitely many times, and then do an A, and you
+
+406
+00:41:54,680 --> 00:42:05,360
+can repeat this pattern infinitely often. Good. I skip this for So, now I'm going to the following fact.
+
+407
+00:42:05,360 --> 00:42:10,480
+We're going to see, as I already was anticipating, to the following result.
+
+408
+00:42:10,480 --> 00:42:18,480
+These non-deterministic Büchi automata are equally expressive as omega regular expressions.
+
+409
+00:42:18,480 --> 00:42:25,554
+Good. So, the first direction I'm going to show you is the direction which goes in that direction.
+
+410
+00:42:25,554 --> 00:42:32,200
+I start from an NBA. We're going to see that for every NBA, the set of accepted infinite
+
+411
+00:42:32,200 --> 00:42:38,960
+words is always captured by an omega regular expression.
+
+412
+00:42:38,960 --> 00:42:46,480
+So, the first result tells us for every non-deterministic Büchi automaton, there is an omega regular expression
+
+413
+00:42:46,480 --> 00:42:54,440
+such that the set of infinite words accepted by the automaton is exactly the set of infinite words described
+
+414
+00:42:54,440 --> 00:43:01,154
+by the omega regular expression gamma. And remember those gammas had the following form, right?
+
+415
+00:43:01,154 --> 00:43:11,400
+It was of the form alpha one dot beta one omega plus plus alpha n beta n omega
+
+416
+00:43:11,400 --> 00:43:18,240
+with the capture that the empty word does not belong in the language of any of those betas.
+
+417
+00:43:18,240 --> 00:43:24,440
+For all I. So, alpha is a finite word, beta is a
+
+418
+00:43:24,440 --> 00:43:28,970
+language of finite words, beta one is a set of finite words, etc.
+
+419
+00:43:28,970 --> 00:43:34,320
+So, this is the pattern we are looking for.
+
+420
+00:43:34,320 --> 00:43:39,080
+Good. How can we prove this? We start from an arbitrary NBA.
+
+421
+00:43:39,080 --> 00:43:42,040
+And now I'm going to do the following trick.
+
+422
+00:43:42,040 --> 00:43:45,530
+I'm going to consider the automaton APQ, AQP.
+
+423
+00:43:45,530 --> 00:43:51,080
+What is AQP? Q and P are states in my NBA.
+
+424
+00:43:51,080 --> 00:43:54,840
+Okay? And now what I'm going to do is I'm going to take the automaton with the
+
+425
+00:43:54,840 --> 00:43:59,640
+same set of states, the same alphabet, the same transition function, but I'm
+
+426
+00:43:59,640 --> 00:44:03,120
+going to assume we're going to start in Q.
+
+427
+00:44:03,120 --> 00:44:09,400
+Right? Notice Q does not necessarily have to be an initial state, but we start in Q,
+
+428
+00:44:09,400 --> 00:44:15,440
+and the set of final states is the singleton set P.
+
+429
+00:44:15,440 --> 00:44:21,280
+Then the language of this automaton is described as follows.
+
+430
+00:44:21,280 --> 00:44:26,440
+It's I take such an automaton from A to from Q to P,
+
+431
+00:44:26,440 --> 00:44:30,520
+and I do this, of course, only for those Qs that are initial.
+
+432
+00:44:30,520 --> 00:44:33,760
+Now, only those will contribute to the set of words that I'm going to accept.
+
+433
+00:44:33,760 --> 00:44:38,240
+We have to start in initial state. So, that's what the first union tells us.
+
+434
+00:44:38,240 --> 00:44:46,359
+Pick any Q which is initial. Pick any accepting state P.
+
+435
+00:44:46,359 --> 00:44:50,920
+Now, consider Q and P. I take the automaton that I basically do by making
+
+436
+00:44:50,920 --> 00:44:55,600
+Q initial and P the accepting state. So, that means that basically, if in
+
+437
+00:44:55,600 --> 00:45:03,960
+terms of a picture, I do the following.
+
+438
+00:45:03,960 --> 00:45:12,840
+If this was my original automaton, the NBA, what I do is I pick some initial state.
+
+439
+00:45:12,840 --> 00:45:16,575
+I call this Q. I take an accepting state.
+
+440
+00:45:16,575 --> 00:45:23,613
+I call this P. The rest is not initial, not accepting.
+
+441
+00:45:23,613 --> 00:45:29,800
+That's what the construction AP A QP does.
+
+442
+00:45:29,800 --> 00:45:34,600
+Now, the first thing tells you take No, this is bad.
+
+443
+00:45:34,600 --> 00:45:37,653
+Take a finite word that brings you from Q to P.
+
+444
+00:45:37,653 --> 00:45:44,800
+What does that mean? We're going to consider as a run, a finite run, that brings us from
+
+445
+00:45:44,800 --> 00:45:51,400
+Q to P. Now, we have reached this accepting state once.
+
+446
+00:45:51,400 --> 00:45:56,324
+Is this enough? No, because we have to reach this this final state infinitely often.
+
+447
+00:45:56,324 --> 00:46:00,520
+How do can we do this? Well, we are going to look for a cycle,
+
+448
+00:46:00,520 --> 00:46:05,359
+and this cycle needs to go from P to P itself.
+
+449
+00:46:05,359 --> 00:46:08,840
+Of course, this cycle needs to have at least one transition.
+
+450
+00:46:08,840 --> 00:46:12,880
+Because otherwise, we already stated. So, we are considering a language of
+
+451
+00:46:12,880 --> 00:46:21,280
+finite words that leads us from P to P, and we exclude explicitly the empty word.
+
+452
+00:46:21,280 --> 00:46:24,680
+Good. I hope you understand the rational behind it.
+
+453
+00:46:24,680 --> 00:46:27,580
+Secondly, I hope you see that this is an omega regular expression.
+
+454
+00:46:27,580 --> 00:46:35,440
+It has this shape that you have finite words, namely the first the words
+
+455
+00:46:35,440 --> 00:46:40,640
+here, and then followed by a beta which does not contain the empty word.
+
+456
+00:46:40,640 --> 00:46:54,280
+For good reasons here. Good. This is omega regular because this language is regular, and this is a
+
+457
+00:46:54,280 --> 00:47:00,120
+regular language by by excluding the empty word, it still remains a regular language, and therefore it fits the
+
+458
+00:47:00,120 --> 00:47:07,600
+pattern of being a regular expression. One other argument, this is a finite
+
+459
+00:47:07,600 --> 00:47:12,520
+union, and this is a finite union, so we get a finite summation, which is this n,
+
+460
+00:47:12,520 --> 00:47:17,520
+the number of terms in my regular expression.
+
+461
+00:47:17,520 --> 00:47:20,600
+Good. Let's look at an example to make this more explicit.
+
+462
+00:47:20,600 --> 00:47:23,370
+So, here is an example of a non-deterministic Büchi automaton.
+
+463
+00:47:23,370 --> 00:47:32,320
+It has two initial states, one and two, and one accept state, two.
+
+464
+00:47:32,320 --> 00:47:36,000
+Good. What is the language accepted by this automaton?
+
+465
+00:47:36,000 --> 00:47:41,368
+Following the construction of the previous slide, we're going to pick every initial state separately.
+
+466
+00:47:41,368 --> 00:47:45,240
+Let's first start with initial state being one.
+
+467
+00:47:45,240 --> 00:47:49,120
+That means we have to go from initial state one to the accept state.
+
+468
+00:47:49,120 --> 00:47:52,800
+There is only one accept state, so therefore get two.
+
+469
+00:47:52,800 --> 00:47:57,880
+From two, I have to find a cycle, and that means I go from two to two with
+
+470
+00:47:57,880 --> 00:48:04,560
+L prime, and L prime is the language to go from two to two minus the empty word.
+
+471
+00:48:04,560 --> 00:48:08,200
+And I take this omega. Good. What is the second possibility?
+
+472
+00:48:08,200 --> 00:48:12,520
+The second possibility that this initial state is considered, which is number two.
+
+473
+00:48:12,520 --> 00:48:15,800
+I have to go from two to itself.
+
+474
+00:48:15,800 --> 00:48:19,300
+So, that is indicated here by L going from two to itself.
+
+475
+00:48:19,300 --> 00:48:25,440
+Here, the empty word is included. So, it's L22, not L prime 22.
+
+476
+00:48:25,440 --> 00:48:31,560
+Now, I have to find a cycle going from two to two, a non-empty cycle, and therefore I take
+
+477
+00:48:31,560 --> 00:48:40,253
+L prime 22 omega. Okay? Good. So, how are these languages constructed?
+
+478
+00:48:40,253 --> 00:48:47,160
+So, I first have to construct an automaton A12, where one is the initial state, and two is the
+
+479
+00:48:47,160 --> 00:48:51,920
+accept state, and I have to consider the automaton A22, where two is the initial
+
+480
+00:48:51,920 --> 00:48:57,880
+state, and two is the accept state. So, this is the automaton A12.
+
+481
+00:48:57,880 --> 00:49:04,000
+You take the original NBA. You make one the only initial state.
+
+482
+00:49:04,000 --> 00:49:07,680
+That means two is no longer an initial state.
+
+483
+00:49:07,680 --> 00:49:11,359
+And you make two the only accept state, but it was already the only accept
+
+484
+00:49:11,359 --> 00:49:15,120
+state, so for the accept states, nothing will change.
+
+485
+00:49:15,120 --> 00:49:19,800
+You consider this as an ordinary finite state automaton.
+
+486
+00:49:19,800 --> 00:49:26,480
+So, you look at what is the accepted set of finite words of this automaton.
+
+487
+00:49:26,480 --> 00:49:31,440
+Because this L12 is just a set of finite words.
+
+488
+00:49:31,440 --> 00:49:37,280
+So, you can apply your off-the-shelf knowledge on automata theory that the language of this automaton is something
+
+489
+00:49:37,280 --> 00:49:41,680
+of the form well, we start here. Either you can go here or you do an A and then
+
+490
+00:49:41,680 --> 00:49:47,680
+there are two possibilities, either you take this cycle finitely often which is this BA or you take the
+
+491
+00:49:47,680 --> 00:49:52,920
+outermost cycle which is triple A in a sequence.
+
+492
+00:49:52,920 --> 00:49:57,440
+Good. How do I get L prime two two?
+
+493
+00:49:57,440 --> 00:49:59,680
+For L two two, I don't depict this here.
+
+494
+00:49:59,680 --> 00:50:03,880
+This goes in a very similar way. The interesting thing here is this L
+
+495
+00:50:03,880 --> 00:50:07,108
+prime two two which is L two two but minus the empty word.
+
+496
+00:50:07,108 --> 00:50:13,560
+What is the problem here? The problem here is that two is an initial state.
+
+497
+00:50:13,560 --> 00:50:20,560
+So, I have to do a special trick to avoid that this automaton accepts the empty word.
+
+498
+00:50:20,560 --> 00:50:23,880
+The way to do that and actually that's something we have seen already also before.
+
+499
+00:50:23,880 --> 00:50:30,280
+You basically make a copy of two. I call this init which is a copy in the following sense.
+
+500
+00:50:30,280 --> 00:50:35,200
+It's not accepting but it's initial. This is not initial.
+
+501
+00:50:35,200 --> 00:50:37,815
+And for the rest, I copy the outgoing transitions of two.
+
+502
+00:50:37,815 --> 00:50:42,880
+So, this two has in this case a B transition to one and an A transition to three.
+
+503
+00:50:42,880 --> 00:50:48,120
+So, this state becomes a B transition to one and an A transition to three.
+
+504
+00:50:48,120 --> 00:50:52,360
+I hope you understand that this automaton is again a finite state automaton.
+
+505
+00:50:52,360 --> 00:50:56,480
+We have to consider what is the set of finite words accepted by this
+
+506
+00:50:56,480 --> 00:51:01,520
+automaton and this is of the form BA because I can go with B and then with A
+
+507
+00:51:01,520 --> 00:51:09,240
+and I accept or it's something of the form where I can do AAA
+
+508
+00:51:09,240 --> 00:51:11,040
+and then of course, I can cycle further.
+
+509
+00:51:11,040 --> 00:51:19,840
+That's what the plus tells us and therefore, I can then combine any combination of BA and triple As.
+
+510
+00:51:19,840 --> 00:51:24,240
+Now, I can put the bits together. What does that mean?
+
+511
+00:51:24,240 --> 00:51:28,300
+I now know what is L prime two two which is this regular expression.
+
+512
+00:51:28,300 --> 00:51:33,142
+I know L one two and then I also it's easy to find L two two.
+
+513
+00:51:33,142 --> 00:51:37,320
+You have to basically take this without the empty word.
+
+514
+00:51:37,320 --> 00:51:40,240
+So, the language of A is actually follows from this.
+
+515
+00:51:40,240 --> 00:51:43,920
+How do I get to this? Maybe this goes a bit too quick.
+
+516
+00:51:43,920 --> 00:51:48,766
+Look at the first term. L one two followed by L prime two two omega.
+
+517
+00:51:48,766 --> 00:51:55,080
+So, you take this word right? And then you get this.
+
+518
+00:51:55,080 --> 00:51:59,680
+Okay? And you put this infinitely often because this gets infinite here.
+
+519
+00:51:59,680 --> 00:52:05,040
+Now, you can see that this term BA plus AAA is the same as this BA and triple A.
+
+520
+00:52:05,040 --> 00:52:10,200
+So, I can combine these terms and then it follows quite straightforwardly that I get of
+
+521
+00:52:10,200 --> 00:52:14,160
+something of the form A and then this term omega.
+
+522
+00:52:14,160 --> 00:52:18,320
+Yeah, because I can combine this term over here within the star brackets, the
+
+523
+00:52:18,320 --> 00:52:21,622
+clean star, with this term over here and that gives me infinite.
+
+524
+00:52:21,622 --> 00:52:30,520
+And a similar reasoning to the second component gives us BA plus triple A omega.
+
+525
+00:52:30,520 --> 00:52:35,120
+Good. And this of course is an omega regular expression.
+
+526
+00:52:35,120 --> 00:52:39,040
+Good. You can simplify this a bit by saying A plus epsilon because this is
+
+527
+00:52:39,040 --> 00:52:45,480
+preceded by epsilon with this term if you would like to simplify this.
+
+528
+00:52:45,480 --> 00:52:52,000
+Good. So, that was the construction where I showed that starting from a non-deterministic Büchi automaton, the
+
+529
+00:52:52,000 --> 00:53:01,560
+language is accepted by well, the accepted language can be is always an omega regular expression.
+
+530
+00:53:01,560 --> 00:53:12,760
+Now, the other way around. So, now I'm considering this direction.
+
+531
+00:53:12,760 --> 00:53:17,840
+This was the direction we just have seen and now I'm considering the direction backwards.
+
+532
+00:53:17,840 --> 00:53:27,560
+So, the claim will be for every omega regular expression gamma there exists a non-deterministic Büchi automaton
+
+533
+00:53:27,560 --> 00:53:38,720
+that accepts exactly the set of infinite words described by the omega regular expression.
+
+534
+00:53:38,720 --> 00:53:43,640
+Good. So, written down formally, for every omega regular expression gamma of this
+
+535
+00:53:43,640 --> 00:53:48,040
+form, there exists an NBA such that the set of infinite words accepted by the
+
+536
+00:53:48,040 --> 00:53:53,760
+NBA equals the set of infinite words described by the regular expression.
+
+537
+00:53:53,760 --> 00:53:59,080
+Good. How can we show this? What I'm going to do is basically we
+
+538
+00:53:59,080 --> 00:54:02,497
+start from the omega regular expression. So, what are we going to do?
+
+539
+00:54:02,497 --> 00:54:07,200
+We know that alpha one is a set of infinite of a set of finite words and we know that
+
+540
+00:54:07,200 --> 00:54:09,440
+beta one is a set of finite words.
+
+541
+00:54:09,440 --> 00:54:16,600
+So, I take the alphas and I take the betas and I construct using off-the-shelf automata theory a
+
+542
+00:54:16,600 --> 00:54:22,640
+non-deterministic finite state machine for those regular expressions.
+
+543
+00:54:22,640 --> 00:54:26,080
+So, so I have all the ingredients, the alphas and the betas.
+
+544
+00:54:26,080 --> 00:54:35,080
+Now, we construct starting from the NFA for beta I an NBA, so now a Büchi automaton, that takes
+
+545
+00:54:35,080 --> 00:54:44,120
+into account this superscript or exponent omega. Then we have to construct something like the concatenation because I want to
+
+546
+00:54:44,120 --> 00:54:46,075
+build an automaton for instance for this term.
+
+547
+00:54:46,075 --> 00:54:52,960
+How do I do this? I take the non-deterministic finite state automaton for the blue part, the Büchi automaton
+
+548
+00:54:52,960 --> 00:54:59,240
+for the green part and I glue them together by a concatenation.
+
+549
+00:54:59,240 --> 00:55:03,760
+Similarly then at the end, what I have to do is I have to do the summation.
+
+550
+00:55:03,760 --> 00:55:06,560
+Well, that's the easy part. How do I get the summation?
+
+551
+00:55:06,560 --> 00:55:14,160
+I take the finite union over all terms, over all N terms of the automata that are already constructed
+
+552
+00:55:14,160 --> 00:55:17,306
+for every term. They were indicated with these Cs over there.
+
+553
+00:55:17,306 --> 00:55:22,480
+So, I take those Cs and I take the union of those things.
+
+554
+00:55:22,480 --> 00:55:28,770
+So, let us go through those three constructions one by one to show you how this works.
+
+555
+00:55:28,770 --> 00:55:35,165
+So, the assumption is we have non-deterministic finite state machines for the blue and for the green parts.
+
+556
+00:55:35,165 --> 00:55:42,080
+The green parts without the omega. So, let's start with the NBA for the union.
+
+557
+00:55:42,080 --> 00:55:47,160
+Well, that's very straightforward. I show this by means of two NBAs.
+
+558
+00:55:47,160 --> 00:55:53,520
+So, suppose I just have two NBAs constructed one on the left and one on the right.
+
+559
+00:55:53,520 --> 00:55:59,560
+How do I get the union? Well, you just combine them and consider them as one Büchi automaton.
+
+560
+00:55:59,560 --> 00:56:05,000
+That's trivial. I hope you see you can either start there, so you accept every word
+
+561
+00:56:05,000 --> 00:56:11,920
+that A1 accepts or you can start there and then you accept any word that A2 accepts.
+
+562
+00:56:11,920 --> 00:56:24,200
+Good. So, that's trivial. Next step. How can we concatenate a finite state automaton with a Büchi automaton?
+
+563
+00:56:24,200 --> 00:56:30,245
+So, that's exactly what this slide is going to supposed to say, the concatenation of an NFA and an NBA.
+
+564
+00:56:30,245 --> 00:56:34,240
+I I'm I rather refrain from giving you the formal definitions.
+
+565
+00:56:34,240 --> 00:56:37,565
+You can find them in the in the book in the lecture notes.
+
+566
+00:56:37,565 --> 00:56:40,680
+I rather would like to convey the intuition.
+
+567
+00:56:40,680 --> 00:56:45,440
+So, here we have an NFA and here we have an NBA.
+
+568
+00:56:45,440 --> 00:56:50,137
+Okay? Now, what we want to do is we want to basically do a concatenation.
+
+569
+00:56:50,137 --> 00:56:56,640
+So, I want to construct an NBA that accepts all infinite words that
+
+570
+00:56:56,640 --> 00:57:02,040
+start with a finite word accepted by the left by this A1 followed by an infinite
+
+571
+00:57:02,040 --> 00:57:06,000
+word accepted by the automaton here on the right.
+
+572
+00:57:06,000 --> 00:57:09,480
+The way we're going to do this is as follows.
+
+573
+00:57:09,480 --> 00:57:15,200
+Actually finishing I mean, this Q was an accepting state but becomes non-accepting.
+
+574
+00:57:15,200 --> 00:57:23,480
+I hope the intuition is clear. if we finish here, this is not sufficient because we have to
+
+575
+00:57:23,480 --> 00:57:27,731
+visit some accept state here infinitely often which we don't if you visit this one.
+
+576
+00:57:27,731 --> 00:57:31,160
+So, that's definitely not an accept state anymore.
+
+577
+00:57:31,160 --> 00:57:34,293
+Then I have to connect the automata. Now, look at P0.
+
+578
+00:57:34,293 --> 00:57:40,359
+P0 was an initial state here. It no longer is an initial state anymore because every word needs to be
+
+579
+00:57:40,359 --> 00:57:48,640
+first, let's say, accepted by this automaton. So, I make P0 non-initial.
+
+580
+00:57:48,640 --> 00:57:51,640
+Then I keep the rest of the structure of P0 as is.
+
+581
+00:57:51,640 --> 00:57:58,760
+It had two outgoing arrows. It will still have two outgoing arrows and from Q
+
+582
+00:57:58,760 --> 00:58:04,920
+yeah, I can basically continue with the second automaton and I do this by basically
+
+583
+00:58:04,920 --> 00:58:10,240
+equipping this state with all the outgoing arrows of P P0.
+
+584
+00:58:10,240 --> 00:58:14,040
+And those are the As and the Bs.
+
+585
+00:58:14,040 --> 00:58:16,808
+The accept states are the accept states of A2.
+
+586
+00:58:16,808 --> 00:58:26,760
+So, for instance, if this was an accept state in A2, it remains an accept state in A2.
+
+587
+00:58:26,760 --> 00:58:32,560
+Are you allowed to use epsilon transitions? Well, in Büchi automata, we don't allow epsilon transitions typically.
+
+588
+00:58:32,560 --> 00:58:38,400
+then you could I mean, if if in terms of an NFA, you can simplify this construction a bit.
+
+589
+00:58:38,400 --> 00:58:45,120
+I agree. Yeah. In this, I assume no epsilon transitions.
+
+590
+00:58:45,120 --> 00:58:53,700
+No. Good. Then there is a special case.
+
+591
+00:58:53,700 --> 00:58:59,320
+If this suppose this was an initial state could be.
+
+592
+00:58:59,320 --> 00:59:07,080
+Remember, we have this form. alpha I beta I omega.
+
+593
+00:59:07,080 --> 00:59:17,186
+This does not have the empty word but this can have the empty word.
+
+594
+00:59:17,186 --> 00:59:25,600
+That would mean that in this case, this state is both accepting as well as initial.
+
+595
+00:59:25,600 --> 00:59:31,080
+How does that work? The construction is the same but then I hope you understand that this becomes initial now.
+
+596
+00:59:31,080 --> 00:59:34,900
+This was initial and it now remains initial because basically this was initial.
+
+597
+00:59:34,900 --> 00:59:39,960
+So, I should be able to start here because I can start with the empty word.
+
+598
+00:59:39,960 --> 00:59:46,320
+So, that's a kind of a special case that you have to treat here.
+
+599
+00:59:46,320 --> 00:59:57,240
+Good. Last part. The last part is we start with an NFA for the beta I.
+
+600
+00:59:57,240 --> 01:00:04,520
+So, we have an NFA for beta I and now what I want is want to do beta I omega.
+
+601
+01:00:04,520 --> 01:00:09,200
+So, how do we do the omega operator applied on an NFA?
+
+602
+01:00:09,200 --> 01:00:12,400
+So, this is the idea. You have an NFA.
+
+603
+01:00:12,400 --> 01:00:19,160
+This NFA accepts a regular language, let's say L, which is a set of finite words.
+
+604
+01:00:19,160 --> 01:00:21,400
+It does not contain the empty word. Why not?
+
+605
+01:00:21,400 --> 01:00:27,360
+Because we are considering these betas and we know by definition we start with an omega regular expression, so
+
+606
+01:00:27,360 --> 01:00:31,920
+these betas do not contain the empty word.
+
+607
+01:00:31,920 --> 01:00:35,840
+Good. So, therefore it's sigma plus and not sigma star.
+
+608
+01:00:35,840 --> 01:00:39,491
+Then we want to construct an NBA for which language?
+
+609
+01:00:39,491 --> 01:00:43,920
+Well, for the same language L here, but now L omega.
+
+610
+01:00:43,920 --> 01:00:50,600
+Okay? So, the first naive idea could be if this is my NFA,
+
+611
+01:00:50,600 --> 01:00:53,560
+then and it's supposed here is an accept state.
+
+612
+01:00:53,560 --> 01:00:56,720
+Now, I have to visit this accept state infinitely often.
+
+613
+01:00:56,720 --> 01:00:59,320
+So, the intuition could be you just redirect.
+
+614
+01:00:59,320 --> 01:01:05,640
+I mean, you for instance equip this This has AB.
+
+615
+01:01:05,640 --> 01:01:09,240
+So, the idea is that I can consider this again as an initial state because I want
+
+616
+01:01:09,240 --> 01:01:13,560
+to visit the state infinitely often. So, why don't we include a directed edge
+
+617
+01:01:13,560 --> 01:01:18,800
+from Q to Q1 labeled with A and similarly from Q to Q2 labeled with B.
+
+618
+01:01:18,800 --> 01:01:23,640
+Copying the edges starting from the initial state Q0.
+
+619
+01:01:23,640 --> 01:01:27,893
+Unfortunately, this is incorrect. Why is this incorrect?
+
+620
+01:01:27,893 --> 01:01:32,960
+Well, because from Q you can have other behaviors that can continue and you have to take them
+
+621
+01:01:32,960 --> 01:01:38,760
+into account as well. So, this naive idea is not immediately applicable.
+
+622
+01:01:38,760 --> 01:01:45,800
+It's correct if Q has no other outgoing transitions, then this naive idea works, but otherwise it's it's for all
+
+623
+01:01:45,800 --> 01:01:49,040
+accepting states, but otherwise this does not work.
+
+624
+01:01:49,040 --> 01:01:52,720
+So, what's the idea? The idea is the following.
+
+625
+01:01:52,720 --> 01:01:59,800
+So, we first are going to construct from an NFA for an language that does not contain
+
+626
+01:01:59,800 --> 01:02:06,000
+the empty word, an NFA B such that all the final states are terminal.
+
+627
+01:02:06,000 --> 01:02:11,080
+Why? Yeah, then we can use this construction.
+
+628
+01:02:11,080 --> 01:02:12,800
+Good. How are we going to do this?
+
+629
+01:02:12,800 --> 01:02:16,680
+Suppose that this is the current situation. We have some state Q and some
+
+630
+01:02:16,680 --> 01:02:20,600
+final state P, but this P has some other outgoing edges.
+
+631
+01:02:20,600 --> 01:02:24,240
+What are we going to do? We're going to make a copy of P.
+
+632
+01:02:24,240 --> 01:02:30,960
+So, that's my P prime here. I'm going to make P prime accepting and P non-accepting.
+
+633
+01:02:30,960 --> 01:02:37,080
+And for the rest I'm not changing here the outgoing the outgoing edges.
+
+634
+01:02:37,080 --> 01:02:42,515
+and now I transform this into an NBA and this can be done as follows.
+
+635
+01:02:42,515 --> 01:02:45,417
+Suppose this is the situation that Q0 has this B transition.
+
+636
+01:02:45,417 --> 01:02:49,880
+Now, I'm going to add from this new final state I'm going to copy
+
+637
+01:02:49,880 --> 01:02:57,600
+this edge which moves here, which is this Q to this B transition to the Q state.
+
+638
+01:02:57,600 --> 01:03:01,840
+Good. And now it's not difficult to show anymore by proving the inclusion from
+
+639
+01:03:01,840 --> 01:03:06,920
+left to right and inclusion from right to left that the language of this NFA
+
+640
+01:03:06,920 --> 01:03:14,840
+that I started with omega is actually the set of infinite words accepted by B omega.
+
+641
+01:03:14,840 --> 01:03:20,240
+Example. So, here is an NFA for AB star.
+
+642
+01:03:20,240 --> 01:03:25,720
+A B star. I want to have an NFA B.
+
+643
+01:03:25,720 --> 01:03:30,840
+First of all, what I'm going to do is we we see that this final state has at
+
+644
+01:03:30,840 --> 01:03:35,080
+least one outgoing edge. So, we cannot do the naive construction.
+
+645
+01:03:35,080 --> 01:03:37,516
+We make a copy of P. So, here is P.
+
+646
+01:03:37,516 --> 01:03:41,600
+I make a copy of P, which is P prime.
+
+647
+01:03:41,600 --> 01:03:47,720
+Then this A transition is copied because I go to copy from Q0 to P prime.
+
+648
+01:03:47,720 --> 01:03:53,680
+P prime does not have any outgoing edges, but P has well a B transition here and P
+
+649
+01:03:53,680 --> 01:04:00,240
+will still have the self loop. This can still accept AB star because it
+
+650
+01:04:00,240 --> 01:04:07,480
+accepts A zero Bs or A one B or A and then finitely many Bs and then
+
+651
+01:04:07,480 --> 01:04:13,120
+we go there, etc. Good. Now, we go to an NBA.
+
+652
+01:04:13,120 --> 01:04:16,800
+Why do we get to an NBA? Now, we look at P prime.
+
+653
+01:04:16,800 --> 01:04:19,800
+P prime stays to be the accepting state.
+
+654
+01:04:19,800 --> 01:04:24,160
+And now we have to see that actually we have to copy all the outgoing arrows
+
+655
+01:04:24,160 --> 01:04:31,257
+from Q0 because the idea is that we can start once we have reached P prime as being fresh.
+
+656
+01:04:31,257 --> 01:04:36,800
+So, consider this again as being the initial state from the next iteration and that means we have to copy
+
+657
+01:04:36,800 --> 01:04:43,520
+this A transition. That means that P prime is going to be equipped with an A transition going to P.
+
+658
+01:04:43,520 --> 01:04:48,440
+That's the copy of this A transition and Q0 can go to P prime and that's
+
+659
+01:04:48,440 --> 01:04:56,440
+literally copied by having the self loop at P prime labeled with A.
+
+660
+01:04:56,440 --> 01:05:01,960
+Good. And this is an NBA for AB star omega.
+
+661
+01:05:01,960 --> 01:05:05,280
+Good. So, what we have seen is the following.
+
+662
+01:05:05,280 --> 01:05:09,200
+For every NBA there exists an omega regular expression.
+
+663
+01:05:09,200 --> 01:05:13,728
+The other way around, for every omega regular expression there exists an equivalent NBA.
+
+664
+01:05:13,728 --> 01:05:19,240
+Equivalent meaning they express the same set of infinite words.
+
+665
+01:05:19,240 --> 01:05:25,600
+Good. And that means immediately the following. If you give me an LT property, which is omega regular,
+
+666
+01:05:25,600 --> 01:05:31,000
+remember an omega regular LT property simply means you give me your property which I can
+
+667
+01:05:31,000 --> 01:05:39,000
+describe by an omega regular expression, then this means I can represent this property by a non-deterministic Büchi automaton.
+
+668
+01:05:39,000 --> 01:05:46,280
+So, in my scheme that I originally started with, I can start with an omega regular property
+
+669
+01:05:46,280 --> 01:05:52,160
+and I can construct a Büchi automaton for this property.
+
+670
+01:05:52,160 --> 01:05:54,086
+Now, there's one thing that we need here.
+
+671
+01:05:54,086 --> 01:06:00,680
+We were interested in bad prefixes. Bad prefixes are something that tell you when the property is violated.
+
+672
+01:06:00,680 --> 01:06:04,000
+And actually what we're going to see in the next lecture, we're not going to
+
+673
+01:06:04,000 --> 01:06:09,160
+take a Büchi automaton of the original property, but we're going to take a Büchi automaton for the complement of
+
+674
+01:06:09,160 --> 01:06:15,000
+the property because that's the automaton which accepts all behaviors which are bad.
+
+675
+01:06:15,000 --> 01:06:21,240
+And that is the same paradigm as this bad prefix automaton because that was accepting all
+
+676
+01:06:21,240 --> 01:06:24,720
+properties that were not satisfying the safety property.
+
+677
+01:06:24,720 --> 01:06:30,400
+So, the same idea, but now using Büchi automaton.
+
+678
+01:06:30,400 --> 01:06:37,080
+Good. I will stop here because of the fire alarm I did not
+
+679
+01:06:37,080 --> 01:06:43,359
+completely make it, but we will continue the week after Pfingsten.
+
+680
+01:06:43,359 --> 01:06:48,160
+I hope you have a nice excursion week next week and hope to see you back
+
+681
+01:06:48,160 --> 01:06:53,960
+that will be Tuesday. I do this out of the top of my head, something like May 28th or so.
+
+682
+01:06:53,960 --> 01:06:57,760
+28th. Good. Okay, thanks.

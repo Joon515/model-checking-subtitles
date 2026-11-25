@@ -1,0 +1,2891 @@
+1
+00:00:02,399 --> 00:00:12,719
+good yeah good morning the topic of today is model checking the buchi automata and let me first
+
+2
+00:00:12,719 --> 00:00:22,080
+repeat what we have seen for finite transition systems versus regular safety properties
+
+3
+00:00:22,080 --> 00:00:28,840
+so if we had a finite transition system let's say ts and we have a regular safety
+
+4
+00:00:28,840 --> 00:00:40,480
+property so a safety property whose bad prefixes constitute a regular language let's say p
+
+5
+00:00:40,480 --> 00:00:48,239
+then what we were doing is basically okay we were giving for this an nfa let's say a
+
+6
+00:00:48,239 --> 00:01:00,160
+and that's the for the bet prefixes of b so that's the first important step we
+
+7
+00:01:00,160 --> 00:01:07,680
+are not looking at p itself but we're looking at the finite words that refute so that violate p
+
+8
+00:01:07,680 --> 00:01:13,760
+and then what we were doing is based on this transition system and this nfa we were constructing
+
+9
+00:01:13,760 --> 00:01:24,400
+we constructed a product transition system and we were checking basically here whether this has satisfies the invariant
+
+10
+00:01:24,400 --> 00:01:38,079
+So the invariant never f where f is an accepting state in this bad prefix automaton so intuitively
+
+11
+00:01:38,079 --> 00:01:46,159
+speaking we are checking whether the transition system of the model that we are interested in can generate a behavior
+
+12
+00:01:46,159 --> 00:01:53,439
+that violates the safety property and violating the safety property means it can exhibit a bad prefix
+
+13
+00:01:53,439 --> 00:01:59,840
+no and based on this we were able to say yes we were able to say no
+
+14
+00:01:59,840 --> 00:02:08,640
+and if we were able to say no we could also provide a counter example
+
+15
+00:02:08,640 --> 00:02:16,480
+this checking this property amounts to just a simple reachability property yeah so the basically this is
+
+16
+00:02:16,480 --> 00:02:27,200
+how do you do this algorithmically this basically means reachability analysis you basically have to check whether in
+
+17
+00:02:27,200 --> 00:02:33,840
+this product transition system you can reach an f state yeah how do you do this
+
+18
+00:02:33,840 --> 00:02:45,680
+in terms of an algorithm you just do a depth first search okay that's the
+
+19
+00:02:45,680 --> 00:02:50,959
+the picture we had so far and what we're going to do today
+
+20
+00:02:50,959 --> 00:03:00,319
+is we're going to try to generalize this picture towards a larger class of properties
+
+21
+00:03:00,319 --> 00:03:08,879
+so today my starting point will again be a finite transition system this finite ts
+
+22
+00:03:08,879 --> 00:03:21,519
+and on the other hand i'm going to use an omega regular property and this includes liveness properties
+
+23
+00:03:21,519 --> 00:03:27,440
+for instance yeah so it's no longer restricted to safety properties and definitely it's no longer restricted to
+
+24
+00:03:27,440 --> 00:03:33,680
+regular safety properties so what we're going to do is very similar to this step over there we're
+
+25
+00:03:33,680 --> 00:03:43,360
+going to build a non-deterministic buki automaton same philosophy as on the safety properties not for the property itself
+
+26
+00:03:43,360 --> 00:03:49,280
+but for those behaviors that refute this property again the principle will be we're going
+
+27
+00:03:49,280 --> 00:04:00,640
+to check whether the transition system can exhibit anything bad so we're going to construct an nbaa yeah for
+
+28
+00:04:00,640 --> 00:04:10,239
+basically the complement of p yeah the complement of p is the property that we want to
+
+29
+00:04:10,239 --> 00:04:16,479
+refute yeah the one the thing that we don't want to have now we're going to do the same thing
+
+30
+00:04:16,479 --> 00:04:22,240
+we're going to take this transition system and this nba and actually in the same way as we are
+
+31
+00:04:22,240 --> 00:04:31,512
+going to do there on the above we constructed this product with an nfa now i'm going to take an
+
+32
+00:04:31,512 --> 00:04:37,759
+nba syntactically these are the same objects so the product as we're going to see is remains the same
+
+33
+00:04:37,759 --> 00:04:42,479
+and what i'm going to see today is that we in this here we're going to check is that
+
+34
+00:04:42,479 --> 00:04:57,520
+we only have finally often f i mean when would this transition system exhibit a bad behavior if this product
+
+35
+00:04:57,520 --> 00:05:06,960
+can exhibit a behavior which infinitely often reaches an accepting state in this bad automaton a yeah
+
+36
+00:05:06,960 --> 00:05:14,160
+so what we're going to check for in order to is finally often we need to have f
+
+37
+00:05:14,160 --> 00:05:18,479
+like there we had tracking invariant never f there we were doing this and
+
+38
+00:05:18,479 --> 00:05:25,360
+again we're going to see that this gives rise to two possibilities either yes we're going to see no and
+
+39
+00:05:25,360 --> 00:05:33,440
+we're also going to see how we get a counter example the second thing what we're going to see
+
+40
+00:05:33,440 --> 00:05:37,440
+today is how to check this and now what we're going to do is what
+
+41
+00:05:37,440 --> 00:05:41,440
+we're going to show you is that we don't need a reachability analysis but we need
+
+42
+00:05:41,440 --> 00:05:49,520
+what we call a nested reachability analysis and i'm going to tell you the details on
+
+43
+00:05:49,520 --> 00:05:57,600
+how to do what they call a nested depth first search still this can be done in polynomial
+
+44
+00:05:57,600 --> 00:06:03,840
+time like in the procedure over there polynomial in the size of this product but we need
+
+45
+00:06:03,840 --> 00:06:10,080
+a more involved algorithm yeah and i hope you see that the construction we have seen for those
+
+46
+00:06:10,080 --> 00:06:14,639
+regular safety properties is very similar as over here but the important
+
+47
+00:06:14,639 --> 00:06:22,400
+point of course is that here we use nbas the bad prefixes is something like the complement
+
+48
+00:06:22,400 --> 00:06:27,440
+yeah and for the rest what is important is that we now check for this
+
+49
+00:06:27,440 --> 00:06:36,160
+new condition namely finitely often f which is the same as saying from some point on
+
+50
+00:06:36,160 --> 00:06:43,520
+i don't want to see not f anymore so not f only basically good
+
+51
+00:06:43,520 --> 00:06:50,455
+okay this will be the roadmap of today so let's start so this is what we're going to do as
+
+52
+00:06:50,455 --> 00:06:58,960
+i just explained omega regular property e it's called here does e satisfy does the transition system satisfy the property
+
+53
+00:06:58,960 --> 00:07:06,319
+we're going to construct as a first step a non-deterministic bookie automaton for the complement
+
+54
+00:07:06,319 --> 00:07:15,199
+so those this is the automaton which accepts all behaviors that do not satisfy the property
+
+55
+00:07:15,199 --> 00:07:25,039
+then we're going to check whether the transition system right cannot generate any bad behavior
+
+56
+00:07:25,039 --> 00:07:32,560
+the way to do that is by constructing this product and we're going to check never acceptance condition of a
+
+57
+00:07:32,560 --> 00:07:40,080
+never acceptance condition but means actually finally often f you get an acceptance condition if you have infinitely often f
+
+58
+00:07:40,080 --> 00:07:46,800
+and that's what we would like to avoid okay the first thing is that
+
+59
+00:07:46,800 --> 00:07:54,479
+this requires an algorithm to check these kind of properties and that's what we call persistence properties
+
+60
+00:07:54,479 --> 00:08:01,199
+so what is a persistence property persistence property is defined as follows so i take e
+
+61
+00:08:01,199 --> 00:08:10,960
+as a set of infinite traces as before this is an lt property we call this property persistence if
+
+62
+00:08:10,960 --> 00:08:14,639
+for some propositional logical formula phi over a set of atomic propositions
+
+63
+00:08:14,639 --> 00:08:24,240
+it's whole that e is the set of all infinite words over those sets of atomic propositions such that yeah
+
+64
+00:08:24,240 --> 00:08:33,279
+for all but finally many times you satisfy fi good so from some moment on
+
+65
+00:08:33,279 --> 00:08:39,360
+phi or eventually forever phi that's actually what it what it means
+
+66
+00:08:39,360 --> 00:08:43,519
+good so it means that you have a trace every now and then five holds every now
+
+67
+00:08:43,519 --> 00:08:50,880
+and then but from some point on you only see fives yeah good that's the point here this is also
+
+68
+00:08:50,880 --> 00:08:56,080
+the case what we need here you can have an f every now and then
+
+69
+00:08:56,080 --> 00:09:01,440
+in a certain finite prefix but from some point on you should never see f again
+
+70
+00:09:01,440 --> 00:09:09,440
+no because we only want to visit f finitely off so that corresponds to the the notion we need
+
+71
+00:09:09,440 --> 00:09:16,080
+so here before we had invariance now we need here a persistence property that's basically what we're going to see
+
+72
+00:09:16,080 --> 00:09:20,480
+good so this is a picture i just showed you we're going to build this nba etc
+
+73
+00:09:20,480 --> 00:09:26,959
+and then we're going to check eventually forever not f which is the same as what we just have seen
+
+74
+00:09:26,959 --> 00:09:31,839
+So just let me recall this product product i hope you all remember this was
+
+75
+00:09:31,839 --> 00:09:37,760
+the synchronous product of a transition system and an nfa and the idea is that
+
+76
+00:09:37,760 --> 00:09:44,480
+we look at a run or a path fragment in the transition system we consider the labels of those states
+
+77
+00:09:44,480 --> 00:09:49,760
+so the set of atomic propositions which holds here which holds there and which holds there
+
+78
+00:09:49,760 --> 00:09:56,880
+and the idea is intuitively speaking that these are the input symbols which are fed into this automaton
+
+79
+00:09:56,880 --> 00:10:05,440
+So this automaton will based on these sets of atomic propositions construct a run and that looks as follows
+
+80
+00:10:05,440 --> 00:10:14,640
+so here i have a run of this of this nfa and i do this based on these input symbols
+
+81
+00:10:14,640 --> 00:10:19,839
+okay and the way to do that in terms of the product construction and that's the reason
+
+82
+00:10:19,839 --> 00:10:26,480
+why we map s0 to q1 because what you see s0 is labeled with a0 with this set of
+
+83
+00:10:26,480 --> 00:10:34,399
+atomic propositions a0 that is fed into this initial state and then the next state after q naught
+
+84
+00:10:34,399 --> 00:10:40,000
+is q1 that is the state that happens after having inputted this symbol a0 and
+
+85
+00:10:40,000 --> 00:10:49,920
+from then on basically the transition system and the automaton run synchronously hand in hand that's the id
+
+86
+00:10:49,920 --> 00:10:55,920
+good if this model is an automaton that is bad then it means that if they run synchronously
+
+87
+00:10:55,920 --> 00:11:04,320
+they together can if the transition system is able to exhibit a bad behavior can jointly reach a bad state
+
+88
+00:11:04,320 --> 00:11:10,000
+good so that's exactly what we're going to do now so the definition of an nfa this product
+
+89
+00:11:10,000 --> 00:11:13,360
+was just a synchronous product so we take the cartesian product of the states
+
+90
+00:11:13,360 --> 00:11:19,360
+of the transition system and the states of the automaton and the transition relation was as follows
+
+91
+00:11:19,360 --> 00:11:25,839
+that if we have a state transition in the transition system from s to s prime by some action alpha
+
+92
+00:11:25,839 --> 00:11:32,800
+then we look at the pair sq in the product when does sq have an alpha transition
+
+93
+00:11:32,800 --> 00:11:40,560
+well whenever the automaton can follow basically follow this transition from s to s prime what does that mean
+
+94
+00:11:40,560 --> 00:11:46,880
+it means you feed the symbol of this target state into the automaton so you consider the
+
+95
+00:11:46,880 --> 00:11:50,720
+current state of the automaton which is q so you look at the transition relation
+
+96
+00:11:50,720 --> 00:11:55,120
+based on the current state q you feed this with the input symbol which is the
+
+97
+00:11:55,120 --> 00:12:00,000
+labeling of l of s prime which is ls prime and you look at what are the
+
+98
+00:12:00,000 --> 00:12:04,720
+possible next states in this automaton this apparently turns out to be q prime
+
+99
+00:12:04,720 --> 00:12:11,600
+but that means in the product i have a transition from sq to s prime q prime
+
+100
+00:12:11,600 --> 00:12:16,480
+so the key point here is that the labeling of this target state is
+
+101
+00:12:16,480 --> 00:12:22,720
+used as input to the automaton in state q you see a similar phenomenon at the
+
+102
+00:12:22,720 --> 00:12:27,920
+initial states so the initial states are not the pairs of initial states of the
+
+103
+00:12:27,920 --> 00:12:35,440
+transition system and the automaton but initial states of the transition system with q where you can reach those queues
+
+104
+00:12:35,440 --> 00:12:42,160
+starting from some initial state by feeding it with as input symbol the labeling of the initial state of the
+
+105
+00:12:42,160 --> 00:12:54,543
+transition system that corresponds exactly to this cross line over here you pair this s0 with q1 not with q
+
+106
+00:12:54,543 --> 00:12:58,959
+0. good that has to do with the fact that one is has labels on the states the
+
+107
+00:12:58,959 --> 00:13:02,160
+other one has labels on the transitions and you have to match them in some way
+
+108
+00:13:02,160 --> 00:13:08,880
+that's basically the way that you get this small shift we're going to label the states with
+
+109
+00:13:08,880 --> 00:13:15,040
+with the state the names of the states and the automaton and that is represented like here
+
+110
+00:13:15,040 --> 00:13:21,120
+good now we're doing the same for nbas so we're going to adopt exactly the same principle
+
+111
+00:13:21,120 --> 00:13:27,680
+for nbas so this is not changing at all so that's basically the same thing and
+
+112
+00:13:27,680 --> 00:13:32,320
+now what we want to do is we want to do this what we call omega regular model checking
+
+113
+00:13:32,320 --> 00:13:39,360
+we have a finite transition system an omega regular property e we want to check whether t satisfies e
+
+114
+00:13:39,360 --> 00:13:44,160
+and what we do is as i mentioned we take the complement of e which means we take
+
+115
+00:13:44,160 --> 00:13:51,680
+the bad behaviors and construct an nba for those bad behaviors and then we're going to reduce it to a
+
+116
+00:13:51,680 --> 00:13:58,639
+persistency checking problem so this is how it looks like i have a transition system i have an automaton
+
+117
+00:13:58,639 --> 00:14:04,399
+the transition system is over the set of atomic propositions ap and this is the corresponding set of
+
+118
+00:14:04,399 --> 00:14:07,760
+atomic propositions of the automaton and that means that the input alpha the
+
+119
+00:14:07,760 --> 00:14:16,160
+alphabet of this automaton is 2 to the power ap good this as before is a non-blocking
+
+120
+00:14:16,160 --> 00:14:21,279
+automaton which means in every state for every next input symbol there is a
+
+121
+00:14:21,279 --> 00:14:25,040
+transition in the automaton that is what non-blocking means you know it cannot
+
+122
+00:14:25,040 --> 00:14:31,120
+block in a state because it gets an input symbol for which it doesn't have a transition
+
+123
+00:14:31,120 --> 00:14:36,320
+good so what's the language of accepted by this bad prefix our bet automaton not
+
+124
+00:14:36,320 --> 00:14:44,320
+prefix bad automaton it's the complement of e and now we're going to see that the following three statements are
+
+125
+00:14:44,320 --> 00:14:56,880
+equivalent t satisfies this omega regular property if and only if no infinite trace of t
+
+126
+00:14:56,880 --> 00:15:04,320
+is accepted by this automaton so this is a difference with the regular safety property safety property we were
+
+127
+00:15:04,320 --> 00:15:11,360
+considering finite traces and finite words the difference here is we look at infinite traces and an automaton
+
+128
+00:15:11,360 --> 00:15:19,600
+accepting infinite words this is intuitively not so hard to see yeah i mean as this automaton accepts
+
+129
+00:15:19,600 --> 00:15:25,199
+everything which is bad then it means that if the transition system can generate something which is
+
+130
+00:15:25,199 --> 00:15:34,320
+bad then of course it violates the property vice versa if the transition system violates the property
+
+131
+00:15:34,320 --> 00:15:40,000
+it needs to be able to produce a trace which is bad which means it needs to be
+
+132
+00:15:40,000 --> 00:15:46,959
+accepted by this bad automaton so i think the equivalence between one and two is relatively easy to see
+
+133
+00:15:46,959 --> 00:15:52,800
+and now it's also equivalent to three so one is equivalent to two and also equivalent to three
+
+134
+00:15:52,800 --> 00:16:01,600
+and that means the product of t and this bad automaton satisfies the property eventually forever not f
+
+135
+00:16:01,600 --> 00:16:19,839
+and here i would like to spend some words to show you why this is the case
+
+136
+00:16:19,839 --> 00:16:30,079
+good so i want to show that two holes if and only if three holds
+
+137
+00:16:30,079 --> 00:16:37,360
+and the way to do that is the following we're first going to assume this direction and i'm going
+
+138
+00:16:37,360 --> 00:16:42,639
+to assume the the opposite so basically what i'm going to show is that
+
+139
+00:16:42,639 --> 00:16:51,839
+in fact in fact i'm going to prove first that not three implies not two
+
+140
+00:16:51,839 --> 00:17:04,160
+good so what i'm going to do is assume that my transition system product with a violates this property
+
+141
+00:17:04,160 --> 00:17:26,799
+violates eventually forever not f now f are the accepting states of nba a good
+
+142
+00:17:26,799 --> 00:17:36,320
+let's call this property just for the sake of simplicity the property e of a good
+
+143
+00:17:36,320 --> 00:17:46,720
+so now we take apart pi prime which is a part in this product
+
+144
+00:17:46,720 --> 00:17:56,960
+and this violates this property e e such a part must exist because otherwise this would not hold say
+
+145
+00:17:56,960 --> 00:18:11,600
+pi prime is something of the form s 0 q 1 s 1 q 2 dot s p prime
+
+146
+00:18:11,600 --> 00:18:32,960
+violates this property ea it means there are infinitely many indices ice such that q i belongs to f
+
+147
+00:18:32,960 --> 00:18:38,720
+so if i take this infinite part i get infinitely many positions where
+
+148
+00:18:38,720 --> 00:18:49,360
+the second component of such a state is an accepting state of this bad automaton good of course besides
+
+149
+00:18:49,360 --> 00:18:59,679
+i know that s 0 s 1 s 2 is a part of ts that's by construction otherwise this
+
+150
+00:18:59,679 --> 00:19:04,240
+would not be a part in the product so this is simply saying if i project
+
+151
+00:19:04,240 --> 00:19:13,919
+only on the first components i need to get a part in the transition system good let
+
+152
+00:19:13,919 --> 00:19:22,400
+q0 be an initial state of the automaton such that this initial state
+
+153
+00:19:22,400 --> 00:20:03,679
+has a transition with the labeling of s0 and moves to q1 this is the wrong thing
+
+154
+00:20:03,679 --> 00:20:23,440
+then we have that q0 q1 q2 etc is a run in the nba a for the word
+
+155
+00:20:23,440 --> 00:20:34,880
+ls0 ls1 ls2 etc this infinite word and this infinite word this means this is a trace
+
+156
+00:20:34,880 --> 00:20:52,159
+of some part pi and this is a trace in the transition system since we have infinitely many qi
+
+157
+00:20:52,159 --> 00:21:18,000
+belongs to f it means that this run is an accepting room hence the trace of pi belongs
+
+158
+00:21:18,000 --> 00:21:35,039
+to the language of infinite words accepted by a and that ends this proof
+
+159
+00:21:35,039 --> 00:21:39,679
+good so what you see is that we start with the negation we assume
+
+160
+00:21:39,679 --> 00:21:47,919
+that the product violates this property and then we start to basically argue that's in immediate actually the
+
+161
+00:21:47,919 --> 00:21:58,400
+intersection is not empty because from this of course it follows that the traces of ts intersected with this a
+
+162
+00:21:58,400 --> 00:22:11,760
+is not empty good the reasoning the other way around is actually very similar so i would like to
+
+163
+00:22:11,760 --> 00:22:42,000
+to avoid this so this proof goes in a similar way good so what's the bottom line the
+
+164
+00:22:42,000 --> 00:22:50,480
+bottom line means we want to check an omega regular property e on a finite transition system
+
+165
+00:22:50,480 --> 00:22:55,200
+how are we algorithmically going to do this we're going to construct we're going to
+
+166
+00:22:55,200 --> 00:23:01,039
+use free which means we're going to construct this product which is relatively straightforward
+
+167
+00:23:01,039 --> 00:23:05,440
+which gives us a new transition system what are we going to do on this new
+
+168
+00:23:05,440 --> 00:23:11,520
+transition system we're going to check the property eventually forever not f and that's an algorithm that i'm going
+
+169
+00:23:11,520 --> 00:23:19,440
+to introduce somewhat later in this lecture we're going to see this can be done in polynomial time
+
+170
+00:23:19,440 --> 00:23:25,760
+good so here's an example a very simple transition system two states red and green
+
+171
+00:23:25,760 --> 00:23:32,880
+suppose i want to check the property infinitely often green now intuitively for us it's clear that
+
+172
+00:23:32,880 --> 00:23:41,120
+this property is satisfied because you can only cycle around and you get infinitely often green right
+
+173
+00:23:41,120 --> 00:23:44,960
+now i'm going to apply this strategy so the first thing what we're going to do
+
+174
+00:23:44,960 --> 00:23:52,720
+is we're going to construct an nba for the complement okay the complement of infinitely often green
+
+175
+00:23:52,720 --> 00:24:01,679
+is so the negation it says from some moment on we see not green
+
+176
+00:24:01,679 --> 00:24:05,760
+we only see not green from some point on no because that means we have a finite
+
+177
+00:24:05,760 --> 00:24:09,679
+prefix in this finer prefix we can have every now and then green but from some
+
+178
+00:24:09,679 --> 00:24:18,640
+point on we only see not green no good what's an nba for this property for the complement
+
+179
+00:24:18,640 --> 00:24:23,600
+from some moment on not green my claim is that this is this non nba
+
+180
+00:24:23,600 --> 00:24:28,960
+for instance we'll do the job we start in this initial state we have a transition on every input
+
+181
+00:24:28,960 --> 00:24:34,240
+symbol but as soon as we guess that from some point on we
+
+182
+00:24:34,240 --> 00:24:39,039
+only will see not green we move from q naught to q f
+
+183
+00:24:39,039 --> 00:24:43,279
+and then of course we accept only if we have not green because from some point
+
+184
+00:24:43,279 --> 00:24:48,880
+on we only want to see not green and then if we in this accepting said
+
+185
+00:24:48,880 --> 00:24:53,440
+get a green state we go we jump out and we never accept again which means we go
+
+186
+00:24:53,440 --> 00:25:01,360
+to some state q1 where we stay forever this is a non-deterministic buchi automaton
+
+187
+00:25:01,360 --> 00:25:08,080
+and actually you can not model this property this property i mean from some moment on
+
+188
+00:25:08,080 --> 00:25:15,520
+not green by means of a deterministic bookie automaton remember deterministic buchi automaton are strictly less expressive
+
+189
+00:25:15,520 --> 00:25:21,440
+the key point here is that you need to guess when are we getting to the point where
+
+190
+00:25:21,440 --> 00:25:26,559
+i'm only going to see not green in this guessing is this non-determinism that i
+
+191
+00:25:26,559 --> 00:25:34,080
+absolutely need here and you have seen the proof actually that you cannot construct a dba for this property
+
+192
+00:25:34,080 --> 00:25:39,679
+good so now what we have we have my finite transition system we have the nba for the complement now
+
+193
+00:25:39,679 --> 00:25:44,559
+we're going to construct the product good this works as follows my claim is
+
+194
+00:25:44,559 --> 00:25:50,080
+that this is the reachable fragment of the product let me try to explain a bit where do we
+
+195
+00:25:50,080 --> 00:25:53,919
+start so what you see here is that we have two initial states why do we have
+
+196
+00:25:53,919 --> 00:25:59,600
+two initial states but remember what's the construction the construction is you take the initial state of the transition
+
+197
+00:25:59,600 --> 00:26:05,840
+system which is red you look at the label of this state what is the label of this state well
+
+198
+00:26:05,840 --> 00:26:09,760
+it's at least not green right so it's not green what happens if i feed this
+
+199
+00:26:09,760 --> 00:26:14,799
+initial state with the symbol not green now there are two possibilities
+
+200
+00:26:14,799 --> 00:26:17,760
+either it stays in this i mean it takes the self loop
+
+201
+00:26:17,760 --> 00:26:24,000
+which means you stay in q naught or you move to qf and that's the reason why i have two
+
+202
+00:26:24,000 --> 00:26:30,240
+initial states so formally speaking the initial states are of the form red
+
+203
+00:26:30,240 --> 00:26:34,480
+comma q red being the initial state of the transition system q being an initial
+
+204
+00:26:34,480 --> 00:26:38,960
+state well an initial state as follows it's it's a kind of state that i reach
+
+205
+00:26:38,960 --> 00:26:44,880
+from the initial state in my automaton by feeding it with the label set of the state red
+
+206
+00:26:44,880 --> 00:26:49,760
+in my case this is for instance an empty set if we only take green as a set of
+
+207
+00:26:49,760 --> 00:26:55,760
+atomic propositions what is the set of successor states if i enqueue not have empty sets i have those
+
+208
+00:26:55,760 --> 00:27:02,159
+two states and therefore i have two initial states good as i said this is exactly the
+
+209
+00:27:02,159 --> 00:27:09,039
+product construction we have seen before then here for instance we have a transition so suppose i have a
+
+210
+00:27:09,039 --> 00:27:16,240
+transition from green to red then what happens in this state green q zero
+
+211
+00:27:16,240 --> 00:27:24,399
+that means that we're going to look at q zero we're going to look at the
+
+212
+00:27:24,399 --> 00:27:28,159
+label set of the target state of this transition the target state is red so
+
+213
+00:27:28,159 --> 00:27:33,600
+we're going to feed this state as before with the empty set there are two
+
+214
+00:27:33,600 --> 00:27:37,039
+possible transitions that the self loop are moving there and therefore from this
+
+215
+00:27:37,039 --> 00:27:46,000
+state on we have two outgoing edges to those two states in my product good same construction as as before
+
+216
+00:27:46,000 --> 00:27:54,240
+so what is important the important thing is in my product when do i reach an accepting state
+
+217
+00:27:54,240 --> 00:28:03,600
+remember an accepting state means bad it means that we violate the property of interest so in this product
+
+218
+00:28:03,600 --> 00:28:08,080
+the only state of interest in this state because that's the only state where the
+
+219
+00:28:08,080 --> 00:28:19,520
+second component is in the accepting state of the property i mean of this nba good now
+
+220
+00:28:19,520 --> 00:28:26,880
+it's i hope intuitively obvious to see that in this transition system we can reach an accepting state
+
+221
+00:28:26,880 --> 00:28:34,880
+but we cannot reach it infinitely often so this transition system satisfies the property eventually which means from
+
+222
+00:28:34,880 --> 00:28:44,480
+some point on we have forever not f suppose we start here we accepting
+
+223
+00:28:44,480 --> 00:28:50,480
+ah that's maybe bad but it's only once that's not that doesn't hurt yeah finally often here that doesn't
+
+224
+00:28:50,480 --> 00:28:54,320
+hurt so once is okay then we move there and then we stay there at infinitum and
+
+225
+00:28:54,320 --> 00:29:01,600
+we will never see an accepting state anymore therefore we satisfy eventually forever not f
+
+226
+00:29:01,600 --> 00:29:07,360
+the other possibility of an infinite behavior is something like this infinitely often there or finally often
+
+227
+00:29:07,360 --> 00:29:13,279
+there and then jumping there but that's all fine because at most i will visit an accepting state once
+
+228
+00:29:13,279 --> 00:29:24,159
+that's only finally often that's all fine good second example a very simple transition system again we
+
+229
+00:29:24,159 --> 00:29:28,559
+start in this initial state then we can try to send a message the message can
+
+230
+00:29:28,559 --> 00:29:31,919
+get lost then i go here and then i send the message again
+
+231
+00:29:31,919 --> 00:29:35,919
+or the message will be delivered and if i have the message delivered i go back
+
+232
+00:29:35,919 --> 00:29:43,279
+to my initial state start suppose i want to check the omega regular property each
+
+233
+00:29:43,279 --> 00:29:46,880
+sent message or repeatedly sent if i have to send it more often every message
+
+234
+00:29:46,880 --> 00:29:54,960
+that has sent will eventually be delivered now is this a property that holds no
+
+235
+00:29:54,960 --> 00:30:03,360
+yeah because i can stay in this loop at infinity yeah in principle i can lose a message infinitely often
+
+236
+00:30:03,360 --> 00:30:07,200
+that's our intuition how does this work by means of the scheme that i just
+
+237
+00:30:07,200 --> 00:30:14,799
+explained on the the blackboard so it's clear it violates this property first i take the property at hand i'm
+
+238
+00:30:14,799 --> 00:30:20,799
+going to complement it and build an nba for the complement so what's the complement of this
+
+239
+00:30:20,799 --> 00:30:26,720
+property it says well i have some try of a message but that will never be delivered
+
+240
+00:30:26,720 --> 00:30:32,960
+no the property says every method that i sent will eventually be delivered the compliment says well there is a
+
+241
+00:30:32,960 --> 00:30:39,919
+message that i will never deliver so what's the nba for this negation for this complement
+
+242
+00:30:39,919 --> 00:30:45,360
+this works as follows so again i have three states again it's non-deterministic
+
+243
+00:30:45,360 --> 00:30:55,360
+so here i have basically i try it's not delivered and it will never be delivered no that's tidy
+
+244
+00:30:55,360 --> 00:30:59,440
+so as soon as i am in this state and the message will be delivered i move out and
+
+245
+00:30:59,440 --> 00:31:07,679
+i will never accept again good same principle as before i have a finite transition system i have an nba
+
+246
+00:31:07,679 --> 00:31:13,360
+for the bad behaviors let's construct the product this is the product i'm not going to
+
+247
+00:31:13,360 --> 00:31:20,480
+explain this in in much further detail if you just follow the construction we have seen before
+
+248
+00:31:20,480 --> 00:31:30,240
+then then you will just get this automaton so what do you see here what is important is
+
+249
+00:31:30,240 --> 00:31:38,080
+can we reach an accepting state okay and don't finally often we want to reach it if we
+
+250
+00:31:38,080 --> 00:31:43,600
+can reach it infinitely often this is bad so there are some states which have qfs
+
+251
+00:31:43,600 --> 00:31:46,799
+component this one and that one and indeed it's possible to move from start
+
+252
+00:31:46,799 --> 00:31:52,000
+to this state and we stay here at infinitum so there is a possibility which we
+
+253
+00:31:52,000 --> 00:31:57,039
+already knew because we already know that the property is violated but here we see systematically that indeed we
+
+254
+00:31:57,039 --> 00:32:05,519
+have a possibility of looping here forever and looping here forever means actually that we violate the property
+
+255
+00:32:05,519 --> 00:32:10,720
+so this is the labeling of the transition system the pink states are the important ones because those are the
+
+256
+00:32:10,720 --> 00:32:20,399
+ones where the nba is accepting so those indicate the states that are bad now we have to check
+
+257
+00:32:20,399 --> 00:32:29,440
+eventually forever not f this is violated because you can go here and cycle around there and that's an example
+
+258
+00:32:29,440 --> 00:32:38,799
+or a counter example for satisfying eventually forever not f conclusion thanks to the theorem we had
+
+259
+00:32:38,799 --> 00:32:48,799
+if we know this the original transition system does not satisfy the original property good
+
+260
+00:32:48,799 --> 00:32:54,640
+what i just did already on the blackboard is summarized again here for regular safety properties we were
+
+261
+00:32:54,640 --> 00:33:01,919
+checking whether a finite transition system satisfies a regular safety property for safety properties it suffices to
+
+262
+00:33:01,919 --> 00:33:07,120
+look at finite back prefixes so we look at finite traces and bad prefixes of
+
+263
+00:33:07,120 --> 00:33:14,159
+this property and check whether the intersection is empty for regular properties we were checking
+
+264
+00:33:14,159 --> 00:33:23,200
+infinite traces and infinite words so that's why we used automata like buchi automata and accepting infinite words
+
+265
+00:33:23,200 --> 00:33:30,320
+good so that's an nfa that's a bfa nfa and an nba sorry here we were checking
+
+266
+00:33:30,320 --> 00:33:36,960
+yeah you should never reach an accepting state because a finite automaton is accepting once you reach an accepting
+
+267
+00:33:36,960 --> 00:33:46,080
+state once here we are checking eventually forever not f that means from some point on we should never ex
+
+268
+00:33:46,080 --> 00:33:51,039
+visit the accept state anymore yeah and in both cases f is the set of
+
+269
+00:33:51,039 --> 00:33:58,240
+final or accepting states of this automaton so i hope you see here that the two schemes are very similar
+
+270
+00:33:58,240 --> 00:34:02,399
+and i hope you understand why we need automata on infinite words
+
+271
+00:34:02,399 --> 00:34:08,879
+and why we are going to check now this property eventually forever not f good
+
+272
+00:34:08,879 --> 00:34:13,919
+the first was called invariant checking invariant checking can be done by a simple debt first search
+
+273
+00:34:13,919 --> 00:34:20,560
+the second one is what we call persistent checking why persistent checking this property is a persistence property
+
+274
+00:34:20,560 --> 00:34:33,679
+right from some point on something must hold namely not f good so that raises the next question
+
+275
+00:34:33,679 --> 00:34:40,720
+how are we going to check this how are we going to check whether the product satisfies this property
+
+276
+00:34:40,720 --> 00:34:46,960
+good i'm going to present you two algorithms one is basically more
+
+277
+00:34:46,960 --> 00:34:55,119
+for intuition the second one is the one that is actually used in practical model checkers good so
+
+278
+00:34:55,119 --> 00:35:04,400
+the following observation is helpful my transition system violates eventually forever f
+
+279
+00:35:04,400 --> 00:35:10,800
+again from some point on i only want to see ace not fa
+
+280
+00:35:10,800 --> 00:35:14,720
+what does that mean it means that if it refutes this property it means that
+
+281
+00:35:14,720 --> 00:35:22,960
+there must be a part in this transition system s0 s1 etc such that yeah
+
+282
+00:35:22,960 --> 00:35:37,040
+i have infinitely many positions along this part that violate a no this negation comes from this negation good
+
+283
+00:35:37,040 --> 00:35:46,800
+but that means there exists a reachable state s such that s violates a yeah
+
+284
+00:35:46,800 --> 00:35:51,599
+why is this the case well we need a part that has infinitely many positions along
+
+285
+00:35:51,599 --> 00:35:59,040
+this part refuting a now the key point is the transition system itself is finite yeah
+
+286
+00:35:59,040 --> 00:36:06,800
+so there are not infinitely many sis in the transition system that means there must be some state that
+
+287
+00:36:06,800 --> 00:36:13,280
+you visit infinitely often so there must exist a reachable state s
+
+288
+00:36:13,280 --> 00:36:20,560
+such that that refutes a and lies on a cycle yeah so the picture is basically as follows
+
+289
+00:36:20,560 --> 00:36:30,320
+this is my transition system i have maybe several initial states maybe one here maybe one there that's okay
+
+290
+00:36:30,320 --> 00:36:36,960
+now there is some state s that is reachable maybe from this initial state and this s
+
+291
+00:36:36,960 --> 00:36:40,400
+lies on a cycle and that means there is some cycle here
+
+292
+00:36:40,400 --> 00:36:49,839
+that satisfy that leads you to s and s refutes a that's the situation good
+
+293
+00:36:49,839 --> 00:36:54,560
+so now what we need to check we need to check whether our transition system has
+
+294
+00:36:54,560 --> 00:37:00,800
+a reachable state that lies on a cycle how are we going to do this well one way
+
+295
+00:37:00,800 --> 00:37:05,359
+is to look at strongly connected components i hope you all remember what is a
+
+296
+00:37:05,359 --> 00:37:10,480
+strongly connected component it's a sub graph such that every node in the subgraph can
+
+297
+00:37:10,480 --> 00:37:16,400
+reach every other node in that subgraph now you have mutual reachability within this subgraph
+
+298
+00:37:16,400 --> 00:37:25,567
+non-trivial means this subgraph has at least one edge yeah good i'll get to this in a minute so what
+
+299
+00:37:25,567 --> 00:37:34,400
+is important here i need to find a strongly connected component that has at least one state that refutes a
+
+300
+00:37:34,400 --> 00:37:39,440
+so basically what i'm saying i need some kind of strongly connected component maybe this looks like follows
+
+301
+00:37:39,440 --> 00:37:51,119
+so this is maybe the strongly connected component and this strongly connected component contains at least one state refuting a
+
+302
+00:37:51,119 --> 00:37:55,119
+good so a maximal set of states that i didn't mention but i hope
+
+303
+00:37:55,119 --> 00:38:01,920
+that's clear you try to make this set as large as possible that are mutual reachability reachable from each other
+
+304
+00:38:01,920 --> 00:38:06,400
+and it's called non-trivial if it has at least one edge that's what i just said
+
+305
+00:38:06,400 --> 00:38:13,920
+so that means either it's one state with a self loop or it contains two states yeah or more
+
+306
+00:38:13,920 --> 00:38:31,359
+so a just a state without any outgoing error is not a non-trivial sec it's called a trivial svc
+
+307
+00:38:31,359 --> 00:38:41,599
+you have three states okay i have three states and then one cycle like this
+
+308
+00:38:41,599 --> 00:38:50,160
+yeah this is a strongly connected component and it's even a non-trivial synonym component no
+
+309
+00:38:50,160 --> 00:38:59,520
+good so this gives us one hint to check this persistence property namely take your transition system
+
+310
+00:38:59,520 --> 00:39:04,960
+which translation system well this product right because that's what we are considering take this product
+
+311
+00:39:04,960 --> 00:39:10,640
+consider it as a graph directed graph calculate the strong connected components which is a standard procedure
+
+312
+00:39:10,640 --> 00:39:16,960
+you have been taught in the course on data structures and algorithms and you analyze them why do we analyze
+
+313
+00:39:16,960 --> 00:39:23,440
+them well we need to have one that has at least satisfies not a right i mean refutes a
+
+314
+00:39:23,440 --> 00:39:30,720
+good so let's do this for this example this was the transition system remember the property every sent message
+
+315
+00:39:30,720 --> 00:39:37,680
+either repeated or not will eventually be delivered we considered the negation the litigation said
+
+316
+00:39:37,680 --> 00:39:41,200
+okay i have a message that i tried but it never was never delivered this was
+
+317
+00:39:41,200 --> 00:39:48,880
+the nba reconstructed the product and the previous slide suggests why don't we just look at the strong kinetic
+
+318
+00:39:48,880 --> 00:39:54,800
+components in this product so let's have a look at this product here is the product consider the strongly connected
+
+319
+00:39:54,800 --> 00:40:01,760
+components in this product these are these three now you may argue okay this is maybe a strongly connected
+
+320
+00:40:01,760 --> 00:40:06,480
+component as well because those two states are mutually reachable but that's not maximal right remember a strong
+
+321
+00:40:06,480 --> 00:40:12,160
+kinetic component is the maximal set of states which is mutual reachable
+
+322
+00:40:12,160 --> 00:40:18,720
+so my claim is those three sets are the sony connected components then all these three strong kinetic
+
+323
+00:40:18,720 --> 00:40:26,640
+components are reachable that's important right because we wanted to have this thing reachable
+
+324
+00:40:26,640 --> 00:40:31,359
+you know so if there are stone economic components that are not reachable they don't
+
+325
+00:40:31,359 --> 00:40:38,720
+they're not of any interest here and then i know that c2 is non-trivial actually they're all free non-trivial
+
+326
+00:40:38,720 --> 00:40:45,440
+and in particular it contains at least one state in this example the whole sec
+
+327
+00:40:45,440 --> 00:40:48,560
+contains two states and they are both accepting but it suffices for the
+
+328
+00:40:48,560 --> 00:40:57,839
+argument that it has at least one state that is satisfying that it violates not f right
+
+329
+00:40:57,839 --> 00:41:04,960
+look at the double negation right we're interested in not f and negation so we're interested in f good
+
+330
+00:41:04,960 --> 00:41:15,440
+and therefore we conclude that this transition system this product refutes this property and now we know
+
+331
+00:41:15,440 --> 00:41:27,680
+thanks to the theorem we have seen before that this original transition system does not satisfy this property good
+
+332
+00:41:27,680 --> 00:41:35,599
+okay what is a counter example anyone has a clue what is now as a user i could give back
+
+333
+00:41:35,599 --> 00:41:42,240
+a counter example how would that counter example look like now you look at how to reach this
+
+334
+00:41:42,240 --> 00:41:47,280
+strongly connected component for the sake of argument let's take the shortest path from the initial state to
+
+335
+00:41:47,280 --> 00:41:54,160
+the stronghold component so let's move there directly so i move in my transition system from the state start
+
+336
+00:41:54,160 --> 00:42:02,000
+to try to lost and then i look in this cycle yeah so the country example is start try
+
+337
+00:42:02,000 --> 00:42:10,160
+lost try lost try loss try lost and i represent this by moving from start to the loop try lost
+
+338
+00:42:10,160 --> 00:42:26,880
+so the counter example is this form is start dot try lost omega
+
+339
+00:42:26,880 --> 00:42:29,599
+no well i don't need the omega i only have to say this is the cycle that i
+
+340
+00:42:29,599 --> 00:42:36,160
+reach and then everybody knows i can take the cycle infinitely off yeah this is exactly the counter example you
+
+341
+00:42:36,160 --> 00:42:42,319
+had already in mind when i was explaining this example the first thing i said basically well
+
+342
+00:42:42,319 --> 00:42:47,760
+look this set this doesn't satisfy the property because of this loop well that's exactly the counter example
+
+343
+00:42:47,760 --> 00:42:55,839
+because you first go there and then you go to this loop once good
+
+344
+00:42:55,839 --> 00:43:00,000
+So that's what we just have seen we can check this property or we can check
+
+345
+00:43:00,000 --> 00:43:05,599
+whether t violates this property if and only if there exists a non-trivial reachable strong kinetic component that
+
+346
+00:43:05,599 --> 00:43:15,440
+contains at least one state violating a good so one method is just calculate the strong connected components analyze them
+
+347
+00:43:15,440 --> 00:43:31,839
+sorry there was a question yeah no so so the question is what happens if
+
+348
+00:43:31,839 --> 00:43:37,920
+it has a trivial strong kinetic component so what is a trivial strong kinetic component the strong trivial string the
+
+349
+00:43:37,920 --> 00:43:42,880
+kinetic component is something like this one this is my transition i go here transition system initial state and i
+
+350
+00:43:42,880 --> 00:43:51,119
+reach a state here that has no outgoing arrow this violates a that's all fine this as itself
+
+351
+00:43:51,119 --> 00:43:59,280
+is a strongly connected component because the state is reachable from itself right but it is not trivial
+
+352
+00:43:59,280 --> 00:44:05,200
+i mean it's not non-trivial it's trivial this is a trivial sec
+
+353
+00:44:05,200 --> 00:44:08,720
+and you see i hope you see this doesn't work because i have to satisfy i have to
+
+354
+00:44:08,720 --> 00:44:12,640
+reach this state infinitely often and here i can only reach it once and
+
+355
+00:44:12,640 --> 00:44:24,160
+then stay there but it doesn't count i need really to take a cycle question that's okay
+
+356
+00:44:24,160 --> 00:44:27,839
+maybe i was too quick so go back to this slide trivial means
+
+357
+00:44:27,839 --> 00:44:32,960
+either you have one state with a self loop or you have more than one state
+
+358
+00:44:32,960 --> 00:44:46,000
+so the only case i rule out are these things yeah and i hope you see for good reasons good
+
+359
+00:44:46,000 --> 00:44:54,160
+now this is conceptually easy to understand i hope because you can compute the strong kinetic components
+
+360
+00:44:54,160 --> 00:44:57,760
+but what you typically need to do is you need to have the entire transition
+
+361
+00:44:57,760 --> 00:45:04,640
+system which means this product at your disposal you consider it as a directed graph
+
+362
+00:45:04,640 --> 00:45:10,640
+run your favorite algorithm to generate a strongly connected components and you're done the point is however this is not
+
+363
+00:45:10,640 --> 00:45:17,200
+adequate for an on-the-fly analysis many model checkers don't want to generate this whole transition system
+
+364
+00:45:17,200 --> 00:45:22,480
+at once but what you like to do is basically you gradually take ts you
+
+365
+00:45:22,480 --> 00:45:27,040
+gradually take the automaton and you build this whole thing on the fly
+
+366
+00:45:27,040 --> 00:45:31,839
+why is this useful well as soon as i even have generated only a partial so
+
+367
+00:45:31,839 --> 00:45:38,480
+only a fragment of this thing and i found this reachable cycle which is bad i'm done right
+
+368
+00:45:38,480 --> 00:45:42,400
+maybe so maybe i don't need the whole thing now from a conceptual i mean for a
+
+369
+00:45:42,400 --> 00:45:45,599
+complexity point of view this is of course i mean my colleague in albums and
+
+370
+00:45:45,599 --> 00:45:49,040
+complexity will say well i don't care yeah because from a complexity point of
+
+371
+00:45:49,040 --> 00:45:53,680
+view it doesn't matter for a practical model checking point of view it matters a lot
+
+372
+00:45:53,680 --> 00:45:57,359
+and that's the reason why actually i do not know any model checker that uses
+
+373
+00:45:57,359 --> 00:46:04,480
+this scc procedure they use what they call a nested depth first search and maybe more advanced versions of it
+
+374
+00:46:04,480 --> 00:46:10,560
+so that's the next algorithm i'm going to explain you we're going to see a depth first search
+
+375
+00:46:10,560 --> 00:46:14,480
+and this depth first search is what they call a nested depth first search why is
+
+376
+00:46:14,480 --> 00:46:20,400
+it called a nested that first search well look at this picture over there what do we need to do
+
+377
+00:46:20,400 --> 00:46:25,440
+first we start with some initial state the first thing that we have to do is we
+
+378
+00:46:25,440 --> 00:46:32,480
+have to see whether i can reach the state violating a yeah so i have to do this
+
+379
+00:46:32,480 --> 00:46:37,359
+that's my first debt first search so suppose that in my orange that first
+
+380
+00:46:37,359 --> 00:46:44,160
+cert i have found a state that is reachable violating a now i have to check the second condition
+
+381
+00:46:44,160 --> 00:46:50,800
+i have to check whether this state lies on a cycle so i'm going to initiate a next depth
+
+382
+00:46:50,800 --> 00:46:56,800
+first search let's do this in purple and that means i'm going to start a next
+
+383
+00:46:56,800 --> 00:47:02,560
+step versus in this state to check does this state s lie on a cycle
+
+384
+00:47:02,560 --> 00:47:08,880
+So i'm nesting an orange that first search with this purple depth first search
+
+385
+00:47:08,880 --> 00:47:20,400
+and this is why the term is called a nested depth first search good if you do this naively then
+
+386
+00:47:20,400 --> 00:47:24,720
+in the worst case the orange one has to explore the whole state space
+
+387
+00:47:24,720 --> 00:47:28,640
+for every state that you explore during the orange depth first search you have
+
+388
+00:47:28,640 --> 00:47:33,920
+to also do the purple that first search now i hope you all remember at the top
+
+389
+00:47:33,920 --> 00:47:39,040
+of your head that the depth versus linear in the number of states and edges in the graph
+
+390
+00:47:39,040 --> 00:47:44,640
+but if for every orange state i have to do a another debt first search
+
+391
+00:47:44,640 --> 00:47:48,240
+i get the number of states times the complexity of doing a debt first so it's
+
+392
+00:47:48,240 --> 00:47:55,359
+for every state right so it's n times n this is expensive so that's why i need
+
+393
+00:47:55,359 --> 00:48:02,480
+a bit a couple of tricks to make this more efficient good so let's first do the principle and
+
+394
+00:48:02,480 --> 00:48:10,640
+then do the tricks so we have a finite directed graph how on earth do i get this finite
+
+395
+00:48:10,640 --> 00:48:17,440
+directed graph well i take this object i consider this as my graph so here is my graph
+
+396
+00:48:17,440 --> 00:48:26,319
+and i have this node s or vertex in my graph then the two statements are equivalent g is cyclic
+
+397
+00:48:26,319 --> 00:48:32,079
+so which means g has a cycle if and only if did that first search starting somewhere
+
+398
+00:48:32,079 --> 00:48:37,359
+in g finds some backwards edge backwards means you are in a state
+
+399
+00:48:37,359 --> 00:48:47,119
+and you find an edge back to the state where you initiate it before some that first search good
+
+400
+00:48:47,119 --> 00:48:51,599
+so a cycle check in a diagraph can be done by doing a depth first search
+
+401
+00:48:51,599 --> 00:48:55,200
+you start in some arbitrary pace you check whether there is a backwards
+
+402
+00:48:55,200 --> 00:48:58,800
+edge so you check whether at some point you reach the state somewhat later in
+
+403
+00:48:58,800 --> 00:49:01,760
+your depth first search which can move back to ones of the states that you have
+
+404
+00:49:01,760 --> 00:49:07,200
+seen before if that's the case you close the cycle you have found the cycle
+
+405
+00:49:07,200 --> 00:49:11,839
+good complexity linear in the size of the graph the size of the graph is the
+
+406
+00:49:11,839 --> 00:49:21,040
+sum of the number of vertices plus the number of nodes good so applied here
+
+407
+00:49:21,040 --> 00:49:26,240
+suppose i have a node in g then s belongs to a cycle so it starts
+
+408
+00:49:26,240 --> 00:49:34,160
+in s and it ends in s right and and actually this is again non-trivial
+
+409
+00:49:34,160 --> 00:49:37,920
+so there needs to be at least one edge from s to s
+
+410
+00:49:37,920 --> 00:49:44,880
+just being in the sink s doesn't count it's not a cycle is equivalent to saying if i start my
+
+411
+00:49:44,880 --> 00:49:54,480
+debt first search at s so at the beginning here it at some point will find a backwards edge
+
+412
+00:49:54,480 --> 00:49:58,720
+so the cycle check for a fixed node if i fix a note in my transition system like
+
+413
+00:49:58,720 --> 00:50:03,520
+for instance this s over here then the question does s belong to a cycle
+
+414
+00:50:03,520 --> 00:50:07,440
+what are we going to do we're going to do the purple that first search
+
+415
+00:50:07,440 --> 00:50:10,800
+we're going to perform this that first search you start in the state you just
+
+416
+00:50:10,800 --> 00:50:15,119
+have entered and you check whether you will find during this that first search
+
+417
+00:50:15,119 --> 00:50:24,640
+a backwards edge that goes back to s then you're done good so this is the problem we are confronted
+
+418
+00:50:24,640 --> 00:50:31,040
+with does my final transition system satisfies eventually forever a a in our
+
+419
+00:50:31,040 --> 00:50:37,119
+case is not f but that's just to make life a bit simpler so one way to do this
+
+420
+00:50:37,119 --> 00:50:43,760
+is initially you don't mark any states so all states are unmarked and then you repeat the following procedure you
+
+421
+00:50:43,760 --> 00:50:50,160
+choose an unmarked reachable state s that violates a so you found one of those s's now you're
+
+422
+00:50:50,160 --> 00:50:53,920
+going to check whether this thing lies on a cycle how we're going to do is
+
+423
+00:50:53,920 --> 00:51:00,000
+we're going to mark it let's color it purple so that we start this purple dfs we're
+
+424
+00:51:00,000 --> 00:51:06,000
+going to check whether on a cycle if it's on a cycle then the problem is no
+
+425
+00:51:06,000 --> 00:51:09,920
+yeah because if it's on the cycle we refute the whole thing so then we get no
+
+426
+00:51:09,920 --> 00:51:17,280
+and you do this until you have checked all the reachable states that violate a i hope that's clear
+
+427
+00:51:17,280 --> 00:51:23,040
+it could be the case that here i have another state that i can reach from there which violates a
+
+428
+00:51:23,040 --> 00:51:26,720
+i also have to check whether this is on a cycle as soon as i have found one
+
+429
+00:51:26,720 --> 00:51:30,319
+which is on the cycle i'm done if as long as this is not the case i
+
+430
+00:51:30,319 --> 00:51:36,400
+have to consider them all so i repeat this until i have checked all reachable states in my transition
+
+431
+00:51:36,400 --> 00:51:41,440
+system or in the graph and that's basically the case and if i
+
+432
+00:51:41,440 --> 00:51:51,119
+did this and i did not found anyone on the cycle then the answer is yes good so
+
+433
+00:51:51,119 --> 00:51:56,960
+here i have the outermost depth first search in my picture there it was orange
+
+434
+00:51:56,960 --> 00:51:59,760
+this is what is called here the first step first search you have to check
+
+435
+00:51:59,760 --> 00:52:06,800
+first reachable you have to search for reachable states violating a and then there is a second depth first
+
+436
+00:52:06,800 --> 00:52:15,520
+search which is here which is in this case the yellow one where i do the cycle check
+
+437
+00:52:15,520 --> 00:52:20,720
+good and this is what is called the term nested depth versus as i already explained good
+
+438
+00:52:20,720 --> 00:52:26,880
+so if you do this naively then the time complexity is actually the following
+
+439
+00:52:26,880 --> 00:52:34,160
+first it's you have to find all the states violating a in worst case every state could violate a
+
+440
+00:52:34,160 --> 00:52:37,599
+and that means for every state i have to check whether it's on a cycle which is
+
+441
+00:52:37,599 --> 00:52:43,760
+another debt first search and that means there i have to do this complexity
+
+442
+00:52:43,760 --> 00:52:49,280
+good so that's the cost of the cycle check good this is what i would like to avoid
+
+443
+00:52:49,280 --> 00:52:54,640
+yeah again another mathematician would maybe say okay i'm happy it's polynomial done
+
+444
+00:52:54,640 --> 00:53:01,040
+we would like to do it a little bit more efficient and so this works as follows so we're going
+
+445
+00:53:01,040 --> 00:53:07,119
+to look at what i call as a tricky variant this tricky variant was defined
+
+446
+00:53:07,119 --> 00:53:21,200
+originally in a paper in 1996 [Music] 1996 there was a famous paper by doran palette israel moshi vadi israel
+
+447
+00:53:21,200 --> 00:53:32,240
+pierre volpe belgium and i'm have the feeling i miss somebody yes jana kapis
+
+448
+00:53:32,240 --> 00:53:37,680
+for this paper they got several i think prices and this is the tricky variant
+
+449
+00:53:37,680 --> 00:53:43,760
+good let's see so the id is the following the important things i pointed out with
+
+450
+00:53:43,760 --> 00:53:50,400
+yellow so there are a few important points so remember i want to check t t is
+
+451
+00:53:50,400 --> 00:53:58,800
+this product right t s times a in our setting satisfies eventually forever a the first insight is
+
+452
+00:53:58,800 --> 00:54:04,079
+don't do those let's say first check in the orange that first search all the
+
+453
+00:54:04,079 --> 00:54:09,119
+states violating a and then for every one do this purple that first search do this
+
+454
+00:54:09,119 --> 00:54:16,960
+in a more clever way by letting the two nested that versus run some way in an interleaved manner
+
+455
+00:54:16,960 --> 00:54:19,711
+you do a bit of the orange one you do a bit of the purple one you do a bit
+
+456
+00:54:19,711 --> 00:54:26,319
+of the purple one then you do a bit of the orange one and so forth good
+
+457
+00:54:26,319 --> 00:54:30,720
+so that's the first you visit all the reachable states then you sue a cycle check for the
+
+458
+00:54:30,720 --> 00:54:35,040
+states violating a in order to check whether s belongs to a cycle
+
+459
+00:54:35,040 --> 00:54:41,119
+you are going to look we know looking on for a cycle means try to find a backwards edge
+
+460
+00:54:41,119 --> 00:54:46,559
+and the important point is and that's the second thing we are going to ignore all the states
+
+461
+00:54:46,559 --> 00:54:53,520
+that have been visited before in previous calls of cycle checks okay maybe this is not completely
+
+462
+00:54:53,520 --> 00:55:05,200
+clear in the beginning so let me try to visualize this so here is the entire transition system t
+
+463
+00:55:05,200 --> 00:55:12,559
+good we do the outermost that first search which is orange so let's suppose that at some point we
+
+464
+00:55:12,559 --> 00:55:21,599
+have found a reachable state here which violates a good there we initiate
+
+465
+00:55:21,599 --> 00:55:27,920
+does it lie on a cycle or not a purple that first search let's suppose that here we
+
+466
+00:55:27,920 --> 00:55:34,720
+set us we check this part of the state space because that's reachable from this state and our conclusion is
+
+467
+00:55:34,720 --> 00:55:41,760
+bad luck no cycle good fine can happen now we go to the next state so maybe
+
+468
+00:55:41,760 --> 00:55:48,960
+from here there is another state which is violating not a no good okay again we have found a state
+
+469
+00:55:48,960 --> 00:55:55,119
+which is a potential candidate to show that the property is violated so we start a cycle check
+
+470
+00:55:55,119 --> 00:56:00,880
+ah the trick will be we don't have to consider this fragment anymore
+
+471
+00:56:00,880 --> 00:56:07,040
+you know we're going to see an argument if we do it in the right way that we can avoid
+
+472
+00:56:07,040 --> 00:56:13,200
+starting the purple that first search here to avoid this part of the state space because we have already searched
+
+473
+00:56:13,200 --> 00:56:20,160
+it before you know so i hope you understand you don't get this worst case behavior that for every
+
+474
+00:56:20,160 --> 00:56:25,520
+reachable non-a state you have to do the whole state space yeah that's the main trick
+
+475
+00:56:25,520 --> 00:56:32,640
+so this basically you don't have to consider this anymore if you find it second one
+
+476
+00:56:32,640 --> 00:56:40,799
+and now the argument repeats so maybe now you have searched this part and you found no cycle
+
+477
+00:56:40,799 --> 00:56:46,640
+then again you backtrack in the orange that first search and you say well maybe there is someone here
+
+478
+00:56:46,640 --> 00:56:50,960
+also not a potential candidate now i don't have to search this one i don't have to search
+
+479
+00:56:50,960 --> 00:56:58,559
+that fragment of the state space anymore i can just ignore this yeah and that's the key point
+
+480
+00:56:58,559 --> 00:57:19,920
+is this clear and that means we need to keep track of which purple areas we already considered that's v
+
+481
+00:57:19,920 --> 00:57:29,280
+So this set over here this belongs to v and this at some point belongs to v so
+
+482
+00:57:29,280 --> 00:57:32,960
+after having found this one after having found that one after having found that
+
+483
+00:57:32,960 --> 00:57:45,280
+both are not on a cycle v contains this set plus this set good okay
+
+484
+00:57:45,280 --> 00:57:52,240
+but be careful it can go wrong so we have to be a bit precise
+
+485
+00:57:52,240 --> 00:57:56,720
+so let's look at this example so we try to do the procedure i mean the
+
+486
+00:57:56,720 --> 00:58:01,920
+kind of paradigm we just have seen so this is my state space only four states
+
+487
+00:58:01,920 --> 00:58:09,839
+s1 the two blue states they violate a so they are for us the interesting candidates yeah
+
+488
+00:58:09,839 --> 00:58:14,400
+it's obvious this guy doesn't lie on a cycle that one lies on a cycle
+
+489
+00:58:14,400 --> 00:58:20,160
+and we know that the other two states are not refuting a so they satisfy a
+
+490
+00:58:20,160 --> 00:58:27,520
+so i hope it's easy to see that this transition system refutes eventually forever a because of this cycle
+
+491
+00:58:27,520 --> 00:58:34,240
+and the blue state does not violate a good intuitively this is clear now let's
+
+492
+00:58:34,240 --> 00:58:42,240
+run this procedure i started a depth first search this is the orange depth first search
+
+493
+00:58:42,240 --> 00:58:48,799
+we're in the outermost that first search so i'm first looking for the reachable non-a states
+
+494
+00:58:48,799 --> 00:58:56,960
+s0 itself is not a non-a state so let's continue s0 satisfies a so that's a good guy
+
+495
+00:58:56,960 --> 00:59:06,000
+now i find s1 s1 is bad so i'm going to check does s1 lie on the cycle
+
+496
+00:59:06,000 --> 00:59:12,640
+so i initiate the second the innermost depth first search the purple one
+
+497
+00:59:12,640 --> 00:59:19,280
+the purple one says does a cycle check it checks it does it that first search starting from here
+
+498
+00:59:19,280 --> 00:59:23,520
+from that one it does it that first it's starting there now i have to reverse the whole
+
+499
+00:59:23,520 --> 00:59:31,760
+reachable state space starting from s1 and i conclude s1 doesn't lie on a cycle
+
+500
+00:59:31,760 --> 00:59:39,359
+for the rest i make this area purple so i never have to visit s1 s2 s3 again
+
+501
+00:59:39,359 --> 00:59:44,480
+in a cycle check and you see already this is wrong yeah because now you will not find this
+
+502
+00:59:44,480 --> 00:59:51,040
+cycle anymore yeah so this goes wrong and to see this is the following
+
+503
+00:59:51,040 --> 00:59:58,079
+so i've done my cycle check for s1 conclusion s1 doesn't lie on a cycle
+
+504
+00:59:58,079 --> 01:00:04,640
+so that means continue our orange the outermost at first search i'm going to look for other reachable
+
+505
+01:00:04,640 --> 01:00:11,839
+non-a states so i go back i do a dfs of s3 y well that's where we stopped right
+
+506
+01:00:11,839 --> 01:00:15,760
+that was the bad guy we initiated the cycle check conclusion no cycle check
+
+507
+01:00:15,760 --> 01:00:21,440
+now we conclude we continue with the orange one that means we now continue with s3
+
+508
+01:00:21,440 --> 01:00:25,599
+and now we're going to this is a good guy so we don't have to check anything
+
+509
+01:00:25,599 --> 01:00:33,520
+now we're going to get s2 again part of the orange that first search this is a bad guy
+
+510
+01:00:33,520 --> 01:00:38,960
+i have to start my purple that first search my purple that first search says
+
+511
+01:00:38,960 --> 01:00:45,440
+i have already considered all the reachable states starting from s2 and our paradigm was you'd never have to
+
+512
+01:00:45,440 --> 01:00:53,520
+touch those things again so the conclusion is it's not on the cycle which is the wrong conclusion of course
+
+513
+01:00:53,520 --> 01:00:58,640
+so now we do the cycle check and the paradigm never touch
+
+514
+01:00:58,640 --> 01:01:06,480
+a state that i have already seen in the purple that first search again this goes wrong so this gives
+
+515
+01:01:06,480 --> 01:01:17,200
+a wrong answer so this order in which we do the orange the outermost at first search and
+
+516
+01:01:17,200 --> 01:01:23,680
+the purple that versus the innermost is not the right order we have to change this a bit
+
+517
+01:01:23,680 --> 01:01:31,280
+that's why i call this a bit tricky so this is again these two things so
+
+518
+01:01:31,280 --> 01:01:35,680
+we're going to check in this cycle whether s belongs to a cycle by searching for a backwards adds we're
+
+519
+01:01:35,680 --> 01:01:42,240
+going to ignore states that have been visited before in this purple cycle check
+
+520
+01:01:42,240 --> 01:01:47,119
+and we do this by keeping track of this but we're going to do this at a
+
+521
+01:01:47,119 --> 01:01:56,160
+particular point in time in the orange depth first search what was the procedure previously
+
+522
+01:01:56,160 --> 01:02:01,440
+as soon as i was finding a non-a reachable state i was checking whether it lies on a cycle
+
+523
+01:02:01,440 --> 01:02:09,359
+this as soon went wrong so i'm going to adapt this ordering i first complete the orange depth first
+
+524
+01:02:09,359 --> 01:02:14,160
+search starting from the non-a state and only then i'm initiating the second one
+
+525
+01:02:14,160 --> 01:02:22,079
+so in terms of a depth first search this means we are fully expanded what's the principle of fully expanded
+
+526
+01:02:22,079 --> 01:02:27,680
+if i do that first search right then suppose i start here i do some
+
+527
+01:02:27,680 --> 01:02:35,119
+search and i reach this state for the first time this is part of my orange thing
+
+528
+01:02:35,119 --> 01:02:44,847
+and suppose this was my state s satisfying not a good now i reach s for the first time if
+
+529
+01:02:44,847 --> 01:02:51,920
+i continue my orange depth first search so i'm just continuing here maybe from here there are other states reachable
+
+530
+01:02:51,920 --> 01:02:58,960
+maybe here's another unreachable and at some point yeah maybe in this orange that first search i come
+
+531
+01:02:58,960 --> 01:03:07,359
+back in this state because i do something like if i'm finishing here i do backtrack
+
+532
+01:03:07,359 --> 01:03:13,039
+backtrack backtrack backtrack and i got here yeah at that point i call it fully expanded
+
+533
+01:03:13,039 --> 01:03:19,039
+i have considered all its successors completely and then i go back so fully expanded
+
+534
+01:03:19,039 --> 01:03:26,720
+means after doing the backtracking so to speak i will be back in that state what is now the trick
+
+535
+01:03:26,720 --> 01:03:30,880
+before we were starting the purple that first search as soon as we're reaching
+
+536
+01:03:30,880 --> 01:03:36,640
+this we have seen a counter example this is not the right procedure what we're going to see the right
+
+537
+01:03:36,640 --> 01:03:45,039
+procedure will be you find this state just continue your search the orange search as soon as this
+
+538
+01:03:45,039 --> 01:03:53,839
+orange shirt has done as has completed at some point you do backtracking and once you hit this state then
+
+539
+01:03:53,839 --> 01:04:01,280
+then you initiate the purple that first search and that's the key point
+
+540
+01:04:01,280 --> 01:04:06,000
+good i have some examples to show you this how this works so this is the
+
+541
+01:04:06,000 --> 01:04:11,599
+important point in the algorithm do invoke the nested depth first search only
+
+542
+01:04:11,599 --> 01:04:22,160
+if in the outermost at first search the orange one the state is what we call fully expanded good
+
+543
+01:04:22,160 --> 01:04:26,240
+So let's suppose that we have this this example this is my transition
+
+544
+01:04:26,240 --> 01:04:33,760
+system i have blue and yellow states and i want to check eventually forever not blue
+
+545
+01:04:33,760 --> 01:04:40,079
+you see immediately this holds because there is no loop that contains a blue state
+
+546
+01:04:40,079 --> 01:04:47,920
+good so i do my depth first search i start with the blue state blue is fine
+
+547
+01:04:47,920 --> 01:04:52,400
+i start with this one i start with that one i continue my depth first search i
+
+548
+01:04:52,400 --> 01:04:59,280
+do back do continue my debt first search there and now i'm back in my blue state
+
+549
+01:04:59,280 --> 01:05:08,400
+so now i initiate my purple debt first search so again in the procedure before what are the bad
+
+550
+01:05:08,400 --> 01:05:16,160
+guys the bad guys are the blue states yeah the blue state now according to my procedure before i will
+
+551
+01:05:16,160 --> 01:05:19,839
+immediately check whether this is on a cycle or not no this is not the right
+
+552
+01:05:19,839 --> 01:05:24,960
+procedure because we have seen this goes wrong so please continue your debt first search
+
+553
+01:05:24,960 --> 01:05:30,400
+continue my debt first it says go left okay so i go left go left
+
+554
+01:05:30,400 --> 01:05:36,720
+this is blue same principle as before it's a bad guy but we're only checking the cycles
+
+555
+01:05:36,720 --> 01:05:41,760
+once we are completely done with all the states reached reachable from the blue thing this is reachable
+
+556
+01:05:41,760 --> 01:05:50,960
+that is reachable now we have completed the orange that first search the outermost at first search starting from
+
+557
+01:05:50,960 --> 01:05:58,079
+this state now we check whether it's on the cycle or not and checking this on the cycle is
+
+558
+01:05:58,079 --> 01:06:02,640
+exactly this in my slides this corresponds to this brown cycle check so
+
+559
+01:06:02,640 --> 01:06:09,839
+this brown cycles mean now i'm going to check in the innermost so the in my
+
+560
+01:06:09,839 --> 01:06:13,839
+here the purple that first search if it is on a cycle or not of course it's
+
+561
+01:06:13,839 --> 01:06:20,160
+not on the cycle but now i know i never have to touch those three states again
+
+562
+01:06:20,160 --> 01:06:30,559
+in this innermost that first search this is now my dashed purple area this is those three states
+
+563
+01:06:30,559 --> 01:06:38,240
+this innermost that first is now has completed conclusion this state does not lie on a cycle let's continue continue
+
+564
+01:06:38,240 --> 01:06:46,559
+means backtracking we go back here yeah we backtrack the outermost at first search is there something reachable from here
+
+565
+01:06:46,559 --> 01:06:53,520
+yes there is namely this guy this is yellow yellow doesn't harm so backtrack further
+
+566
+01:06:53,520 --> 01:07:00,079
+backtrack further means go back here check whether something is reachable from there yes there's something a new
+
+567
+01:07:00,079 --> 01:07:06,880
+reachable namely this one and that one they're both yellow they don't harm now you do backtracking so backtrack
+
+568
+01:07:06,880 --> 01:07:14,960
+backtrack i have completed my dfs my outermost dfs from the initial blue state
+
+569
+01:07:14,960 --> 01:07:23,599
+so the orange dfs has been completed now now i'm going to check does this guy lie on the cycle
+
+570
+01:07:23,599 --> 01:07:27,520
+the paradigm of the algorithm says you don't have to look in those three states
+
+571
+01:07:27,520 --> 01:07:31,440
+you only have to look at the remaining states and now what you do is you look at the
+
+572
+01:07:31,440 --> 01:07:38,000
+remaining states yeah notice that it is important to know that you not have to touch those because of
+
+573
+01:07:38,000 --> 01:07:43,680
+course this is reachable from this initial state but we now know as soon as you reach this one
+
+574
+01:07:43,680 --> 01:07:48,960
+i've seen this before it's marked as a special state namely i have seen it before in the nmos that
+
+575
+01:07:48,960 --> 01:07:52,240
+first search never touch it again so i don't have to touch it again and i
+
+576
+01:07:52,240 --> 01:08:03,760
+only have to touch those other five good so in terms of pseudocode this looks as follows
+
+577
+01:08:03,760 --> 01:08:08,960
+we have the set states of u u is the set of state that we visit in the outermost
+
+578
+01:08:08,960 --> 01:08:14,480
+that first search v is the innermost one good what do we know we start from any
+
+579
+01:08:14,480 --> 01:08:21,120
+initial state at that first search why yeah remember this case i have this initial state they have that initial
+
+580
+01:08:21,120 --> 01:08:25,440
+state i have to check for every initial state is there a reachable non-a state
+
+581
+01:08:25,440 --> 01:08:30,400
+that prop that lies on the cycle so that's what i do here
+
+582
+01:08:30,400 --> 01:08:37,040
+so this was the set of states visited in the outermost now i do the debt first search i check
+
+583
+01:08:37,040 --> 01:08:42,719
+did i already visit this state in the current debt first search if this is not the case
+
+584
+01:08:42,719 --> 01:08:50,319
+then insert it because you're just considering it you consider all its possible direct successors and invoke recursively that
+
+585
+01:08:50,319 --> 01:08:57,839
+first search for those successors then there is this special case if s
+
+586
+01:08:57,839 --> 01:09:06,719
+is a non-a state then you check the cycle so notice that this is important i insert s
+
+587
+01:09:06,719 --> 01:09:10,960
+i'm not going to check whether s is a bad guy or a good guy
+
+588
+01:09:10,960 --> 01:09:15,839
+i'm only continuing the depth first search continuity that first sets means i'm going to consider all its direct
+
+589
+01:09:15,839 --> 01:09:25,279
+successors and continue the outermost at first search now i have completed the outermost that first search starting from s
+
+590
+01:09:25,279 --> 01:09:30,239
+so i come back backtracking in state s now i'm going to check is this a bad guy
+
+591
+01:09:30,239 --> 01:09:36,480
+or is this a good guy if it's a bad guy i invoke the cycle check and otherwise i don't
+
+592
+01:09:36,480 --> 01:09:44,080
+yeah good so the second set i need is v because v and v corresponds to this
+
+593
+01:09:44,080 --> 01:09:49,120
+dashed purple area on my blackboard this is the set of states that i have
+
+594
+01:09:49,120 --> 01:09:55,679
+visited already in the innermost that first search so in the cycle check initially of course this is the empty
+
+595
+01:09:55,679 --> 01:10:03,760
+set because i did not initially invoke any cycle check yet good
+
+596
+01:10:03,760 --> 01:10:08,640
+okay if the cycle check s then we return no as soon as we have found one cycle we
+
+597
+01:10:08,640 --> 01:10:12,640
+are done and that's what this means right so i don't have to continue
+
+598
+01:10:12,640 --> 01:10:19,679
+once i have found a non-a state that lies on a cycle because that means that i violate this
+
+599
+01:10:19,679 --> 01:10:26,960
+property if i have checked all states and none of them has reached this node then i can
+
+600
+01:10:26,960 --> 01:10:36,080
+return yes because i have not found any reachable non-a state that lies on a cycle that's the conclusion
+
+601
+01:10:36,080 --> 01:10:44,800
+so then the conclusion is t satisfies eventually forever a good example same example as before but
+
+602
+01:10:44,800 --> 01:10:50,960
+now with the changed order this was the example where the previous order went
+
+603
+01:10:50,960 --> 01:10:57,600
+to the wrong conclusion now are we going to repeat this example slowly and see what happens so again four
+
+604
+01:10:57,600 --> 01:11:04,880
+states the two blue states are the bad guys the other ones are the good states
+
+605
+01:11:04,880 --> 01:11:14,480
+okay i start my outermost that first search s0 the orange depth first search good i just continue
+
+606
+01:11:14,480 --> 01:11:18,480
+remember i'm not going to check bet or good i'm only continuing the outermost
+
+607
+01:11:18,480 --> 01:11:22,719
+at first search so i'm going to outermost that first search to s1
+
+608
+01:11:22,719 --> 01:11:29,199
+as one is bad but don't pay any attention we just continue to s3 we go to s2
+
+609
+01:11:29,199 --> 01:11:34,880
+and at some point we have found now all reachable states starting from s0
+
+610
+01:11:34,880 --> 01:11:42,400
+now we do backtracking so to speak what does that mean actually now i have found s2
+
+611
+01:11:42,400 --> 01:11:51,920
+i have also found all reachable states from s2 so s2 is fully expanded go back to this picture here
+
+612
+01:11:51,920 --> 01:11:58,880
+all states have already been determined which are reachable so s2 is fully expanded s2 is a bad guy
+
+613
+01:11:58,880 --> 01:12:03,440
+so check whether s2 lies on a cycle we check whether it's on a cycle and of
+
+614
+01:12:03,440 --> 01:12:09,920
+course it's on a cycle because now the innermost my purple that first search will start from here
+
+615
+01:12:09,920 --> 01:12:14,320
+then move to there go back and then it has found this backwards edge which
+
+616
+01:12:14,320 --> 01:12:22,320
+means i have found the cycle so b4 we were as soon as we were hitting
+
+617
+01:12:22,320 --> 01:12:28,480
+s1 checking whether it's on a cycle that went wrong no we are postponing looking for cycles
+
+618
+01:12:28,480 --> 01:12:37,440
+once you have explored the whole outermost at first search starting from those states
+
+619
+01:12:37,440 --> 01:12:43,920
+good and this returns the correct answer no because we have found a cycle remember
+
+620
+01:12:43,920 --> 01:12:50,800
+maybe i go back quickly to this code if you found if you find a cycle then return no
+
+621
+01:12:50,800 --> 01:13:06,400
+no and that's exactly what we need good are there any questions on this example is the principle clear yeah
+
+622
+01:13:06,400 --> 01:13:15,679
+good wonderful good so you can also equip this with counter example generation remember because it's
+
+623
+01:13:15,679 --> 01:13:22,640
+important that if i get no no means we have found this cycle
+
+624
+01:13:22,640 --> 01:13:27,520
+i also would like to get a counter example how do i get the counter example now the intuition
+
+625
+01:13:27,520 --> 01:13:33,280
+the details are on the slide but the intuition is pretty simple the intuition is that
+
+626
+01:13:33,280 --> 01:13:38,560
+okay at some point i have a stack in my depth versus i can keep track of all the
+
+627
+01:13:38,560 --> 01:13:45,280
+states i have already started my debt first search from so this my stack could be something of
+
+628
+01:13:45,280 --> 01:13:51,120
+the form here is a zero here is s1 and s2 etc so at some point i have a stack
+
+629
+01:13:51,120 --> 01:13:55,600
+where s is on the top of the stack the predecessor i don't know sn is
+
+630
+01:13:55,600 --> 01:14:01,760
+there then here there is s2 here is s1 and here is s0 yeah
+
+631
+01:14:01,760 --> 01:14:05,760
+once this is on the top of the stack and it's bad i initiate my purple
+
+632
+01:14:05,760 --> 01:14:13,199
+so this is the situation of the orange one so this is the the stack of the
+
+633
+01:14:13,199 --> 01:14:23,679
+outermost that first stretch now i do a cycle check so now i start to choke to check whether this
+
+634
+01:14:23,679 --> 01:14:32,400
+state lies on a cycle that again gives rise to a stack namely a purple stack
+
+635
+01:14:32,400 --> 01:14:38,800
+i start with some s and maybe i have found other other states like s prime one
+
+636
+01:14:38,800 --> 01:14:43,920
+s two prime etc and at some point i have found a cycle so here i found s again
+
+637
+01:14:43,920 --> 01:14:50,480
+how do i now get a counter example i take the two stacks together concatenate them and i have
+
+638
+01:14:50,480 --> 01:14:54,960
+found my counter example because this gives a part if i reach it upside down
+
+639
+01:14:54,960 --> 01:15:02,800
+this gives a part starting from some initial state to the bad state because this one violates a
+
+640
+01:15:02,800 --> 01:15:10,880
+and this is exactly the cycle on which it lies yeah so my counter example is how can i
+
+641
+01:15:10,880 --> 01:15:16,880
+reach the cycle from the initial state and this tells you how i can reach from s as itself
+
+642
+01:15:16,880 --> 01:15:27,199
+that's the whole intuition good so we get this initial part fragments we formulate this with two
+
+643
+01:15:27,199 --> 01:15:33,760
+stacks so this is how it works we have this set of states visited in the outermost at first search
+
+644
+01:15:33,760 --> 01:15:40,719
+we now keep track of the stack the stack is here pi and initially this stack is empty
+
+645
+01:15:40,719 --> 01:15:45,040
+then i do the same for the purple so the innermost at first search
+
+646
+01:15:45,040 --> 01:15:53,600
+initially i have not visited any state so v equals the empty set and initially that stack is empty
+
+647
+01:15:53,600 --> 01:16:01,440
+good as long as there are initial states that i have not visited before i choose
+
+648
+01:16:01,440 --> 01:16:08,159
+some initial state and insert it into u this is still part of the orange outermost depth first search
+
+649
+01:16:08,159 --> 01:16:11,280
+i push it on the stack that is the difference with the
+
+650
+01:16:11,280 --> 01:16:15,679
+algorithm i had before i had no stack so here i push s0 on the stack that's
+
+651
+01:16:15,679 --> 01:16:21,760
+exactly this s0 which is when i found s on the bottom of the stick
+
+652
+01:16:21,760 --> 01:16:27,679
+good now as long as the stack is not empty take the top of the stack
+
+653
+01:16:27,679 --> 01:16:34,960
+if there are if this state has successors that i did not yet consider in the outermost that first search
+
+654
+01:16:34,960 --> 01:16:41,440
+then consider them which means pick one of those states insert it into s into u and push it on
+
+655
+01:16:41,440 --> 01:16:48,080
+the stack else if all successes of s have been completed you can pop it from the stack
+
+656
+01:16:48,080 --> 01:16:55,360
+because you have finished your orange the outermost at first search starting from that state
+
+657
+01:16:55,360 --> 01:17:03,600
+and now you're going to check that means i have completely completed my orange outermost at first starting from a
+
+658
+01:17:03,600 --> 01:17:11,120
+now you check if s is a bad guy check whether it's on a cycle and return no
+
+659
+01:17:11,120 --> 01:17:16,000
+good what is now the counter example you take the stack pi which is this stack
+
+660
+01:17:16,000 --> 01:17:21,360
+and this in this depth first search within the body of cycle check
+
+661
+01:17:21,360 --> 01:17:26,400
+we're going to use this stack psi and what you do is you go basically
+
+662
+01:17:26,400 --> 01:17:33,040
+concatenate them and reverse the order reverse the order because as you see i have to read the stack from
+
+663
+01:17:33,040 --> 01:17:42,640
+bottom to top not from top to bottom that's what the reverse does good
+
+664
+01:17:42,640 --> 01:17:46,719
+this is the cycle check i think it's relatively i hope if you understood the
+
+665
+01:17:46,719 --> 01:17:50,960
+first one the first dfs and this is also not so com difficult
+
+666
+01:17:50,960 --> 01:17:54,960
+so now this is the innermost that first search of the cycle check you start
+
+667
+01:17:54,960 --> 01:18:00,159
+pushing s on the stack and insert it into the dashed purple area this is the
+
+668
+01:18:00,159 --> 01:18:06,000
+state i have seen before in the innermost first search as long as this stack is not empty
+
+669
+01:18:06,000 --> 01:18:14,080
+take the top element if it has direct successor that you did not visit so far yeah then return true
+
+670
+01:18:14,080 --> 01:18:21,360
+so you push it and you return true if otherwise you check whether there are any successors
+
+671
+01:18:21,360 --> 01:18:25,760
+that are you have not considered yet in the innermost that first search
+
+672
+01:18:25,760 --> 01:18:29,360
+then what you do you choose such a state and you continue the debt first search
+
+673
+01:18:29,360 --> 01:18:35,280
+from there by pushing it on the stack otherwise you pop it and if you're completely done which
+
+674
+01:18:35,280 --> 01:18:38,320
+means if you don't find any of those states you don't have to do anything and
+
+675
+01:18:38,320 --> 01:18:48,000
+in the end you return false if you did not follow found any cycle so far
+
+676
+01:18:48,000 --> 01:18:52,159
+good so here you see what happens if this s belongs to post s prime that
+
+677
+01:18:52,159 --> 01:18:58,080
+means this is the situation of the stack right you start it from s
+
+678
+01:18:58,080 --> 01:19:02,640
+that's what you pushed on the stack at some point you take the top of the
+
+679
+01:19:02,640 --> 01:19:09,760
+stack so that's s prime and apparently you find that s is a direct successor of s prime so this
+
+680
+01:19:09,760 --> 01:19:14,400
+state here is a direct successor of s prime that means you have found this
+
+681
+01:19:14,400 --> 01:19:21,040
+backwards edge and now you have found the cycle so that's why you get this return true yeah
+
+682
+01:19:21,040 --> 01:19:27,440
+that's what it does in terms of a picture good and that means you push
+
+683
+01:19:27,440 --> 01:19:36,239
+good i checked i skipped this the most important point is the proof of the correctness of this algorithm
+
+684
+01:19:36,239 --> 01:19:41,520
+so that's what i call the soundness of this nested depth first search so remember
+
+685
+01:19:41,520 --> 01:19:47,120
+in the outermost at first search i visit all the reachable states in the innermost that first search i
+
+686
+01:19:47,120 --> 01:19:54,000
+check for cycles and you only check a cycle if s is violating a
+
+687
+01:19:54,000 --> 01:20:00,719
+and you do this when the outermost that first search the first one is finished starting from s
+
+688
+01:20:00,719 --> 01:20:05,360
+that's the key point it was the point at which we're invoking the nested depth-first search
+
+689
+01:20:05,360 --> 01:20:11,760
+good and we have those global data structures v v was the dashed area psi is the stack
+
+690
+01:20:11,760 --> 01:20:18,400
+of the innermost at first search good so termination is not so difficult to
+
+691
+01:20:18,400 --> 01:20:22,400
+prove but the correctness of the partial correctness is the key point
+
+692
+01:20:22,400 --> 01:20:30,000
+good so what do we need to prove the correctness is given as follows t satisfies eventually forever a
+
+693
+01:20:30,000 --> 01:20:39,760
+if and only if the nested that first search returns yes that's the correctness criterion
+
+694
+01:20:39,760 --> 01:20:45,440
+good so this is what we need to prove t violates eventually forever a if and
+
+695
+01:20:45,440 --> 01:20:54,080
+only if the nested that first search returns no proof of this direction so assume the nested that first search
+
+696
+01:20:54,080 --> 01:21:04,159
+returns no no means it has found a cycle good so if the nested that firsthand returns no
+
+697
+01:21:04,159 --> 01:21:12,239
+then there is a reachable state violating a which lies on a cycle ah yeah but then we're done
+
+698
+01:21:12,239 --> 01:21:16,480
+so that is hopefully clear i mean that was exactly the picture here if indeed
+
+699
+01:21:16,480 --> 01:21:22,719
+there is a non-a state that lies on a cycle and i have found it i can conclude
+
+700
+01:21:22,719 --> 01:21:35,600
+the transition system violates eventually forever a good that's the easy part good now there is also a part because
+
+701
+01:21:35,600 --> 01:21:42,000
+now i can reach from some initial state state s and s lies on a cycle and this is the
+
+702
+01:21:42,000 --> 01:21:54,400
+cycle on which s lies good the hot part is this part t violates eventually forever a and now
+
+703
+01:21:54,400 --> 01:22:04,639
+we have to prove that the nested dfs returns no good so the key lemma is the following
+
+704
+01:22:04,639 --> 01:22:12,159
+the key lemma says if you invoke the cycle check remember the key point is when do we
+
+705
+01:22:12,159 --> 01:22:17,040
+invoke the cycle check yeah so it's not so surprising that the correctness proof there is some lemma
+
+706
+01:22:17,040 --> 01:22:22,719
+that says exactly if you invoke it on the right time you get the right answer basically
+
+707
+01:22:22,719 --> 01:22:33,920
+so if you invoke the cycle check then there is no cycle in my original transition system that contains s
+
+708
+01:22:33,920 --> 01:22:44,400
+such that those cycles belong to the dashed area so go back to this state the statement is saying okay
+
+709
+01:22:44,400 --> 01:22:48,800
+this is the situation we have found this state not on a cycle
+
+710
+01:22:48,800 --> 01:22:55,440
+that file state not on the cycle this one maybe we're not here so we're going to invoke
+
+711
+01:22:55,440 --> 01:23:06,800
+the cycle check for this state let's call this state s then dilemma says the following the algorithm guarantees that
+
+712
+01:23:06,800 --> 01:23:19,360
+there is no cycle containing one state in this purple dashed area to which s belongs
+
+713
+01:23:19,360 --> 01:23:28,239
+So in terms of a picture this is not possible yeah these cycles cannot exist
+
+714
+01:23:28,239 --> 01:23:35,520
+so this gives you exactly the reason why you don't have to look into those dust areas again
+
+715
+01:23:35,520 --> 01:23:49,679
+that's the point good hence if s belongs to a cycle then cycle check
+
+716
+01:23:49,679 --> 01:24:00,159
+s will find a backwards edge from some state to s but this state does not belong to v good
+
+717
+01:24:00,159 --> 01:24:05,120
+i think my time is over otherwise i would have some more
+
+718
+01:24:05,120 --> 01:24:08,320
+explanation what is the case there are some further improvements i don't i want
+
+719
+01:24:08,320 --> 01:24:12,639
+to skip them here for this this moment there are some further improvements
+
+720
+01:24:12,639 --> 01:24:21,840
+so this nested depth first search by palette the first tool that implemented this was spin
+
+721
+01:24:21,840 --> 01:24:28,400
+and now i see that i miss one of the authors that's holtzman because he took this algorithm and
+
+722
+01:24:28,400 --> 01:24:34,719
+implemented into spin and that showed an enormous performance improvement with respect to the previous algorithms they
+
+723
+01:24:34,719 --> 01:24:48,920
+had in model checking using this ssc decomposition okay thanks for today next lecture tuesday next week

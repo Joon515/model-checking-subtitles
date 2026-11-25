@@ -1,0 +1,2563 @@
+1
+00:00:02,360 --> 00:00:12,040
+Yeah, good morning. Welcome to the one but last lecture on model checking this year.
+
+2
+00:00:12,040 --> 00:00:17,080
+the topic of today is a CTL plus and CTL star.
+
+3
+00:00:17,080 --> 00:00:24,360
+So what's the main one of the main deficiencies of CTL?
+
+4
+00:00:24,360 --> 00:00:43,240
+Is the expression of fairness. Lack of let's say fairness constraints.
+
+5
+00:00:43,240 --> 00:00:46,640
+Now we have seen in the last lecture that you can that there is a way around
+
+6
+00:00:46,640 --> 00:00:53,880
+this by introducing a kind of LTL type fairness assumptions.
+
+7
+00:00:53,880 --> 00:01:00,000
+And then what you need to do is you need to change the CTL model checking
+
+8
+00:01:00,000 --> 00:01:05,800
+algorithm a bit so that we are able to deal with these fairness assumptions.
+
+9
+00:01:05,800 --> 00:01:10,880
+Another direction is not to to do it in this way but try to extend
+
+10
+00:01:10,880 --> 00:01:15,040
+the logic CTL so that you can express fairness constraints.
+
+11
+00:01:15,040 --> 00:01:23,800
+So this main deficiency has been the reason so motivation.
+
+12
+00:01:23,800 --> 00:01:38,240
+Okay? Has been the motivation for many extensions of CTL.
+
+13
+00:01:38,240 --> 00:01:42,826
+So people have looked at what they call a CTL plus.
+
+14
+00:01:42,826 --> 00:01:48,800
+There is an existential fragment of CTL. There are a universal fragment of CTL plus.
+
+15
+00:01:48,800 --> 00:01:53,760
+There is CTL star. And then there are many many logics in between.
+
+16
+00:01:53,760 --> 00:02:00,880
+And the main reason for these logics has been expressing fairness constraints.
+
+17
+00:02:00,880 --> 00:02:04,200
+So what I will do today is I will pick two of them.
+
+18
+00:02:04,200 --> 00:02:14,840
+namely CTL plus and CTL star. What we're going to see today
+
+19
+00:02:14,840 --> 00:02:20,760
+is actually that CTL plus allows things to express like the following things.
+
+20
+00:02:20,760 --> 00:02:29,560
+You can say that existential A until B and C until D.
+
+21
+00:02:29,560 --> 00:02:35,600
+This is allowed in CTL plus but this is not in CTL.
+
+22
+00:02:35,600 --> 00:02:42,120
+Because we have a state formula and we have a conjunction of two path formulas and conjunctions of path
+
+23
+00:02:42,120 --> 00:02:48,600
+formulas are not syntactically allowed in CTL.
+
+24
+00:02:48,600 --> 00:02:52,000
+Good. But in CTL plus this is allowed.
+
+25
+00:02:52,000 --> 00:02:59,720
+And what we're going to see is that basically it allows negations and conjunctions of path formula path
+
+26
+00:02:59,720 --> 00:03:24,000
+formulas. And what we're going to see is that this is going to be equally expressive as CTL but exponentially
+
+27
+00:03:24,000 --> 00:03:34,240
+more succinct. So this may mean that for certain properties expressing
+
+28
+00:03:34,240 --> 00:03:39,640
+them in CTL plus is much more convenient and can be done by a much shorter
+
+29
+00:03:39,640 --> 00:03:43,480
+formula than you can do this in CTL.
+
+30
+00:03:43,480 --> 00:03:47,008
+Good. this also means that this is exponentially more succinct.
+
+31
+00:03:47,008 --> 00:03:50,400
+That means that it also will have an effect on the complexity of the model checking
+
+32
+00:03:50,400 --> 00:03:56,440
+algorithm and I will briefly mention this completely at the end of the lecture.
+
+33
+00:03:56,440 --> 00:04:06,720
+Then the logic CTL star is quite interesting as is by Emerson Clark.
+
+34
+00:04:06,720 --> 00:04:13,440
+This by the way CTL plus is by I think Emerson and what was his other name?
+
+35
+00:04:13,440 --> 00:04:21,000
+I think Halpern. Let me check. Yes, Joey Halpern.
+
+36
+00:04:21,000 --> 00:04:28,960
+This is basically CTL plus LTL. Roughly.
+
+37
+00:04:28,960 --> 00:04:45,120
+So as we're going to see here this is will be more strictly more expressive than LTL plus CTL.
+
+38
+00:04:45,120 --> 00:04:50,960
+So it can express everything that LTL can do as well as CTL but it can express more.
+
+39
+00:04:50,960 --> 00:04:57,120
+we're going to see a model checking algorithm for this and we're going to see that model checking
+
+40
+00:04:57,120 --> 00:05:02,240
+of I'm not going to see this. I mean only going to mention this is model checking CTL plus star
+
+41
+00:05:02,240 --> 00:05:12,440
+is actually PSPACE complete. So it's it has the same theoretical complexity as LTL model checking although it's much more
+
+42
+00:05:12,440 --> 00:05:22,520
+expressive. Good. As I mentioned there are several logics in between that I'm not going to touch upon today.
+
+43
+00:05:22,520 --> 00:05:30,080
+those people that interested I can give pointers in the in the literature.
+
+44
+00:05:30,080 --> 00:05:42,080
+Good. So let's start with CTL star. So the idea of CTL star is basically to marry LTL and CTL.
+
+45
+00:05:42,080 --> 00:05:50,560
+So we know from LTL that LTL and CTL have an incomparable expressiveness which means that there are certain
+
+46
+00:05:50,560 --> 00:05:58,080
+properties like this persistency where that we can express in LTL but not in CTL.
+
+47
+00:05:58,080 --> 00:06:04,880
+Vice versa there are CTL properties like this that we have discussed before
+
+48
+00:06:04,880 --> 00:06:08,480
+and that can be expressed in CTL but not in LTL.
+
+49
+00:06:08,480 --> 00:06:13,840
+And there are also many properties which are actually in the intersection of the two.
+
+50
+00:06:13,840 --> 00:06:20,480
+CTL star is basically combining the two and is going to extend it even because you can allow
+
+51
+00:06:20,480 --> 00:06:26,080
+combinations of LTL and CTL formulas in CTL star.
+
+52
+00:06:26,080 --> 00:06:32,440
+For instance if I'm able to express something like the disjunction of this formula and of that formula
+
+53
+00:06:32,440 --> 00:06:40,040
+I have a formula which is strictly more expressive than LTL itself and CTL.
+
+54
+00:06:40,040 --> 00:06:43,760
+Good. So what's the syntax of CTL star?
+
+55
+00:06:43,760 --> 00:06:49,160
+Similarly like CTL we have state formulas and we have path formulas.
+
+56
+00:06:49,160 --> 00:06:55,640
+The state formulas are in CTL star exactly as they are in CTL which means we have things like true
+
+57
+00:06:55,640 --> 00:07:03,760
+atomic propositions, conjunctions and negations. And there is an existential path quantification like in CTL.
+
+58
+00:07:03,760 --> 00:07:10,000
+Good. And by negation of course you also have a universal path quantification which is I hope clear.
+
+59
+00:07:10,000 --> 00:07:18,560
+Now the main difference between CTL star and CTL is that CTL star is much more liberal
+
+60
+00:07:18,560 --> 00:07:33,560
+in the path formulas. So maybe remember shortly what were the path formulas in CTL?
+
+61
+00:07:33,560 --> 00:07:37,413
+They were defined as path formulas.
+
+62
+00:07:37,413 --> 00:07:44,880
+They had the syntax something like next of a state formula of until of a state formula and a state
+
+63
+00:07:44,880 --> 00:07:55,560
+formula. So very restricted. No negations, no conjunctions of path formulas, no nested path formulas, nothing like that.
+
+64
+00:07:55,560 --> 00:08:01,400
+In CTL star what we see is that first the first thing says every state formula is also a
+
+65
+00:08:01,400 --> 00:08:06,502
+path formula. Then we can conjunct path formulas.
+
+66
+00:08:06,502 --> 00:08:15,440
+We can negate path formulas. And then we can have next of a path formula and until of path formulas.
+
+67
+00:08:15,440 --> 00:08:23,926
+So first it's clear and I hope obvious that you can derive the usual Boolean operators.
+
+68
+00:08:23,926 --> 00:08:30,480
+You can derive things like diamond and box and you can define universal quantification.
+
+69
+00:08:30,480 --> 00:08:37,491
+But the point is in particular that we are now able to allow arbitrarily nested formulas.
+
+70
+00:08:37,491 --> 00:08:43,200
+So for instance the CTL for star formula that we're going to use later is something like this.
+
+71
+00:08:43,200 --> 00:08:59,680
+there exist a path such that next A and not B and next for all
+
+72
+00:08:59,680 --> 00:09:08,560
+B until box A. Now here you see for instance an example of a nesting of an until formula
+
+73
+00:09:08,560 --> 00:09:14,920
+with a box which of course is also a negated until formula which is not allowed in CTL.
+
+74
+00:09:14,920 --> 00:09:18,222
+but this is a CTL star formula.
+
+75
+00:09:18,222 --> 00:09:26,160
+Similarly you can write down things like conjunctions conjunctions of two next things inside an existential quantification something
+
+76
+00:09:26,160 --> 00:09:33,880
+that you cannot do in CTL. I mean you can write down in CTL
+
+77
+00:09:33,880 --> 00:09:38,080
+something of the form existential next A and existential next B.
+
+78
+00:09:38,080 --> 00:09:45,240
+Well, that's allowed. But things like this are not in CTL.
+
+79
+00:09:45,240 --> 00:09:57,240
+Good. So basically what you see is that in fact this line tells you that
+
+80
+00:09:57,240 --> 00:10:01,600
+yeah, basically LTL is here. Yeah, because this is basically the syntax of
+
+81
+00:10:01,600 --> 00:10:08,360
+LTL, in particular if you allow things like atomic propositions and if you allow things like true.
+
+82
+00:10:08,360 --> 00:10:19,240
+and then what CTL adds is that you have existential and universal path quantification, like CTL already had.
+
+83
+00:10:19,240 --> 00:10:25,120
+Good. Let us shortly,, define the semantics of CTL star.
+
+84
+00:10:25,120 --> 00:10:32,480
+state formulas are interpreted in states, path formulas in paths, like for CTL.
+
+85
+00:10:32,480 --> 00:10:38,760
+So, we have a transition system and now we define two,, satisfaction relation, one for state
+
+86
+00:10:38,760 --> 00:10:41,920
+formulas and the other one for path formulas.
+
+87
+00:10:41,920 --> 00:10:45,960
+Good. Let's look at the state formulas. That's pretty straightforward.
+
+88
+00:10:45,960 --> 00:10:50,080
+The propositional logical fragment, I don't think we have to spend any words to it.
+
+89
+00:10:50,080 --> 00:10:54,628
+existential path quantification is exactly like in CTL.
+
+90
+00:10:54,628 --> 00:11:01,880
+So, S satisfies existentially phi if and only if there exist a path pi starting in S and that
+
+91
+00:11:01,880 --> 00:11:11,560
+path satisfies phi. No changes. Good. This, of course, is a satisfaction relation for paths because on the
+
+92
+00:11:11,560 --> 00:11:15,839
+left-hand side we have a path, on the right-hand side we have a path formula.
+
+93
+00:11:15,839 --> 00:11:19,080
+How do we define the semantics of path formulas?
+
+94
+00:11:19,080 --> 00:11:25,320
+So, we take an infinite path fragment in my transition system and then we say, "Okay."
+
+95
+00:11:25,320 --> 00:11:30,839
+a path satisfies a state formula if and only if in the initial state of that
+
+96
+00:11:30,839 --> 00:11:39,720
+path, the state formula holds. So, we're going to interpret the state formulas at the beginning of a path.
+
+97
+00:11:39,720 --> 00:11:45,040
+Now, negation is standard, conjunction is standard. What about next?
+
+98
+00:11:45,040 --> 00:11:49,839
+Now, we take as next the LTL interpretation.
+
+99
+00:11:49,839 --> 00:11:56,720
+Maybe to confront, to, let's say, to oppose this might with respect to the CTL semantics.
+
+100
+00:11:56,720 --> 00:12:04,480
+If you have in CTL the semantics, you would write down things like pi satisfies next phi, which must
+
+101
+00:12:04,480 --> 00:12:10,480
+be a state formula, right? There we have defined it as follows, if and only if
+
+102
+00:12:10,480 --> 00:12:15,920
+Yeah, the next state in pi, suppose that pi is exactly S0 S1, so we would say if
+
+103
+00:12:15,920 --> 00:12:29,280
+and only if S1 satisfies phi. Yeah, this was the satisfaction relation for state formulas.
+
+104
+00:12:29,280 --> 00:12:35,640
+Yeah, and similarly we did for until. Because the subformulas are state formulas, you interpret them in states.
+
+105
+00:12:35,640 --> 00:12:41,680
+This here is like in LTL, if you have pi satisfying next phi if
+
+106
+00:12:41,680 --> 00:12:47,280
+and only if the suffix of pi starting from the first position satisfies phi.
+
+107
+00:12:47,280 --> 00:12:53,200
+So, the infinite sequence starting from S1 S2, etc., should satisfy phi.
+
+108
+00:12:53,200 --> 00:13:00,400
+And similarly for the until, there must exist some index J,, and starting at this index J,
+
+109
+00:13:00,400 --> 00:13:08,600
+the suffix satisfies phi two and all prefixes up to J should satisfy phi one.
+
+110
+00:13:08,600 --> 00:13:15,480
+Good. And that was already what mentioned, a path satisfies a state formula if and
+
+111
+00:13:15,480 --> 00:13:20,920
+only if its initial state satisfies the state formula.
+
+112
+00:13:20,920 --> 00:13:24,400
+Good. So, these are the usual things you can express.
+
+113
+00:13:24,400 --> 00:13:28,360
+this is not a surprise because it can already be expressed in CTL.
+
+114
+00:13:28,360 --> 00:13:35,839
+Now, you can have I express things like liveness,, infinitely often crit one and infinitely often crit two.
+
+115
+00:13:35,839 --> 00:13:41,839
+This is also not adding any expressive power because you can already express this in CTL by squeezing a universal
+
+116
+00:13:41,839 --> 00:13:49,200
+quantification in between., you can have a nesting of a box and a diamond,
+
+117
+00:13:49,200 --> 00:13:55,040
+something that you cannot have in CTL because you are forced to write down here either a universal quantification
+
+118
+00:13:55,040 --> 00:14:02,560
+or an existential quantification in CTL. This is in CTL star not mandatory.
+
+119
+00:14:02,560 --> 00:14:08,800
+you can write down write down persistency, a property that you cannot write down in
+
+120
+00:14:08,800 --> 00:14:15,720
+CTL as we have seen. So, for all paths from some point on only A's.
+
+121
+00:14:15,720 --> 00:14:21,106
+and in particular you can also write down a CTL star formulas with existential quantification.
+
+122
+00:14:21,106 --> 00:14:26,280
+For instance, the existence of a Hamiltonian path can be written down like in LTL.
+
+123
+00:14:26,280 --> 00:14:34,280
+there exist a path which is Hamiltonian, which means for all vertices in the graph we eventually going to
+
+124
+00:14:34,280 --> 00:14:40,760
+visit such a vertex and once we have visited the vertex, we're going to never visit the vertex again.
+
+125
+00:14:40,760 --> 00:14:50,280
+Exactly the same way as we expressed in LTL and this is now syntactically also a correct CTL star formula.
+
+126
+00:14:50,280 --> 00:14:58,880
+Good. So, what about the expressiveness?, it's not a surprise that CTL is a
+
+127
+00:14:58,880 --> 00:15:04,280
+strict a proper sublogic of CTL star., I think also the second bullet is
+
+128
+00:15:04,280 --> 00:15:09,040
+not a surprise that LTL is a strict a proper sublogic of CTL star and
+
+129
+00:15:09,040 --> 00:15:12,440
+CTL star is more expressive than LTL and CTL.
+
+130
+00:15:12,440 --> 00:15:17,480
+Why is this? Well, because you can combine properties that you can express in LTL
+
+131
+00:15:17,480 --> 00:15:21,600
+and this is the corresponding CTL star formula and you do a disjunction or a
+
+132
+00:15:21,600 --> 00:15:29,880
+conjunction with something that you can express in CTL but not in LTL.
+
+133
+00:15:29,880 --> 00:15:36,000
+Good., now we can look at equivalences like we did for equivalences of CTL and
+
+134
+00:15:36,000 --> 00:15:40,120
+equivalences of LTL, you can also look at equivalence of CTL star.
+
+135
+00:15:40,120 --> 00:15:44,200
+So, when are two CTL star state formulas equivalent?
+
+136
+00:15:44,200 --> 00:15:50,120
+Phi one is equivalent to phi two if and only if Yeah, there is no transition system that
+
+137
+00:15:50,120 --> 00:16:02,280
+can distinguish between those two formulas, which means T satisfies phi one if and only if T satisfies phi two.
+
+138
+00:16:02,280 --> 00:16:06,480
+Now, you can push,, things like negations inside.
+
+139
+00:16:06,480 --> 00:16:13,520
+So, here you are negated existential quantification box diamond A, you can push the first negation inside so that
+
+140
+00:16:13,520 --> 00:16:21,200
+you existential quantification becomes a universal quantification, negated box becomes a diamond and negated diamond becomes a box
+
+141
+00:16:21,200 --> 00:16:25,760
+and A becomes, of course, not A. So, that's the formula you get on the right-hand side.
+
+142
+00:16:25,760 --> 00:16:34,160
+And these two formulas are equivalent. This was an equivalence we already are familiar with from CTL.
+
+143
+00:16:34,160 --> 00:16:41,880
+We have proven that this CTL formula expresses infinitely often A and in CTL star this means syntactically
+
+144
+00:16:41,880 --> 00:16:48,800
+you write it down like for all paths infinitely often A.
+
+145
+00:16:48,800 --> 00:16:55,160
+Good. Things like this are obvious,, for all existentialism existential, I think that's all pretty obvious.
+
+146
+00:16:55,160 --> 00:17:03,760
+So, let's look at nested formulas. So, there exist a path such that eventually I reach a state
+
+147
+00:17:03,760 --> 00:17:11,079
+and in that state, from that state there exist a path that only contains blue states.
+
+148
+00:17:11,079 --> 00:17:17,199
+Good. Is this equivalent to saying there exist a path such that eventually I get
+
+149
+00:17:17,199 --> 00:17:21,400
+to a point and from there on always A holds?
+
+150
+00:17:21,400 --> 00:17:25,320
+And this is correct. Why is this correct?
+
+151
+00:17:25,320 --> 00:17:33,780
+Now, we start with the left-hand side formula and we write the first existential quantification as a negated universal quantification.
+
+152
+00:17:33,780 --> 00:17:43,240
+So, actually existential box existential diamond existential box is this equivalent to not, universally quantified.
+
+153
+00:17:43,240 --> 00:17:50,160
+Now, we have to negate this,, diamond becomes a box, this becomes a universal quantification, that
+
+154
+00:17:50,160 --> 00:17:53,040
+becomes a diamond and that becomes not A.
+
+155
+00:17:53,040 --> 00:17:57,293
+So, we have this formula. Why does this help us anything?
+
+156
+00:17:57,293 --> 00:18:02,960
+Well, now we have a a shape that is familiar to us because this has something like infinitely often
+
+157
+00:18:02,960 --> 00:18:11,230
+not A. If you ignore the let's, this is something that we,, can express.
+
+158
+00:18:11,230 --> 00:18:14,417
+So, now we can reduce this to an equivalent LTL formula.
+
+159
+00:18:14,417 --> 00:18:21,840
+This is this LTL formula, so we can eliminate this universal quantification in between.
+
+160
+00:18:21,840 --> 00:18:26,740
+And now you can reason backwards, by saying, "Okay, now push those double negations out."
+
+161
+00:18:26,740 --> 00:18:30,840
+And that means that you get existentially diamond A.
+
+162
+00:18:30,840 --> 00:18:36,919
+Because this becomes existential, this becomes a diamond, that becomes a box, that becomes A.
+
+163
+00:18:36,919 --> 00:18:43,120
+Good. So, this equivalence can be proven in the in that way.
+
+164
+00:18:43,120 --> 00:18:48,120
+This not doesn't hold always because here we have an example Ah, this is an example which also holds,
+
+165
+00:18:48,120 --> 00:18:51,520
+but I think,, in the next slide we have an example that doesn't hold.
+
+166
+00:18:51,520 --> 00:18:55,640
+there exist next there exist eventually A.
+
+167
+00:18:55,640 --> 00:19:00,840
+So, does there exist a path which has a next state and from there we can reach
+
+168
+00:19:00,840 --> 00:19:06,520
+an A state?, this is equivalent to there exist a path
+
+169
+00:19:06,520 --> 00:19:09,919
+where I have a next state and from that next state we can reach,
+
+170
+00:19:09,919 --> 00:19:19,159
+we a path satisfies eventually A. And that's basically asserting the same the same thing.
+
+171
+00:19:19,159 --> 00:19:22,600
+How about combinations? These are the combinations we already have seen.
+
+172
+00:19:22,600 --> 00:19:26,120
+here is a combination that doesn't work.
+
+173
+00:19:26,120 --> 00:19:34,360
+So, here we have, so this combination with box diamond with two universal quantifications could be reduced to this,,
+
+174
+00:19:34,360 --> 00:19:43,400
+formula on the right-hand side. Does there exist a path for which for all states it is
+
+175
+00:19:43,400 --> 00:19:51,679
+A is reachable by some path. Is this equivalent to there exist a path such that box diamond A holds?
+
+176
+00:19:51,679 --> 00:19:57,120
+Well, intuitively you would already say, "Well, this is a bit suspicious because this means there exists a path that
+
+177
+00:19:57,120 --> 00:20:06,960
+infinitely often A-halts." This says there exists a path such that no matter where you are, you can
+
+178
+00:20:06,960 --> 00:20:12,360
+have one path that eventually reaches A. This, of course, does not force you that
+
+179
+00:20:12,360 --> 00:20:18,520
+there is a path where there are infinitely many A's.
+
+180
+00:20:18,520 --> 00:20:24,160
+Good. So, how can you show this? For instance, by means of this counterexample.
+
+181
+00:20:24,160 --> 00:20:30,800
+This is the computation tree. We start the initial state.
+
+182
+00:20:30,800 --> 00:20:34,680
+Either we can take the self-loop, which is this yellow path on the bottom, or at
+
+183
+00:20:34,680 --> 00:20:38,440
+some point we move to the right-hand side, which is moving to this blue state
+
+184
+00:20:38,440 --> 00:20:46,640
+here from the yellow points, and then on we only have yellow states.
+
+185
+00:20:46,640 --> 00:20:52,960
+This transition system does not have any path where you visit A infinitely often.
+
+186
+00:20:52,960 --> 00:20:58,880
+This is obvious because once you have visited this, you will never see a blue state again.
+
+187
+00:20:58,880 --> 00:21:05,440
+But, there exists a path in T such that for every state on that path,
+
+188
+00:21:05,440 --> 00:21:08,920
+it is possible to reach an A state.
+
+189
+00:21:08,920 --> 00:21:12,040
+You can look at the initial state.
+
+190
+00:21:12,040 --> 00:21:16,560
+You can take the self-loop. This self-loop is a path, and on any
+
+191
+00:21:16,560 --> 00:21:22,480
+state on that path, so a box, there exists a path, namely the path moving to the right,
+
+192
+00:21:22,480 --> 00:21:25,872
+where we eventually reach a blue state.
+
+193
+00:21:25,872 --> 00:21:29,680
+So, it's basically this path in the computation tree.
+
+194
+00:21:29,680 --> 00:21:37,640
+There is always a possibility to move to a blue state, and therefore the transition system satisfies this formula.
+
+195
+00:21:37,640 --> 00:21:43,620
+Good. That's what I just explained. Good.
+
+196
+00:21:43,620 --> 00:21:48,320
+So, these two formulas are not not equivalent.
+
+197
+00:21:48,320 --> 00:21:52,480
+Other equivalences? Well, those two things are trivial.
+
+198
+00:21:52,480 --> 00:21:56,200
+This is also not so difficult because that's just an instantiation of it.
+
+199
+00:21:56,200 --> 00:22:00,040
+That's what we have seen before. You just push the negation inside, and all
+
+200
+00:22:00,040 --> 00:22:03,800
+the symbols here are replaced by their dual.
+
+201
+00:22:03,800 --> 00:22:07,960
+box by diamonds, diamonds by box, and so forth.
+
+202
+00:22:07,960 --> 00:22:15,760
+this, I think, is also trivial. Here, you have some universally quantified formulas for all infinitely often phi,
+
+203
+00:22:15,760 --> 00:22:24,880
+where phi is an arbitrary CTL* formula, is equivalent to for all box for all eventually phi.
+
+204
+00:22:24,880 --> 00:22:30,160
+And this all rests on the equivalence we have seen before.
+
+205
+00:22:30,160 --> 00:22:35,200
+That if you replace phi by an atomic proposition, then on the left-hand side, we have the
+
+206
+00:22:35,200 --> 00:22:39,200
+LTL formula, which was equivalent to the corresponding CTL formula.
+
+207
+00:22:39,200 --> 00:22:45,560
+But now, thanks to the expressive power of CTL*, you're able to prove It's not so
+
+208
+00:22:45,560 --> 00:22:48,920
+difficult to show that those two formulas are actually equivalent.
+
+209
+00:22:48,920 --> 00:22:51,285
+And the same what we have just seen before.
+
+210
+00:22:51,285 --> 00:22:55,960
+There exists a path such that from some point on, phi is persistent,
+
+211
+00:22:55,960 --> 00:23:01,880
+is equivalent to there exists a path so that eventually I reach a state that has a path where
+
+212
+00:23:01,880 --> 00:23:09,040
+phi is persistent. You have to be a bit careful because if you swap the the two modalities here,
+
+213
+00:23:09,040 --> 00:23:13,325
+then this equivalence doesn't hold anymore. one of the examples we have seen before.
+
+214
+00:23:13,325 --> 00:23:20,080
+But it means that if you have diamond box instead of box diamond, and you here have
+
+215
+00:23:20,080 --> 00:23:24,017
+box diamond instead of diamond box, then the equivalences do no longer hold.
+
+216
+00:23:24,017 --> 00:23:29,780
+So, you have to be a bit careful which I'm not sure.
+
+217
+00:23:29,780 --> 00:23:33,880
+Which equivalences carry over and which ones do not.
+
+218
+00:23:33,880 --> 00:23:37,840
+So, the next issue is how to do CTL* model checking.
+
+219
+00:23:37,840 --> 00:23:43,960
+And basically, this boils down to a combination of CTL and LTL model checking.
+
+220
+00:23:43,960 --> 00:23:47,714
+And this works as follows. So, that's the question at stake.
+
+221
+00:23:47,714 --> 00:23:52,360
+We have a finite transition system and a CTL* formula, and we want to check whether the finite transition system
+
+222
+00:23:52,360 --> 00:23:58,600
+satisfies the formula or not. So, the main procedure is as for CTL.
+
+223
+00:23:58,600 --> 00:24:05,320
+That means we're going to start with the parse tree of the CTL* formula phi.
+
+224
+00:24:05,320 --> 00:24:10,840
+And for all its subformulas, we are going to compute the set of states satisfying this subformula.
+
+225
+00:24:10,840 --> 00:24:16,160
+At the end, we're going to check whether all initial states are in that set, then we return yes,
+
+226
+00:24:16,160 --> 00:24:23,440
+otherwise, we return no. Same procedure as for CTL.
+
+227
+00:24:23,440 --> 00:24:26,495
+Good. So, how are we going to recursively compute the satisfaction sets?
+
+228
+00:24:26,495 --> 00:24:31,640
+And here is where the LTL model checking part sometimes comes into the play.
+
+229
+00:24:31,640 --> 00:24:35,440
+So, for these propositional logical fragments, this is the same as for CTL.
+
+230
+00:24:35,440 --> 00:24:44,880
+So, we just do this recursively. Now, for the path quantifiers, we use an CTL LTL model checker.
+
+231
+00:24:44,880 --> 00:24:50,200
+So, this has to do with the fact that we want to compute the satisfaction set of for all phi.
+
+232
+00:24:50,200 --> 00:24:58,760
+Right? Now, we have seen already before that this universal quantification, which is here part of the syntax, is implicit
+
+233
+00:24:58,760 --> 00:25:11,080
+in the LTL semantics. Right? So, that means that actually the satisfaction set for all phi is exactly the same.
+
+234
+00:25:11,080 --> 00:25:16,880
+Because we have that S satisfies, according to the CTL* semantics, for all phi.
+
+235
+00:25:16,880 --> 00:25:26,120
+If and only if For all phi, which is a path of S, we have that phi satisfies,
+
+236
+00:25:26,120 --> 00:25:29,880
+according to the CTL* semantics, the path formula phi.
+
+237
+00:25:29,880 --> 00:25:33,068
+But this is the same as saying if and only if
+
+238
+00:25:33,068 --> 00:25:38,920
+This was the definition for LTL. I mean, supposing that this is a path formula.
+
+239
+00:25:38,920 --> 00:25:47,000
+that my state S satisfies, according to the LTL semantics, the path formula phi.
+
+240
+00:25:47,000 --> 00:25:53,480
+So, if I want to compute the set of states satisfying this CTL* formula,
+
+241
+00:25:53,480 --> 00:25:59,679
+it suffices to compute, by means of an LTL model checker, the set of states satisfying this LTL formula.
+
+242
+00:25:59,679 --> 00:26:07,560
+The same with an existentially quantified formula, but now you have to, of course, do the negation.
+
+243
+00:26:07,560 --> 00:26:18,340
+Right? Because we have that a CTL* formula existentially phi holds if and only if there exists a path
+
+244
+00:26:18,340 --> 00:26:24,920
+pi starting in S such that that path start satisfies phi.
+
+245
+00:26:24,920 --> 00:26:32,960
+Well, that's the same as saying if and only if it's not the case that for all
+
+246
+00:26:32,960 --> 00:26:44,048
+paths starting in S, pi does not satisfy phi.
+
+247
+00:26:44,048 --> 00:26:55,679
+And therefore, you can compute, and that's the same as saying, "Okay, pi satisfies CTL* not phi."
+
+248
+00:26:55,679 --> 00:27:00,560
+So, what we're going to do is, basically, in order to compute the set of states satisfying an existentially
+
+249
+00:27:00,560 --> 00:27:08,200
+quantified formula, we're going to invoke an LTL model checker by means of the LTL model checker on the
+
+250
+00:27:08,200 --> 00:27:23,560
+negation of phi, and then we do the complement, which is this negation.
+
+251
+00:27:23,560 --> 00:27:27,200
+Good. The only thing we have to make sure is that this phi, of course, is an LTL
+
+252
+00:27:27,200 --> 00:27:33,920
+formula, and that's because we have com- compute subformulas that inside out, and that means that those phis are
+
+253
+00:27:33,920 --> 00:27:40,600
+always, as we're going to see, also by means of an example, LTL formulas.
+
+254
+00:27:40,600 --> 00:27:47,000
+Good. Rather than doing this example on the on the slide, I prefer to do an example
+
+255
+00:27:47,000 --> 00:27:56,240
+on the board. That's maybe a little bit more illustrative, provided I have my things.
+
+256
+00:27:56,240 --> 00:28:11,840
+Good. So, let's move here. Let's not do this again.
+
+257
+00:28:11,840 --> 00:28:18,679
+Good. So, I have the following example. This is my transition system.
+
+258
+00:28:18,679 --> 00:28:51,400
+I have states 0, 1, 2, 3, and 4.
+
+259
+00:28:51,400 --> 00:29:05,600
+With the following labeling, B, AB, AB, and A.
+
+260
+00:29:05,600 --> 00:29:13,440
+Good. And I'm considering the following CTL* formula.
+
+261
+00:29:13,440 --> 00:29:17,502
+Let's call this phi. And this is exactly the formula I showed you before.
+
+262
+00:29:17,502 --> 00:29:32,159
+There exist next A and not B, and next for all B until box A.
+
+263
+00:29:32,159 --> 00:29:51,960
+Bracket. Bracket. Good. Good. Because I only explained the algorithms for existential normal form formulas, this is equivalent
+
+264
+00:29:51,960 --> 00:29:58,120
+to the formula there exist next A and not B.
+
+265
+00:29:58,120 --> 00:30:13,720
+And this universally quantified formula I have to negate, so not existentially not B until box A.
+
+266
+00:30:13,720 --> 00:30:21,280
+So, that's the formula in existential normal form.
+
+267
+00:30:21,280 --> 00:30:23,000
+Good. Now, what are we going to do?
+
+268
+00:30:23,000 --> 00:30:28,777
+We're going to consider the state subformulas. So, what are the state subformulas?
+
+269
+00:30:28,777 --> 00:30:32,680
+So, I'm going to consider first this this state subformula.
+
+270
+00:30:32,680 --> 00:30:37,366
+And the other state subformula is if I look here, that is this.
+
+271
+00:30:37,366 --> 00:30:40,966
+So, these are the two state form subformulas we're going to consider first.
+
+272
+00:30:40,966 --> 00:30:47,120
+Let's call this phi 1. And let's call this phi 2.
+
+273
+00:30:47,120 --> 00:30:49,880
+Good. I need some colors at some point.
+
+274
+00:30:49,880 --> 00:31:12,600
+So, let me grab some colors. Good. So, this is just a CTL formula, right?
+
+275
+00:31:12,600 --> 00:31:18,188
+There is no existential or universal path quantifiers, so I can use a standard CTL model checker for this.
+
+276
+00:31:18,188 --> 00:31:25,280
+So, I can compute the sat of this formula.
+
+277
+00:31:25,280 --> 00:31:29,165
+Yeah, because this is the same as for all for all next, right?
+
+278
+00:31:29,165 --> 00:31:33,800
+That's the same thing. So, what do I get?
+
+279
+00:31:33,800 --> 00:31:40,280
+If I have done this correctly, next A and not B.
+
+280
+00:31:40,280 --> 00:31:51,080
+Yeah, the first thing we do is A and not B, but that's basically clear, so that's
+
+281
+00:31:51,080 --> 00:31:55,128
+What do I get here? Now, I have to look at my example.
+
+282
+00:31:55,128 --> 00:32:02,240
+So, what do we have? We have that sat A and not B is, if I look correctly,
+
+283
+00:32:02,240 --> 00:32:13,960
+S2 and S3. So, what is the sat of this next thing?
+
+284
+00:32:13,960 --> 00:32:30,640
+Here I actually did the other way around.
+
+285
+00:32:30,640 --> 00:32:34,822
+Here I only looked without the next, so actually I looked only at this subformula first.
+
+286
+00:32:34,822 --> 00:32:42,960
+Sorry for this and not with the next.
+
+287
+00:32:42,960 --> 00:33:11,720
+Is there So, this S2 and S3. Let's Sorry?
+
+288
+00:33:11,720 --> 00:33:26,974
+Sorry, the transition system. B A B A A A B.
+
+289
+00:33:26,974 --> 00:33:39,440
+So, sorry. I forgot to. Yeah. Yeah. So, this is, let's say, the orange subformula.
+
+290
+00:33:39,440 --> 00:33:45,960
+So, this is the an orange state is becomes an orange state because we're going to replace
+
+291
+00:33:45,960 --> 00:33:55,160
+this formula by means of an atomic proposition, like we did with CTL, so now we get there exist next
+
+292
+00:33:55,160 --> 00:34:05,720
+A1. Open bracket. We do the same for the other thing, so not and then we get this existentially
+
+293
+00:34:05,720 --> 00:34:11,679
+quantified thing. So, let's do the existentially quantified thing.
+
+294
+00:34:11,679 --> 00:34:14,306
+So, how do we compute this existentially quantified thing?
+
+295
+00:34:14,306 --> 00:34:23,879
+We have to compute according to the CTL star semantics existentially not B until box A.
+
+296
+00:34:23,879 --> 00:34:39,840
+Right? So, that's the same as saying S satisfies CTL star for all B until box A.
+
+297
+00:34:39,840 --> 00:34:48,760
+And that's the same as saying that S satisfies according to the LTL semantics the formula B until box A.
+
+298
+00:34:48,760 --> 00:35:03,720
+So, we're going to invoke an LTL model checker with this formula.
+
+299
+00:35:03,720 --> 00:35:16,920
+Am I making a mess? No, I'm not making Yeah, should be this.
+
+300
+00:35:16,920 --> 00:35:24,440
+Good. What follows and I'm not going to do the procedure where in in in LTL, what this gives you,
+
+301
+00:35:24,440 --> 00:35:34,840
+yeah, is that actually the set of states satisfying this formula is S0, S1, and S2.
+
+302
+00:35:34,840 --> 00:35:42,040
+How can we see this? My claim is that S3 satisfies B until box A.
+
+303
+00:35:42,040 --> 00:35:48,392
+S4 also satisfies B until box A, and these are the only states satisfying this.
+
+304
+00:35:48,392 --> 00:35:53,880
+Let's check this whether this is correct. S3 is here.
+
+305
+00:35:53,880 --> 00:35:58,040
+B until box A, that's the case because once you are in three, you can only move
+
+306
+00:35:58,040 --> 00:36:04,920
+to four and back. But then you definitely have something of the form box A, A and A, and
+
+307
+00:36:04,920 --> 00:36:10,640
+from that state on as well, you have B first until A and A and A and A, so
+
+308
+00:36:10,640 --> 00:36:17,240
+that's okay. The other states is not the case because, for instance, you can move
+
+309
+00:36:17,240 --> 00:36:22,129
+there and never reach an B never reach an A is possible.
+
+310
+00:36:22,129 --> 00:36:31,920
+You can move to here. From here and there, and therefore you have not box A anymore.
+
+311
+00:36:31,920 --> 00:36:35,977
+Good. I do this with a color again.
+
+312
+00:36:35,977 --> 00:36:51,359
+So, let's make this blue. So, I want to have these things blue.
+
+313
+00:36:51,359 --> 00:36:53,933
+So, we get a new atomic proposition, right?
+
+314
+00:36:53,933 --> 00:37:05,160
+So, we get here not A2. S0, S1, S2.
+
+315
+00:37:05,160 --> 00:37:40,520
+As you see. S2. That's the situation. Yeah, so we are left to check this formula phi,
+
+316
+00:37:40,520 --> 00:37:57,000
+which says there exist a path such that next orange holds and next not A2.
+
+317
+00:37:57,000 --> 00:38:01,880
+Yeah, and from now on it's it's pretty straightforward.
+
+318
+00:38:01,880 --> 00:38:08,760
+Yeah. Because what we are going to do, we're going to invoke yet another time an LTL model checker.
+
+319
+00:38:08,760 --> 00:38:12,400
+Yeah, because now I'm considering the whole formula.
+
+320
+00:38:12,400 --> 00:38:18,453
+Existentially quantified path formula, which is a negation of a universally quantified formula.
+
+321
+00:38:18,453 --> 00:38:24,400
+So, I'm going to invoke an LTL model checker with the negation of this formula.
+
+322
+00:38:24,400 --> 00:38:33,720
+So, in the end, what we're going to check is we're going to check I write it down shortly with
+
+323
+00:38:33,720 --> 00:39:07,160
+an LTL model checker which states satisfy the formula next A1 and next not A2.
+
+324
+00:39:07,160 --> 00:39:11,960
+Yeah, and then the satisfaction set what we need, so the sat
+
+325
+00:39:11,960 --> 00:39:17,720
+of phi is now the complement of this set of states of the result I write it down
+
+326
+00:39:17,720 --> 00:39:50,160
+like this, the results of the LTL model checker.
+
+327
+00:39:50,160 --> 00:39:54,960
+So as you see by this example, it's the bottom-up procedure like for CTL.
+
+328
+00:39:54,960 --> 00:40:02,400
+For existentially quantified formulas, for universally quantified path formulas, we invoke an LTL model checker.
+
+329
+00:40:02,400 --> 00:40:10,040
+For existentially quantified formulas, then we take the complement for universal quantification formulas, we typically just
+
+330
+00:40:10,040 --> 00:40:13,200
+take the outcome of the LTL model checker.
+
+331
+00:40:13,200 --> 00:40:18,080
+Another example is on the slides, but so this is the scheme, right?
+
+332
+00:40:18,080 --> 00:40:21,245
+so you look at this formula, you look at the sub state formula.
+
+333
+00:40:21,245 --> 00:40:26,440
+So in this example, this is a sub state formula, that is a sub state formula.
+
+334
+00:40:26,440 --> 00:40:33,960
+Those are calculated recursively. So you replace every state formula with certain atomic proposition.
+
+335
+00:40:33,960 --> 00:40:39,700
+Yeah, pause. So this becomes something of the form A1, that becomes something of the form A2.
+
+336
+00:40:39,700 --> 00:40:45,060
+So now you have something of the form existentially box next B and eventually eventually A2.
+
+337
+00:40:45,060 --> 00:40:52,000
+This phi2 has been replaced by A2. This is an existentially quantified formula, so what you do is you invoke
+
+338
+00:40:52,000 --> 00:40:58,240
+here an LTL model checker. As I as I did with the example before.
+
+339
+00:40:58,240 --> 00:41:06,520
+Good. So what you also can do is directly do a set LTL model checker and existentially
+
+340
+00:41:06,520 --> 00:41:11,560
+model checker to check whether this holds rather than taking the complement with that it, but that's basically a
+
+341
+00:41:11,560 --> 00:41:16,920
+similar thing. So you construct the NBA for the formula and you check via a nested depth first
+
+342
+00:41:16,920 --> 00:41:22,440
+search whether the product of the transition system and the Büchi automaton satisfies, does there exist a
+
+343
+00:41:22,440 --> 00:41:25,622
+path that infinitely often visit this F? Yeah.
+
+344
+00:41:25,622 --> 00:41:31,053
+Before we said this is never possible, we were looking for counter examples, that was for the universally quantified formula.
+
+345
+00:41:31,053 --> 00:41:37,680
+If you look for existentially quantified, you can also do it in this way.
+
+346
+00:41:37,680 --> 00:41:41,840
+Good. The way I did it on the example is just taking the complement of the
+
+347
+00:41:41,840 --> 00:41:51,880
+standard LTL model checking algorithm that we are have been confronted with in this lecture series.
+
+348
+00:41:51,880 --> 00:41:57,480
+Good. That's basically the same thing. So one of the main motivations of all
+
+349
+00:41:57,480 --> 00:42:05,880
+these extensions of CTL, which is what I mentioned in the beginning of the lecture, is to express fairness.
+
+350
+00:42:05,880 --> 00:42:12,906
+So fairness in CTL* is now relatively straightforward because it embeds everything you can do in LTL.
+
+351
+00:42:12,906 --> 00:42:17,680
+So things like unconditional fairness can be written down just like in LTL.
+
+352
+00:42:17,680 --> 00:42:24,040
+And that means that the semantics is of the form S, a state S satisfies under this fairness assumption,
+
+353
+00:42:24,040 --> 00:42:29,120
+there exists a path which always is A if and only if there exists a fair path,
+
+354
+00:42:29,120 --> 00:42:38,960
+which means there exist a a path satisfying it's fair and box A.
+
+355
+00:42:38,960 --> 00:42:43,310
+Good. So that's the CTL with fairness assumption here and that's the CTL* semantics.
+
+356
+00:42:43,310 --> 00:42:49,760
+So you see that the way we expressed fairness in CTL can be straightforwardly expressed in terms of
+
+357
+00:42:49,760 --> 00:42:58,800
+a formula in terms of CTL*. Good. So you have to be only a bit careful with universally quantified
+
+358
+00:42:58,800 --> 00:43:01,600
+formulas and this is with the effect that it's not the case that you have to
+
+359
+00:43:01,600 --> 00:43:06,400
+can write down a conjunction here of a fairness assumption and box A, but you
+
+360
+00:43:06,400 --> 00:43:10,106
+have to write down an implication. This can be seen as follows.
+
+361
+00:43:10,106 --> 00:43:17,960
+So here is a small counter example. suppose we have those two states and the fairness assumption says infinitely
+
+362
+00:43:17,960 --> 00:43:28,840
+often not B. Good. Then we look at the formula the CTL formula for all box A.
+
+363
+00:43:28,840 --> 00:43:35,760
+Then this transition system satisfies under this fairness assumption the formula for all box A.
+
+364
+00:43:35,760 --> 00:43:40,440
+Why is this? Well, there is only one path that satisfies box A, which is the self loop.
+
+365
+00:43:40,440 --> 00:43:47,360
+That self loop is fair because infinitely often we visit a not A state not B state.
+
+366
+00:43:47,360 --> 00:43:52,600
+But it does not satisfy the formula for all fair and box A.
+
+367
+00:43:52,600 --> 00:44:00,280
+Yeah. because it's not the case that all paths starting in S are fair and are box A
+
+368
+00:44:00,280 --> 00:44:05,560
+because you can move to that state, get stuck in the self loop,
+
+369
+00:44:05,560 --> 00:44:11,480
+and that's of course neither be fair not satisfying the formula of box A.
+
+370
+00:44:11,480 --> 00:44:15,768
+So the reduction that we have seen here is okay in sense of an existential quantification.
+
+371
+00:44:15,768 --> 00:44:21,800
+Here you cannot write down a conjunction, what you should write down is the following an implication.
+
+372
+00:44:21,800 --> 00:44:30,440
+so S satisfies in CTL, so the CTL fairness assumption, this relation
+
+373
+00:44:30,440 --> 00:44:38,520
+for all box A if and only if in CTL* S satisfies the formula for all paths,
+
+374
+00:44:38,520 --> 00:44:47,280
+if the path is fair, it implies box A.
+
+375
+00:44:47,280 --> 00:44:50,080
+Good. And now if you go back to this example, I hope you see that this
+
+376
+00:44:50,080 --> 00:44:56,480
+property still holds because for all fair paths, there is only one, it also satisfies box A.
+
+377
+00:44:56,480 --> 00:45:02,000
+So you rule out the possibility to go to this this B state.
+
+378
+00:45:02,000 --> 00:45:07,933
+Good. so in CTL* for you can also express fairness assumptions.
+
+379
+00:45:07,933 --> 00:45:12,480
+You can be a little bit more liberal than in LTL.
+
+380
+00:45:12,480 --> 00:45:16,080
+And according to a similar scheme as we have seen in CTL, you can write down
+
+381
+00:45:16,080 --> 00:45:22,760
+things like unconditional strong and weak fairness. In LTL, we were forced to write down
+
+382
+00:45:22,760 --> 00:45:27,137
+here LTL formulas, but now we can write down any CTL* state formula here.
+
+383
+00:45:27,137 --> 00:45:33,359
+Like this psi, this can also be any CTL* state formulas.
+
+384
+00:45:33,359 --> 00:45:37,280
+So actually in CTL*, you are even a little bit more expressive in terms of
+
+385
+00:45:37,280 --> 00:45:41,200
+the kind of fairness assumptions you can write down than in LTL.
+
+386
+00:45:41,200 --> 00:45:46,200
+Yeah. Because of the fact that you can write down any CTL* state formulas there.
+
+387
+00:45:46,200 --> 00:45:50,720
+In particular, the things that you cannot express in LTL.
+
+388
+00:45:50,720 --> 00:45:56,960
+Good. And then you have the obvious definition of the satisfaction relation in the sense that a state
+
+389
+00:45:56,960 --> 00:46:02,760
+satisfies a CTL state formula under a fairness assumption if and only if and
+
+390
+00:46:02,760 --> 00:46:06,514
+then for all paths or there exist a path and those paths of course need to be fair.
+
+391
+00:46:06,514 --> 00:46:13,720
+That means those paths need to satisfy those formulas.
+
+392
+00:46:13,720 --> 00:46:17,680
+So this is the way you can write it down.
+
+393
+00:46:17,680 --> 00:46:22,120
+So suppose that we have those CTL* fairness assumptions.
+
+394
+00:46:22,120 --> 00:46:30,400
+Now you can write down a state S satisfies under this CTL* fairness assumption there exist phi
+
+395
+00:46:30,400 --> 00:46:37,120
+if and only if there exist a path starting in S such that pi is fair, so pi satisfies
+
+396
+00:46:37,120 --> 00:46:47,760
+the CTL* fairness assumption, and that path under this fairness assumption satisfies the path formula phi.
+
+397
+00:46:47,760 --> 00:46:52,840
+Yeah. Similarly for universally quantified, you simply say for all paths starting
+
+398
+00:46:52,840 --> 00:47:03,880
+in S, if the path pi satisfies the CTL* fairness assumption fair, then it needs to fulfill the formula phi.
+
+399
+00:47:03,880 --> 00:47:11,000
+Yeah. Maybe you are surprised by the fact that you have to here write down this fair and this
+
+400
+00:47:11,000 --> 00:47:15,960
+models relation, but you have to keep track of the fact that this phi can be arbitrarily nested,
+
+401
+00:47:15,960 --> 00:47:22,520
+so it can also itself contain again existentially quantified sub formulas, universally quantified sub formulas, and
+
+402
+00:47:22,520 --> 00:47:26,553
+of course I also have to treat them according to the fairness assumption.
+
+403
+00:47:26,553 --> 00:47:31,320
+So it's not sufficient to only write down if pi is fair, then pi satisfies
+
+404
+00:47:31,320 --> 00:47:36,200
+according to the CTL* semantics phi, you need to insist on the fact that this
+
+405
+00:47:36,200 --> 00:47:50,880
+still has to respect the fairness assumption. Any questions?
+
+406
+00:47:50,880 --> 00:48:01,320
+Okay. Good. If And that's bringing the point much more in a precise way than I expressed
+
+407
+00:48:01,320 --> 00:48:10,240
+before, if this phi is quantifier free, then actually this fair thing here in the
+
+408
+00:48:10,240 --> 00:48:14,160
+bottom line does not play any role anymore and then indeed you can write it
+
+409
+00:48:14,160 --> 00:48:23,480
+or summarize this down by saying, okay, S satisfies under this CTL* fairness assumption the CTL* formula there exist
+
+410
+00:48:23,480 --> 00:48:30,280
+phi if and only if state S satisfies under the standard CTL* semantics
+
+411
+00:48:30,280 --> 00:48:33,240
+there exist a path which is fair and satisfies phi.
+
+412
+00:48:33,240 --> 00:48:41,920
+But this is only correct if phi is quantifier free, if it does not contain any nested universally or
+
+413
+00:48:41,920 --> 00:48:48,160
+existentially quantified sub formulas. Yeah. And the same here.
+
+414
+00:48:48,160 --> 00:48:55,200
+So if phi in this case is quantifier free, then this whole fairness assumption does
+
+415
+00:48:55,200 --> 00:48:59,320
+not play any role for phi itself anymore.
+
+416
+00:48:59,320 --> 00:49:07,120
+And then indeed you can summarize that S satisfies under this CTL* fairness assumption the universally quantified
+
+417
+00:49:07,120 --> 00:49:15,880
+formula if and only if S satisfies under the standard CTL* semantics that all paths that are fair
+
+418
+00:49:15,880 --> 00:49:24,760
+imply that they also satisfy phi. Good. So this brings us exactly to the point, the difference between carrying
+
+419
+00:49:24,760 --> 00:49:36,359
+around this subscript or carrying around with this models relation or being able to resort to the standard models relation.
+
+420
+00:49:36,359 --> 00:49:43,440
+So what about the complexity? roughly in two lines the complexity of
+
+421
+00:49:43,440 --> 00:49:48,280
+CTL star model checking is the same as the complexity of LTL model checking.
+
+422
+00:49:48,280 --> 00:49:53,496
+The algorithm. So, that's not a surprise. that also includes fairness assumptions.
+
+423
+00:49:53,496 --> 00:49:57,420
+So, actually this whole column here is exactly the same.
+
+424
+00:49:57,420 --> 00:50:05,280
+And it was proven by Emerson and Clark that actually CTL star model checking the complexity of it is P-space
+
+425
+00:50:05,280 --> 00:50:10,297
+complete. So, it's equally hard, if you want, than LTL model checking.
+
+426
+00:50:10,297 --> 00:50:26,320
+Although it is strictly more expressive. Good. then a couple of equivalences that is a kind of preparation towards
+
+427
+00:50:26,320 --> 00:50:32,360
+the logic CTL plus which is the other logic I'm going to present in a minute.
+
+428
+00:50:32,360 --> 00:50:38,480
+and this also has to do with with a kind of blow up that we're going to see.
+
+429
+00:50:38,480 --> 00:50:44,320
+So, here we have a formula there exist a path so that eventually you reach a blue state
+
+430
+00:50:44,320 --> 00:50:48,780
+and eventually you reach a green state. Okay?
+
+431
+00:50:48,780 --> 00:50:54,400
+So, we're not expressing that there exist a path that eventually reaches a state which is blue and green
+
+432
+00:50:54,400 --> 00:50:59,640
+at the same time. No, you can for instance reach first the blue state
+
+433
+00:50:59,640 --> 00:51:02,840
+and at some point later a green state.
+
+434
+00:51:02,840 --> 00:51:06,240
+That's all okay. Or the other way around.
+
+435
+00:51:06,240 --> 00:51:11,600
+You first reach the green state and then the blue state or you are lucky and you
+
+436
+00:51:11,600 --> 00:51:16,560
+reach a state which is both green and blue at the same time.
+
+437
+00:51:16,560 --> 00:51:22,600
+So, question is this equivalent to the following formula there exist a path
+
+438
+00:51:22,600 --> 00:51:28,600
+such that eventually you reach a blue state and from this blue state there exist a
+
+439
+00:51:28,600 --> 00:51:35,600
+path that eventually reaches a green state or there exist a path that eventually
+
+440
+00:51:35,600 --> 00:51:43,240
+reaches a green state and from that green state there exist a path that eventually reaches a blue state.
+
+441
+00:51:43,240 --> 00:51:50,920
+So, basically what you see on the right-hand side it expresses two possible orderings.
+
+442
+00:51:50,920 --> 00:51:54,440
+This says there exist a path that eventually first we reach a blue state
+
+443
+00:51:54,440 --> 00:51:58,000
+and from there on it's possible to reach a green state.
+
+444
+00:51:58,000 --> 00:52:05,040
+Or you first reach a green state and from that it's possible to reach a blue state.
+
+445
+00:52:05,040 --> 00:52:09,240
+Now, these two formulas are indeed equivalent.
+
+446
+00:52:09,240 --> 00:52:10,560
+And the way to see that is as follows.
+
+447
+00:52:10,560 --> 00:52:14,560
+There are three possibilities. So, I give an intuitive argument.
+
+448
+00:52:14,560 --> 00:52:18,520
+So, there are three possibilities. So, this is one path.
+
+449
+00:52:18,520 --> 00:52:24,805
+Either you first reach a blue state and afterwards a green state or the reverse ordering.
+
+450
+00:52:24,805 --> 00:52:28,684
+You first reach a green state and then a blue state.
+
+451
+00:52:28,684 --> 00:52:32,920
+Or as I mentioned you are lucky and you reach a state which is green and
+
+452
+00:52:32,920 --> 00:52:39,320
+blue at the same time. Okay? These are the three possibilities.
+
+453
+00:52:39,320 --> 00:52:43,160
+They all satisfy the formula on the left-hand side.
+
+454
+00:52:43,160 --> 00:52:47,400
+There exist a path namely this path that is eventually blue and eventually
+
+455
+00:52:47,400 --> 00:52:50,200
+green the same here and the same there.
+
+456
+00:52:50,200 --> 00:52:52,880
+Now, you have to check the right-hand side.
+
+457
+00:52:52,880 --> 00:52:57,370
+So, if you look at the right-hand side there exist eventually A and eventually B.
+
+458
+00:52:57,370 --> 00:53:04,104
+This is covered by those two scenarios. First you reach an A state and there exist eventually B.
+
+459
+00:53:04,104 --> 00:53:10,125
+So, this and here you first reach the green state and from there somewhat later you reach a blue state.
+
+460
+00:53:10,125 --> 00:53:14,760
+What about the last scenario? It's covered by both sub formulas.
+
+461
+00:53:14,760 --> 00:53:20,120
+Because if A if this is state is blue and green at the same time then the
+
+462
+00:53:20,120 --> 00:53:24,600
+second conjunct of this sub formula vacuously is true.
+
+463
+00:53:24,600 --> 00:53:33,720
+Good. This is an intuitive argument. What you see is that the formula explodes.
+
+464
+00:53:33,720 --> 00:53:38,080
+Why is this of interest? The formula on the left-hand side looks
+
+465
+00:53:38,080 --> 00:53:42,032
+almost like yeah, it's not almost it's a CTL formula, right?
+
+466
+00:53:42,032 --> 00:53:47,080
+There exist eventually state formula and state formula.
+
+467
+00:53:47,080 --> 00:53:52,320
+This is also a CTL formula. This is not a CTL formula.
+
+468
+00:53:52,320 --> 00:53:57,880
+But what you see is the equivalent CTL formula is longer.
+
+469
+00:53:57,880 --> 00:54:00,405
+And in particular here there are only two alternatives.
+
+470
+00:54:00,405 --> 00:54:05,240
+If you have more than two alternatives you have to consider all possible orderings in some sense.
+
+471
+00:54:05,240 --> 00:54:09,800
+This slide suggests well, we have to consider both orderings.
+
+472
+00:54:09,800 --> 00:54:12,800
+Those two and the last one we get for free.
+
+473
+00:54:12,800 --> 00:54:17,240
+you can imagine that if you only if you not only have blue and green but you
+
+474
+00:54:17,240 --> 00:54:25,320
+also have red and then there are all kind of different orderings and we have three faculty kind of orderings
+
+475
+00:54:25,320 --> 00:54:28,160
+and we have to consider all these kind of orderings.
+
+476
+00:54:28,160 --> 00:54:38,560
+Good. So, this has been this is a kind of preparatory example for the logic CTL plus.
+
+477
+00:54:38,560 --> 00:54:43,720
+So, CTL plus is a logic defined by Emerson and Halpern.
+
+478
+00:54:43,720 --> 00:54:53,520
+And this was one of the logics that was used as yeah, being able to define fairness constraints in CTL.
+
+479
+00:54:53,520 --> 00:55:01,480
+So, what is CTL plus? CTL plus is CTL with Boolean operators for path formulas.
+
+480
+00:55:01,480 --> 00:55:09,840
+So, what CTL plus does not allow and I think it's still on the back board somewhere.
+
+481
+00:55:09,840 --> 00:55:13,626
+Here we do not have any conjunctions of path formulas.
+
+482
+00:55:13,626 --> 00:55:17,426
+We don't have negations of path formulas.
+
+483
+00:55:17,426 --> 00:55:24,080
+So, CTL plus allows this. So, as we're going to see it's immediately clear it's a sub logic of
+
+484
+00:55:24,080 --> 00:55:30,800
+CTL star. So, the state formulas are as before and we have universal and existential quantified formulas but the path
+
+485
+00:55:30,800 --> 00:55:33,940
+formulas are important. We have the CTL things.
+
+486
+00:55:33,940 --> 00:55:40,520
+Next state formula state formula until state formula.
+
+487
+00:55:40,520 --> 00:55:51,000
+But in contrast to CTL you allow conjunctions of path formulas and negations of path formulas.
+
+488
+00:55:51,000 --> 00:55:56,845
+Good. So, things like this are CTL plus formulas.
+
+489
+00:55:56,845 --> 00:56:01,160
+There exist a path so that eventually B holds and box A.
+
+490
+00:56:01,160 --> 00:56:08,120
+This is not CTL formula and this is also not a CTL formula but a
+
+491
+00:56:08,120 --> 00:56:14,520
+CTL plus formula. There exist a path so that next B holds implies
+
+492
+00:56:14,520 --> 00:56:19,680
+Again a path formula. So, you can obtain this by combining this path formula with
+
+493
+00:56:19,680 --> 00:56:27,040
+this path formula by means of Boolean logic and you get the CTL plus formula.
+
+494
+00:56:27,040 --> 00:56:37,160
+Good. The surprising result is that the expressive power of this logic is equal to the expressive power of CTL.
+
+495
+00:56:37,160 --> 00:56:42,840
+Despite the fact that you allow you're more liberal in the kind of path formulas you express conjunctions and
+
+496
+00:56:42,840 --> 00:56:48,160
+negations. You would intuitively argue okay, this will be more expressive but this
+
+497
+00:56:48,160 --> 00:56:55,280
+turns out to be not the case. So, the following theorem holds for every CTL plus formula there exist an
+
+498
+00:56:55,280 --> 00:57:05,520
+equivalent CTL formula. And the proof relies on a series of equivalence rules for instance the following.
+
+499
+00:57:05,520 --> 00:57:09,920
+So, here there exist a negated path formula.
+
+500
+00:57:09,920 --> 00:57:15,320
+A negation of a path formula is not a CTL formula so this is a CTL plus
+
+501
+00:57:15,320 --> 00:57:22,640
+formula not a CTL formula. But it's not difficult to see that you can push the negation inside.
+
+502
+00:57:22,640 --> 00:57:28,440
+There exist a path such that it's not the case that the next state is blue.
+
+503
+00:57:28,440 --> 00:57:34,000
+Is of course equivalent to saying there exist a path so that the next state is not blue.
+
+504
+00:57:34,000 --> 00:57:37,640
+So, this negation here can just pushed inside.
+
+505
+00:57:37,640 --> 00:57:40,142
+And this is fine because this is a CTL formula.
+
+506
+00:57:40,142 --> 00:57:43,400
+Because this is a state formula a negated state formula is fine and a
+
+507
+00:57:43,400 --> 00:57:48,400
+next of a state formula is also fine.
+
+508
+00:57:48,400 --> 00:57:55,640
+What about untils? So, here existential of a negated until formula.
+
+509
+00:57:55,640 --> 00:58:02,120
+Good. So, this is not a CTL formula because of this negation.
+
+510
+00:58:02,120 --> 00:58:08,146
+But now you can consider what are the scenarios to negate this until formula.
+
+511
+00:58:08,146 --> 00:58:14,114
+Now, the two possible scenarios. One is phi2 never becomes true.
+
+512
+00:58:14,114 --> 00:58:20,000
+So, there exist a path so that this until formula is not true.
+
+513
+00:58:20,000 --> 00:58:23,940
+One possible scenario is that you never reach a phi2 state.
+
+514
+00:58:23,940 --> 00:58:28,320
+So, there exist a path which always has not phi2.
+
+515
+00:58:28,320 --> 00:58:38,040
+The other possibility is that's the first part is that you have phi1 and phi2 but you get there
+
+516
+00:58:38,040 --> 00:58:41,520
+only at some point you reach a point where both are violated.
+
+517
+00:58:41,520 --> 00:58:46,400
+So, phi1 is violated and phi2 is violated.
+
+518
+00:58:46,400 --> 00:58:54,000
+So, that's another possibility of not satisfying this formula phi1 until phi2.
+
+519
+00:58:54,000 --> 00:58:58,742
+this is a CTL formula because this is a state formula.
+
+520
+00:58:58,742 --> 00:59:03,480
+This sub formula is a state formula. So, that's syntactically a CTL formula
+
+521
+00:59:03,480 --> 00:59:08,040
+and this second disjunct is also a CTL formula.
+
+522
+00:59:08,040 --> 00:59:14,120
+But you see the size of the formula gets a bit longer.
+
+523
+00:59:14,120 --> 00:59:16,920
+So, you can do the same for things like this.
+
+524
+00:59:16,920 --> 00:59:20,520
+So, here now this was about negation. What about conjunctions?
+
+525
+00:59:20,520 --> 00:59:22,546
+So, what kind of conjunctions do we need to consider?
+
+526
+00:59:22,546 --> 00:59:29,480
+Conjunctions of two until formulas, conjunctions of next and until formulas, conjunctions of next and next and so forth.
+
+527
+00:59:29,480 --> 00:59:31,440
+So, let's look at these kind of things.
+
+528
+00:59:31,440 --> 00:59:35,560
+So, here you have an example as the following.
+
+529
+00:59:35,560 --> 00:59:42,280
+This is a formula that is not in CTL because of the conjunction of the two until formulas.
+
+530
+00:59:42,280 --> 00:59:49,920
+The formula says the following. There exists a path which is blue until I reach a green state.
+
+531
+00:59:49,920 --> 00:59:56,880
+And it also satisfies that I reach a D state What is it?
+
+532
+00:59:56,880 --> 01:00:02,680
+Pink? by only visiting purple states before.
+
+533
+01:00:02,680 --> 01:00:09,080
+Good. So, claim this is equivalent to the following CTL formula.
+
+534
+01:00:09,080 --> 01:00:13,960
+There exists a path which is satisfying A and C until it reaches B and there
+
+535
+01:00:13,960 --> 01:00:16,880
+exists a path so that C until D holds.
+
+536
+01:00:16,880 --> 01:00:21,720
+So, why is this? Well, there are actually two possible scenarios.
+
+537
+01:00:21,720 --> 01:00:29,440
+One is that A holds and B becomes true before D holds.
+
+538
+01:00:29,440 --> 01:00:38,791
+Okay? So, in that setting so, you first have to satisfy A but also C until you first reach B.
+
+539
+01:00:38,791 --> 01:00:43,474
+So, that says A and C until you reach a point where you satisfy B.
+
+540
+01:00:43,474 --> 01:00:48,760
+Now, you can discharge the first conjunct because that has been satisfied.
+
+541
+01:00:48,760 --> 01:00:51,840
+Now, you have to satisfy the second conjunct.
+
+542
+01:00:51,840 --> 01:00:54,005
+We have made sure that C still holds, right?
+
+543
+01:00:54,005 --> 01:00:58,920
+Because we have C. And now we have to in addition to having a B state, we have
+
+544
+01:00:58,920 --> 01:01:06,488
+to express that starting from this green state we have to be it's possible to fulfill C until D.
+
+545
+01:01:06,488 --> 01:01:13,584
+So, and there exists C until D. And there is the second possible ordering.
+
+546
+01:01:13,584 --> 01:01:21,160
+The second possible ordering says this conjunct is satisfied before the first conjunct becomes satisfied.
+
+547
+01:01:21,160 --> 01:01:25,800
+And by symmetry, this is similar C and A until D holds.
+
+548
+01:01:25,800 --> 01:01:30,920
+Then the second conjunct holds and can be discharged.
+
+549
+01:01:30,920 --> 01:01:37,440
+Now, the only the first conjunct needs to be fulfilled and that's existential A until B.
+
+550
+01:01:37,440 --> 01:01:39,960
+I think the slide has a picture on this.
+
+551
+01:01:39,960 --> 01:01:46,040
+So this is the possibilities. Either you have that A holds until B holds and
+
+552
+01:01:46,040 --> 01:01:47,520
+B is the first thing that becomes true.
+
+553
+01:01:47,520 --> 01:01:50,760
+So, that means the first part of the formula is true.
+
+554
+01:01:50,760 --> 01:01:53,775
+Now, you have to make sure that the second part of the formula is true.
+
+555
+01:01:53,775 --> 01:01:56,055
+That means you also have to fulfill C until D.
+
+556
+01:01:56,055 --> 01:01:58,578
+But that means that this state needs to be a C state.
+
+557
+01:01:58,578 --> 01:02:00,288
+That one needs to be a C state.
+
+558
+01:02:00,288 --> 01:02:06,320
+That one needs to be a C state until at some point you reach this D state.
+
+559
+01:02:06,320 --> 01:02:08,680
+Or the ordering is the other way around.
+
+560
+01:02:08,680 --> 01:02:15,040
+The second conjunct becomes true first, which means we first reach such a D state and then a B state.
+
+561
+01:02:15,040 --> 01:02:22,000
+But then of course, until reaching the B state, we have to make sure that all states satisfy A.
+
+562
+01:02:22,000 --> 01:02:26,840
+And there is the scenario where you are lucky in the sense that you fulfill both
+
+563
+01:02:26,840 --> 01:02:32,360
+conjuncts at the same time by reaching a state which is green and pink at the same time.
+
+564
+01:02:32,360 --> 01:02:38,280
+But that simply means that all the preceding states need to fulfill A and C.
+
+565
+01:02:38,280 --> 01:02:49,440
+Yeah. Good. Similar remark as before. What you see on the left right hand side is
+
+566
+01:02:49,440 --> 01:02:53,840
+the size of this formula becomes longer and longer and longer.
+
+567
+01:02:53,840 --> 01:02:57,680
+So you get an explosion in the size of the formula.
+
+568
+01:02:57,680 --> 01:03:05,720
+Good. There's B until C etc. And then you can have things like combinations of next and until.
+
+569
+01:03:05,720 --> 01:03:11,720
+and that's something you can write down as follows and that's actually pretty straightforward.
+
+570
+01:03:11,720 --> 01:03:17,560
+So, you're expressing there exists a path which has a next state which is blue.
+
+571
+01:03:17,560 --> 01:03:21,880
+And along that path, B until C must hold.
+
+572
+01:03:21,880 --> 01:03:26,560
+Okay. Good. Now, again, you consider two scenarios.
+
+573
+01:03:26,560 --> 01:03:32,960
+The first scenario says, "Okay. The first initial state is satisfying C.
+
+574
+01:03:32,960 --> 01:03:38,120
+That means that this part is already immediately fulfilled.
+
+575
+01:03:38,120 --> 01:03:42,702
+So, the only remaining part that I should take care of is the next A.
+
+576
+01:03:42,702 --> 01:03:47,880
+So, if C holds then you only have to consider existential next A.
+
+577
+01:03:47,880 --> 01:03:53,280
+Or if this is not the case, if my initial state is not satisfying C
+
+578
+01:03:53,280 --> 01:03:58,800
+then because of the until expansion law, it has to fulfill B.
+
+579
+01:03:58,800 --> 01:04:03,000
+But then this B state has to have a next state.
+
+580
+01:04:03,000 --> 01:04:08,720
+That needs to satisfy A. And C.
+
+581
+01:04:08,720 --> 01:04:13,320
+So, there exists a next state which is E and from there on also it was it's
+
+582
+01:04:13,320 --> 01:04:21,400
+possible to fulfill B until C. Good. So, here are the three scenarios again.
+
+583
+01:04:21,400 --> 01:04:28,520
+Either you first fulfill C. Then the second conjunct is easily fulfilled and you only have to check
+
+584
+01:04:28,520 --> 01:04:31,160
+that there is a next state which is blue.
+
+585
+01:04:31,160 --> 01:04:37,240
+Or second part. You are satisfying a B state.
+
+586
+01:04:37,240 --> 01:04:41,760
+You can be in the lucky scenario that the next state satisfies C and A at the same time.
+
+587
+01:04:41,760 --> 01:04:46,540
+Then you have A and there exists this path that immediately goes to the C state.
+
+588
+01:04:46,540 --> 01:04:51,440
+Or you have a B. The next state of course needs to fulfill A and at some point you
+
+589
+01:04:51,440 --> 01:05:05,080
+reach a C state. Good. So, I would like to say a bit more about CTL plus.
+
+590
+01:05:05,080 --> 01:05:10,800
+So, one example of CTL plus that you can express and not in CTL is things like this for all
+
+591
+01:05:10,800 --> 01:05:17,760
+box A and next B implies C until A.
+
+592
+01:05:17,760 --> 01:05:24,240
+So, this says something all paths all paths where everywhere A holds
+
+593
+01:05:24,240 --> 01:05:30,560
+if this A state has a next B state, then actually C also holds until A.
+
+594
+01:05:30,560 --> 01:05:42,359
+This is a somewhat more involved. Then there is the following result which is due to Wilke
+
+595
+01:05:42,359 --> 01:05:46,920
+in '99. And he he has proven the following theorem.
+
+596
+01:05:46,920 --> 01:05:52,520
+CTL plus So, we know that CTL plus is equally expressive in CTL.
+
+597
+01:05:52,520 --> 01:05:58,120
+we have seen in those examples that formulas become a bit larger.
+
+598
+01:05:58,120 --> 01:06:05,680
+I mean, the corresponding formulas in CTL I mean, the bottom line are corresponding longer than the starting
+
+599
+01:06:05,680 --> 01:06:09,840
+CTL plus and this has been materialized in the following theorem.
+
+600
+01:06:09,840 --> 01:06:22,359
+It says that CTL plus is exponentially more succinct.
+
+601
+01:06:22,359 --> 01:06:25,160
+So what this means is the following.
+
+602
+01:06:25,160 --> 01:06:32,000
+You start with CTL plus formula of your CTL plus formula is something of the form phi.
+
+603
+01:06:32,000 --> 01:06:39,359
+And now you have an equivalent formula CTL formula which is psi and those two formulas are equivalent.
+
+604
+01:06:39,359 --> 01:06:44,200
+Now, it says that the size of phi,
+
+605
+01:06:44,200 --> 01:06:59,400
+is exponentially not always, I mean, can be exponentially smaller than the size of the corresponding So,
+
+606
+01:06:59,400 --> 01:07:08,600
+this is CTL plus. This is CTL.
+
+607
+01:07:08,600 --> 01:07:15,560
+so, this has the following Let me first give the argument for this and then I
+
+608
+01:07:15,560 --> 01:07:18,720
+will discuss what are the consequences of this result.
+
+609
+01:07:18,720 --> 01:07:23,920
+so, the key result is the following.
+
+610
+01:07:23,920 --> 01:07:42,960
+every CTL formula equivalent to the following CTL plus formula there exists eventually A1 and eventually A2
+
+611
+01:07:42,960 --> 01:07:52,359
+and eventually AN. If I go back a few slides, this is a formula that we have seen actually before.
+
+612
+01:07:52,359 --> 01:07:58,040
+This was this one here. In my case, N equals two.
+
+613
+01:07:58,040 --> 01:08:10,160
+But if you generalize this for N different possibilities then here my argument on this slide was
+
+614
+01:08:10,160 --> 01:08:14,760
+we have to consider both combinations. First, we reach a blue state and then a
+
+615
+01:08:14,760 --> 01:08:27,920
+green state or the other way around. Now, we have in in an actually we have to
+
+616
+01:08:27,920 --> 01:08:50,000
+So, here my claim is it's easy to obtain an equivalent CTL formula of size O of N faculty
+
+617
+01:08:50,000 --> 01:09:08,560
+by just considering all possible orderings. which is a disjunction of N faculty disjuncts and each encoding every possible
+
+618
+01:09:08,560 --> 01:09:32,200
+ordering. Now, this doesn't express that of course it might be this is the obvious way, but
+
+619
+01:09:32,200 --> 01:09:33,774
+maybe you can do it in a more clever way.
+
+620
+01:09:33,774 --> 01:09:40,160
+So, maybe you still can have a formula which is polynomial in the size.
+
+621
+01:09:40,160 --> 01:09:44,457
+So, this is not justifying the claim of Wilke.
+
+622
+01:09:44,457 --> 01:09:49,160
+It only says the easy way of doing it is just list all the orderings.
+
+623
+01:09:49,160 --> 01:09:55,000
+So, what can you do? So, what is this result saying?
+
+624
+01:09:55,000 --> 01:10:01,960
+His result says the following. So, this was a side remark, right?
+
+625
+01:10:01,960 --> 01:10:15,880
+So, he says every CTL formula equivalent to this formula is of length and this is giving one trivial
+
+626
+01:10:15,880 --> 01:10:23,880
+example, but what is at least the length at least length n over n divided by two.
+
+627
+01:10:23,880 --> 01:10:38,480
+And this belongs in omega two to the power n divided by the square root of n.
+
+628
+01:10:38,480 --> 01:10:45,560
+So, this is the important thing is that this exponentially more succinct because he has proven by a quite
+
+629
+01:10:45,560 --> 01:10:51,520
+involved argument over alternating automata etc. to prove that if you want to
+
+630
+01:10:51,520 --> 01:10:59,120
+express something which is equivalent to this then the least you need is something of the size
+
+631
+01:10:59,120 --> 01:11:03,960
+two to the power n divided by square root of n.
+
+632
+01:11:03,960 --> 01:11:25,880
+Good. This has the following consequence. And the consequence is that model checking CTL plus is harder
+
+633
+01:11:25,880 --> 01:11:42,960
+than model checking CTL. This actually is P time complete.
+
+634
+01:11:42,960 --> 01:11:55,360
+And model checking CTL plus is NP-hard and co-NP-hard.
+
+635
+01:11:55,360 --> 01:12:02,880
+So, the fact that it is exponentially more succinct also has an effect in that the verification sometimes needs
+
+636
+01:12:02,880 --> 01:12:15,560
+higher complexity. Good. There are more results on the precise let's say complexity, but let's not dive into these details.
+
+637
+01:12:15,560 --> 01:12:19,400
+this brings me to the end of the lecture of today.
+
+638
+01:12:19,400 --> 01:12:25,200
+In the next lecture, which is the last lecture we're going to see that what we
+
+639
+01:12:25,200 --> 01:12:29,040
+already know is that trace equivalence does not correspond to CTL.
+
+640
+01:12:29,040 --> 01:12:34,760
+And then we're going to prove that bisimulation equivalence is the corresponding equivalence for CTL star.
+
+641
+01:12:34,760 --> 01:12:40,760
+Okay. Thanks a lot. Enjoy the weekend and see you back on Tuesday.

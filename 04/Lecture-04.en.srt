@@ -1,0 +1,3447 @@
+﻿1
+00:00:02,360 --> 00:00:10,120
+Good morning. Welcome to the fourth lecture on model checking.
+
+2
+00:00:10,120 --> 00:00:19,224
+The topic of today Dutch King Day, perhaps not known to you, but is again parallelism and communication.
+
+3
+00:00:19,224 --> 00:00:22,840
+In particular, I'm going to talk about channel systems.
+
+4
+00:00:22,840 --> 00:00:27,560
+But before I do this, I first would like to announce that the questionnaire that
+
+5
+00:00:27,560 --> 00:00:32,880
+was sent around via the L2P system about the date of the exam,
+
+6
+00:00:32,880 --> 00:00:38,440
+the vast majority is in favor of sticking to the old to the original date.
+
+7
+00:00:38,440 --> 00:00:44,760
+So, we have decided to stay to stick to that date, which is the 31st of August.
+
+8
+00:00:44,760 --> 00:00:52,040
+Now, I know that a few students have severe problems on the 31st, and
+
+9
+00:00:52,040 --> 00:00:58,080
+severe means doesn't mean you're on holidays. it means you are either go for let's
+
+10
+00:00:58,080 --> 00:01:04,580
+say studying a semester abroad, you're an Erasmus student, and you're leaving Aachen before the 31st.
+
+11
+00:01:04,580 --> 00:01:12,040
+If this is the case, please send us an email with your name, matricula number,
+
+12
+00:01:12,040 --> 00:01:18,000
+and then we will try to find an arrangement so that you can do an exam before the 31st.
+
+13
+00:01:18,000 --> 00:01:25,440
+Okay? So, only those people that are really cannot make it on the 31st for good reasons.
+
+14
+00:01:25,440 --> 00:01:28,710
+And I also would like to know those reasons.
+
+15
+00:01:28,710 --> 00:01:33,040
+So, being on a holiday for holidays doesn't count.
+
+16
+00:01:33,040 --> 00:01:45,280
+So, what we have seen in the previous lectures is basically about models.
+
+17
+00:01:45,280 --> 00:01:52,360
+And the kind of models we have seen so far were things like program graphs,
+
+18
+00:01:52,360 --> 00:02:05,760
+which are used as representation for sequential programs.
+
+19
+00:02:05,760 --> 00:02:34,080
+We have seen sequential hardware circuits. And in the previous lecture, we have seen several operators for modeling multithreading.
+
+20
+00:02:34,080 --> 00:02:42,200
+Or parallelism. And there, what we have seen is basically three operations.
+
+21
+00:02:42,200 --> 00:02:53,520
+We have seen interleaving, which was denoted by this triple bar, where the idea was that you have two threads
+
+22
+00:02:53,520 --> 00:03:01,480
+and or more, but they can execute their actions autonomously, so there was no communication.
+
+23
+00:03:01,480 --> 00:03:08,040
+We have seen something what we called handshaking.
+
+24
+00:03:08,040 --> 00:03:14,445
+This was defined like this, a double arrow, and then as a it has as argument a set of actions.
+
+25
+00:03:14,445 --> 00:03:23,520
+We call them synchronization actions. And the intuition is that all actions in the set syn need to be synchronized.
+
+26
+00:03:23,520 --> 00:03:29,520
+That means if you have two processes running in parallel, they both have to be in a state where
+
+27
+00:03:29,520 --> 00:03:36,600
+they can do such an action, and then if they take such an action, they do this simultaneously.
+
+28
+00:03:36,600 --> 00:03:43,120
+So, in effect, this is nothing else than this operation with the empty set.
+
+29
+00:03:43,120 --> 00:03:55,280
+And what we are going to see and what we also have seen is shared variables.
+
+30
+00:03:55,280 --> 00:04:01,480
+Where I defined this operation not on the transition system level, but at the program graph level.
+
+31
+00:04:01,480 --> 00:04:05,120
+Today, we're going to bring these things together.
+
+32
+00:04:05,120 --> 00:04:11,160
+And that means basically, we're going to introduce you a model that covers basically interleaving, handshaking, as
+
+33
+00:04:11,160 --> 00:04:15,480
+well as shared variables. And this is called channel systems.
+
+34
+00:04:15,480 --> 00:04:23,080
+And why are channel systems of interest? At the end of the lecture, I'm going to show you that actually
+
+35
+00:04:23,080 --> 00:04:33,840
+the model that I'm going to introduce today is basically the model which is the input language Promela.
+
+36
+00:04:33,840 --> 00:04:49,240
+And this is the input language of Spin, and Spin is the I would say the most popular model checker
+
+37
+00:04:49,240 --> 00:04:51,965
+developed by Holzmann. I mentioned this in the first lecture.
+
+38
+00:04:51,965 --> 00:04:59,760
+Holzmann got the six software I mean six software award from ACM for developing this this model checker.
+
+39
+00:04:59,760 --> 00:05:05,800
+And in order to let's say provide the models to that model checker,
+
+40
+00:05:05,800 --> 00:05:09,560
+this model checker provides you with an input language Promela, and this is
+
+41
+00:05:09,560 --> 00:05:14,760
+nothing else as we're going to see at the end as syntactic sugar for channel systems.
+
+42
+00:05:14,760 --> 00:05:19,640
+Okay? So, the model that we're going to introduce today and that's also be the last lecture
+
+43
+00:05:19,640 --> 00:05:23,920
+that was about models. Next lecture will be about properties.
+
+44
+00:05:23,920 --> 00:05:29,440
+that ends today with these channel systems.
+
+45
+00:05:29,440 --> 00:05:33,560
+So, what we have is we have a parallel systems.
+
+46
+00:05:33,560 --> 00:05:40,000
+They can depend on data. They have means to use shared variables,
+
+47
+00:05:40,000 --> 00:05:44,000
+which is one way as a kind of a simple way to communicate.
+
+48
+00:05:44,000 --> 00:05:52,800
+They can have synchronous message passing, handshaking, as well as, and that's new for today, asynchronous message passing.
+
+49
+00:05:52,800 --> 00:06:10,760
+So, let me intuitively explain you what is asynchronous message passing.
+
+50
+00:06:10,760 --> 00:06:19,640
+And I like to stress this A. So, in handshaking, which is synchronous, it really means that all partners have
+
+51
+00:06:19,640 --> 00:06:26,160
+to be in a state, and then they simultaneously synchronously evolve.
+
+52
+00:06:26,160 --> 00:06:34,840
+In asynchronous, you still have communication, but the sender and receiver are not obliged to move simultaneously.
+
+53
+00:06:34,840 --> 00:06:39,160
+The sender can first send a message, and at some point later, the receiver can
+
+54
+00:06:39,160 --> 00:06:43,800
+basically get the message out of his or her mailbox, and then read it, and based
+
+55
+00:06:43,800 --> 00:06:48,146
+on that performs a certain transition in its own transition system.
+
+56
+00:06:48,146 --> 00:06:51,200
+So, simply you can view it like this.
+
+57
+00:06:51,200 --> 00:06:55,920
+You have a sender, and think of this as as an automaton, right?
+
+58
+00:06:55,920 --> 00:07:00,480
+So, we have a transition system or an automaton that evolves.
+
+59
+00:07:00,480 --> 00:07:04,560
+Actually, we're going to describe this by a program graph.
+
+60
+00:07:04,560 --> 00:07:14,680
+Then we have a receiver, which is also described by a program graph.
+
+61
+00:07:14,680 --> 00:07:24,720
+So, these are program graphs. Program graphs are finite, right?
+
+62
+00:07:24,720 --> 00:07:30,860
+Because every program has finitely many lines or states and locations, as we call them.
+
+63
+00:07:30,860 --> 00:07:36,840
+This is a program graph. And now the question is, how do they communicate?
+
+64
+00:07:36,840 --> 00:07:45,800
+Well, there are two ways. Either they have some shared variables, that could be for instance something
+
+65
+00:07:45,800 --> 00:07:52,240
+like X and Y, and this X can be used by for instance saying here X becomes a certain value,
+
+66
+00:07:52,240 --> 00:07:57,080
+or maybe X is used here by saying this edge is enabled that if X is larger than
+
+67
+00:07:57,080 --> 00:08:04,720
+zero, you can do a certain action. That's the way we already have seen shared variables.
+
+68
+00:08:04,720 --> 00:08:07,840
+But this new thing is by means of buffers.
+
+69
+00:08:07,840 --> 00:08:09,680
+So, that means there is a buffer here.
+
+70
+00:08:09,680 --> 00:08:17,320
+So, this is a FIFO buffer. First in, first out.
+
+71
+00:08:17,320 --> 00:08:25,090
+This has several places. And it means that the sender can send a message to the receiver.
+
+72
+00:08:25,090 --> 00:08:30,280
+What does that mean? suppose that this already is occupied, that one is occupied, and
+
+73
+00:08:30,280 --> 00:08:33,880
+suppose here this we sent a message let's say A.
+
+74
+00:08:33,880 --> 00:08:38,360
+Then on sending this message, this A is put into this buffer.
+
+75
+00:08:38,360 --> 00:08:49,400
+So, this means sent A. Now, and then you can imagine that someone later, the receiver,
+
+76
+00:08:49,400 --> 00:08:55,080
+if the receiver has already deleted those two messages, has already received those messages from its mailbox, it can
+
+77
+00:08:55,080 --> 00:09:01,960
+then receive message A. Okay? So, the buffer is a kind of delay.
+
+78
+00:09:01,960 --> 00:09:06,433
+Right? If the buffer size is zero, then it is identical to synchronous communication.
+
+79
+00:09:06,433 --> 00:09:11,980
+If the buffer size is strictly larger than zero, then you have this kind of delay.
+
+80
+00:09:11,980 --> 00:09:14,600
+And this channel you also have in the other direction.
+
+81
+00:09:14,600 --> 00:09:19,400
+So, there is a channel that goes in this direction, and that means that maybe this process
+
+82
+00:09:19,400 --> 00:09:23,560
+can only send messages here, and that process can receive it.
+
+83
+00:09:23,560 --> 00:09:30,320
+So, that's basically the model that we're going to consider.
+
+84
+00:09:30,320 --> 00:09:34,653
+Good. And we call those buffers channels. Good.
+
+85
+00:09:34,653 --> 00:09:39,080
+So, here is the idea. We In this case, we have four processes.
+
+86
+00:09:39,080 --> 00:09:45,080
+We have channels between these processes. For instance, C3 is a channel between P3 and P1.
+
+87
+00:09:45,080 --> 00:09:50,560
+C1 is a channel between P1 and P2, and C2 is a channel between two P2 and
+
+88
+00:09:50,560 --> 00:09:56,080
+C1 and P1. And you have shared variables.
+
+89
+00:09:56,080 --> 00:10:02,600
+the channels are first in first out unless they have capacity zero, then we
+
+90
+00:10:02,600 --> 00:10:08,840
+have the same principle as with handshaking. Then the receiver and the sender have to move simultaneously.
+
+91
+00:10:08,840 --> 00:10:13,200
+Question. Why there are two channels between P1 and P2?
+
+92
+00:10:13,200 --> 00:10:18,725
+In both directions, one. So, a channel is directed, like I indicated here.
+
+93
+00:10:18,725 --> 00:10:23,440
+This is a kind of directed channel. This one is allowed to send here, that one is allowed to
+
+94
+00:10:23,440 --> 00:10:26,520
+receive, but not the other way around. It's not the case that this receiver can
+
+95
+00:10:26,520 --> 00:10:29,310
+also put messages there which are intended for this.
+
+96
+00:10:29,310 --> 00:10:38,040
+It really is in one direction a channel.
+
+97
+00:10:38,040 --> 00:10:41,920
+Good. Now, this FIFO buffer can have a certain capacity.
+
+98
+00:10:41,920 --> 00:10:49,680
+So, here is another example where you see that there is a channel of capacity two that
+
+99
+00:10:49,680 --> 00:10:54,480
+goes from P3 to P1. And there is a capacity one between of a channel that
+
+100
+00:10:54,480 --> 00:10:59,794
+goes from P2 to P1, for instance. The capacity can also be unbounded.
+
+101
+00:10:59,794 --> 00:11:07,160
+Then it simply means that an unbounded number of messages can be kept into the buffer.
+
+102
+00:11:07,160 --> 00:11:13,520
+So, I mentioned already synchronous message passing is the same as having capacity zero.
+
+103
+00:11:13,520 --> 00:11:23,560
+Asynchronous, where A means there might be a delay between sending and receiving, means that the capacity is strictly positive.
+
+104
+00:11:23,560 --> 00:11:26,600
+Good. So, how are we going to formalize this?
+
+105
+00:11:26,600 --> 00:11:30,880
+First, we're going to formalize this by means of program graphs.
+
+106
+00:11:30,880 --> 00:11:35,800
+This will be a program graph. That will be a program graph.
+
+107
+00:11:35,800 --> 00:11:38,580
+This is a simple example where only have two processes.
+
+108
+00:11:38,580 --> 00:11:46,760
+In general, I can have N processes, so I have N program graphs, P1 to PN.
+
+109
+00:11:46,760 --> 00:11:51,000
+Now, we have transitions, so we use program graphs as before.
+
+110
+00:11:51,000 --> 00:11:54,880
+So, that means they go from a location to another location.
+
+111
+00:11:54,880 --> 00:11:59,440
+Such an edge is guarded with a guard G, which again is a kind of Boolean
+
+112
+00:11:59,440 --> 00:12:04,920
+condition over the variables, like here, X is larger than zero.
+
+113
+00:12:04,920 --> 00:12:08,945
+And we have an action alpha that tells you what is going to be performed.
+
+114
+00:12:08,945 --> 00:12:15,440
+For instance, an assignment to one of the shared variables.
+
+115
+00:12:15,440 --> 00:12:17,371
+And we're going to add two more ingredients.
+
+116
+00:12:17,371 --> 00:12:22,600
+So, these are the two new features that were not available in the program graph.
+
+117
+00:12:22,600 --> 00:12:26,080
+Why do I need them? Because I want to have this possibility to send the
+
+118
+00:12:26,080 --> 00:12:31,000
+message, and I want the possibility to to retrieve a message from the buffer.
+
+119
+00:12:31,000 --> 00:12:33,320
+And we're going to do this as follows.
+
+120
+00:12:33,320 --> 00:12:38,600
+So, C exclamation mark V. First of all, there is no guard.
+
+121
+00:12:38,600 --> 00:12:44,280
+So, the guard implicitly is true, but as default, we are going to omit this.
+
+122
+00:12:44,280 --> 00:12:49,600
+This means that this program graph can evolve from LI to L prime I
+
+123
+00:12:49,600 --> 00:12:55,280
+by on channel C inserting the value V.
+
+124
+00:12:55,280 --> 00:13:01,000
+So, V is a value, right? 27. The string Aachen.
+
+125
+00:13:01,000 --> 00:13:10,320
+This is put into the message buffer. And C is a directed channel from a certain program to another program.
+
+126
+00:13:10,320 --> 00:13:13,240
+Then we can also retrieve messages from the buffer.
+
+127
+00:13:13,240 --> 00:13:16,308
+This is indicated by C question mark X.
+
+128
+00:13:16,308 --> 00:13:23,920
+What does that mean? Well, the intuitive interpretation is suppose that this program is in the location LI,
+
+129
+00:13:23,920 --> 00:13:28,640
+then it's going to check in channel C whether there is a message available.
+
+130
+00:13:28,640 --> 00:13:32,760
+It takes the first message. I mean, it's a FIFO buffer, so it takes the message
+
+131
+00:13:32,760 --> 00:13:35,720
+which is at the head of the buffer.
+
+132
+00:13:35,720 --> 00:13:41,040
+It does not going to traverse the buffer and try to see, "Hey, is there any message that I like?"
+
+133
+00:13:41,040 --> 00:13:46,280
+Like a love letter of your neighbor. No, you take the first message which is in the buffer,
+
+134
+00:13:46,280 --> 00:13:50,360
+and that's what you take, and you assign it to the variable X.
+
+135
+00:13:50,360 --> 00:13:55,893
+So, that's a value which you retrieve from the channel, and you assign it to the variable X.
+
+136
+00:13:55,893 --> 00:13:59,450
+And of course, I'm assuming that everything is type correct.
+
+137
+00:13:59,450 --> 00:14:03,905
+So, if X is an integer variable, then the channel carries integers.
+
+138
+00:14:03,905 --> 00:14:10,480
+If X is a string, then the channel carries strings.
+
+139
+00:14:10,480 --> 00:14:17,280
+Good. So, what we have is we have typed variables, variables with a certain domain, dom of X.
+
+140
+00:14:17,280 --> 00:14:24,959
+And as I remembered before, like for program graphs, we have an evaluation for those variables, which were I just
+
+141
+00:14:24,959 --> 00:14:28,800
+remind you, it's a function that maps variables to values.
+
+142
+00:14:28,800 --> 00:14:31,182
+And we use this Greek eta for this.
+
+143
+00:14:31,182 --> 00:14:36,200
+So, we're assuming that the value of variable X is a value which is type
+
+144
+00:14:36,200 --> 00:14:41,079
+consistent with the, let's say, the type of X, and that means in my terminology
+
+145
+00:14:41,079 --> 00:14:52,000
+that this is a member of the domain of X.
+
+146
+00:14:52,000 --> 00:14:56,200
+Good. So, now we have channels. Channels have typed.
+
+147
+00:14:56,200 --> 00:15:01,089
+That means they carry messages of a certain type, and they have a capacity.
+
+148
+00:15:01,089 --> 00:15:08,440
+So, a channel C has a capacity C, which is either bounded, a natural number, zero or more,
+
+149
+00:15:08,440 --> 00:15:13,480
+or it is unbounded, and that means the capacity is infinite.
+
+150
+00:15:13,480 --> 00:15:16,730
+Every channel has, like an ordinary variable, a type.
+
+151
+00:15:16,730 --> 00:15:21,760
+And this type is given by the domain of that channel.
+
+152
+00:15:21,760 --> 00:15:25,420
+That's simply the type of the messages it can carry.
+
+153
+00:15:25,420 --> 00:15:28,980
+So, the speak. And then there is an evaluation.
+
+154
+00:15:28,980 --> 00:15:33,880
+Like I have an evaluation of variables, I also have an evaluation of channels.
+
+155
+00:15:33,880 --> 00:15:37,381
+Now, what does a channel carry? Now, look at this.
+
+156
+00:15:37,381 --> 00:15:44,079
+Here I have one, two, three messages. So, the value of a channel is a sequence.
+
+157
+00:15:44,079 --> 00:15:49,000
+This one, that one, that one, right? And also, I would like to keep the ordering.
+
+158
+00:15:49,000 --> 00:15:52,269
+Remember, because I would like to model a first in first out buffer.
+
+159
+00:15:52,269 --> 00:15:54,435
+So, it's not a set, it's not a bag.
+
+160
+00:15:54,435 --> 00:16:00,320
+I model this as a sequence. So, that means that I have a mapping psi that maps a channel
+
+161
+00:16:00,320 --> 00:16:08,079
+to actually a finite word. And this finite word is a finite word of values that the current
+
+162
+00:16:08,079 --> 00:16:16,120
+channel is carrying. And this is a word of the length which is at most the capacity, right?
+
+163
+00:16:16,120 --> 00:16:20,680
+So, if this is something of the form
+
+164
+00:16:20,680 --> 00:16:32,200
+AAC, then the channel contains values. And if this channel is chan, then the current value psi of
+
+165
+00:16:32,200 --> 00:16:37,200
+this channel is then indeed the sequence CAA.
+
+166
+00:16:37,200 --> 00:16:41,520
+This is the first element, the second, and the third element.
+
+167
+00:16:41,520 --> 00:16:48,120
+And of course, the length of this word cannot exceed the capacity of the channel.
+
+168
+00:16:48,120 --> 00:16:54,600
+So, formally, a channel system is a set of finite set of program graphs,
+
+169
+00:16:54,600 --> 00:16:57,959
+P1 to PN, and I'm using this notation.
+
+170
+00:16:57,959 --> 00:17:03,079
+and they are defined over a set of shared variables.
+
+171
+00:17:03,079 --> 00:17:10,640
+So, I'm going to define what are the variables that these graphs apply to, and I have to indicate which
+
+172
+00:17:10,640 --> 00:17:15,800
+channels are there. And that's the set chan.
+
+173
+00:17:15,800 --> 00:17:20,280
+So, var is a set of typed variables, and chan are those typed channels.
+
+174
+00:17:20,280 --> 00:17:24,800
+Now, what is a program graph? A program graph is as before.
+
+175
+00:17:24,800 --> 00:17:28,840
+So, that's the same as before. That means we have locations, actions.
+
+176
+00:17:28,840 --> 00:17:32,800
+This is describing what's the effect of an action on the shared variables,
+
+177
+00:17:32,800 --> 00:17:35,720
+and now also in some way on the channels.
+
+178
+00:17:35,720 --> 00:17:42,920
+we have this edge relation, some initial location, and some initial condition.
+
+179
+00:17:42,920 --> 00:17:49,960
+We have the same guarded commands as before, where G is a Boolean condition over the variables,
+
+180
+00:17:49,960 --> 00:17:55,320
+and we have actions in the set of the a set of actions of program graph I.
+
+181
+00:17:55,320 --> 00:17:58,320
+Now, we have sending a value via channel.
+
+182
+00:17:58,320 --> 00:18:03,760
+So, program graph I, so the Ith component in my system, can have an
+
+183
+00:18:03,760 --> 00:18:08,936
+edge, that's what the subscript I means, can have an edge from L to L prime.
+
+184
+00:18:08,936 --> 00:18:15,720
+And apparently, this program sends over channel C the value V.
+
+185
+00:18:15,720 --> 00:18:23,800
+Of course, this is assuming that C now is a channel where PI is able to send a message to.
+
+186
+00:18:23,800 --> 00:18:30,240
+And you can receive a value, which is indicated by this question mark X.
+
+187
+00:18:30,240 --> 00:18:36,520
+Good. So, let us describe a little bit more in detail what this channel system exactly does.
+
+188
+00:18:36,520 --> 00:18:42,720
+So, I'm going to consider here first the capacity is positive.
+
+189
+00:18:42,720 --> 00:18:44,960
+That means this is really the kind of mailbox ID.
+
+190
+00:18:44,960 --> 00:18:53,480
+Someone put something in the mailbox, and a process somewhat later retrieves the message from the mailbox.
+
+191
+00:18:53,480 --> 00:18:56,360
+So, we have the two actions we just have seen.
+
+192
+00:18:56,360 --> 00:19:00,080
+First, we have to see when are those actions enabled.
+
+193
+00:19:00,080 --> 00:19:03,944
+The guard is always true, so this enabledness does not depend on the guard.
+
+194
+00:19:03,944 --> 00:19:07,280
+It only depends on the status of the channel.
+
+195
+00:19:07,280 --> 00:19:11,054
+And here I'm going to describe shortly the effect, and that's what we're going to formalize later.
+
+196
+00:19:11,054 --> 00:19:16,919
+So, the idea is that you can send a message only, of course, if the channel is not full.
+
+197
+00:19:16,919 --> 00:19:22,000
+If the capacity of the channel is three, if the mess the channel already carries
+
+198
+00:19:22,000 --> 00:19:25,000
+three messages, it's not possible to put in another message.
+
+199
+00:19:25,000 --> 00:19:28,440
+That would be something like a buffer overflow.
+
+200
+00:19:28,440 --> 00:19:33,480
+So, that means this action is only enabled if the channel is not full.
+
+201
+00:19:33,480 --> 00:19:37,302
+What will be the effect? Well, the effect that I just have explained.
+
+202
+00:19:37,302 --> 00:19:42,940
+If this is the current channel content, where this is the head of the channel, right?
+
+203
+00:19:42,940 --> 00:19:47,640
+Then we're going to add a new message, namely the the value V is going
+
+204
+00:19:47,640 --> 00:19:53,440
+to be appended to the content. That means the head of the channel is still V1.
+
+205
+00:19:53,440 --> 00:19:59,520
+And this new value V is appended at the end of the channel.
+
+206
+00:19:59,520 --> 00:20:03,640
+Notice that here the ordering is the reverse ordering as I drew here, right?
+
+207
+00:20:03,640 --> 00:20:12,120
+Here is the head of the channel, and here you append it at the end of the channel.
+
+208
+00:20:12,120 --> 00:20:18,720
+Good. What happens if a program is in a location it wants to send but the channel is full?
+
+209
+00:20:18,720 --> 00:20:21,840
+It simply means if there is no other possibility this program graph can do,
+
+210
+00:20:21,840 --> 00:20:23,805
+this program simply is blocked at that point.
+
+211
+00:20:23,805 --> 00:20:30,280
+It has to wait until that at least there is a vacant place in the channel.
+
+212
+00:20:30,280 --> 00:20:35,600
+So, what about receiving? Of course, you can only receive a message if there is something in your mailbox.
+
+213
+00:20:35,600 --> 00:20:39,040
+So, you can receive if the channel C is not empty.
+
+214
+00:20:39,040 --> 00:20:44,120
+Let's suppose that V is the message which is in the front of the of the old
+
+215
+00:20:44,120 --> 00:20:50,160
+mailbox, so that's the let's say the oldest message which is still there, so that's the head of the buffer.
+
+216
+00:20:50,160 --> 00:20:52,416
+Then what's the effect of doing this action?
+
+217
+00:20:52,416 --> 00:20:58,200
+The effect is that you're basically going to assign to the variable X, because that's the variable
+
+218
+00:20:58,200 --> 00:21:03,480
+indicated here, the value V because V is the front of the buffer.
+
+219
+00:21:03,480 --> 00:21:08,880
+And we're going to remove V from the buffer, and that's indicated as follows.
+
+220
+00:21:08,880 --> 00:21:16,760
+If this is the current state of the buffer before doing the action C {question mark} X.
+
+221
+00:21:16,760 --> 00:21:23,800
+So, I'm assuming here that there is at least one message, so R is strictly positive.
+
+222
+00:21:23,800 --> 00:21:27,210
+Then what we're going to do is this was the one where we put the message.
+
+223
+00:21:27,210 --> 00:21:30,000
+I have to look at this, right? I mean, V is the front of the buffer, sorry.
+
+224
+00:21:30,000 --> 00:21:33,840
+Here is the rest of the message. I'm going to receive this message to X.
+
+225
+00:21:33,840 --> 00:21:37,120
+What does that mean? I'm going to delete this element from the buffer.
+
+226
+00:21:37,120 --> 00:21:40,640
+That's what you see here, because this pointer is basically now to this head of
+
+227
+00:21:40,640 --> 00:21:46,600
+the buffer, and I have assigned the value V to the variable X, which was
+
+228
+00:21:46,600 --> 00:21:50,560
+exactly the variable I was using in the statement.
+
+229
+00:21:50,560 --> 00:21:53,130
+Okay? So, you can see this as a kind of assignment.
+
+230
+00:21:53,130 --> 00:21:58,208
+You assign X, I mean, V to X, but it's a kind of distributed assignment, right?
+
+231
+00:21:58,208 --> 00:22:01,280
+Because someone has put this V in the buffer.
+
+232
+00:22:01,280 --> 00:22:12,679
+The receiver does an assignment to X, but the value it's going to assign has been determined by the sender.
+
+233
+00:22:12,679 --> 00:22:18,720
+Good. If the capacity is zero, then actually that means that you have to execute those two actions.
+
+234
+00:22:18,720 --> 00:22:23,200
+Now, I'm pushing the wrong button. those two at the same time.
+
+235
+00:22:23,200 --> 00:22:26,897
+Intuitively speaking, the buffer has no capacity to store a message.
+
+236
+00:22:26,897 --> 00:22:32,080
+That means if the sender sends a message, it can only be received if the receiver is able
+
+237
+00:22:32,080 --> 00:22:37,760
+to receive it now in the current location.
+
+238
+00:22:37,760 --> 00:22:40,275
+The effect is then really a distributed assignment.
+
+239
+00:22:40,275 --> 00:22:48,080
+You assign to X the value V. Good.
+
+240
+00:22:48,080 --> 00:22:55,960
+Are there any questions so far? The channels, are they bound to the program graphs?
+
+241
+00:22:55,960 --> 00:22:57,976
+The channels are bounded to the program graph.
+
+242
+00:22:57,976 --> 00:23:01,062
+Yeah, the channels are part of the definition of the program graph.
+
+243
+00:23:01,062 --> 00:23:04,960
+The program graph has variables as well as channels.
+
+244
+00:23:04,960 --> 00:23:08,000
+And there is indicated who is allowed to send to the channel and who is allowed
+
+245
+00:23:08,000 --> 00:23:15,840
+to receive from the channel. Yes. Yeah. Can the channel actions additionally be guarded?
+
+246
+00:23:15,840 --> 00:23:19,644
+You could do that. That complicates my semantics a bit, but that's not really a problem.
+
+247
+00:23:19,644 --> 00:23:25,970
+I try I I avoid this here in order to keep things simple, but you can also guard them.
+
+248
+00:23:25,970 --> 00:23:37,608
+Yes. Other questions? No. Good. In the real language Promela, actually you can use guards.
+
+249
+00:23:37,608 --> 00:23:43,040
+So, now I'm going to show you that any channel system, so again, a channel
+
+250
+00:23:43,040 --> 00:23:49,000
+system over a set of shared variables as well as channels, can be mapped onto a transition system.
+
+251
+00:23:49,000 --> 00:23:54,320
+And we have seen already that all these things, program graphs, sequential hardware circuits, multi-threading,
+
+252
+00:23:54,320 --> 00:23:56,506
+everything can be boiled down to transition systems.
+
+253
+00:23:56,506 --> 00:24:06,080
+The same holds for channel systems. So, first of all, we have to agree on what are the states.
+
+254
+00:24:06,080 --> 00:24:09,346
+Now, if you look at this system, what are the states?
+
+255
+00:24:09,346 --> 00:24:13,845
+What do you need to know about this system in order to know what is the current state?
+
+256
+00:24:13,845 --> 00:24:17,859
+Well, first and foremost, for every program graph, you need to know what's the current location.
+
+257
+00:24:17,859 --> 00:24:22,320
+So, you want to know that this program graph is maybe currently here.
+
+258
+00:24:22,320 --> 00:24:26,660
+It's the local program counter, so to speak, of this program graph.
+
+259
+00:24:26,660 --> 00:24:31,520
+Similarly, for this program graph, you want to know that this is the current location.
+
+260
+00:24:31,520 --> 00:24:35,440
+Good. So, the first thing you need is that for every process, you need to know
+
+261
+00:24:35,440 --> 00:24:38,280
+the value of the of the program counter.
+
+262
+00:24:38,280 --> 00:24:41,920
+L1 up to Ln. What else do we need?
+
+263
+00:24:41,920 --> 00:24:47,000
+Well, we need to know what are the current values of the variables X and Y.
+
+264
+00:24:47,000 --> 00:24:50,840
+So, what are we going to do? We're going to add, like we did for program graphs,
+
+265
+00:24:50,840 --> 00:24:56,679
+a function that maps every variable to its value.
+
+266
+00:24:56,679 --> 00:25:00,440
+And then we have channels, and we also have evaluation of the channels.
+
+267
+00:25:00,440 --> 00:25:04,920
+So, we have to keep track of that maybe here is a message B, and here
+
+268
+00:25:04,920 --> 00:25:09,440
+are the message C A A, and we have to keep track of this in the state, and
+
+269
+00:25:09,440 --> 00:25:12,840
+that's exactly what this function psi is doing over here.
+
+270
+00:25:12,840 --> 00:25:21,760
+Okay? So, states in my transition systems are those tuples, locations plus variable and channel valuations.
+
+271
+00:25:21,760 --> 00:25:25,120
+So, this is what we what we have as a state.
+
+272
+00:25:25,120 --> 00:25:29,560
+And now the variable valuations have, as before for program graphs, is a mapping
+
+273
+00:25:29,560 --> 00:25:34,800
+from the variables to all the domains of all the variables in my program graph.
+
+274
+00:25:34,800 --> 00:25:40,800
+And the same for channels. This is a mapping from the channels to sequences, finite words, that's what the star
+
+275
+00:25:40,800 --> 00:25:46,480
+indicates, over what? Well, over the type or the domain of all the channels we have.
+
+276
+00:25:46,480 --> 00:25:52,080
+And if I have a channel of type integer, and I have a another channel of type string,
+
+277
+00:25:52,080 --> 00:25:56,440
+then I take the union. I can both This function maps the channel of type
+
+278
+00:25:56,440 --> 00:26:01,360
+integers to integers, so sequences of integers, and the valuation of a channel
+
+279
+00:26:01,360 --> 00:26:06,480
+of strings to a finite word of strings.
+
+280
+00:26:06,480 --> 00:26:13,560
+There is one constraint. The constraint is that, of course, the valuation of channel C cannot carry more messages
+
+281
+00:26:13,560 --> 00:26:25,200
+than its capacity. Good. Okay. So, now we're going to define the transition relation.
+
+282
+00:26:25,200 --> 00:26:28,200
+So, we now know what are the states.
+
+283
+00:26:28,200 --> 00:26:33,280
+Now, we need to know how can we evolve from one state to another state?
+
+284
+00:26:33,280 --> 00:26:40,240
+So, we're going to do this by means of those structured operational semantics rules, those premise, a bar, and a
+
+285
+00:26:40,240 --> 00:26:44,764
+conclusion, as we have seen before. So, what are we going to do?
+
+286
+00:26:44,764 --> 00:26:49,776
+First, if we have actions which are independent, we are treating them similarly as interleaving.
+
+287
+00:26:49,776 --> 00:26:54,640
+That means that program graphs can execute autonomously.
+
+288
+00:26:54,640 --> 00:27:01,200
+For instance, if this is going to modify X, then the program graph can evolve autonomously, like we did for
+
+289
+00:27:01,200 --> 00:27:07,679
+interleaving of program graphs. That part does not change.
+
+290
+00:27:07,679 --> 00:27:10,720
+The rules for the message passing, however, are the new ones, and that's
+
+291
+00:27:10,720 --> 00:27:12,640
+the ones that we are have to consider.
+
+292
+00:27:12,640 --> 00:27:16,080
+So, these are the ones for sending a message, receiving a message.
+
+293
+00:27:16,080 --> 00:27:19,600
+So, that we need to make much more precise.
+
+294
+00:27:19,600 --> 00:27:26,497
+So, the interleaving rule is very straightforward. Suppose that this is the current state of your channel system.
+
+295
+00:27:26,497 --> 00:27:33,640
+We have n components. We have evaluation of the variables, evaluation of the channels.
+
+296
+00:27:33,640 --> 00:27:37,560
+Now, suppose that program graph I, the one here in the middle somewhere, is
+
+297
+00:27:37,560 --> 00:27:41,920
+wants to can do a certain action. That's indicated by the premise.
+
+298
+00:27:41,920 --> 00:27:48,280
+The program graph I has an edge from location Li to L'i.
+
+299
+00:27:48,280 --> 00:27:52,920
+It can do this guarded action with guard G and action alpha.
+
+300
+00:27:52,920 --> 00:27:57,440
+The first thing that we need to check is this guard enabled?
+
+301
+00:27:57,440 --> 00:28:03,960
+How can we check whether this guard is So, we're going to check, like we did
+
+302
+00:28:03,960 --> 00:28:10,200
+for program graphs, that this function eta, which is indicating the current valuation of all the variables, if that
+
+303
+00:28:10,200 --> 00:28:16,920
+one satisfies the guard. So, this means if this holds, this means this edge is enabled.
+
+304
+00:28:16,920 --> 00:28:20,520
+Now, we can take the edge. So, now we have to describe what is the
+
+305
+00:28:20,520 --> 00:28:26,640
+effect of taking the edge, and that's indicated here on the right-hand side.
+
+306
+00:28:26,640 --> 00:28:34,795
+All processes remain at the same location, so L1 remains L1, Ln remains Ln, the same for L2.
+
+307
+00:28:34,795 --> 00:28:39,942
+The only thing that is changing is this Li, according to this rule, evolves into L'i.
+
+308
+00:28:39,942 --> 00:28:44,919
+So, that's indicated here by this L'i. Good.
+
+309
+00:28:44,919 --> 00:28:52,640
+Then we can do action alpha. That corresponds to the action that this local, let's say, program I is performing.
+
+310
+00:28:52,640 --> 00:28:57,679
+The channels are not affected because these actions, I mean, those are the guarded actions.
+
+311
+00:28:57,679 --> 00:29:01,520
+We have agreed that the communication actions are not guarded.
+
+312
+00:29:01,520 --> 00:29:05,017
+So, this has no effect on the channel, so psi remains psi.
+
+313
+00:29:05,017 --> 00:29:09,439
+But we have to, of course, define what is happening to the variables.
+
+314
+00:29:09,439 --> 00:29:14,240
+So, if this alpha tells you X becomes X + 1, then you can imagine that
+
+315
+00:29:14,240 --> 00:29:17,960
+in this valuation, I have to take this effect, and that's the same as we did
+
+316
+00:29:17,960 --> 00:29:24,320
+for program graphs, X becomes X + 1.
+
+317
+00:29:24,320 --> 00:29:31,760
+Good. That's what I already said. Good. I hope this is not so much surprising
+
+318
+00:29:31,760 --> 00:29:35,840
+because we have seen a similar thing for program graphs.
+
+319
+00:29:35,840 --> 00:29:44,300
+So, what about these message passing? Again, I'm going to consider two cases, strictly positive capacity, zero capacity.
+
+320
+00:29:44,300 --> 00:29:49,320
+Let's first look at the strictly positive capacity.
+
+321
+00:29:49,320 --> 00:29:52,560
+So, what happens if I receive a message?
+
+322
+00:29:52,560 --> 00:30:04,800
+Okay? So, this is the situation. Maybe I draw a diagram to make things more clear.
+
+323
+00:30:04,800 --> 00:30:13,120
+We have a program graph I which is in a location LI.
+
+324
+00:30:13,120 --> 00:30:18,880
+There is an edge to LI prime. Yeah.
+
+325
+00:30:18,880 --> 00:30:23,845
+And this is indicated here by C {question mark} X.
+
+326
+00:30:23,845 --> 00:30:27,531
+C {question mark} X. Good. What do I know?
+
+327
+00:30:27,531 --> 00:30:32,920
+Currently, this program graph is here, so that's the current value of the program counter.
+
+328
+00:30:32,920 --> 00:30:38,544
+And for the rest, I know that the current content of C is V1 up to VK.
+
+329
+00:30:38,544 --> 00:30:46,200
+So, here is my channel C. Yeah. So, this is channel C.
+
+330
+00:30:46,200 --> 00:30:57,200
+Channel C has apparently the values V1 V2 {dot} {dot} {dot} {dot} to VK.
+
+331
+00:30:57,200 --> 00:31:02,640
+Good. And we know that K is positive.
+
+332
+00:31:02,640 --> 00:31:11,480
+That means that this string is non-empty. Your mailbox has at least one message.
+
+333
+00:31:11,480 --> 00:31:15,520
+Okay. Now, what is going to happen? So, this is all what is written down in
+
+334
+00:31:15,520 --> 00:31:17,257
+the premise and what is written down here.
+
+335
+00:31:17,257 --> 00:31:21,140
+Now, some action can happen. This action is labeled with some arbitrary label.
+
+336
+00:31:21,140 --> 00:31:26,840
+Here, I use tau. I could have used any other symbol here to indicate that we received a message.
+
+337
+00:31:26,840 --> 00:31:28,546
+What's going to happen? What would you expect?
+
+338
+00:31:28,546 --> 00:31:32,160
+Well, first and foremost, the program counter will move here, right?
+
+339
+00:31:32,160 --> 00:31:38,760
+So, we move from here to there because the action is enabled because the buffer is non-empty.
+
+340
+00:31:38,760 --> 00:31:42,980
+For the rest, what's going to happen? Well, we are going to maybe change the valuation.
+
+341
+00:31:42,980 --> 00:31:47,920
+Why is the valuation changed? Yeah, because I received something to X, right?
+
+342
+00:31:47,920 --> 00:31:51,680
+So, X has a certain value here, maybe 27.
+
+343
+00:31:51,680 --> 00:31:56,720
+Now, I'm going to assign to X a new value, namely the first value
+
+344
+00:31:56,720 --> 00:31:59,560
+which is at the head of the buffer.
+
+345
+00:31:59,560 --> 00:32:04,720
+So, that's described as follows. So, what we're going to say is that X, I
+
+346
+00:32:04,720 --> 00:32:08,291
+mean, the new valuation eta prime is only affecting X.
+
+347
+00:32:08,291 --> 00:32:15,760
+That's what the square brackets mean here. So, this function eta where X becomes V1 for any value Y
+
+348
+00:32:15,760 --> 00:32:19,440
+equals eta Y for any Y differs from X.
+
+349
+00:32:19,440 --> 00:32:24,320
+So, this is basically saying every variable different from X is not changed.
+
+350
+00:32:24,320 --> 00:32:29,960
+The second line tells you, if Y equals X, the new value of X is going to be V1.
+
+351
+00:32:29,960 --> 00:32:35,040
+So, this is going to be V1 which is exactly this value over here.
+
+352
+00:32:35,040 --> 00:32:44,280
+If the value of Y, for instance here, was let's say the symbol AB then Y here is still AB.
+
+353
+00:32:44,280 --> 00:32:47,460
+That's not going to change. What else is going to change?
+
+354
+00:32:47,460 --> 00:32:51,960
+Well, the buffer. So, that's indicated by this psi prime.
+
+355
+00:32:51,960 --> 00:32:53,520
+What's the effect that we have to describe?
+
+356
+00:32:53,520 --> 00:32:58,800
+We have to describe that this message is deleted from the buffer.
+
+357
+00:32:58,800 --> 00:33:04,740
+And that's what exactly this function does. So, this psi prime is only affecting channel C.
+
+358
+00:33:04,740 --> 00:33:08,853
+Every other channel remains the same. And that's formalized as follows.
+
+359
+00:33:08,853 --> 00:33:13,760
+So, this psi function with the square bracket C becomes V2 to VK for any
+
+360
+00:33:13,760 --> 00:33:20,280
+channel D is Well, if D differs from C, you take the old value because that channel has not been
+
+361
+00:33:20,280 --> 00:33:24,405
+affected. And otherwise, we have to remove the value from the queue.
+
+362
+00:33:24,405 --> 00:33:29,440
+So, indeed, we have to remove V1. And therefore, you see if D equals C, then
+
+363
+00:33:29,440 --> 00:33:34,480
+we have the finite word V2 to VK as the new content of the buffer.
+
+364
+00:33:34,480 --> 00:33:39,960
+And that means the head of the buffer is now basically pointing to this element.
+
+365
+00:33:39,960 --> 00:33:51,800
+Okay? Good. Any questions? Good. Seems to be clear.
+
+366
+00:33:51,800 --> 00:33:55,040
+Good. What happens if I send a message?
+
+367
+00:33:55,040 --> 00:33:58,622
+I hope this is not so much now surprise.
+
+368
+00:33:58,622 --> 00:34:05,400
+So, again, I consider a scenario where program graph I can send the message with value V to the
+
+369
+00:34:05,400 --> 00:34:09,728
+channel C. First, what do I need to check?
+
+370
+00:34:09,728 --> 00:34:16,040
+I need to check that this channel has maybe some content possibly empty.
+
+371
+00:34:16,040 --> 00:34:21,320
+And what do I need to check? I need to check whether this action sending a message is enabled.
+
+372
+00:34:21,320 --> 00:34:22,971
+When is the sending of a message enabled?
+
+373
+00:34:22,971 --> 00:34:27,520
+If the buffer is not full. And that means that this K K is the
+
+374
+00:34:27,520 --> 00:34:33,720
+number of messages which is currently in the channel needs to be strictly smaller than the capacity.
+
+375
+00:34:33,720 --> 00:34:39,159
+Stated differently, there needs to be at least one free spot in your mailbox.
+
+376
+00:34:39,159 --> 00:34:43,720
+Then, what you can do is you do the sending so that means that this program
+
+377
+00:34:43,720 --> 00:34:47,520
+graph changes the program counter to LI prime.
+
+378
+00:34:47,520 --> 00:34:53,720
+All other program graphs are not affected. The variable valuation is not affected
+
+379
+00:34:53,720 --> 00:34:57,760
+because we do not do any assignment to any of the shared variables.
+
+380
+00:34:57,760 --> 00:35:00,160
+The only thing that changes is the channel.
+
+381
+00:35:00,160 --> 00:35:04,400
+And what's changed to the channel? Well, only the channel C because that's the channel we are affecting.
+
+382
+00:35:04,400 --> 00:35:09,920
+All the remaining channels are not affected. And that means the new valuation is the same
+
+383
+00:35:09,920 --> 00:35:13,820
+as the previous one except that channel C gets a new content.
+
+384
+00:35:13,820 --> 00:35:21,400
+What's the new content? Well, it's the old content V1 to VK and we append the new value V at
+
+385
+00:35:21,400 --> 00:35:34,440
+the end. So, we get V1 to VK and we append the value V at the end of the buffer.
+
+386
+00:35:34,440 --> 00:35:40,240
+Good. yes. What about eta? Is it affected too?
+
+387
+00:35:40,240 --> 00:35:46,588
+Like No, eta is not affected because eta is only a function that is for the variables.
+
+388
+00:35:46,588 --> 00:35:52,520
+Yeah, and we don't change the variables. So, this is different from receiving because from receiving, we
+
+389
+00:35:52,520 --> 00:35:56,070
+change the value of X. So, there also eta is changing.
+
+390
+00:35:56,070 --> 00:36:00,160
+Yeah. But in sending, this is not changing.
+
+391
+00:36:00,160 --> 00:36:08,000
+Other questions? No? Good. So, what happens if the capacity is zero?
+
+392
+00:36:08,000 --> 00:36:11,280
+Then we have handshaking. So, what does that mean?
+
+393
+00:36:11,280 --> 00:36:23,120
+If the channel is synchronous, which means capacity is zero then sending and receiving need to be done simultaneously.
+
+394
+00:36:23,120 --> 00:36:25,834
+Like we have seen in the previous lecture.
+
+395
+00:36:25,834 --> 00:36:32,400
+So, now we have two program graphs, program graph I and program graph J.
+
+396
+00:36:32,400 --> 00:36:40,600
+I is willing to receive a message. J is willing to send a message, both on channel C.
+
+397
+00:36:40,600 --> 00:36:47,880
+So, what's going to happen? provided that both are in these locations LI and LJ
+
+398
+00:36:47,880 --> 00:36:53,320
+where these two actions are enabled. Now, the channel has capacity zero.
+
+399
+00:36:53,320 --> 00:37:02,120
+We are going to handshake. So, actually, the only enabled condition is that both processes, both program graphs, need to
+
+400
+00:37:02,120 --> 00:37:06,440
+be able to one to send and the other one to receive at the same time.
+
+401
+00:37:06,440 --> 00:37:09,760
+And this is guaranteed by this condition and that condition.
+
+402
+00:37:09,760 --> 00:37:16,040
+So, there is no condition with respect to the capacity of the channel.
+
+403
+00:37:16,040 --> 00:37:19,000
+You cannot send the message to yourself in this model.
+
+404
+00:37:19,000 --> 00:37:21,880
+So, I needs to be different from J.
+
+405
+00:37:21,880 --> 00:37:25,257
+And then, what's going to happen? We have to modify eta.
+
+406
+00:37:25,257 --> 00:37:31,240
+Why do we have to modify eta? Because the value of X is potentially going to change.
+
+407
+00:37:31,240 --> 00:37:33,640
+X is going to be the value V.
+
+408
+00:37:33,640 --> 00:37:39,560
+And maybe we're going to change something with eta prime because I mean, this function here
+
+409
+00:37:39,560 --> 00:37:41,576
+is going to be the same as eta.
+
+410
+00:37:41,576 --> 00:37:44,215
+Only the variable X is going to change.
+
+411
+00:37:44,215 --> 00:37:47,525
+And psi actually is not changing because the channel has capacity zero.
+
+412
+00:37:47,525 --> 00:37:55,040
+So, that we don't have to model the fact that we store this message in some sense.
+
+413
+00:37:55,040 --> 00:37:59,028
+Good. This can easily get out of bounds, this transition system.
+
+414
+00:37:59,028 --> 00:38:04,680
+So, if you just have a channel system with two processes and two locations two Boolean shared
+
+415
+00:38:04,680 --> 00:38:11,160
+variables or Boolean variables and you have two channels of capacity 10 and let's for the sake of simplicity
+
+416
+00:38:11,160 --> 00:38:17,400
+assume that they carry Boolean values, so only zeros and ones so basically bit vectors
+
+417
+00:38:17,400 --> 00:38:22,080
+then the channel the transition system has already so many states.
+
+418
+00:38:22,080 --> 00:38:26,080
+we have two processes with two locations.
+
+419
+00:38:26,080 --> 00:38:30,428
+Remember, we have as a state first the location of all the program graphs.
+
+420
+00:38:30,428 --> 00:38:37,400
+We have four different values. Secondly, we have the function eta that tells you what are the potential
+
+421
+00:38:37,400 --> 00:38:44,440
+possible values of these two Boolean variables. So, we have two Boolean variables that can each have two different values.
+
+422
+00:38:44,440 --> 00:38:50,450
+And then, we have two channels. The channels can carry so, this is the the the two channels.
+
+423
+00:38:50,450 --> 00:38:53,366
+So, this is one channel. That's another channel.
+
+424
+00:38:53,366 --> 00:38:58,359
+and they each have capacity 10. And that means that they can carry strings from
+
+425
+00:38:58,359 --> 00:39:03,600
+up to one length lot one, length two, etc. up to length and the end of the
+
+426
+00:39:03,600 --> 00:39:07,200
+possible values of two to the power 10.
+
+427
+00:39:07,200 --> 00:39:08,560
+So, this is I think the empty channel.
+
+428
+00:39:08,560 --> 00:39:12,359
+This is the channel of size one that can carry two different values, zero, one.
+
+429
+00:39:12,359 --> 00:39:14,857
+This is the channel of size two, etc. Yeah.
+
+430
+00:39:14,857 --> 00:39:19,880
+And the buffer can be partially filled and therefore, I have to consider all possibilities.
+
+431
+00:39:19,880 --> 00:39:23,114
+And that's why you get two to the power 11 minus one.
+
+432
+00:39:23,114 --> 00:39:31,200
+And this is of course huge. Good. If you have an unbounded channel, I think this is clear.
+
+433
+00:39:31,200 --> 00:39:34,680
+The number of states is unboundedly large, is infinite.
+
+434
+00:39:34,680 --> 00:39:41,760
+So, let's look at the very simple example to show you what you can do with these channel systems.
+
+435
+00:39:41,760 --> 00:39:45,140
+And Gesundheit. This is the alternating bit protocol.
+
+436
+00:39:45,140 --> 00:39:49,386
+So, what's the alternating bit protocol? This is a simple version of it.
+
+437
+00:39:49,386 --> 00:39:52,960
+We have two program graphs, a sender and a receiver.
+
+438
+00:39:52,960 --> 00:39:56,920
+The idea is that the sender can send a message to the receiver and the receiver
+
+439
+00:39:56,920 --> 00:40:00,020
+is going to acknowledge the correct receipt of a message.
+
+440
+00:40:00,020 --> 00:40:05,920
+So, you send a message, you wait for the acknowledgement, then maybe you send the next message.
+
+441
+00:40:05,920 --> 00:40:11,800
+If you don't get an acknowledgement on time, let's say, then you're going to repeat you're going
+
+442
+00:40:11,800 --> 00:40:19,960
+to retransmit your message. In order to distinguish the original messages from the retransmissions, we're
+
+443
+00:40:19,960 --> 00:40:22,611
+going to use a bit and this bit is going to alternate.
+
+444
+00:40:22,611 --> 00:40:26,840
+So, it's either zero or one. And you submit first the message of zero.
+
+445
+00:40:26,840 --> 00:40:32,160
+Suppose I wait for an acknowledgement. The acknowledgement doesn't come.
+
+446
+00:40:32,160 --> 00:40:34,754
+Then I repeat the message with the same bit, zero.
+
+447
+00:40:34,754 --> 00:40:40,040
+If, however, I get an acknowledgement, then I'm going to flip my bit and the
+
+448
+00:40:40,040 --> 00:40:43,840
+next message will be accompanied with a bit one.
+
+449
+00:40:43,840 --> 00:40:49,960
+So I alternate the bit once I receive correctly an acknowledgement.
+
+450
+00:40:49,960 --> 00:40:53,400
+So, this is what happens in the channel.
+
+451
+00:40:53,400 --> 00:40:58,160
+The channel from the sender to the receiver can carry messages plus this
+
+452
+00:40:58,160 --> 00:41:04,748
+bit, which is indicated here as Y, which is the alternating bit that I just explained.
+
+453
+00:41:04,748 --> 00:41:10,066
+And I'm assuming that this channel is unreliable in the following sense.
+
+454
+00:41:10,066 --> 00:41:15,470
+Messages may get lost. So the sender sends a message plus a bit.
+
+455
+00:41:15,470 --> 00:41:19,560
+Boom. By some means the message is lost.
+
+456
+00:41:19,560 --> 00:41:22,960
+This could happen for instance if the the channel is something like a wireless
+
+457
+00:41:22,960 --> 00:41:27,920
+channel or whatever and there is some kind of problem in the communication.
+
+458
+00:41:27,920 --> 00:41:35,160
+Then what the receiver does, the acknowledgement is simply means you the receiver returns the bit it received.
+
+459
+00:41:35,160 --> 00:41:41,480
+And that's basically the whole acknowledgement. So, the channel from the sender to the receiver is just carrying boolean variables.
+
+460
+00:41:41,480 --> 00:41:45,890
+Now, the only thing that we need to model is this kind of abstract timeout mechanism.
+
+461
+00:41:45,890 --> 00:41:49,840
+I need to model when am I waiting for an acknowledgement and I
+
+462
+00:41:49,840 --> 00:41:52,008
+give up because it I took too long.
+
+463
+00:41:52,008 --> 00:41:55,600
+So, I model this by means of an abstract process which I call the sender.
+
+464
+00:41:55,600 --> 00:42:02,520
+So, I have three program graphs here, a sender, receiver plus a timer.
+
+465
+00:42:02,520 --> 00:42:05,026
+So, basically this is the rough description of the protocol.
+
+466
+00:42:05,026 --> 00:42:10,360
+It's an infinite loop that basically sends a message plus a bit.
+
+467
+00:42:10,360 --> 00:42:17,320
+You activate the timer. If a timeout occurs, then you resend the message with the same bit and you
+
+468
+00:42:17,320 --> 00:42:25,480
+activate the timer again. If you receive an acknowledgement, then you turn off the timer and you toggle the bit.
+
+469
+00:42:25,480 --> 00:42:37,360
+Y becomes not Y. Good. I'm assuming here for the sake of simplicity that this acknowledgement channel is reliable.
+
+470
+00:42:37,360 --> 00:42:43,480
+That means if the receiver sends as acknowledgement the bit Y, it will be received by the sender.
+
+471
+00:42:43,480 --> 00:42:50,480
+So, for the sake of simplicity, I'm assuming that that channel is not unreliable.
+
+472
+00:42:50,480 --> 00:42:54,840
+Good. If both channels are unreliable, then you need to equip your model with
+
+473
+00:42:54,840 --> 00:42:58,840
+an extra timer here that says something like I have received this and now I can
+
+474
+00:42:58,840 --> 00:43:03,720
+also acknowledge from the other side. So, this is not what I'm going to consider.
+
+475
+00:43:03,720 --> 00:43:09,800
+Good. So, the model that I'm going to I try to model this by means of the channel system.
+
+476
+00:43:09,800 --> 00:43:14,720
+So, the channel system has a sender, a timer and a receiver.
+
+477
+00:43:14,720 --> 00:43:21,920
+There are two channels, the unreliable channel C and I'm going to assume the reliable channel D.
+
+478
+00:43:21,920 --> 00:43:24,022
+C is directed from the sender to the receiver.
+
+479
+00:43:24,022 --> 00:43:31,160
+D is directed in the reverse direction. Good.
+
+480
+00:43:31,160 --> 00:43:35,680
+Now, I'm going to assume that also the sender communicates with the timer.
+
+481
+00:43:35,680 --> 00:43:38,720
+How I'm going to do this? I'm going to assume that this happens by means of a
+
+482
+00:43:38,720 --> 00:43:46,840
+channel of capacity zero. So, there is a synchronous message passing between the timer and the sender.
+
+483
+00:43:46,840 --> 00:43:51,560
+These buffers, C and D, they have a positive capacity.
+
+484
+00:43:51,560 --> 00:44:01,480
+That means they they basically exchange messages in an asynchronous manner.
+
+485
+00:44:01,480 --> 00:44:04,240
+Good. I call these channels E and F.
+
+486
+00:44:04,240 --> 00:44:11,760
+So, they have capacity zero. D and C have a positive capacity.
+
+487
+00:44:11,760 --> 00:44:15,840
+Good. So, let me first explain you what's the program graph of the timer,
+
+488
+00:44:15,840 --> 00:44:19,480
+then we're going to see the program graph of the sender, the receiver and
+
+489
+00:44:19,480 --> 00:44:23,680
+then we're going to see how these things work together.
+
+490
+00:44:23,680 --> 00:44:27,160
+So, the timer is a very simple process.
+
+491
+00:44:27,160 --> 00:44:34,240
+It has two locations, off and on. And there are only actions in which it can communicate.
+
+492
+00:44:34,240 --> 00:44:38,210
+So, initially it's off and then it waits.
+
+493
+00:44:38,210 --> 00:44:43,920
+Yeah, basically a long channel E from the sender, well, you need to start.
+
+494
+00:44:43,920 --> 00:44:49,359
+Z. I'm going to start my timer. Now you're here.
+
+495
+00:44:49,359 --> 00:44:53,200
+Either the timer is switched off by the sender.
+
+496
+00:44:53,200 --> 00:44:57,359
+I receive an acknowledgement on time. Then I can switch off the timer.
+
+497
+00:44:57,359 --> 00:45:05,440
+This corresponds to this edge over here. Or the timer can spontaneously generate a timeout.
+
+498
+00:45:05,440 --> 00:45:09,960
+Now, I'm not modeling in this model because it's not equipped for doing this to say that this
+
+499
+00:45:09,960 --> 00:45:12,224
+happens after 20 seconds or after 2 hours.
+
+500
+00:45:12,224 --> 00:45:18,640
+I just assume that non-deterministically in this on location, the timer spontaneously can
+
+501
+00:45:18,640 --> 00:45:23,600
+send a timeout over channel F to the sender.
+
+502
+00:45:23,600 --> 00:45:28,640
+So the sender sends a message. It switches on the timer.
+
+503
+00:45:28,640 --> 00:45:34,359
+The sender waits for an acknowledgement. Either it gets the acknowledgement on time, it says it to the timer, "Please
+
+504
+00:45:34,359 --> 00:45:38,880
+switch off." Or the timer spontaneously says, "Uh-oh.
+
+505
+00:45:38,880 --> 00:45:44,120
+I give you a timeout." Timeout means you're going to retransmit.
+
+506
+00:45:44,120 --> 00:45:47,359
+Now, I'm fully aware of the fact that this is not a realistic model because
+
+507
+00:45:47,359 --> 00:45:51,240
+the timeout may happen now very often. This simply means for the protocol that
+
+508
+00:45:51,240 --> 00:45:55,680
+I'm going to retransmit my message more than necessary.
+
+509
+00:45:55,680 --> 00:45:59,560
+For the correctness of the protocol, this is not so relevant.
+
+510
+00:45:59,560 --> 00:46:05,080
+And not so relevant is means not relevant.
+
+511
+00:46:05,080 --> 00:46:11,440
+Okay. What the other timer is doing, the timer can as I explained, it can switch on the
+
+512
+00:46:11,440 --> 00:46:17,359
+timer, it can switch off the timer or it can wait for a timeout.
+
+513
+00:46:17,359 --> 00:46:20,760
+E and F are channels of capacity zero.
+
+514
+00:46:20,760 --> 00:46:27,200
+That means if the timer switch can is in the off location and the sender is at
+
+515
+00:46:27,200 --> 00:46:32,280
+the location where it wants to do this action, then they move simultaneously.
+
+516
+00:46:32,280 --> 00:46:37,000
+The timer moves to the on state. The sender moves to this next action.
+
+517
+00:46:37,000 --> 00:46:47,920
+Yeah, capacity zero. Good. Now we're going to specify the sender.
+
+518
+00:46:47,920 --> 00:46:53,000
+So, now I'm going to specify this whole mechanism of toggling the bit, waiting for an acknowledgement.
+
+519
+00:46:53,000 --> 00:46:57,440
+If a timeout occurs, you have to do the retransmission.
+
+520
+00:46:57,440 --> 00:47:00,320
+And I do this by means of a program graph.
+
+521
+00:47:00,320 --> 00:47:03,866
+So, the sender is the most complicated procedure.
+
+522
+00:47:03,866 --> 00:47:11,040
+Why is this? Because the sender communicates in a synchronous manner with the timer via E and via F.
+
+523
+00:47:11,040 --> 00:47:17,320
+And it also communicates with the sender by sending messages over C and receiving acknowledgements over D.
+
+524
+00:47:17,320 --> 00:47:26,320
+So, it interacts with four channels. Two of them being synchronous, two of them being asynchronous.
+
+525
+00:47:26,320 --> 00:47:29,920
+Good. So, the synchronous things we already have seen.
+
+526
+00:47:29,920 --> 00:47:34,640
+You either send a timeout or you just receive timer on or timer off.
+
+527
+00:47:34,640 --> 00:47:41,520
+So, these are just a synchronization channels or the synchronization signals between the sender and the timer.
+
+528
+00:47:41,520 --> 00:47:44,920
+And what I'm going to use is I'm going to use a boolean variable X for the
+
+529
+00:47:44,920 --> 00:47:46,862
+acknowledgement bit that is sent by the receiver.
+
+530
+00:47:46,862 --> 00:47:53,560
+So, if the sender receives via D a bit that is the acknowledgement bit of the
+
+531
+00:47:53,560 --> 00:47:59,880
+receiver, it can store this locally by a variable which I call here X.
+
+532
+00:47:59,880 --> 00:48:05,040
+Good. So, let's look this is the program graph of the sender.
+
+533
+00:48:05,040 --> 00:48:11,840
+Now, the first thing that is hopefully clear, I have to distinguish between whether the current bit is zero or
+
+534
+00:48:11,840 --> 00:48:17,720
+whether the current bit is one. The two scenarios will be completely symmetric.
+
+535
+00:48:17,720 --> 00:48:20,506
+So, I will have on the left hand side something happening with zero.
+
+536
+00:48:20,506 --> 00:48:25,480
+On the right hand side we will have something happening with one.
+
+537
+00:48:25,480 --> 00:48:28,440
+So, the first thing is that we generate a message and the first thing that we
+
+538
+00:48:28,440 --> 00:48:31,133
+want to do is we want to try to send message zero.
+
+539
+00:48:31,133 --> 00:48:39,400
+What does that mean? It means I want to put in the channel C the message zero.
+
+540
+00:48:39,400 --> 00:48:42,720
+So, now the sender has sent, "Okay, here is your message."
+
+541
+00:48:42,720 --> 00:48:47,194
+Actually, the message has content empty. I only send the bit for the sake of simplicity.
+
+542
+00:48:47,194 --> 00:48:50,320
+So, I only tell you, "Hey, there is a zero."
+
+543
+00:48:50,320 --> 00:48:52,026
+Now, remember I have to wait for an acknowledgement.
+
+544
+00:48:52,026 --> 00:48:54,760
+So, the first thing I need to do is I have to activate the timer.
+
+545
+00:48:54,760 --> 00:49:00,640
+How do I activate the timer? I synchronize over a basically a channel.
+
+546
+00:49:00,640 --> 00:49:04,040
+Now, I model the fact that the channel can lose a message by by already
+
+547
+00:49:04,040 --> 00:49:07,520
+modeling here in the sender that there is this S action lost.
+
+548
+00:49:07,520 --> 00:49:09,320
+So, this means you try to send zero.
+
+549
+00:49:09,320 --> 00:49:17,440
+Either you put the message zero into the channel or the message is lost.
+
+550
+00:49:17,440 --> 00:49:22,240
+Good. Now I turn on the timer. I switch on the timer.
+
+551
+00:49:22,240 --> 00:49:25,986
+I wait. There are two possibilities. Either the timeout occurs.
+
+552
+00:49:25,986 --> 00:49:29,240
+Remember, this timer can spontaneously give a timeout.
+
+553
+00:49:29,240 --> 00:49:33,115
+This corresponds to this edge over here. What am I going to do then?
+
+554
+00:49:33,115 --> 00:49:40,400
+Then I'm going to do a retransmission. The retransmission is treated like the original transmission either it's lost
+
+555
+00:49:40,400 --> 00:49:46,920
+or it is put into the channel. Now you are in this location, so the
+
+556
+00:49:46,920 --> 00:49:51,040
+other possibility is not to do a timeout, but to receive the acknowledgement.
+
+557
+00:49:51,040 --> 00:49:53,760
+So that means you receive the acknowledgement on time.
+
+558
+00:49:53,760 --> 00:49:59,880
+That means a long channel D, I'm going to receive message X.
+
+559
+00:49:59,880 --> 00:50:01,440
+So well, I'm not going to receive message X.
+
+560
+00:50:01,440 --> 00:50:05,640
+I'm going to receive a bit which I'm going to store in the value X.
+
+561
+00:50:05,640 --> 00:50:12,200
+Now I'm need to check whether the acknowledgement I received is the acknowledgement that I am waiting for.
+
+562
+00:50:12,200 --> 00:50:19,840
+If I submit a message with bit zero, I am waiting for an acknowledgement with bit zero.
+
+563
+00:50:19,840 --> 00:50:27,520
+That means if the acknowledgement which is currently stored in the variable X equals one, I apparently received an acknowledgement
+
+564
+00:50:27,520 --> 00:50:30,200
+is which is not the one that I'm waiting for.
+
+565
+00:50:30,200 --> 00:50:37,160
+So I go back to the location where I I basically continue waiting for
+
+566
+00:50:37,160 --> 00:50:41,560
+the bit that I was waiting for, zero.
+
+567
+00:50:41,560 --> 00:50:54,040
+Okay? Good. Any questions on the left part of the program graph?
+
+568
+00:50:54,040 --> 00:51:00,680
+No. So what happens if we have completed the whole transmission for zero, we go to the scenario for one.
+
+569
+00:51:00,680 --> 00:51:05,000
+So that's here on the right. So suppose that X equals zero.
+
+570
+00:51:05,000 --> 00:51:09,600
+So that means we were waiting for the bit zero, we get the acknowledgement for zero, so
+
+571
+00:51:09,600 --> 00:51:14,480
+we can send the next message. So first is we switch off the timer.
+
+572
+00:51:14,480 --> 00:51:18,064
+This timer was still running, right? We switch it on when we started this transmission.
+
+573
+00:51:18,064 --> 00:51:22,080
+We now received the correct bit, so the first thing I do, switch off the timer.
+
+574
+00:51:22,080 --> 00:51:26,440
+And I'm going to send a message with now value one.
+
+575
+00:51:26,440 --> 00:51:32,960
+And this is now going to be symmetric to the left pillar, those five program locations.
+
+576
+00:51:32,960 --> 00:51:37,160
+So this means that basically I get very similarly, I now try to send
+
+577
+00:51:37,160 --> 00:51:40,920
+one either the message is lost or I send the one, I activate the timer, so I
+
+578
+00:51:40,920 --> 00:51:47,320
+switch on the timer, either the timeout occurs which means I do a retransmission of value one.
+
+579
+00:51:47,320 --> 00:51:51,440
+If I am waiting for the acknowledgement of message one and the acknowledgement
+
+580
+00:51:51,440 --> 00:51:53,822
+comes, I store it in the variable X.
+
+581
+00:51:53,822 --> 00:51:56,045
+I'm going to check whether X is the right value.
+
+582
+00:51:56,045 --> 00:52:01,200
+If X equals zero, then this is not the right value because I'm waiting for the acknowledgement value one, not
+
+583
+00:52:01,200 --> 00:52:09,080
+for zero. If however the value equals one, I go back to this location and I switch off the timer.
+
+584
+00:52:09,080 --> 00:52:16,040
+This is completely symmetric to the scenario we have seen on the left.
+
+585
+00:52:16,040 --> 00:52:27,800
+Okay? So what did we see? We saw a timer, a sender, and now what is left is the receiver.
+
+586
+00:52:27,800 --> 00:52:33,080
+So the receiver is modeled here. So the receiver is similar as the sender, symmetric.
+
+587
+00:52:33,080 --> 00:52:40,840
+It waits for a message with bit zero or it waits for a message of bit one.
+
+588
+00:52:40,840 --> 00:52:47,280
+You wait for a message. So this process is simply waiting for a message to receive via C.
+
+589
+00:52:47,280 --> 00:52:52,840
+So it waits for this message along C and it stores it in the local variable Y.
+
+590
+00:52:52,840 --> 00:52:56,120
+Good. Now you are waiting for the message with bit zero.
+
+591
+00:52:56,120 --> 00:53:00,320
+So you're going to check in this location whether Y is one.
+
+592
+00:53:00,320 --> 00:53:05,400
+That means that's bad because then I received a message which is not the one that I was waiting for.
+
+593
+00:53:05,400 --> 00:53:09,800
+So I go back. Or I received the right message with mean zero.
+
+594
+00:53:09,800 --> 00:53:11,817
+And now it means I can acknowledge, right?
+
+595
+00:53:11,817 --> 00:53:14,713
+Because I received the zero, I was waiting for zero, so let's acknowledge.
+
+596
+00:53:14,713 --> 00:53:21,280
+What does it mean to acknowledge? I submit along this channel the value zero.
+
+597
+00:53:21,280 --> 00:53:23,794
+Why zero? Well, that's what just the value I just received.
+
+598
+00:53:23,794 --> 00:53:29,280
+So I acknowledge to the sender, hey, listen, I just have received value zero.
+
+599
+00:53:29,280 --> 00:53:35,240
+Then it moves to this location because from then on it's going to wait for a message one.
+
+600
+00:53:35,240 --> 00:53:44,320
+And then the scenario is symmetric. Good. So here you see an example of a channel system
+
+601
+00:53:44,320 --> 00:53:47,560
+where I have a timer, a sender, and a receiver.
+
+602
+00:53:47,560 --> 00:53:49,696
+And now we can maybe see what's going to happen.
+
+603
+00:53:49,696 --> 00:53:55,720
+So here I have very so try to squeeze this all in one slide.
+
+604
+00:53:55,720 --> 00:54:01,760
+This is the sender. This was the timer, remember only two state two locations, and this is the
+
+605
+00:54:01,760 --> 00:54:11,640
+receiver, receive zero, receive one. And similarly to by the sender, send zero and send one.
+
+606
+00:54:11,640 --> 00:54:14,720
+The red edges means you lose a message.
+
+607
+00:54:14,720 --> 00:54:18,160
+All the other ones are accordingly to the scheme as we had before.
+
+608
+00:54:18,160 --> 00:54:21,960
+And now let's look at one possible scenario.
+
+609
+00:54:21,960 --> 00:54:26,880
+So the first possible scenario is that we all initially where do we start?
+
+610
+00:54:26,880 --> 00:54:31,080
+Well, initially it's clear all the program graphs start in their initial location.
+
+611
+00:54:31,080 --> 00:54:34,960
+So we start in the gray indicated locations.
+
+612
+00:54:34,960 --> 00:54:36,646
+What are the current values of the channels?
+
+613
+00:54:36,646 --> 00:54:40,760
+The default assumption is the channels are initially empty.
+
+614
+00:54:40,760 --> 00:54:49,080
+That's indicated as follows. The channel C is empty and the channel D is empty.
+
+615
+00:54:49,080 --> 00:54:55,120
+Now we the sender starts generating a message, so it evolves to a zero.
+
+616
+00:54:55,120 --> 00:54:57,742
+Nothing changes with respect to the channels yet.
+
+617
+00:54:57,742 --> 00:55:03,680
+It only has generated the message zero. So the only thing that changed is that
+
+618
+00:55:03,680 --> 00:55:09,320
+this one moved to here, so that's the current location.
+
+619
+00:55:09,320 --> 00:55:13,434
+Now let's suppose the message is lost. Okay?
+
+620
+00:55:13,434 --> 00:55:19,608
+So that means S0 becomes T0. So we move here.
+
+621
+00:55:19,608 --> 00:55:22,368
+We go to this thing and now we turn on the timer.
+
+622
+00:55:22,368 --> 00:55:26,125
+So we are in this location which is indicated here at timer on zero.
+
+623
+00:55:26,125 --> 00:55:30,160
+This T is just a shorthand for a timer on.
+
+624
+00:55:30,160 --> 00:55:37,000
+And nothing changed to the timer, nothing changed to the receiver, nothing changed to the channels yet.
+
+625
+00:55:37,000 --> 00:55:42,120
+Now we turn on the sender sorry, the timer.
+
+626
+00:55:42,120 --> 00:55:47,880
+So this was the synchronous communication between the sender and the timer.
+
+627
+00:55:47,880 --> 00:55:52,480
+So that one evolves from this location to that location and simultaneously
+
+628
+00:55:52,480 --> 00:56:00,320
+this one goes from the off to the on location, so that's what exactly happens here.
+
+629
+00:56:00,320 --> 00:56:07,120
+Now the message was lost. So this process is waiting for an acknowledgement that's never going to come.
+
+630
+00:56:07,120 --> 00:56:11,200
+so what's going to happen? At some point a timeout is going to happen.
+
+631
+00:56:11,200 --> 00:56:16,520
+Okay? So at some point the timeout is going to happen.
+
+632
+00:56:16,520 --> 00:56:24,520
+What does that mean? It means again a synchronous communication maybe back a synchronous communication between the sender and the
+
+633
+00:56:24,520 --> 00:56:29,120
+timer. The timer does a timeout, so it moves back to the off location and this
+
+634
+00:56:29,120 --> 00:56:34,040
+one goes back to the S0 location. It tries to do a retransmission.
+
+635
+00:56:34,040 --> 00:56:40,280
+Synchronous communication channel is zero capacity, so this evolves simultaneously.
+
+636
+00:56:40,280 --> 00:56:46,560
+That means we're going to try again. So this is the scenario.
+
+637
+00:56:46,560 --> 00:56:50,205
+Another scenario here is empty, we go there.
+
+638
+00:56:50,205 --> 00:56:51,897
+Now the message is not lost but sent.
+
+639
+00:56:51,897 --> 00:56:55,480
+So I do the retransmission, now it's going to be sent.
+
+640
+00:56:55,480 --> 00:56:57,960
+That means I'm going to switch on the timer.
+
+641
+00:56:57,960 --> 00:57:02,560
+The timer and the sender evolves simultaneously. This is happening here.
+
+642
+00:57:02,560 --> 00:57:10,400
+Now I wait for the acknowledgement. Let's assume that the fact that this message has been sent correctly,
+
+643
+00:57:10,400 --> 00:57:15,359
+still the timer says uh-uh. I have to wait too long, timeout.
+
+644
+00:57:15,359 --> 00:57:18,680
+So I go back. I do a retransmission.
+
+645
+00:57:18,680 --> 00:57:23,240
+Ah, what does that mean? There are two zeros now in the channel C.
+
+646
+00:57:23,240 --> 00:57:28,840
+The original one and the retransmission. So that's what you see here.
+
+647
+00:57:28,840 --> 00:57:33,640
+C has two zeros. The original one which is at the head and the new one which is the
+
+648
+00:57:33,640 --> 00:57:39,440
+retransmission which is the second one. no acknowledgements have been sent so far.
+
+649
+00:57:39,440 --> 00:57:41,840
+Let's assume now that the message is received.
+
+650
+00:57:41,840 --> 00:57:46,120
+What does that mean? Well, maybe this was a bit too quick, but now this one
+
+651
+00:57:46,120 --> 00:57:50,297
+this edge is enabled because this one is waiting on message C to receive a message.
+
+652
+00:57:50,297 --> 00:57:53,931
+The C is not empty, so it can receive a message.
+
+653
+00:57:53,931 --> 00:57:59,680
+So it evolves there and it removes the first zero from the channel.
+
+654
+00:57:59,680 --> 00:58:02,840
+So the current channel evaluation is a zero.
+
+655
+00:58:02,840 --> 00:58:08,160
+It receives this message and it sends an acknowledgement.
+
+656
+00:58:08,160 --> 00:58:09,960
+Why? Yeah, because it has received the first zero.
+
+657
+00:58:09,960 --> 00:58:13,040
+So let's send an acknowledgement. What does that mean?
+
+658
+00:58:13,040 --> 00:58:21,039
+It moves to this location. it's it moves to the A0 location.
+
+659
+00:58:21,039 --> 00:58:25,000
+That means it's going to check whether it has the right value and now we're going to
+
+660
+00:58:25,000 --> 00:58:30,080
+send the acknowledgement via D. And that means send the acknowledgement via D, that's
+
+661
+00:58:30,080 --> 00:58:37,359
+where we were, and that means that currently the the channel C has the zero which was the retransmitted zero.
+
+662
+00:58:37,359 --> 00:58:42,400
+And D has a zero which was the acknowledgement to the original zero.
+
+663
+00:58:42,400 --> 00:58:47,160
+I hope you can still follow what's going on.
+
+664
+00:58:47,160 --> 00:58:52,440
+Yeah, you're still on spoken terms, okay, fine.
+
+665
+00:58:52,440 --> 00:58:59,440
+So this is the current situation. the sender is is basically is still here.
+
+666
+00:58:59,440 --> 00:59:06,795
+the timer is off. that cannot be the case.
+
+667
+00:59:06,795 --> 00:59:13,920
+Yeah, the timer is off indeed and this one this receiver is now waiting for message one.
+
+668
+00:59:13,920 --> 00:59:17,359
+Aha, but that's not the message it's going to get.
+
+669
+00:59:17,359 --> 00:59:20,886
+It's going to get this bloody zero because that was the retransmitted thing.
+
+670
+00:59:20,886 --> 00:59:24,760
+Because the sender thought, ah, something went wrong, so I'll retransmit.
+
+671
+00:59:24,760 --> 00:59:28,160
+The receiver said, well, I received the first message and now I get another zero.
+
+672
+00:59:28,160 --> 00:59:32,050
+So what happens is we get this.
+
+673
+00:59:32,050 --> 00:59:34,817
+The sender receiver reads the same message again.
+
+674
+00:59:34,817 --> 00:59:37,371
+Yeah, it's here. It's waiting for a message.
+
+675
+00:59:37,371 --> 00:59:42,560
+So, let's get this message. Now, it's going to check is this the message I'm waiting for?
+
+676
+00:59:42,560 --> 00:59:45,794
+No, so it's waiting for this zero. It's waiting for a one.
+
+677
+00:59:45,794 --> 00:59:50,080
+Sorry, it's taking this zero. It's removing the zero from the channel.
+
+678
+00:59:50,080 --> 00:59:55,920
+It receives the message and now it says, "Ah, but that's not the message I was waiting for."
+
+679
+00:59:55,920 --> 01:00:02,240
+So, what happens? Actually, it goes from here up back there.
+
+680
+01:00:02,240 --> 01:00:05,064
+Because it says I I received an acknowledgement.
+
+681
+01:00:05,064 --> 01:00:07,942
+I received a message zero, but I already acknowledged the zero.
+
+682
+01:00:07,942 --> 01:00:10,680
+So, I'm not going to acknowledge this again.
+
+683
+01:00:10,680 --> 01:00:18,240
+Yeah. But so, I hope you understand that this alternating bit thing is important to distinguish between retransmissions of
+
+684
+01:00:18,240 --> 01:00:25,040
+messages that you have already acknowledged or transmissions of new messages.
+
+685
+01:00:25,040 --> 01:00:32,080
+Good. And that is you can continue. So, I hope you get some feeling that this channel system can do.
+
+686
+01:00:32,080 --> 01:00:37,560
+And I hope you get some feeling that you can use actually model
+
+687
+01:00:37,560 --> 01:00:44,400
+communication protocols and this is a very simple example, alternating bit protocol, but by means of those channel systems.
+
+688
+01:00:44,400 --> 01:00:48,840
+And actually, the original model checker by by Holzmann is called Spin.
+
+689
+01:00:48,840 --> 01:00:58,680
+it was originally called not Spin, but it was originally called Pan.
+
+690
+01:00:58,680 --> 01:01:04,600
+So, the very first paper, I think somewhere eight late '80s, was called Pan.
+
+691
+01:01:04,600 --> 01:01:13,120
+And Pan stands for protocol analyzer. So, the very on original aim of the
+
+692
+01:01:13,120 --> 01:01:20,920
+model checker Spin was to prove, or basically not prove, but model check, to verify the correctness of communication protocols.
+
+693
+01:01:20,920 --> 01:01:29,160
+Yeah. And that's why this language of of Spin has these primitives like channels, sending a message over channel,
+
+694
+01:01:29,160 --> 01:01:31,920
+receiving a message over channel, and so forth.
+
+695
+01:01:31,920 --> 01:01:47,880
+Yeah. Good. the number of states of the transition system is enormous.
+
+696
+01:01:47,880 --> 01:01:50,325
+Yeah, I mean, what we have seen is basically the program graphs.
+
+697
+01:01:50,325 --> 01:01:53,920
+I did not even dare to draw the transition system.
+
+698
+01:01:53,920 --> 01:01:59,320
+So, it's how do I get to the 10?
+
+699
+01:01:59,320 --> 01:02:02,920
+Well, 10 is the number of locations in the sender.
+
+700
+01:02:02,920 --> 01:02:04,930
+Two is the number of locations of the timer.
+
+701
+01:02:04,930 --> 01:02:10,560
+Six is the number of locations in the in the receiver.
+
+702
+01:02:10,560 --> 01:02:14,240
+And then I have the number of channel evaluations and I think I even have to
+
+703
+01:02:14,240 --> 01:02:17,415
+count X and Y, which are bit variables, but that's a small factor.
+
+704
+01:02:17,415 --> 01:02:22,560
+I think I'll even admitted this. But that means a lot.
+
+705
+01:02:22,560 --> 01:02:29,520
+So, if you go back to the literature in in in model checking,
+
+706
+01:02:29,520 --> 01:02:35,897
+then one of the main things is is what's the largest model that you can still verify.
+
+707
+01:02:35,897 --> 01:02:41,680
+So, for which capacity of the channels here can you still do verification of the alternating bit protocol?
+
+708
+01:02:41,680 --> 01:02:47,320
+And this is what have people been working on quite a bit and use this example as a benchmark
+
+709
+01:02:47,320 --> 01:02:54,800
+actually to to show scalability or non-scalability, depends on your view.
+
+710
+01:02:54,800 --> 01:02:57,620
+Okay, this was a question that was already posed before.
+
+711
+01:02:57,620 --> 01:03:03,773
+Can you equip those things with guards? So, here is it what I call conditional communication actions.
+
+712
+01:03:03,773 --> 01:03:10,800
+So, here you can say, "Well, only if the guard holds, then you can receive from the message from C."
+
+713
+01:03:10,800 --> 01:03:16,280
+So, this guard again could be something like a condition over the global variables.
+
+714
+01:03:16,280 --> 01:03:23,400
+That's possible. There are other variations. If you don't like to send only receive this, but you only you
+
+715
+01:03:23,400 --> 01:03:27,800
+don't want to only send values, but you also want to send something like expressions,
+
+716
+01:03:27,800 --> 01:03:32,765
+then this means you send to the channel C two times the current value of X plus seven.
+
+717
+01:03:32,765 --> 01:03:40,000
+This is also possible. I did not introduce this, but this the rules I explained you are very easily extendable
+
+718
+01:03:40,000 --> 01:03:44,680
+to these kind of things. It's not really technical obstacle here.
+
+719
+01:03:44,680 --> 01:03:51,480
+You can have conditions as communications. So, you can do action alpha only
+
+720
+01:03:51,480 --> 01:03:58,040
+if channel C has at least one message and I even store this message in X.
+
+721
+01:03:58,040 --> 01:04:01,000
+So you can write down things down like this.
+
+722
+01:04:01,000 --> 01:04:12,800
+And this is sometimes helpful in in communication protocols.
+
+723
+01:04:12,800 --> 01:04:14,784
+So, you can write down something like this.
+
+724
+01:04:14,784 --> 01:04:21,880
+You can go from L to here and then you can say C {question mark} X and then
+
+725
+01:04:21,880 --> 01:04:28,460
+you say, "Okay, action X becomes two times X."
+
+726
+01:04:28,460 --> 01:04:32,280
+Yeah. This is possible. What does that mean?
+
+727
+01:04:32,280 --> 01:04:36,200
+I receive from over channel C the value of X.
+
+728
+01:04:36,200 --> 01:04:38,628
+This is something determined by the sender, right?
+
+729
+01:04:38,628 --> 01:04:41,610
+So, I don't have control myself over what this value is.
+
+730
+01:04:41,610 --> 01:04:44,320
+The only thing I'm doing here, I want to double it.
+
+731
+01:04:44,320 --> 01:04:50,600
+So, this is saying you can double X only if you receive if you can now
+
+732
+01:04:50,600 --> 01:04:56,255
+receive X via the channel C. So, basically, this is doing two things in one shot.
+
+733
+01:04:56,255 --> 01:05:04,480
+This is also not a technical problem. and this gives rise to some more compact transition system
+
+734
+01:05:04,480 --> 01:05:11,480
+representations because you can model this in one one transition in in effect.
+
+735
+01:05:11,480 --> 01:05:15,259
+in my case, the channel systems are what I call closed.
+
+736
+01:05:15,259 --> 01:05:21,080
+All the channels are between program graphs. Now, you can imagine that you only
+
+737
+01:05:21,080 --> 01:05:26,520
+specify a fragment of the system that communicates with the outside world.
+
+738
+01:05:26,520 --> 01:05:28,905
+Something that you do not consider in your own model.
+
+739
+01:05:28,905 --> 01:05:32,000
+This is what people call open channel systems.
+
+740
+01:05:32,000 --> 01:05:37,800
+And that simply means that I have a channel that comes from somewhere and I can receive messages over this
+
+741
+01:05:37,800 --> 01:05:40,359
+channel, but I don't know where somewhere is.
+
+742
+01:05:40,359 --> 01:05:46,148
+Yeah. This is also possible. So, this is represented like this.
+
+743
+01:05:46,148 --> 01:05:48,826
+So, you have this was the situation before.
+
+744
+01:05:48,826 --> 01:05:53,840
+You have program graphs and you have channels between them, but maybe P1 can receive
+
+745
+01:05:53,840 --> 01:06:02,200
+messages from the outside world via D1. Then the sender is not explicitly part of your model,
+
+746
+01:06:02,200 --> 01:06:05,480
+but is part of the context of your system.
+
+747
+01:06:05,480 --> 01:06:19,120
+Yeah. Good. Okay, before I summarize, I would like to give you a short intuition about why these channel
+
+748
+01:06:19,120 --> 01:06:36,960
+systems are important. And what I want to introduce is what I call nano Promela.
+
+749
+01:06:36,960 --> 01:06:45,040
+So, Promela is the input language of Spin.
+
+750
+01:06:45,040 --> 01:06:48,680
+So, if you want to run the model checker Spin, you have to provide models that
+
+751
+01:06:48,680 --> 01:06:54,200
+are written down in this language. It's nano because I only consider a very small fragment.
+
+752
+01:06:54,200 --> 01:06:58,280
+This language is much richer and I only want to concentrate on the
+
+753
+01:06:58,280 --> 01:07:03,000
+thing that I would like to call So, what's a Promela program?
+
+754
+01:07:03,000 --> 01:07:06,617
+A Promela program is actually in our case nothing else.
+
+755
+01:07:06,617 --> 01:07:17,400
+This P bar is something like this. It's P1 PN.
+
+756
+01:07:17,400 --> 01:07:22,120
+And what are these processes? So, this is called a process in Promela.
+
+757
+01:07:22,120 --> 01:07:25,200
+So, this as follows is defined by means of statements.
+
+758
+01:07:25,200 --> 01:07:33,312
+So, what's the statement? So, let's define the statement by means of usual grammar notation, Backus-Naur form.
+
+759
+01:07:33,312 --> 01:07:38,830
+You can do nothing, which means skip. you can do things like assignments.
+
+760
+01:07:38,830 --> 01:07:45,720
+X becomes the value of an expression. You have this notation as part of the language.
+
+761
+01:07:45,720 --> 01:07:48,965
+Here, you actually have C {exclamation mark} expressions.
+
+762
+01:07:48,965 --> 01:07:53,308
+So far, I was only using values, but that's what is in this language.
+
+763
+01:07:53,308 --> 01:08:01,000
+I can do concatenation. So, I do statement followed by statement.
+
+764
+01:08:01,000 --> 01:08:11,200
+I can do atomic. And in this atomic, I can do assignments or something like X1 becomes expression one.
+
+765
+01:08:11,200 --> 01:08:17,280
+{dot dot dot dot} XN becomes expression N.
+
+766
+01:08:17,280 --> 01:08:21,880
+I use this atomic in Peterson's mutual exclusion algorithm.
+
+767
+01:08:21,880 --> 01:08:29,400
+And this is actually a first-class citizen in the in the Promela language.
+
+768
+01:08:29,400 --> 01:08:33,536
+What else is there? There are if statements and there are while and there are do statements.
+
+769
+01:08:33,536 --> 01:08:49,200
+So, if {dot dot} G1 statement one {dot dot dot dot dot} GK statement K.
+
+770
+01:08:49,200 --> 01:08:57,226
+And then you have something like C under underlined means they are keywords in the language.
+
+771
+01:08:57,226 --> 01:08:59,920
+And then you have similarly, you have do.
+
+772
+01:08:59,920 --> 01:09:24,039
+So, maybe let me So, you have the same for loops and Promela does it as follows.
+
+773
+01:09:24,039 --> 01:09:32,160
+Do and then similar like here, you have a G1 statement one dot dot dot dot dot GK
+
+774
+01:09:32,160 --> 01:09:44,040
+statement K. or Yeah, so this is basically the syntax of this language.
+
+775
+01:09:44,040 --> 01:09:50,120
+two remarks about the semantics. So, what is a semantics?
+
+776
+01:09:50,120 --> 01:10:03,000
+The semantics is as follows. The idea is that you take a Promela program.
+
+777
+01:10:03,000 --> 01:10:13,480
+You map this to a channel system. I have a few remarks, but I hope it's
+
+778
+01:10:13,480 --> 01:10:17,560
+pretty clear that this is basically nothing else than something like a syntactic notation of the channel
+
+779
+01:10:17,560 --> 01:10:29,720
+systems we have just introduced. And then we have seen that every channel system is a transition system.
+
+780
+01:10:29,720 --> 01:10:35,560
+So, a user of a model checker describes models here at this level.
+
+781
+01:10:35,560 --> 01:10:43,560
+And then there is a compiler, basically, automated state generation that generates for you the transition system.
+
+782
+01:10:43,560 --> 01:10:45,920
+And what we are going to do, we are going to apply the model checking
+
+783
+01:10:45,920 --> 01:10:52,080
+algorithms on this level on transition systems. Yeah, but where they originally come from, they come from here.
+
+784
+01:10:52,080 --> 01:11:10,840
+Good. Two remarks about the semantics. One.
+
+785
+01:11:10,840 --> 01:11:14,185
+It's what they call a test and set semantics.
+
+786
+01:11:14,185 --> 01:11:37,960
+What do I mean by this? So, this means that the evaluation of the guards
+
+787
+01:11:37,960 --> 01:12:05,000
+plus selection of an enabled guard plus execution of first atomic statement of selected guard.
+
+788
+01:12:05,000 --> 01:12:21,520
+This together is one one edge in the program graph.
+
+789
+01:12:21,520 --> 01:12:24,300
+So suppose I have something like this.
+
+790
+01:12:24,300 --> 01:12:32,560
+If fee and then I say, "Okay, if X is larger than zero, then I do atomic
+
+791
+01:12:32,560 --> 01:12:37,960
+I don't know what X plus plus and Y becomes zero.
+
+792
+01:12:37,960 --> 01:12:40,810
+And then maybe I do something else.
+
+793
+01:12:40,810 --> 01:12:50,000
+maybe I double X. And here is something like X at most zero.
+
+794
+01:12:50,000 --> 01:12:58,000
+And then I do something else. Now, let's suppose X equals zero.
+
+795
+01:12:58,000 --> 01:12:59,880
+The first thing you see, both guards are enabled.
+
+796
+01:12:59,880 --> 01:13:04,740
+This is fully fine in Promela. The question is which guard are we going to pick?
+
+797
+01:13:04,740 --> 01:13:07,760
+Non-deterministically, we're going to pick one of them.
+
+798
+01:13:07,760 --> 01:13:12,720
+So, maybe we pick the first one. Then, what this means, what I wrote down
+
+799
+01:13:12,720 --> 01:13:18,788
+here as test semantics, test and set semantics, we're going to test whether X equals whether this guard is true.
+
+800
+01:13:18,788 --> 01:13:21,840
+It's true. We're going to test whether this guard is true.
+
+801
+01:13:21,840 --> 01:13:24,493
+It's also true. So, we have determined this for all the guards.
+
+802
+01:13:24,493 --> 01:13:29,160
+Maybe there are more here. So, now we know which statements are enabled.
+
+803
+01:13:29,160 --> 01:13:35,160
+Now, we pick one. How? Non-deterministically. We pick the first one.
+
+804
+01:13:35,160 --> 01:13:42,080
+Then, we're going to execute this thing. And this all together is one step.
+
+805
+01:13:42,080 --> 01:13:44,840
+Yeah, in the program graph, this is modeled as follows.
+
+806
+01:13:44,840 --> 01:13:49,640
+So, you have a location in the program graph, and depending on this location of this program graph,
+
+807
+01:13:49,640 --> 01:13:57,000
+maybe of the channels, etc. And then there is one edge that basically says X at least zero, and
+
+808
+01:13:57,000 --> 01:14:04,360
+then what you are going to do is X plus plus and Y becomes zero.
+
+809
+01:14:04,360 --> 01:14:09,920
+And then you move here. Maybe here there are other enabled edges, right?
+
+810
+01:14:09,920 --> 01:14:15,600
+So, maybe here is the edge X at most zero, etc. And what I mean is that this is one
+
+811
+01:14:15,600 --> 01:14:21,680
+step. It cannot be interleaved with steps of other programs.
+
+812
+01:14:21,680 --> 01:14:26,800
+Good. What else do you need to know?
+
+813
+01:14:26,800 --> 01:14:31,960
+Suppose that I have So, that's the second one.
+
+814
+01:14:31,960 --> 01:14:38,760
+What I call the blocking semantics. And that's maybe the last remark about Promela.
+
+815
+01:14:38,760 --> 01:15:04,960
+What does that mean? Maybe I do this by means of an example.
+
+816
+01:15:04,960 --> 01:15:13,080
+Suppose you have something like this. An if, and then you say, "Okay, if X is larger than 10,
+
+817
+01:15:13,080 --> 01:15:30,800
+then I do whatever. Atomic something. Or if X is less than four, then I do this.
+
+818
+01:15:30,800 --> 01:15:40,280
+thing. Okay, these guards are not exclusive. So, what happens if I now have a location
+
+819
+01:15:40,280 --> 01:15:44,360
+where I my program counter is about to execute this if statement and the
+
+820
+01:15:44,360 --> 01:15:50,240
+value of X, so at all of X is between four and 10.
+
+821
+01:15:50,240 --> 01:15:55,460
+I don't know. Seven. What does that mean?
+
+822
+01:15:55,460 --> 01:15:59,680
+It means you enter this if statement, none of the guards is enabled.
+
+823
+01:15:59,680 --> 01:16:04,560
+The blocking semantics is you start waiting here.
+
+824
+01:16:04,560 --> 01:16:10,920
+Why? Well, X is a shared variable. So, X can be changed maybe from another process.
+
+825
+01:16:10,920 --> 01:16:19,120
+And that means you're going to wait until at some point, and you may wait at infinitum, in principle.
+
+826
+01:16:19,120 --> 01:16:26,960
+But as soon as this value of X becomes either larger than 10 or less than four, you can continue.
+
+827
+01:16:26,960 --> 01:16:39,760
+So, basically, this means wait until X is larger than 10 or X is smaller than four.
+
+828
+01:16:39,760 --> 01:16:45,360
+This only applies to if and fee, not to do and odd, not to loops, but only to
+
+829
+01:16:45,360 --> 01:16:58,000
+this if statements. So, that means if you want to model Peterson's algorithm in Promela,
+
+830
+01:16:58,000 --> 01:17:04,840
+remember this was his mutual exclusion algorithm we have seen last time, then this is modeled as follows.
+
+831
+01:17:04,840 --> 01:17:12,920
+Do true and then you can do something like a skip, which we meant last time as something
+
+832
+01:17:12,920 --> 01:17:22,720
+like doing nothing non-critical. then you do atomic.
+
+833
+01:17:22,720 --> 01:17:34,680
+B1 becomes true. X becomes two. Yeah, maybe you remember that Peterson's algorithm had those local variables
+
+834
+01:17:34,680 --> 01:17:38,000
+B1 and B2 and a shared variable X, right?
+
+835
+01:17:38,000 --> 01:17:42,160
+And last lecture we have seen it is very important to put this atomically because
+
+836
+01:17:42,160 --> 01:17:48,840
+otherwise, and if you swap those two things and do not do it atomically, you don't guarantee mutual exclusion.
+
+837
+01:17:48,840 --> 01:17:52,280
+Actually, it's very easy to check this. model this in Promela, put it into
+
+838
+01:17:52,280 --> 01:17:55,040
+Spin, and it will tell you you violate.
+
+839
+01:17:55,040 --> 01:18:07,480
+So, that's easy. then you say, "If X equals one or not B2, then
+
+840
+01:18:07,480 --> 01:18:14,360
+enter the critical section. I model this here by crit1 becomes true.
+
+841
+01:18:14,360 --> 01:18:20,960
+And then I think I need to put a fire or something like this.
+
+842
+01:18:20,960 --> 01:18:30,520
+And then you do atomic. Crit1 becomes false.
+
+843
+01:18:30,520 --> 01:18:34,531
+So, I model here explicitly whether I'm in the critical section or I'm leaving it.
+
+844
+01:18:34,531 --> 01:18:40,000
+And then I should set B1 to false.
+
+845
+01:18:40,000 --> 01:18:46,200
+two. And here is odd. So, maybe if you go back to the slides
+
+846
+01:18:46,200 --> 01:18:49,640
+of the previous lectures, here it was saying wait until this or this holds.
+
+847
+01:18:49,640 --> 01:18:53,186
+You don't have to write this wait until because this is the blocking semantics of if.
+
+848
+01:18:53,186 --> 01:18:58,062
+If you are in this if statement and this guard is violated, you just stuck here.
+
+849
+01:18:58,062 --> 01:19:05,040
+That means you are waiting until the guard becomes true, and then you can continue.
+
+850
+01:19:05,040 --> 01:19:15,840
+Okay. This concludes everything about modeling. The idea is that you model your system
+
+851
+01:19:15,840 --> 01:19:20,680
+at a high level of description. Promela. If people if you like Petri nets more,
+
+852
+01:19:20,680 --> 01:19:25,560
+you do it in Petri nets. If you like synchronous hardware, you model it as synchronous hardware.
+
+853
+01:19:25,560 --> 01:19:29,896
+the point is at the end what you get is a transition system.
+
+854
+01:19:29,896 --> 01:19:34,400
+Yeah. In the next lectures and what we have seen is several ways to do parallel
+
+855
+01:19:34,400 --> 01:19:37,520
+operators that I already explained in the beginning of the lecture.
+
+856
+01:19:37,520 --> 01:19:42,000
+What is important is this model over here that basically covers everything that we have seen before, program
+
+857
+01:19:42,000 --> 01:19:53,440
+graphs, synchronous communication, shared variables, asynchronous communication. and in the end what you do is you do the
+
+858
+01:19:53,440 --> 01:20:01,040
+model checking on a transition system. Starting from next week on Tuesday there is a bank holiday
+
+859
+01:20:01,040 --> 01:20:04,470
+at least in Germany. So there is no lecture on Tuesday.
+
+860
+01:20:04,470 --> 01:20:09,040
+The next lecture will be on Friday and there we will start about properties because
+
+861
+01:20:09,040 --> 01:20:15,440
+the second ingredient of model checking is what is the property you would like to check.
+
+862
+01:20:15,440 --> 01:20:19,920
+Okay, hope to see you next week. Have a nice weekend.

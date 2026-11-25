@@ -1,0 +1,2455 @@
+1
+00:00:02,399 --> 00:00:11,599
+yeah good morning everybody awake is there a need to discuss the german soccer team or no
+
+2
+00:00:11,599 --> 00:00:19,520
+well they made it right it's good that the soccer match lasts for 95 95 minutes right i mean
+
+3
+00:00:19,520 --> 00:00:27,840
+this is good but so today what we have seen is a logic ltl
+
+4
+00:00:27,840 --> 00:00:33,840
+and there what we know is that the main operators let's say from the apart
+
+5
+00:00:33,840 --> 00:00:40,000
+from the propositional logic stuff is next so we have next of a formula
+
+6
+00:00:40,000 --> 00:00:46,800
+and we can write down phi one until phi two what is good about ltl is that you
+
+7
+00:00:46,800 --> 00:00:56,079
+can have arbitrary nesting right so you can for instance write down formulas like eventually always a
+
+8
+00:00:56,079 --> 00:01:06,159
+or you can even write things down like it's the case that a holds until you know
+
+9
+00:01:06,159 --> 00:01:14,640
+eventually always b i mean so you can nest these kind of operators inside an until formula etc you know
+
+10
+00:01:14,640 --> 00:01:27,119
+the logic that we have seen and this is interpreted over linear sequences so linear sequences traces
+
+11
+00:01:27,119 --> 00:01:34,640
+and then in the last lecture we have seen the logic ctl and the main difference with ltl and ctl
+
+12
+00:01:34,640 --> 00:01:38,720
+is now longer no longer we are in going to interpret the formulas over traces
+
+13
+00:01:38,720 --> 00:01:52,399
+but we're going to interpret things over what they call computation trees and these are infinite trees
+
+14
+00:01:52,399 --> 00:01:57,040
+and the kind of operators that we have is apart from the propositional logical
+
+15
+00:01:57,040 --> 00:02:04,000
+things is that we now have state formulas so state formulas are of the form like
+
+16
+00:02:04,000 --> 00:02:11,599
+proposition holds or a conjunction holds or negation holds but in particular you can write down things like for all
+
+17
+00:02:11,599 --> 00:02:17,760
+parts starting in a certain state of property five holds and you can write down things like there
+
+18
+00:02:17,760 --> 00:02:25,360
+exists a path such that the property five holds and then we have part formulas
+
+19
+00:02:25,360 --> 00:02:32,560
+and these part formulas are of the form next but now in contrast to ltl it's not next
+
+20
+00:02:32,560 --> 00:02:36,560
+with an arbitrary path formula or arbitrary formula but it's in
+
+21
+00:02:36,560 --> 00:02:47,040
+contrast that this is so this is a state formula whereas the path formulas are of the
+
+22
+00:02:47,040 --> 00:02:52,000
+form so i call this phi and i call this capital phi
+
+23
+00:02:52,000 --> 00:02:59,280
+and you can write down things like 5 1 until phi 2.
+
+24
+00:02:59,280 --> 00:03:05,040
+good so we see the syntax is different you can talk about all computation parts you
+
+25
+00:03:05,040 --> 00:03:10,560
+can talk about the existence of a computation part you can nest certain things so for
+
+26
+00:03:10,560 --> 00:03:15,200
+instance things that you can write down in ctl is for for all parts
+
+27
+00:03:15,200 --> 00:03:22,800
+it's always the case that there exists a possibility to go back to the initial state
+
+28
+00:03:22,800 --> 00:03:30,319
+so you see that you have the possibility to nest let's say an existential quantification inside a universal quantification
+
+29
+00:03:30,319 --> 00:03:37,040
+on the other hand you're not so liberal anymore like here because things that if you would like
+
+30
+00:03:37,040 --> 00:03:40,959
+to write down something like this then we should write down something like
+
+31
+00:03:40,959 --> 00:03:47,200
+for all parts or there exist a part a until and now the syntax forces us
+
+32
+00:03:47,200 --> 00:03:52,720
+here to put a state formula and that means again we need to be
+
+33
+00:03:52,720 --> 00:03:59,840
+forced to put something like a universal or existential quantification so the obvious way to write something now down
+
+34
+00:03:59,840 --> 00:04:09,680
+would be something like this that would be a guess so we see that we are less liberal in
+
+35
+00:04:09,680 --> 00:04:14,159
+nesting these what i call temporal operators like until box diamond and so
+
+36
+00:04:14,159 --> 00:04:18,400
+forth but on the other hand we have the flexibility to nest these things
+
+37
+00:04:18,400 --> 00:04:23,520
+and it leads to the following effect and that's what we're going to study today in detail
+
+38
+00:04:23,520 --> 00:04:27,680
+so if you look at all the formulas that you can express in ctl
+
+39
+00:04:27,680 --> 00:04:32,320
+all properties and you look at all properties that you can express in ltl
+
+40
+00:04:32,320 --> 00:04:37,919
+then what we're going to see is that they have a common fragment
+
+41
+00:04:37,919 --> 00:04:41,440
+this is not so strange i mean i can write down things like a and b in all
+
+42
+00:04:41,440 --> 00:04:47,840
+logics right that's obvious so there is a common fragment that's not empty but in particular there are also
+
+43
+00:04:47,840 --> 00:04:56,800
+formulas in ltl that you cannot express in ctl and vice versa so one example that can express an ltl
+
+44
+00:04:56,800 --> 00:05:08,320
+is something like eventually box a we're going to see today that you cannot express an equivalent property in ctl
+
+45
+00:05:08,320 --> 00:05:12,720
+first we need to make sure what equivalent exactly means but for the moment
+
+46
+00:05:12,720 --> 00:05:16,720
+we assume that there is not the case and the similarly here we have formulas that
+
+47
+00:05:16,720 --> 00:05:21,039
+you can express in ctl that we cannot express in ltl and one of the examples
+
+48
+00:05:21,039 --> 00:05:28,880
+is already on the board it's for all blocks there exist eventually no initial
+
+49
+00:05:28,880 --> 00:05:36,639
+good so the question is how to prove this and in particular yeah why is this the case
+
+50
+00:05:36,639 --> 00:05:43,039
+so that's the the topic of today expressiveness of ctl versus ltl good so the first thing we're going to
+
+51
+00:05:43,039 --> 00:05:48,320
+define in order to be able to compare the two logics is that we need to make sure
+
+52
+00:05:48,320 --> 00:05:56,400
+what isn't what does equivalence actually mean so actually what we are going to do is we're going to
+
+53
+00:05:56,400 --> 00:06:00,560
+define an equivalence between a ctl and an ltl formula and we do this on the
+
+54
+00:06:00,560 --> 00:06:08,160
+level of state formula so we take a state formula capital phi and we take an ltl formula phi
+
+55
+00:06:08,160 --> 00:06:17,039
+and then we say that the ctl formula state formula capital phi is equivalent to the ltl formula phi
+
+56
+00:06:17,039 --> 00:06:24,319
+if and only if now intuitively speaking you cannot find the transition system for which one formula holds and the
+
+57
+00:06:24,319 --> 00:06:29,600
+other one doesn't so that means for all transition systems
+
+58
+00:06:29,600 --> 00:06:34,479
+in all states if a state s in the transition system satisfies the ctl
+
+59
+00:06:34,479 --> 00:06:38,720
+state formula phi and that of course has to be is defined in terms of the
+
+60
+00:06:38,720 --> 00:06:48,000
+semantics of ctl if and only if that state satisfies under the ltl semantics the ltl formalify
+
+61
+00:06:48,000 --> 00:06:56,160
+So as i said intuitively speaking there is no i mean you cannot distinguish
+
+62
+00:06:56,160 --> 00:07:02,319
+these two formulas by finding a state for which one formula holds and the other one doesn't
+
+63
+00:07:02,319 --> 00:07:11,440
+so obvious cases are things like this i mean atomic propositions clear for all next a no
+
+64
+00:07:11,440 --> 00:07:16,080
+why is this the case well this means that for all parts next a holds if you
+
+65
+00:07:16,080 --> 00:07:21,120
+now go to the ltl formula next a this holds in a certain state s
+
+66
+00:07:21,120 --> 00:07:26,160
+if next a holds but that is has been defined in terms of for all parts
+
+67
+00:07:26,160 --> 00:07:30,240
+starting and s next a-holes and that's exactly what is written down here on the
+
+68
+00:07:30,240 --> 00:07:34,080
+left hand side so what you see here is here the universal quantification is
+
+69
+00:07:34,080 --> 00:07:40,000
+part of the syntax of the logic in ltl if you look at the state and you
+
+70
+00:07:40,000 --> 00:07:46,639
+look at an ltl formula the universal quantification is implicit because it's in the semantics
+
+71
+00:07:46,639 --> 00:07:51,919
+a state satisfies an ltl formula if and only if for all paths starting
+
+72
+00:07:51,919 --> 00:07:56,879
+there it satisfies the formula this has been our definition of the semantics
+
+73
+00:07:56,879 --> 00:08:01,280
+So you see there is a difference between syntax on the one hand side and
+
+74
+00:08:01,280 --> 00:08:11,599
+the semantics there the same with a until b similar reasoning for all parts a holds until b becomes true
+
+75
+00:08:11,599 --> 00:08:16,879
+this ltl formula a until b if you interpret this in a state exactly means
+
+76
+00:08:16,879 --> 00:08:24,240
+the same for all parts starting in the state a until b holds good
+
+77
+00:08:24,240 --> 00:08:30,319
+that things are not so easy i like to show by means of an example
+
+78
+00:08:30,319 --> 00:08:39,039
+and the example i'd like to discuss is the following so ltl
+
+79
+00:08:39,039 --> 00:08:50,160
+versus ctl so i want to look at the formula eventually next a so eventually next a is in ltl
+
+80
+00:08:50,160 --> 00:08:54,240
+so i write this down like this which means according to the semantics of ltl
+
+81
+00:08:54,240 --> 00:08:57,680
+this formula on the left will be equivalent to the formula on the right
+
+82
+00:08:57,680 --> 00:09:05,200
+that means you can swap the two modalities i hope this is not a big deal to see
+
+83
+00:09:05,200 --> 00:09:13,360
+that this is the case so eventually you say well there's a next state where a holds
+
+84
+00:09:13,360 --> 00:09:16,640
+and that's the same as saying well from the next state on eventually i will an
+
+85
+00:09:16,640 --> 00:09:23,200
+ac in a yeah so you can swap the two things but this doesn't hold
+
+86
+00:09:23,200 --> 00:09:26,640
+if you know would look at what intuitively you would think what is a
+
+87
+00:09:26,640 --> 00:09:31,040
+similar l a CTL formula would be something of the form for all eventually
+
+88
+00:09:31,040 --> 00:09:36,480
+right because we have seen in the previous slide you just put a for eventually for all in
+
+89
+00:09:36,480 --> 00:09:45,600
+front of it and then you say something like for all next a this is not equivalent under ctl
+
+90
+00:09:45,600 --> 00:09:50,800
+to if you would take the formula on the right and do the same thing
+
+91
+00:09:50,800 --> 00:09:58,240
+so what i did is i inserted the universal quantification here and i did it under at the front
+
+92
+00:09:58,240 --> 00:10:04,959
+my previous light set at the front that's basically the same as in ltl but now we also do is
+
+93
+00:10:04,959 --> 00:10:18,399
+there yeah because what we have is [Music] we have that next eventually a
+
+94
+00:10:18,399 --> 00:10:24,800
+is going to be equivalent with for all next for all eventually a
+
+95
+00:10:24,800 --> 00:10:32,640
+so the two right hand sides this formula and that formula are equivalent but the two left-hand sides are not
+
+96
+00:10:32,640 --> 00:10:44,480
+so we have eventually a is not equivalent to for all eventually for all next a good
+
+97
+00:10:44,480 --> 00:10:53,920
+so example here is a transition system and suppose this is the following transition system
+
+98
+00:10:53,920 --> 00:10:58,880
+so this is state zero state two so then there also should be a state one
+
+99
+00:10:58,880 --> 00:11:08,560
+right this is labeled with a this is state one this is state three and this has a self loop
+
+100
+00:11:08,560 --> 00:11:26,399
+and we start in zero right okay claim ts satisfies the formula for all next for all eventually a
+
+101
+00:11:26,399 --> 00:11:42,560
+how can we see this all states satisfy next for all eventually a yeah
+
+102
+00:11:42,560 --> 00:11:54,000
+i mean just pick a state this one claim this satisfies next next for all eventually a which means
+
+103
+00:11:54,000 --> 00:11:58,480
+this is eventually a and whether you go there you eventually get an a yeah
+
+104
+00:11:58,480 --> 00:12:02,959
+the same here you can only go to the right the same there you can only take this
+
+105
+00:12:02,959 --> 00:12:08,639
+out loop and the same here yeah and no matter whether you go back on the
+
+106
+00:12:08,639 --> 00:12:16,399
+matter whether you go there you get for all i mean eventually this does in particular
+
+107
+00:12:16,399 --> 00:12:31,440
+we have that state 0 satisfies for all for all eventually a but ts does not satisfy the formula
+
+108
+00:12:31,440 --> 00:12:40,480
+where we swap the two modalities yeah why is this well we're going to look at the innermost formula
+
+109
+00:12:40,480 --> 00:12:46,240
+so what's the satisfiability set of this formula just for you remember this was the set
+
+110
+00:12:46,240 --> 00:12:54,240
+of states satisfying this formula this is for all parts next a-holes for which states in this transition system
+
+111
+00:12:54,240 --> 00:13:03,440
+is this satisfied well only for three no that's the only state that satisfies that for all parts next a-holes
+
+112
+00:13:03,440 --> 00:13:07,279
+not for this one not for that one there is a possibility that the next part has
+
+113
+00:13:07,279 --> 00:13:17,200
+a but you can also move to the right yeah so this state does not satisfy for all next a
+
+114
+00:13:17,200 --> 00:13:25,120
+and that means that you can simplify the formula so now we can look at the formula so
+
+115
+00:13:25,120 --> 00:13:34,959
+now you have that s0 does not satisfy for all eventually s3 so what i do here
+
+116
+00:13:34,959 --> 00:13:40,880
+is i replace this part of the formula with three no i should write down three here
+
+117
+00:13:40,880 --> 00:13:52,560
+yeah and this is clear for two it also holds very good yes absolutely
+
+118
+00:13:52,560 --> 00:14:00,240
+the good thing is it doesn't spoil my argument but you're absolutely right yeah now yeah
+
+119
+00:14:00,240 --> 00:14:08,800
+so i should write down here two or three yeah but this is still true because
+
+120
+00:14:08,800 --> 00:14:14,560
+you can also move to the left yeah and for instance you can cycle around infinitely often here and then
+
+121
+00:14:14,560 --> 00:14:29,519
+you don't have eventually two or three good so ts violates this formula for all eventually for all next a
+
+122
+00:14:29,519 --> 00:14:36,720
+good so what i showed you is indeed that these two formulas that this holds
+
+123
+00:14:36,720 --> 00:14:40,399
+the way to show this is give a count for example give one transition system for
+
+124
+00:14:40,399 --> 00:14:52,399
+which one formula holds and the other one doesn't yeah and this is one country example good my
+
+125
+00:14:52,399 --> 00:14:59,839
+challenge is always to to promise you a bottle of beer if you can find a smaller counter examples
+
+126
+00:14:59,839 --> 00:15:22,880
+so this lecture will be full of counter examples i'm very much interested in finding smaller counter examples good
+
+127
+00:15:22,880 --> 00:15:27,199
+good so what we have learned is yeah things are not that easy in the
+
+128
+00:15:27,199 --> 00:15:32,240
+sense that you cannot just take this ltl formula and for instance this is an
+
+129
+00:15:32,240 --> 00:15:38,800
+equivalence in ltl but a similar equivalence in ctl doesn't hold so you have to be a bit careful things
+
+130
+00:15:38,800 --> 00:15:56,320
+are more subtle than this as we are going to see any questions so far no good
+
+131
+00:15:56,320 --> 00:16:04,480
+good so here are more examples so the ctl formula is on the left the
+
+132
+00:16:04,480 --> 00:16:11,279
+ltl formulas on the right and what you've seen is very simple the there is no nested modality that's
+
+133
+00:16:11,279 --> 00:16:19,519
+the important point there is no nested eventually boxed eventually until or whatever it's just one modality
+
+134
+00:16:19,519 --> 00:16:23,040
+here on the ltl formula and what you can do then there is that you can prefix
+
+135
+00:16:23,040 --> 00:16:28,800
+this universal quantification because as what i mentioned before here the universal quantification in the
+
+136
+00:16:28,800 --> 00:16:35,440
+syntax here is in the semantics so this should i hope not be too much of a surprise
+
+137
+00:16:35,440 --> 00:16:42,000
+the nasty things happen with nesting this is also not nested this is all fine so unless is fine
+
+138
+00:16:42,000 --> 00:16:49,440
+this is an interesting thing so this works and let me see why this works so
+
+139
+00:16:49,440 --> 00:16:58,720
+we can maybe provide some argument about this because this is a nested modality right so why is this correct
+
+140
+00:16:58,720 --> 00:17:06,640
+so how would you show this so i want to show that for all blocks for all eventually a
+
+141
+00:17:06,640 --> 00:17:12,480
+is equivalent to box eventually a i think there was an intuitive argument
+
+142
+00:17:12,480 --> 00:17:15,839
+already on the in the slides of the of the previous lecture but now i would
+
+143
+00:17:15,839 --> 00:17:21,540
+like to do this more in a more rigid way so this is what i want to prove yeah so
+
+144
+00:17:21,540 --> 00:17:42,720
+[Music] what we want to prove is the following s satisfies the CTL formula if and only if
+
+145
+00:17:42,720 --> 00:17:55,120
+for all parts in s it is the case that [Music] pi i this part pi at position i
+
+146
+00:17:55,120 --> 00:18:10,400
+satisfies a for infinitely many i good so how would you show this we're going to show this equivalence by
+
+147
+00:18:10,400 --> 00:18:16,559
+looking at the implication in both directions so we're going to look at the implication from left to right
+
+148
+00:18:16,559 --> 00:18:30,240
+let us satisfy this ctl formula [Music] then we take a part starting
+
+149
+00:18:30,240 --> 00:18:40,799
+and this s0 is exactly z s so that's a part n starting from s and we take
+
+150
+00:18:40,799 --> 00:18:54,000
+some index at least zero [Applause] then it follows that pi satisfies box for all eventually a
+
+151
+00:18:54,000 --> 00:18:58,160
+now because the state satisfies for all parts so if i now pick an arbitrary part
+
+152
+00:18:58,160 --> 00:19:11,840
+that part needs satisfies the rest without with stripping off this first quantification good in particular
+
+153
+00:19:11,840 --> 00:19:21,039
+we have that sj which is one of the states in pi then satisfies for all eventually a
+
+154
+00:19:21,039 --> 00:19:24,640
+and so basically what i'm doing and i like to stress this isn't and that's
+
+155
+00:19:24,640 --> 00:19:30,160
+because that's typical in these kind of proofs you look at the CTL formula
+
+156
+00:19:30,160 --> 00:19:36,960
+and then you now start reasoning from the front to the end so not like we did
+
+157
+00:19:36,960 --> 00:19:41,520
+in the examples of a transition system because then we were looking first at the innermost formula
+
+158
+00:19:41,520 --> 00:19:47,520
+we're trying to see which state satisfied this and then we were reasoning from inside out in intuitively speaking
+
+159
+00:19:47,520 --> 00:19:53,760
+now we're reasonable from outside in so i strip off this first thing so i pick a part
+
+160
+00:19:53,760 --> 00:19:57,120
+well this is a pile starting an s so it satisfies the remaining formula so this
+
+161
+00:19:57,120 --> 00:20:01,679
+this simplifies the formula to this form yeah then i know that this part has this
+
+162
+00:20:01,679 --> 00:20:06,640
+shape this is a box so i pick a certain state at index j so that j satisfies
+
+163
+00:20:06,640 --> 00:20:14,240
+this formula yeah so that makes life already a little bit easier yeah so now i have this sj
+
+164
+00:20:14,240 --> 00:20:25,200
+and now you have take there's four if you take the part starting from j
+
+165
+00:20:25,200 --> 00:20:32,305
+which is something of the form s j s j plus one s j plus two etc yeah this is
+
+166
+00:20:32,305 --> 00:20:55,520
+a member of the parts starting at j we have that that part satisfies eventually a thus
+
+167
+00:20:55,520 --> 00:21:18,960
+s e satisfies a for some i at least j again i simplify the formula thus s e satisfies a
+
+168
+00:21:18,960 --> 00:21:32,400
+for some that that's already what i wrote down sorry as this applies to every j
+
+169
+00:21:32,400 --> 00:22:05,200
+yeah every j because of this this box it follows pi i satisfies a for infinitely many i
+
+170
+00:22:05,200 --> 00:22:07,919
+good so what you see is that this formula we started with then we
+
+171
+00:22:07,919 --> 00:22:13,840
+simplified it to this then we simplified it to this then we simplified it to this and then we reason
+
+172
+00:22:13,840 --> 00:22:21,280
+in the other direction yeah that's the way to to deal with this so this is one direction
+
+173
+00:22:21,280 --> 00:22:36,159
+so let's see about the other direction good let's pi be a part starting in s
+
+174
+00:22:36,159 --> 00:22:49,919
+so say pi is 0 as s1 s2 etc where this equals s good to show
+
+175
+00:22:49,919 --> 00:23:06,240
+that s satisfies for all box for all eventually a we have to prove that pi satisfies
+
+176
+00:23:06,240 --> 00:23:20,799
+box for all eventually a and that means we have to prove that s j satisfies for all eventually a
+
+177
+00:23:20,799 --> 00:23:29,280
+and this holds for all j at least zero so again i do a similar reasoning as
+
+178
+00:23:29,280 --> 00:23:33,360
+before i look at the ctl formula i pick a part this trips of the first
+
+179
+00:23:33,360 --> 00:23:37,200
+quantifier then i look at this formula here and then i start reasoning about
+
+180
+00:23:37,200 --> 00:23:41,600
+what does it mean for this part and then i say okay s for all sj you
+
+181
+00:23:41,600 --> 00:23:56,320
+need to satisfy this formula so this is the proof obligation good let's j be at least zero
+
+182
+00:23:56,320 --> 00:24:05,919
+and take pi prime to be a part s j prime s j plus 1 prime s j plus 2
+
+183
+00:24:05,919 --> 00:24:18,400
+prime etc being a part in s j so this state here equals s j
+
+184
+00:24:18,400 --> 00:24:26,880
+what i'm doing is basically i take two parts so if this part is orange zero as one s2
+
+185
+00:24:26,880 --> 00:24:41,760
+etc yeah this doesn't necessarily need to be the same part that's important and do i have any other
+
+186
+00:24:41,760 --> 00:24:47,600
+blue right so this is another part sj prime is the a plus one prime
+
+187
+00:24:47,600 --> 00:24:52,720
+just j plus two etcetera so i have an orange part and then from
+
+188
+00:24:52,720 --> 00:25:03,600
+sda on as the possibility to continue with this blue part good to show that sj
+
+189
+00:25:03,600 --> 00:25:30,880
+satisfies for all eventually a it suffices to show that pi prime this blue part satisfies eventually a good take
+
+190
+00:25:30,880 --> 00:25:37,760
+pi double prime and now i'm going to mix the two parts i'm going to start
+
+191
+00:25:37,760 --> 00:25:49,919
+with s0 etc up to sj and then i continue with the blue thing [Applause]
+
+192
+00:25:49,919 --> 00:25:55,039
+so in terms of a tree what i'm doing is here is the tree yeah
+
+193
+00:25:55,039 --> 00:26:02,799
+now i look at all computations so i look at pi let's suppose that the initial state was a zero
+
+194
+00:26:02,799 --> 00:26:08,880
+now i look at the at the pot pi which was orange do i still have orange somewhere yes
+
+195
+00:26:08,880 --> 00:26:16,080
+so i have some orange part this orange part is here now i take some state sj
+
+196
+00:26:16,080 --> 00:26:21,200
+and because this holds for all it doesn't matter which one i take so i take an arbitrary sj
+
+197
+00:26:21,200 --> 00:26:27,840
+and now i say okay look at the part that starts from sj but maybe goes in a different direction
+
+198
+00:26:27,840 --> 00:26:51,840
+this is what we're going to do now this new part that we consider the
+
+199
+00:26:51,840 --> 00:26:57,600
+prefix being orange the suffix being blue of course is also a part starting in the
+
+200
+00:26:57,600 --> 00:27:08,960
+root so it also satisfies this formula that we started with right so it assumes
+
+201
+00:27:08,960 --> 00:27:17,360
+we know that there are infinitely many a's along this part because that's the assumption yeah
+
+202
+00:27:17,360 --> 00:27:29,760
+so in particular this means that somewhere on this blue suffix there needs to be an a somewhere no
+
+203
+00:27:29,760 --> 00:27:48,720
+so this pi prime is a part right starting in the root that's the way i constructed it
+
+204
+00:27:48,720 --> 00:27:52,799
+yeah okay so here you're absolutely right what i should write down is do
+
+205
+00:27:52,799 --> 00:28:01,440
+this because this sj prime is exactly sj yeah wow you're awake this morning very good yeah absolutely
+
+206
+00:28:01,440 --> 00:28:08,640
+you're not allowed to stutter in that state you should move on yeah that was also my intention but
+
+207
+00:28:08,640 --> 00:28:13,120
+yeah it is also here on the paper it starts with j plus one not with j exactly
+
+208
+00:28:13,120 --> 00:28:27,279
+so by assumption as already mentioned pi prime double prime visits infinitely many yeah ace
+
+209
+00:28:27,279 --> 00:28:42,799
+infinitely many times in a state thus there exists an i at least j such that s j prime
+
+210
+00:28:42,799 --> 00:28:51,840
+which is on the and now i should be careful i prime it's the i state that i'm reasoning about
+
+211
+00:28:51,840 --> 00:29:28,480
+satisfies a exactly good thus pi prime satisfies eventually a as this holds for any every pi double prime
+
+212
+00:29:28,480 --> 00:29:41,120
+i've taken an arbitrary blue suffix i could have taken another suffix same reasoning applies right we have
+
+213
+00:29:41,120 --> 00:29:52,159
+that sj satisfies for all eventually a yeah take another prefix a suffix sorry let's make it purple
+
+214
+00:29:52,159 --> 00:29:57,039
+so suppose there is another suffix which is purple same reasoning applies this
+
+215
+00:29:57,039 --> 00:30:02,640
+also needs at some point to visit an a state you know and this holds for all suffixes
+
+216
+00:30:02,640 --> 00:30:09,279
+starting from sj so the reason is i mean i just took an arbitrary one
+
+217
+00:30:09,279 --> 00:30:23,679
+and that of course is enough thus and this holds sj for all j thus
+
+218
+00:30:23,679 --> 00:31:01,840
+pi satisfies box for all eventually a thus s 0 or s satisfies for all box for all eventually a
+
+219
+00:31:01,840 --> 00:31:09,279
+so here we have seen an example of a nested formula a formula which has a nested modality in ltl
+
+220
+00:31:09,279 --> 00:31:21,600
+and that means as written down is on the slide these two formulas are equivalent yeah
+
+221
+00:31:21,600 --> 00:31:26,720
+and this may now lead to the idea to squeeze in a universal quantification
+
+222
+00:31:26,720 --> 00:31:31,840
+before every modality and that's not the case as we already have seen with the
+
+223
+00:31:31,840 --> 00:31:42,080
+next and eventually there we cannot just swap the two modalities good so both formulas mean infinitely often a
+
+224
+00:31:42,080 --> 00:31:46,399
+so if i want to express infinitely often a and ctl i can use this formula why is
+
+225
+00:31:46,399 --> 00:31:58,000
+this helpful because this is unconditional fairness so this is important because this formula is now unconditional fairness
+
+226
+00:31:58,000 --> 00:32:10,799
+so we just have proven that you can express unconditional fairness in CTL good
+
+227
+00:32:10,799 --> 00:32:16,159
+but this is not a general recipe as we already have seen with the next but if i swap
+
+228
+00:32:16,159 --> 00:32:20,799
+the box and the diamond modalities so rather than writing down box diamond
+
+229
+00:32:20,799 --> 00:32:25,279
+i write down diamond box we're going to see that this is not equivalent
+
+230
+00:32:25,279 --> 00:32:30,240
+to the formula where we put a universal quantification in front and between the
+
+231
+00:32:30,240 --> 00:32:40,880
+diamond and the box these two formulas will be not equivalent as we're going to see in a minute good
+
+232
+00:32:40,880 --> 00:32:50,240
+so here is the ctl formula for all eventually for all box so what does that mean
+
+233
+00:32:50,240 --> 00:32:55,120
+this formula is true in a certain state if on every part starting in that state
+
+234
+00:32:55,120 --> 00:33:03,440
+s there is a state t and this t satisfies for all parts box a
+
+235
+00:33:03,440 --> 00:33:08,559
+so all states in the whole computation tree of t so if you would draw a t a
+
+236
+00:33:08,559 --> 00:33:17,519
+tree sorry and if you would look at the subtree rooted at t the whole subtree is blue
+
+237
+00:33:17,519 --> 00:33:23,440
+that's what this formula says for all parts eventually i can reach the root of
+
+238
+00:33:23,440 --> 00:33:29,840
+a tree which is completely blue so this is an example of a transition
+
+239
+00:33:29,840 --> 00:33:35,360
+system where this holds here is the initial state so this is s no matter where in which direction you
+
+240
+00:33:35,360 --> 00:33:41,360
+go at some point you reach a root of a subtree and the whole sub tree is blue
+
+241
+00:33:41,360 --> 00:33:45,519
+or you go here and then here assuming that the whole thing underneath is blue
+
+242
+00:33:45,519 --> 00:33:55,039
+as well the whole stop tree is blue good so here is a transition system satisfying this formula
+
+243
+00:33:55,039 --> 00:33:59,279
+no matter where you go starting from the initial state you can either move to
+
+244
+00:33:59,279 --> 00:34:03,039
+the left but then you get stuck in that state and that means in
+
+245
+00:34:03,039 --> 00:34:08,480
+terms of the computation tree this will be an infinite chain which is completely blue
+
+246
+00:34:08,480 --> 00:34:13,760
+the other possibility is to get stuck in this strongly connected component and that
+
+247
+00:34:13,760 --> 00:34:21,919
+means that you simply have in the computation tree also a chain of ace
+
+248
+00:34:21,919 --> 00:34:28,320
+good we're going to show that this ltl formula is inequivalent to that ctl formula
+
+249
+00:34:28,320 --> 00:34:32,159
+so to prove that is the case what we're going to do is to find the counter example
+
+250
+00:34:32,159 --> 00:34:35,359
+so we find the counter example a transition system such that for instance
+
+251
+00:34:35,359 --> 00:34:40,240
+it satisfies the ltl formula and not a ctl formula or vice versa
+
+252
+00:34:40,240 --> 00:34:46,399
+good so we're going to see an example that satisfies eventually box a but not the CTL formula
+
+253
+00:34:46,399 --> 00:34:52,639
+good so this is the example of a transition system just three states the middle state is
+
+254
+00:34:52,639 --> 00:34:59,280
+yellow the other two are just blue states with equipped with a self loop claim this transition system satisfies
+
+255
+00:34:59,280 --> 00:35:06,000
+the ltl formula eventually box a now how can we check this we start we have only one initial state
+
+256
+00:35:06,000 --> 00:35:14,480
+there are two possible computations you take this cycle zero or more times and then you move to the right
+
+257
+00:35:14,480 --> 00:35:20,880
+you know this eventually always satisfies a because you get into this state and this box a
+
+258
+00:35:20,880 --> 00:35:31,359
+the other computation stays here infinitely often but that also trivially satisfies eventually box a good
+
+259
+00:35:31,359 --> 00:35:37,846
+it doesn't satisfy the ctl formula for all parts eventually for all box a now one way to see this
+
+260
+00:35:37,846 --> 00:35:42,480
+is to look at the computation tree so if we look at this transition system you can
+
+261
+00:35:42,480 --> 00:35:48,000
+build the computation tree which looks as follows this corresponds to the initial state
+
+262
+00:35:48,000 --> 00:35:51,119
+here on the left and now there's a branching between either taking the self
+
+263
+00:35:51,119 --> 00:35:56,240
+loop which means going to the left or going to the yellow state which means to the right
+
+264
+00:35:56,240 --> 00:35:59,920
+and it's obvious i hope that once you have reached the yellow state the only
+
+265
+00:35:59,920 --> 00:36:03,200
+thing you can do is moving to the right and that means you go up to into this
+
+266
+00:36:03,200 --> 00:36:10,560
+sequence of ace this means take the self loop once and there again as before you have the
+
+267
+00:36:10,560 --> 00:36:13,680
+choice between either moving to the yellow state and ending up with a chain
+
+268
+00:36:13,680 --> 00:36:23,119
+of ace or chain of blue states or you move to the left good so that's the computation tree now
+
+269
+00:36:23,119 --> 00:36:29,680
+we're going to look at remember from inside out which states satisfy the innermost formula the
+
+270
+00:36:29,680 --> 00:36:38,800
+innermost formula says for all parts always a holes good that only is applicable to this state over here
+
+271
+00:36:38,800 --> 00:36:44,880
+no because there's only one computation this computation always stays there so that satisfies
+
+272
+00:36:44,880 --> 00:36:53,520
+box a and therefore the state satisfies for all computations box a this state doesn't satisfy the formula
+
+273
+00:36:53,520 --> 00:36:58,720
+because it is not blue that state doesn't satisfy the formula because there is a possibility to move to the
+
+274
+00:36:58,720 --> 00:37:09,200
+right and that would violate being blue no good so the only state satisfying this formula is the green state
+
+275
+00:37:09,200 --> 00:37:14,960
+so we can oh sorry so we can simplify this formula for all eventually green
+
+276
+00:37:14,960 --> 00:37:18,720
+now this is true if you move here it's true here it's true there but if you
+
+277
+00:37:18,720 --> 00:37:28,400
+take the self cycle yeah so if you take this loop then you're not going eventually to the green state
+
+278
+00:37:28,400 --> 00:37:36,400
+and therefore the initial state does not satisfy the formula for all eventually green and therefore the transition system
+
+279
+00:37:36,400 --> 00:37:50,480
+doesn't satisfy the form good so the recipe to show that two formulas are
+
+280
+00:37:50,480 --> 00:37:54,960
+inequivalent is to find a counter example now this is like searching in
+
+281
+00:37:54,960 --> 00:38:00,240
+the whole space of all possible country examples there are infinitely many so that's not that easy
+
+282
+00:38:00,240 --> 00:38:06,880
+but there is maybe somewhat helpful theorem and this says the following for hctl
+
+283
+00:38:06,880 --> 00:38:14,079
+formula state formula by the following holes either there is no equivalent ltl formula or
+
+284
+00:38:14,079 --> 00:38:19,280
+the CTL formula is equivalent to an ltl formula which i can construct by just
+
+285
+00:38:19,280 --> 00:38:34,400
+removing all the part quantifiers in phi okay let's apply this to the
+
+286
+00:38:34,400 --> 00:38:43,359
+two examples we have just seen this theorem is due to dragicescu and clark somewhere in the
+
+287
+00:38:43,359 --> 00:38:58,720
+80s the first remark is it goes in one direction you start with a CTL formula you want to show
+
+288
+00:38:58,720 --> 00:39:17,200
+does there exist an equivalent ltl formula so let's start you start with a formula that says for all
+
+289
+00:39:17,200 --> 00:39:27,200
+box for all eventually a that's the formula in ctl this is phi now you strip out all the quantifiers
+
+290
+00:39:27,200 --> 00:39:36,079
+so that gives you the ltl formula box eventually a yeah so this is my ltl formula phi
+
+291
+00:39:36,079 --> 00:39:48,960
+now the theorem says the following now there are only two possibilities right either phi is equivalent to this formula
+
+292
+00:39:48,960 --> 00:39:53,920
+now this is what we just have proven actually because that's exactly the example we just have proven
+
+293
+00:39:53,920 --> 00:40:01,599
+so this theorem does not is a replacement of the proof obligation you still have to prove this
+
+294
+00:40:01,599 --> 00:40:06,560
+but if this turns out to be not the case so if you can find me a counter example
+
+295
+00:40:06,560 --> 00:40:14,720
+right you don't have to look any further for any other ltl formula so either this halt or
+
+296
+00:40:14,720 --> 00:40:34,960
+and that's the part there is no ltl formula that is equivalent to phi
+
+297
+00:40:34,960 --> 00:40:41,631
+and that's second part is the strength of this theorem yeah so the first thing to do is you give
+
+298
+00:40:41,631 --> 00:40:50,560
+me a ctl formula no so in this case you can prove this which is still for us
+
+299
+00:40:50,560 --> 00:40:55,119
+a proof obligation because we have to prove that this equivalence holds what we just have seen
+
+300
+00:40:55,119 --> 00:41:03,760
+if you now take the other example for all eventually for all box a same trick remove the quantifiers
+
+301
+00:41:03,760 --> 00:41:23,760
+the quantifier said this is eventually box a no either these two formulas are equivalent
+
+302
+00:41:23,760 --> 00:41:36,319
+or yeah there is no equivalent formula good we just have seen that this is not the case
+
+303
+00:41:36,319 --> 00:41:43,680
+yeah my counterexample of the three states so what we just have shown by means of this theorem
+
+304
+00:41:43,680 --> 00:41:53,760
+there is no ltl equivalent formula to this CTL formula now so in the venn diagram if this was ctl
+
+305
+00:41:53,760 --> 00:42:00,160
+and this is ltl this is an example of a formula namely that's exactly this one for all
+
+306
+00:42:00,160 --> 00:42:08,880
+eventually for all box a is a CTL formula for which there does not exist any corresponding LTL formula
+
+307
+00:42:08,880 --> 00:42:14,240
+that's the strength of this theorem so still there is the obligation to show
+
+308
+00:42:14,240 --> 00:42:21,760
+that is the case finding the counter example is not simplified but if you let's say have one counter example
+
+309
+00:42:21,760 --> 00:42:25,680
+then there is a very strong conclusion you don't have to look any further for
+
+310
+00:42:25,680 --> 00:42:35,359
+any other ltl formula that might be equivalent because it doesn't exist
+
+311
+00:42:35,359 --> 00:42:38,880
+good what i just wrote down i think it's also somewhere on the slides but yeah
+
+312
+00:42:38,880 --> 00:42:42,839
+okay yeah so let's skip this so what i'm going to show is this
+
+313
+00:42:42,839 --> 00:42:50,560
+formula and again all these formulas are nested that's the whole thing for all parts eventually
+
+314
+00:42:50,560 --> 00:43:01,119
+i can reach an a state and all its direct successors also satisfy a that's what this property says so
+
+315
+00:43:01,119 --> 00:43:07,520
+what we're going to do is do the trick remove the quantifiers so this gives us immediately this ltl
+
+316
+00:43:07,520 --> 00:43:14,240
+formula now there are two options according to the theorem either this formula is equivalent to that formula
+
+317
+00:43:14,240 --> 00:43:19,280
+so we prove this or we provide a counter example then the conclusion is
+
+318
+00:43:19,280 --> 00:43:28,079
+you cannot express this property in LTL good and actually we're going to see
+
+319
+00:43:28,079 --> 00:43:32,640
+that this is a neat case this is not equivalent so we have to find a counter example
+
+320
+00:43:32,640 --> 00:43:36,240
+i will show you that in the next slide conclusion by the theorem there is no
+
+321
+00:43:36,240 --> 00:43:44,560
+ltl formula equivalent to this formula so again what does this formula tell you it tells you the following
+
+322
+00:43:44,560 --> 00:43:54,560
+you have a computation tree it says for all parts so take apart eventually
+
+323
+00:43:54,560 --> 00:44:01,359
+somewhere here you reach an a state and that a state has a specific property
+
+324
+00:44:01,359 --> 00:44:09,920
+namely all its direct successors are also satisfying a in particular the direct successor that is on the same path
+
+325
+00:44:09,920 --> 00:44:16,480
+but all its neighbors as well yeah his brothers and his sisters that means also the one that moves here
+
+326
+00:44:16,480 --> 00:44:22,640
+is an a yeah that one that moves here is an a state so it's yeah a kind of a
+
+327
+00:44:22,640 --> 00:44:31,440
+branching to only a states and this property of this branching and that's exactly the idea why we look at
+
+328
+00:44:31,440 --> 00:44:38,319
+trees and not that sequences you cannot express in ltl and the real core reason for this
+
+329
+00:44:38,319 --> 00:44:44,079
+is there you can only reason about sequences and not longer about this this branching thing which is the key
+
+330
+00:44:44,079 --> 00:44:53,839
+strength of ctl good so claim these two property these two formulas are inequivalent how are we going to
+
+331
+00:44:53,839 --> 00:45:00,000
+show you this by means of a counter example good so we're going to show a transition
+
+332
+00:45:00,000 --> 00:45:07,280
+system that satisfies one of the formulas for into the LTL formula but not the CTL formula or vice versa
+
+333
+00:45:07,280 --> 00:45:15,280
+and the claim is that this example is one way to show this so initially we have the possibility to
+
+334
+00:45:15,280 --> 00:45:22,240
+move to the right and go to yellow and then only be blue or the other one is mirrored
+
+335
+00:45:22,240 --> 00:45:29,920
+in the sense that this is blue and then we only stick to yellow states good claim
+
+336
+00:45:29,920 --> 00:45:35,359
+this satisfies the ltl formula eventually a and next a now let's check this
+
+337
+00:45:35,359 --> 00:45:41,280
+you start here there are two options you go left or go right so let's go left left means
+
+338
+00:45:41,280 --> 00:45:45,040
+eventually namely here you're already in a blue state and the next successor is
+
+339
+00:45:45,040 --> 00:45:52,000
+blue so moving to the left definitely satisfies a and next a eventually a and next a now the other
+
+340
+00:45:52,000 --> 00:45:56,160
+option is moving to the right yeah moving to the right means okay this
+
+341
+00:45:56,160 --> 00:46:00,720
+is an a state but its successor is not so that doesn't work but you get to hear
+
+342
+00:46:00,720 --> 00:46:13,200
+this satisfies a and its direct successor is also satisfying a so both parts satisfy this property okay good
+
+343
+00:46:13,200 --> 00:46:17,200
+and that's written down here you can either move to the left this is this
+
+344
+00:46:17,200 --> 00:46:20,720
+then you get this trace where you have two times a in a row or you go to the
+
+345
+00:46:20,720 --> 00:46:24,560
+right and then you have two times a in a row here once you are in this state
+
+346
+00:46:24,560 --> 00:46:32,160
+which i just explained but it doesn't satisfy the ctl formula why is this not the case well just
+
+347
+00:46:32,160 --> 00:46:37,280
+reason again from inside out so we're first going to look at this sub formula a
+
+348
+00:46:37,280 --> 00:46:46,640
+and all direct successors are a so which states are blue and only have neighbors or direct successors which are
+
+349
+00:46:46,640 --> 00:46:51,280
+also blue well this is not the case for this state because it only has one
+
+350
+00:46:51,280 --> 00:46:54,720
+neighbor which is yellow it's not the case for this state because it has
+
+351
+00:46:54,720 --> 00:46:58,319
+at least i mean it has one neighbor which is yellow but it's true for that
+
+352
+00:46:58,319 --> 00:47:06,720
+state because its only neighbor is itself and that's blue so this means for all eventually s4
+
+353
+00:47:06,720 --> 00:47:11,920
+and now you immediately see this is not the case because i can initially decide to move to the left
+
+354
+00:47:11,920 --> 00:47:21,119
+yeah i can move here and then of course i never reach s4 so this computation
+
+355
+00:47:21,119 --> 00:47:32,640
+s0 s1 s2 does not satisfy this formula what's the the point the point is that this part is
+
+356
+00:47:32,640 --> 00:47:36,400
+violating this formula but in order to reason about this i have to reason about
+
+357
+00:47:36,400 --> 00:47:45,280
+this successor which is not on the path no but which actually spoils the fact that i'm satisfying this property
+
+358
+00:47:45,280 --> 00:47:50,480
+eventually i reach an a state which only has direct a neighbors
+
+359
+00:47:50,480 --> 00:47:54,800
+this is the a state this is the way i go and that's definitely satisfying blue
+
+360
+00:47:54,800 --> 00:47:58,400
+but there is also a possibility that i don't take but that's actually now
+
+361
+00:47:58,400 --> 00:48:12,720
+spoiling my argument that it's a direct neighbor which is not blue okay any questions no good
+
+362
+00:48:12,720 --> 00:48:17,280
+so expressive powers of ltl and CTL are incomparable well that's not exactly
+
+363
+00:48:17,280 --> 00:48:21,280
+what we showed you far we only have seen a couple of examples in ctl that we
+
+364
+00:48:21,280 --> 00:48:25,920
+cannot express in ltl not yet the other way around that will come
+
+365
+00:48:25,920 --> 00:48:31,280
+yeah and that's a bit harder to prove so we have seen these formulas actually
+
+366
+00:48:31,280 --> 00:48:35,119
+we have seen this example we have seen that example and i'm going to show you
+
+367
+00:48:35,119 --> 00:48:39,760
+actually direct proof of this example which is simpler than finding a counterexample
+
+368
+00:48:39,760 --> 00:48:47,839
+and what we are going to show as well is that this ltl formula has no equivalent ctrl formula
+
+369
+00:48:47,839 --> 00:48:54,160
+notice here the theorem that we have seen is not applicable the theorem says give me a ctl formula
+
+370
+00:48:54,160 --> 00:49:00,079
+eliminate all the part quantifiers either you get something well you definitely get an ltl formula
+
+371
+00:49:00,079 --> 00:49:05,359
+but either this ltl formula is equivalent to the CTL formula or it doesn't exist any equivalent one
+
+372
+00:49:05,359 --> 00:49:11,680
+but it's not useful for this direction good so this is the the picture that was
+
+373
+00:49:11,680 --> 00:49:14,960
+already a couple of times on the board so this is a property that is
+
+374
+00:49:14,960 --> 00:49:20,160
+expressible in both because we have seen you can squeeze in a universal quantification at the front and here in
+
+375
+00:49:20,160 --> 00:49:27,440
+between the box and diamond and it gives you the same i mean equivalent formula these
+
+376
+00:49:27,440 --> 00:49:30,480
+this is a formula and that's a formula that we just have seen that there is no
+
+377
+00:49:30,480 --> 00:49:34,240
+equivalent LTL formula this is what i'm going to show in a minute and that's
+
+378
+00:49:34,240 --> 00:49:44,559
+what we're going to show in five minutes good good and in particular this has some consequences for in
+
+379
+00:49:44,559 --> 00:50:02,319
+particular strong fairness why is this let me spend some words on this word strong fairness on the slides
+
+380
+00:50:02,319 --> 00:50:08,400
+so we have seen unconditional fairness can be expressed because that's exactly the formula which is in the intersection
+
+381
+00:50:08,400 --> 00:50:50,800
+of the two right infinitely often do something strong unconditional fairness what about strong fairness so what is strong fairness
+
+382
+00:50:50,800 --> 00:50:58,400
+in ltl i would express something like something is infinitely often enabled then i take something infinitely often so something
+
+383
+00:50:58,400 --> 00:51:15,280
+of the form infinitely often a enabled then infinitely often i take something do something
+
+384
+00:51:15,280 --> 00:51:20,559
+good now what we know is that a box eventually a is equivalent to for all
+
+385
+00:51:20,559 --> 00:51:32,319
+box for all eventually a yeah but this formula phi phi is not equivalent to replacing just
+
+386
+00:51:32,319 --> 00:51:43,359
+the first formula by this and the second formula by this because you have to take the implication into account
+
+387
+00:51:43,359 --> 00:51:48,240
+yeah what i did is i replaced this one by an equivalent one and that one by an equivalent one
+
+388
+00:51:48,240 --> 00:51:54,319
+but that's not the way it works because you have to take as i mentioned the implication into account
+
+389
+00:51:54,319 --> 00:52:12,400
+because phi yeah is equivalent logically to saying not eventually a or no that's the implication
+
+390
+00:52:12,400 --> 00:52:28,319
+but that's equivalent to pushing the negation inside eventually box not a or infinitely often b yeah
+
+391
+00:52:28,319 --> 00:52:35,040
+what's the problem well this is the problem because we just have seen that eventually box something
+
+392
+00:52:35,040 --> 00:53:09,760
+cannot be expressed in ctl so this cannot be expressed in ctl so this means strong fairness cannot be expressed
+
+393
+00:53:09,760 --> 00:53:26,160
+in ctl and maybe you're tempted to say weak fairness cannot be expressed because
+
+394
+00:53:26,160 --> 00:53:34,480
+weak fairness is something of the form maybe you remember weak what was weak fairness
+
+395
+00:53:34,480 --> 00:53:40,079
+weak fairness was something on the form from some point on continuously something is enabled and then you take
+
+396
+00:53:40,079 --> 00:53:47,920
+something infinitely often yeah but because of this do you have to take the negation etc and then you get
+
+397
+00:53:47,920 --> 00:54:01,599
+something that you can express so this is not a problem it's the strong fairness which is the problem good
+
+398
+00:54:01,599 --> 00:54:07,040
+first part last thing that i still owe you to show is that this formula has
+
+399
+00:54:07,040 --> 00:54:16,240
+no equivalent LTL formula of course i could try to do the same scheme as before remove the quantifiers
+
+400
+00:54:16,240 --> 00:54:25,520
+find the transition system for which the LTL formula is satisfied but the ctl formula is not home exercise
+
+401
+00:54:25,520 --> 00:54:32,079
+you can also provide a direct proof and that's what we going to do now
+
+402
+00:54:32,079 --> 00:54:35,760
+so we're going to put a direct proof there is no ltl formula equivalent to
+
+403
+00:54:35,760 --> 00:54:44,000
+this CTL formula what's the reasoning we try to find an argument by contraposition okay
+
+404
+00:54:44,000 --> 00:54:48,799
+so in order to get a contradiction i'm going to assume that there is an ltl
+
+405
+00:54:48,799 --> 00:54:54,160
+formula that is equivalent to the CTL formula i don't need to know how this formula
+
+406
+00:54:54,160 --> 00:55:02,000
+looks like i just assume there is an LTL formula phi and this guy is equivalent to the CTL format
+
+407
+00:55:02,000 --> 00:55:07,920
+good now we consider a transition system and this transition system is very simple just two states
+
+408
+00:55:07,920 --> 00:55:17,520
+a yellow state and a blue state claim the set of states satisfying eventually there exists a part
+
+409
+00:55:17,520 --> 00:55:22,480
+eventually a so i'm going to look at the innermost subformula same scheme as before
+
+410
+00:55:22,480 --> 00:55:29,040
+well this definitely holds for t and it also holds for s because you can move to the right
+
+411
+00:55:29,040 --> 00:55:34,799
+but that means that the transition system satisfies this formula so for because for all parts
+
+412
+00:55:34,799 --> 00:55:44,559
+for every state you are because all states satisfy this sub-formula the every part satisfies this sub-formula agree
+
+413
+00:55:44,559 --> 00:55:52,079
+or any disagreements on this no good okay but by assumption that also means that
+
+414
+00:55:52,079 --> 00:55:58,880
+it satisfies the same ltl formula right because the ltl formula by assumption was equivalent to the CTL formula
+
+415
+00:55:58,880 --> 00:56:06,079
+good that makes sense no good now i consider this transition system which i obtained from the first one by
+
+416
+00:56:06,079 --> 00:56:16,559
+just removing the blue state okay good argument as follows the traces of this transition system it
+
+417
+00:56:16,559 --> 00:56:21,200
+only has one trace namely you can only infinitely loop here is a subset of the
+
+418
+00:56:21,200 --> 00:56:30,559
+traces of the original one obviously because i just deleted one state by assumption right
+
+419
+00:56:30,559 --> 00:56:36,400
+t1 satisfies the ltl formula which means all the traces in t1 satisfy this formula
+
+420
+00:56:36,400 --> 00:56:43,359
+now i give you a transition system which has less traces so this also satisfies this formula
+
+421
+00:56:43,359 --> 00:56:51,440
+no that's the property of ltl yeah so this satisfies the ltl formula but that means that this transition
+
+422
+00:56:51,440 --> 00:56:58,400
+system satisfies phi but of course it doesn't satisfy the CTL formula yeah i mean by assumption phi is
+
+423
+00:56:58,400 --> 00:57:04,640
+equivalent to this formula but that's a contradiction because this doesn't satisfy this formula because it doesn't even have a
+
+424
+00:57:04,640 --> 00:57:13,359
+blue state good as i said this is an example of a direct proof
+
+425
+00:57:13,359 --> 00:57:19,520
+an alternative way of proving this is take the ctl formula remove the quantifiers
+
+426
+00:57:19,520 --> 00:57:23,920
+give me an example for which one formula holds and the other one does not no that
+
+427
+00:57:23,920 --> 00:57:31,920
+proof possibility is not vanished this is an alternative proof and this is a very neat proof to my opinion
+
+428
+00:57:31,920 --> 00:57:39,520
+to show you this okay so this gives me a contradiction okay so that's what we have seen what is
+
+429
+00:57:39,520 --> 00:57:47,599
+left is this part namely this ltl formula that's the claim there does not exist an equivalent CTL
+
+430
+00:57:47,599 --> 00:57:54,960
+formula for this good this is somewhat harder so we're going to look at this formula
+
+431
+00:57:54,960 --> 00:58:00,160
+claim there is no CTL formula that is equivalent to this guy what's the sketch the sketch of the
+
+432
+00:58:00,160 --> 00:58:06,880
+proof is as follows so i'm going to build two sequences of transition systems so let's first look
+
+433
+00:58:06,880 --> 00:58:12,960
+at one sequence so this is a sequence tn and it's just a natural number so i'm going to consider
+
+434
+00:58:12,960 --> 00:58:21,680
+a sequence t1 t2 t3 t4 etc of transition systems and then i'm going to build
+
+435
+00:58:21,680 --> 00:58:30,640
+a very similar but slightly different sequence namely t prime 1 t prime 2 t prime 2 3 etc
+
+436
+00:58:30,640 --> 00:58:37,040
+such that for all n we're going to see that this first transition system for every n
+
+437
+00:58:37,040 --> 00:58:47,119
+every element of the first sequence violates the ltl property whereas the other one satisfies the LTL property good
+
+438
+00:58:47,119 --> 00:58:52,160
+then we're going to argue i'm not going to prove this but you can prove this by means of induction
+
+439
+00:58:52,160 --> 00:59:00,880
+that they satisfy the same ctl formulas of length at most n good so let's first look at the two
+
+440
+00:59:00,880 --> 00:59:08,720
+transition systems good so we start the two sequences in parallel the sequence
+
+441
+00:59:08,720 --> 00:59:13,920
+here and that's the first element of the second sequence and the first element already shows you the difference and
+
+442
+00:59:13,920 --> 00:59:19,280
+that will be the only difference so we start here in a state that doesn't
+
+443
+00:59:19,280 --> 00:59:24,559
+satisfy a it can move to this a state that has a self loop but it can move back
+
+444
+00:59:24,559 --> 00:59:33,839
+that's the key point that's the whole key point this one is a copy of this guy but this
+
+445
+00:59:33,839 --> 00:59:42,640
+going back option has been removed and now we're going to extend this so here is t1
+
+446
+00:59:42,640 --> 00:59:46,960
+so first go back to the maybe we write it down on the board so that you can
+
+447
+00:59:46,960 --> 00:59:58,240
+see what we are doing so the idea is that t n does not satisfy for all box a
+
+448
+00:59:58,240 --> 01:00:06,160
+and t prime n satisfies for all box a good let's first look at t zero
+
+449
+01:00:06,160 --> 01:00:13,920
+yeah and check this condition for zero so claim yeah this does not satisfy for all box a
+
+450
+01:00:13,920 --> 01:00:21,280
+obviously because of this back option this one doesn't have this back option and indeed for all paths eventually
+
+451
+01:00:21,280 --> 01:00:27,680
+eventually you get box a good clear so now how we're going to extend this this is t1
+
+452
+01:00:27,680 --> 01:00:36,960
+i take t0 this is t0 and i extend it by a state not satisfying a and then again having
+
+453
+01:00:36,960 --> 01:00:47,760
+this sink where i'm stuck let us check this condition it violates this eventually box a why
+
+454
+01:00:47,760 --> 01:00:53,440
+well because of the same reason as before because of this back option yeah
+
+455
+01:00:53,440 --> 01:00:57,280
+that's the point you can just cycle around here or cycle around take this
+
+456
+01:00:57,280 --> 01:01:01,440
+cycle finally many times but this option going back spoils the fact that you have
+
+457
+01:01:01,440 --> 01:01:12,589
+a computation that is not always satisfying a clear good here i do the same i take the t 0
+
+458
+01:01:12,589 --> 01:01:16,640
+prime which is the first part and i extend it with this state and with that state so i
+
+459
+01:01:16,640 --> 01:01:25,839
+extend it in the same way as that you know still that's one satisfies eventually box a
+
+460
+01:01:25,839 --> 01:01:29,599
+now i can build t2 so this is i hope you find this scheme
+
+461
+01:01:29,599 --> 01:01:35,520
+this is t2 you take t1 and you extend it with those two states yeah
+
+462
+01:01:35,520 --> 01:01:41,359
+same as before you violate this property and in the same way i get t prime two
+
+463
+01:01:41,359 --> 01:01:48,400
+by just not having this back option good so i have the sequence of those things okay good
+
+464
+01:01:48,400 --> 01:01:54,480
+one satisfies the ct ltl formula the other one does not and now the point is that so that's
+
+465
+01:01:54,480 --> 01:01:59,680
+what we just have argued so this is the way they constructed it so t n
+
+466
+01:01:59,680 --> 01:02:04,480
+is basically this prefix which is going back option and then followed by t prime
+
+467
+01:02:04,480 --> 01:02:10,559
+n minus one and the same with t n prime that's the same as this prefix and
+
+468
+01:02:10,559 --> 01:02:18,720
+then followed by by that one basically saying the suffix of these two things is basically always the same good
+
+469
+01:02:18,720 --> 01:02:27,359
+but now the point is for all ctl formulas of a certain length sn so this state satisfies this formula
+
+470
+01:02:27,359 --> 01:02:32,000
+if and only if as a prime n satisfies the same state and the same for tn that
+
+471
+01:02:32,000 --> 01:02:39,119
+means you cannot find a CTL formula that distinguishes the two transition systems
+
+472
+01:02:39,119 --> 01:02:46,559
+the sequence is set size n you cannot find a CTL formula of size n that distinguishes the two
+
+473
+01:02:46,559 --> 01:02:54,720
+yeah and the way to view that is the following maybe we look at one example
+
+474
+01:02:54,720 --> 01:03:02,079
+i thought i had it written down right so maybe we look at one example
+
+475
+01:03:02,079 --> 01:03:05,520
+because of posit it should be possible to distinguish the two because of this
+
+476
+01:03:05,520 --> 01:03:11,440
+back option but you need quite a pretty long formula to to capture this
+
+477
+01:03:11,440 --> 01:03:18,880
+the way to prove this is by induction on the structure of ctl formulas of size n
+
+478
+01:03:18,880 --> 01:03:27,039
+so the example i'm going to show you is t1 and t1 prime now let's look let's just draw them
+
+479
+01:03:27,039 --> 01:03:33,512
+this is empty set then here we have a state a we have a self loop we can move here
+
+480
+01:03:33,512 --> 01:03:38,720
+and we can move back that's the important point we can here move to the empty set
+
+481
+01:03:38,720 --> 01:03:45,920
+and then we can move to a state a and we have the self loop that's t1
+
+482
+01:03:45,920 --> 01:04:02,000
+and then we have t1 prime it's basically a copy but this only has this option good
+
+483
+01:04:02,000 --> 01:04:08,640
+okay let's assume the only atomic propositions are a so the way to classify this state that
+
+484
+01:04:08,640 --> 01:04:17,920
+has this empty set is by the formula not a then it's clear that you have a trace in t1
+
+485
+01:04:17,920 --> 01:04:43,599
+right so you can take a trace like something like this now so that's a distinguishing feature i
+
+486
+01:04:43,599 --> 01:04:49,520
+go here i go there i go once back so i go here here i go there
+
+487
+01:04:49,520 --> 01:04:55,440
+i go once back i go here i go there and then i move there all
+
+488
+01:04:55,440 --> 01:05:00,480
+right this this is this once going back is the is the crucial thing
+
+489
+01:05:00,480 --> 01:05:07,520
+now i would like to capture this once going back by means of a ctl formula okay
+
+490
+01:05:07,520 --> 01:05:13,839
+so my claim is the shortest CTL formula that distinguishes those two transition systems is it follows
+
+491
+01:05:13,839 --> 01:05:22,960
+i write it down and then let's try to explain this to t1 satisfies the formula there exists next a
+
+492
+01:05:22,960 --> 01:05:35,039
+and there exists a next not a and there exists a next a and there exists a next
+
+493
+01:05:35,039 --> 01:05:42,799
+not a and now you have to close all the brackets one two three is that all
+
+494
+01:05:42,799 --> 01:05:48,480
+i have more here but let's see and a and there exists an x not a and there
+
+495
+01:05:48,480 --> 01:06:01,839
+exists index a and there is no yeah seems to be okay this this this yeah okay
+
+496
+01:06:01,839 --> 01:06:15,359
+claim this is satisfied by t1 but not by t1 prime so this guy has a next state which has
+
+497
+01:06:15,359 --> 01:06:28,319
+satisfies a and that state has a next state which doesn't satisfy a but who has an a successor and
+
+498
+01:06:28,319 --> 01:06:34,640
+there has an exists next a so the possibility to go back is captured by this you have an a
+
+499
+01:06:34,640 --> 01:06:39,359
+right and there is a next state which is not a the initial state again
+
+500
+01:06:39,359 --> 01:06:47,680
+and that state has the possibility to move to a and then exactly not a
+
+501
+01:06:47,680 --> 01:06:51,280
+but you see i need a very long formula to distinguish this thing and that's the
+
+502
+01:06:51,280 --> 01:06:56,880
+key thing of this proof that you cannot distinguish the two transition systems by a formula up to a
+
+503
+01:06:56,880 --> 01:07:09,280
+certain length good but that means they fulfill the same CTL formulas of a certain length and
+
+504
+01:07:09,280 --> 01:07:24,559
+in the end this proves sketch that you cannot express this formula in terms of ltl in terms of CTL
+
+505
+01:07:24,559 --> 01:07:40,480
+good how about this for all eventually a and there exists next a is equivalent to this formula
+
+506
+01:07:40,480 --> 01:07:45,839
+no the first thing to make a guess is that you need to
+
+507
+01:07:45,839 --> 01:07:50,160
+the way to think about this is in terms of a picture right you first try to
+
+508
+01:07:50,160 --> 01:07:56,079
+if you ask to answer this question the first thing you do is you try to draw a picture
+
+509
+01:07:56,079 --> 01:08:00,640
+so you say what's the formula on the left expressing it's something expressing that for all parts
+
+510
+01:08:00,640 --> 01:08:05,839
+take a part eventually eventually you get to an a state a state
+
+511
+01:08:05,839 --> 01:08:15,039
+and this has an a successor for instance here no this can be a not a successor this can
+
+512
+01:08:15,039 --> 01:08:21,440
+be a not a successor that's all fine it's equivalent that eventually a and next a
+
+513
+01:08:21,440 --> 01:08:25,040
+i wouldn't say so right it's not the case that every part reaches an a state
+
+514
+01:08:25,040 --> 01:08:30,320
+and its next successor will be a because take this part and it will reach a but it could be
+
+515
+01:08:30,320 --> 01:08:34,080
+the case that the next thing on the same path is not a but there is a possibility
+
+516
+01:08:34,080 --> 01:08:39,600
+to move to an a state right that would satisfy the CTL formula but not the LTL formula
+
+517
+01:08:39,600 --> 01:08:45,359
+so my gut feeling is that this cannot be true no that's the
+
+518
+01:08:45,359 --> 01:08:48,560
+the way i would look at these problems first try to get some kind of intuition
+
+519
+01:08:48,560 --> 01:08:53,679
+could this be true or not no this is not the case and now the fact that the
+
+520
+01:08:53,679 --> 01:09:01,920
+problem is to find a counterexample and this is is a counter example i think the colors are clear
+
+521
+01:09:01,920 --> 01:09:06,480
+this doesn't satisfy eventually a and next a because i can move here to the
+
+522
+01:09:06,480 --> 01:09:12,960
+right this is an a state but the next state is not a
+
+523
+01:09:12,960 --> 01:09:19,759
+so that's exactly the part i showed you but it satisfies for all parts
+
+524
+01:09:19,759 --> 01:09:28,080
+eventually i had go to an a blue state and that blue state has as direct successor a blue state
+
+525
+01:09:28,080 --> 01:09:32,480
+what was the counter example here the country example here was moving to the
+
+526
+01:09:32,480 --> 01:09:40,159
+right so let's move to the right moving to the left is obviously not a problem i hope
+
+527
+01:09:40,159 --> 01:09:46,719
+so moving to the right this means this part should fulfill eventually i reach a blue state okay
+
+528
+01:09:46,719 --> 01:09:49,839
+that's here because our side in the state and that state has a blue
+
+529
+01:09:49,839 --> 01:09:56,239
+successor yes it has this blue successor yeah although i move to the right
+
+530
+01:09:56,239 --> 01:10:05,280
+the successor that is existing going on the left is actually ensuring that this formula holds
+
+531
+01:10:05,280 --> 01:10:09,760
+and that's the whole thing that mentally in these trees you always i mean most of
+
+532
+01:10:09,760 --> 01:10:14,719
+the time you have to reason about a part but then also about the options that you
+
+533
+01:10:14,719 --> 01:10:22,320
+didn't take along that part no and that's why people like moshavadi leslie lamport they are big fans of the
+
+534
+01:10:22,320 --> 01:10:29,440
+linear time thing because they say this is way too complicated so that was this battle that i mentioned
+
+535
+01:10:29,440 --> 01:10:34,640
+in beginning linear time versus branching time people think oh this is way too complicated
+
+536
+01:10:34,640 --> 01:10:43,760
+because i have to reason about things about parts that i'm not taking but they're existing somewhere good okay
+
+537
+01:10:43,760 --> 01:10:50,480
+so this is the formal argument same reasoning but now formally so again our reason inside out exists next
+
+538
+01:10:50,480 --> 01:10:54,560
+a is satisfied by the two blue states because they both have a blue successor
+
+539
+01:10:54,560 --> 01:11:02,880
+and then the set of states satisfying this formula both the initial state and that state satisfy the formula and
+
+540
+01:11:02,880 --> 01:11:09,920
+therefore in particular the transition system because of the initial state satisfies the form i think the argument was clear
+
+541
+01:11:09,920 --> 01:11:17,360
+for every buchi automaton there is a ctl formula suited for all transition systems the transition system satisfies the ctl
+
+542
+01:11:17,360 --> 01:11:26,239
+formula if and only if all traces of it are included in the language of the buchi automaton
+
+543
+01:11:26,239 --> 01:11:32,640
+this cannot be true buchi automaton ltl ltl and ctl are incomparable this would
+
+544
+01:11:32,640 --> 01:11:37,440
+be very surprising if this would hold indeed this is wrong taken a buchi
+
+545
+01:11:37,440 --> 01:11:42,719
+automaton for an ltl formula that we cannot express this is the ltl formula that we already
+
+546
+01:11:42,719 --> 01:11:49,199
+know we cannot express as in ctl so this is my brichy automaton that accepts this
+
+547
+01:11:49,199 --> 01:11:57,440
+exactly this language but there is no CTL formula that satisfies this thing then you can juggle around with negations
+
+548
+01:11:57,440 --> 01:12:04,480
+if this is a CTL formula and that's an ltl formula that is equivalent to it
+
+549
+01:12:04,480 --> 01:12:07,760
+can i then put a negation on the left hand side and build a negation on the
+
+550
+01:12:07,760 --> 01:12:17,760
+right hand side something that equivalent no way yeah be careful we just have seen actually the example take this
+
+551
+01:12:17,760 --> 01:12:27,920
+box eventually delete the quantifiers we get this LTL formula and we know they are equivalent now take the negations
+
+552
+01:12:27,920 --> 01:12:32,640
+So take in particular the negation of this formula yeah so what happens if i take a
+
+553
+01:12:32,640 --> 01:12:38,880
+negation of that formula well this negation becomes something of the form eventually box not a
+
+554
+01:12:38,880 --> 01:12:46,239
+and we have seen eventually box something cannot be expressed in ctl so this is the wrong conclusion
+
+555
+01:12:46,239 --> 01:12:54,560
+message be careful with negations and then you can play all kinds of other quizzes
+
+556
+01:12:54,560 --> 01:13:00,000
+as satisfies there exist a path such that all states along that path
+
+557
+01:13:00,000 --> 01:13:14,800
+have a part that eventually leads to a there is a part such that this part has infinitely many a's
+
+558
+01:13:14,800 --> 01:13:54,960
+what what what's your what's your feeling about this this doubly nested existential quantification is a bit worrying right perhaps
+
+559
+01:13:54,960 --> 01:14:24,880
+any suggestions a right and this has goes to an a state right
+
+560
+01:14:24,880 --> 01:14:38,400
+and this one also has somewhere that i can move to an a state right and the same here right
+
+561
+01:14:38,400 --> 01:14:45,520
+exactly none of these parts has infinitely often an a now so if you are confronted with these kind
+
+562
+01:14:45,520 --> 01:14:53,760
+of questions then first try to think in terms of these computation trees and try to even draw such a
+
+563
+01:14:53,760 --> 01:15:00,560
+simple intuitive picture and then try to get a feeling about this
+
+564
+01:15:00,560 --> 01:15:11,760
+so this is wrong and here is a counter example this transition system satisfies this formula there exists a part
+
+565
+01:15:11,760 --> 01:15:18,239
+such that it's always the case that there exists eventually a same trick as was just suggested take a part
+
+566
+01:15:18,239 --> 01:15:24,400
+here for instance right that never visits an a state the a set is in the middle
+
+567
+01:15:24,400 --> 01:15:35,120
+yeah but for all possible states here for s there is a part that eventually goes to a
+
+568
+01:15:35,120 --> 01:15:40,560
+so that's the case but there is no part such that infinitely often you get an a
+
+569
+01:15:40,560 --> 01:15:50,480
+because you can only visit this state at most once but definitely not infinitely good i'm not sure whether the
+
+570
+01:15:50,480 --> 01:15:58,800
+door is open now i have swapped the two modalities there exists a part such that eventually
+
+571
+01:15:58,800 --> 01:16:11,679
+i get to a state where there exists a part which is completely a so in terms of a picture
+
+572
+01:16:11,679 --> 01:16:20,640
+there exists a part this one such that eventually maybe here i get to a point such that
+
+573
+01:16:20,640 --> 01:16:24,800
+from there on there exists a part which is completely satisfying a that means
+
+574
+01:16:24,800 --> 01:16:31,600
+that this state itself has to satisfy a no and there is a possibility maybe not
+
+575
+01:16:31,600 --> 01:16:38,000
+this possibility but it might be the case that you can move here go to an a state a state
+
+576
+01:16:38,000 --> 01:16:46,960
+a state and this is completely a yeah this is box a that's the situation
+
+577
+01:16:46,960 --> 01:16:56,400
+now the statement is if and only if there is a part such that from some point on always a-holes
+
+578
+01:16:56,400 --> 01:17:04,239
+doesn't look too bad right because now i can of course take basically this part up to here
+
+579
+01:17:04,239 --> 01:17:11,520
+and from there continue yeah and this is a part that's from some point on is only blue
+
+580
+01:17:11,520 --> 01:17:23,040
+So this doesn't look too unreasonable and that's indeed correct and now this is again juggling with negations this
+
+581
+01:17:23,040 --> 01:17:32,480
+double existential quantification is actually negation is equivalent to a negated formula with a universal quantification where the box
+
+582
+01:17:32,480 --> 01:17:41,920
+and diamond are swapped and then with not a so we have that the state satisfies this
+
+583
+01:17:41,920 --> 01:17:52,719
+existential formula if and only if it doesn't satisfy this part but that's equivalent as we know
+
+584
+01:17:52,719 --> 01:18:00,400
+this formula is equivalent to box eventually not a and now i can push any negation again
+
+585
+01:18:00,400 --> 01:18:07,120
+that means that s that this formula is the same as not eventually box a
+
+586
+01:18:07,120 --> 01:18:22,000
+and that means that s violates this formula and that means that there is a part by satisfying this property
+
+587
+01:18:22,000 --> 01:18:30,640
+good yeah more of those questions there is an ltl formula where this ltl formula is equivalent to not existentially
+
+588
+01:18:30,640 --> 01:18:36,719
+that doesn't exist apart so that eventually i get to a point so this is the negation of this
+
+589
+01:18:36,719 --> 01:18:41,360
+finger it is not the case that there is a part that eventually gets to a point
+
+590
+01:18:41,360 --> 01:18:50,320
+from which on there is always such a part this is also correct again juggling with negations so
+
+591
+01:18:50,320 --> 01:18:55,679
+this formula i mean you can push the negation inside so that becomes a universal quantification that becomes a
+
+592
+01:18:55,679 --> 01:19:00,080
+box that becomes a universal quantification that becomes a diamond that becomes not a
+
+593
+01:19:00,080 --> 01:19:05,679
+that's what is written down on the right hand side and now we know that this is a shape
+
+594
+01:19:05,679 --> 01:19:12,159
+that we are familiar with this means infinitely often not a so that's equivalent to infinitely often not a
+
+595
+01:19:12,159 --> 01:19:19,120
+but that's exactly what we wanted good there are more of those quizzes i don't think that's
+
+596
+01:19:19,120 --> 01:19:32,480
+a big deal but there is one important point that i would like to show now that is this one
+
+597
+01:19:32,480 --> 01:19:43,040
+if t1 and t2 are trace equivalent so every trace t1 can exhibit t2 can exhibit and vice versa
+
+598
+01:19:43,040 --> 01:19:57,040
+then for all ctl formulas t1 set as 5 5 if and only if t2 satisfies phi good this is
+
+599
+01:19:57,040 --> 01:20:04,880
+wrong why is this wrong now the intuition being that trace equivalence has something about sequences it doesn't say
+
+600
+01:20:04,880 --> 01:20:11,520
+something about the potential branching at points yeah this was all fine for ltl
+
+601
+01:20:11,520 --> 01:20:18,639
+if you replace this for by ltl this is a completely true statement but for ctl it's not
+
+602
+01:20:18,639 --> 01:20:24,239
+and the way to view that is the following so here are two transition systems this is one transition system
+
+603
+01:20:24,239 --> 01:20:31,679
+with two initial states two disconnected parts and this is a transition system where you have this branching
+
+604
+01:20:31,679 --> 01:20:41,679
+i hope we agree that t1 and t2 have the same traces they satisfy the same ltl formulas
+
+605
+01:20:41,679 --> 01:20:45,360
+but this one you can express the fact that there is a possibility that there
+
+606
+01:20:45,360 --> 01:20:50,080
+you can have an a successor and you have a b successor you cannot express as
+
+607
+01:20:50,080 --> 01:20:55,120
+an ltl but you can express it in ctl and that's the following formula there
+
+608
+01:20:55,120 --> 01:21:00,960
+exists a next state which is satisfying a and there exists a next state which satisfies b
+
+609
+01:21:00,960 --> 01:21:04,880
+this of course is not satisfied by this thing because there is no state that has
+
+610
+01:21:04,880 --> 01:21:09,840
+both an a and a b successor but it's satisfied by this state because it has
+
+611
+01:21:09,840 --> 01:21:15,040
+both an a and both of b so what does this mean it means that
+
+612
+01:21:15,040 --> 01:21:26,800
+trace equivalence is incompatible to ctl trace equivalence is compatible to ltl linear time linear sequences traces
+
+613
+01:21:26,800 --> 01:21:34,400
+yeah but for branching logics like ctl but like ctl star like modern mu calculus whatever trace
+
+614
+01:21:34,400 --> 01:21:47,320
+equivalent is not the right equivalence good that's it for today friday CTL model checking

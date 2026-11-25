@@ -1,0 +1,2071 @@
+1
+00:00:02,400 --> 00:00:06,888
+Welcome to this lecture. the main part of the lecture will will be a proof.
+
+2
+00:00:06,888 --> 00:00:12,760
+A quite lengthy proof. And I'm going to show you the following.
+
+3
+00:00:12,760 --> 00:00:19,320
+So what we have seen in the previous lecture is that we consider the LTL model checking problem.
+
+4
+00:00:19,320 --> 00:00:26,240
+Which is given a finite transition system and an LTL formula, we would like to check whether the
+
+5
+00:00:26,240 --> 00:00:35,240
+transition system satisfies the formula or not. Yeah, so we're interested in this question, does T satisfy phi?
+
+6
+00:00:35,240 --> 00:00:40,760
+The construction I explained you in the last in the previous lecture quite extensively
+
+7
+00:00:40,760 --> 00:00:48,840
+is that we the idea is to transform actually the negation of the formula, because we are interested in refuting
+
+8
+00:00:48,840 --> 00:00:55,400
+the property. so we take the negation of the formula and we're going to construct algorithmically
+
+9
+00:00:55,400 --> 00:01:02,640
+a non-deterministic Büchi automaton for this formula. So how does this work?
+
+10
+00:01:02,640 --> 00:01:12,600
+The key idea that I explained last time was to take the formula and build certain subsets of its sub-formulas.
+
+11
+00:01:12,600 --> 00:01:17,120
+And we called that the closure. So I briefly recap this here.
+
+12
+00:01:17,120 --> 00:01:20,960
+So what we are going to do is we take a formula and the last time we had a
+
+13
+00:01:20,960 --> 00:01:28,360
+formula like this. And if this is the input formula, what
+
+14
+00:01:28,360 --> 00:01:31,360
+we're going to do is we look at all its sub-formulas.
+
+15
+00:01:31,360 --> 00:01:38,600
+So things like A, things like next A, things like A and next A, the whole formula, etc.
+
+16
+00:01:38,600 --> 00:01:44,440
+Plus their negations. So we also look at not A, we look at not next A, we look at
+
+17
+00:01:44,440 --> 00:01:51,960
+not A and next A, and we look at not phi, etc. Yeah, and we call this the closure
+
+18
+00:01:51,960 --> 00:02:02,560
+of phi. And now the key idea is that the states of the automaton are provided by taking certain subsets
+
+19
+00:02:02,560 --> 00:02:07,045
+of this set. And the question is which subsets are we allowed to pick?
+
+20
+00:02:07,045 --> 00:02:09,546
+And they are what we call the elementary sets.
+
+21
+00:02:09,546 --> 00:02:17,960
+So just briefly, we take a subset of these sub-formulas and we call it elementary and there basically two conditions.
+
+22
+00:02:17,960 --> 00:02:24,000
+The first one says it's maximal consistent with respect to propositional logic.
+
+23
+00:02:24,000 --> 00:02:28,840
+That means the following. If a formula psi is in the closure, then
+
+24
+00:02:28,840 --> 00:02:36,000
+the first rule says if you did not select psi, then you should select its negation.
+
+25
+00:02:36,000 --> 00:02:44,680
+The second rule says if you have a conjunction in the closure and you have selected you can only
+
+26
+00:02:44,680 --> 00:02:50,440
+select this conjunction if and only if you have selected both conjuncts.
+
+27
+00:02:50,440 --> 00:02:55,960
+And please bear in mind it's an if and only if, so it means that if you select psi1
+
+28
+00:02:55,960 --> 00:03:02,680
+and you select psi2, this is an obligation to also select the conjunction.
+
+29
+00:03:02,680 --> 00:03:07,480
+Otherwise the set is not elementary because you don't fulfill this condition.
+
+30
+00:03:07,480 --> 00:03:12,720
+And the third line says okay, if there is a sub-formula true in the closure,
+
+31
+00:03:12,720 --> 00:03:18,120
+then it's your obligation, you should always select this sub-formula.
+
+32
+00:03:18,120 --> 00:03:24,480
+Intuition being this sub-formula is always true. The set B will become a possible state
+
+33
+00:03:24,480 --> 00:03:30,520
+in my automaton and that simply means that this state satisfies true.
+
+34
+00:03:30,520 --> 00:03:35,760
+The second condition is about the until. And it says the following should hold.
+
+35
+00:03:35,760 --> 00:03:41,360
+If there is an until formula in the closure, like in my case the whole formula, then
+
+36
+00:03:41,360 --> 00:03:44,400
+there are two conditions you need to check.
+
+37
+00:03:44,400 --> 00:03:49,040
+If the until formula has been selected, but the right-hand side of the until
+
+38
+00:03:49,040 --> 00:03:55,240
+psi2 has not been selected, then there is only one possibility to make the until formula
+
+39
+00:03:55,240 --> 00:04:00,720
+true somewhere in the future, namely that is by the current state satisfies psi1.
+
+40
+00:04:00,720 --> 00:04:06,515
+So you should select psi1 there. So this is again an obligation.
+
+41
+00:04:06,515 --> 00:04:12,520
+And the second one says if you have selected psi2, then it means actually that this until
+
+42
+00:04:12,520 --> 00:04:17,840
+formula is vacuously true and that says this then the obligation is that you should
+
+43
+00:04:17,840 --> 00:04:22,960
+also include the until formula into the set B.
+
+44
+00:04:22,960 --> 00:04:28,800
+Okay? So this gives rise to several subsets and actually in the previous lecture we
+
+45
+00:04:28,800 --> 00:04:34,400
+saw that we get something like a B0, B1, I think up to B4.
+
+46
+00:04:34,400 --> 00:04:41,080
+So we get something in in this example five sets satisfying all these constraints.
+
+47
+00:04:41,080 --> 00:04:48,880
+Good. The key idea is those sets are the states.
+
+48
+00:04:48,880 --> 00:04:57,240
+So what's now the GNBA? The GNBA has a state space all those subsets B's that are elementary, that
+
+49
+00:04:57,240 --> 00:05:00,680
+satisfy all the constraints we have just seen.
+
+50
+00:05:00,680 --> 00:05:08,640
+The initial state is are those states that satisfy that actually include the original formula phi.
+
+51
+00:05:08,640 --> 00:05:12,480
+And then there is a transition relation that says the following.
+
+52
+00:05:12,480 --> 00:05:18,320
+Give me a state B and we're going to look at the transition relation with respect to some
+
+53
+00:05:18,320 --> 00:05:27,320
+set of atomic propositions A. Because the transitions are labeled with sets of atomic propositions or logical formulas.
+
+54
+00:05:27,320 --> 00:05:33,120
+And this differs from the set of atomic propositions in the current state, then
+
+55
+00:05:33,120 --> 00:05:37,800
+there is no outgoing transition from B with the symbol A.
+
+56
+00:05:37,800 --> 00:05:45,720
+If however A is exactly the set of atomic propositions in the current state B, then
+
+57
+00:05:45,720 --> 00:05:50,480
+the next state or the set I should say of next states of state B with respect
+
+58
+00:05:50,480 --> 00:05:56,160
+to the input symbol A is a set of possible successor states.
+
+59
+00:05:56,160 --> 00:06:00,080
+And these successor states have to satisfy two constraints.
+
+60
+00:06:00,080 --> 00:06:07,200
+The following. If the current state includes something of the form next something,
+
+61
+00:06:07,200 --> 00:06:14,265
+this must true if and only if this something, psi, is belongs to the next state B prime.
+
+62
+00:06:14,265 --> 00:06:20,840
+Yeah, notice that B prime is the state that I'm moving to.
+
+63
+00:06:20,840 --> 00:06:28,480
+So the next line says okay, if you have an until formula in your current state, then either
+
+64
+00:06:28,480 --> 00:06:34,640
+psi2 is already true in the current state and then there is no obligation on B prime.
+
+65
+00:06:34,640 --> 00:06:38,440
+Or psi1 is in the current state, but then there is an obligation on the
+
+66
+00:06:38,440 --> 00:06:43,720
+successor because that means that then the until formula is not already true in
+
+67
+00:06:43,720 --> 00:06:51,920
+B and there is only one possibility to establish its truth, namely that the successor state satisfies or is labeled
+
+68
+00:06:51,920 --> 00:07:04,520
+or contains the until formula. Good. Finally, we have actually a GNBA, so we made the construction
+
+69
+00:07:04,520 --> 00:07:06,600
+by first going to a generalized Büchi automaton.
+
+70
+00:07:06,600 --> 00:07:12,360
+This means that we don't have a single set of accept sets, but a set of sets.
+
+71
+00:07:12,360 --> 00:07:16,840
+And the intuition is that for every until sub-formula, we have a set.
+
+72
+00:07:16,840 --> 00:07:20,160
+So we look at the closure of the original formula.
+
+73
+00:07:20,160 --> 00:07:26,360
+We look at an until formula and for every such until formula there is an accept set.
+
+74
+00:07:26,360 --> 00:07:34,140
+That's what this definition says. Okay? How is this F for one until formula defined?
+
+75
+00:07:34,140 --> 00:07:43,120
+This is defined as follows. So one set of states for this until formula in the closure is defined as
+
+76
+00:07:43,120 --> 00:07:51,320
+a set of states in the automaton such that the until formula is not in that state or
+
+77
+00:07:51,320 --> 00:07:55,080
+the right-hand side psi2 is in that state.
+
+78
+00:07:55,080 --> 00:08:01,640
+Okay? Now, this is the definition of the GNBA and what I would like to show now is why
+
+79
+00:08:01,640 --> 00:08:10,160
+is this correct? And So what we're going to do is we're going to go through the proof
+
+80
+00:08:10,160 --> 00:08:16,200
+step by step to show why this is correct.
+
+81
+00:08:16,200 --> 00:08:21,200
+So what I want to show is the following theorem.
+
+82
+00:08:21,200 --> 00:08:32,640
+And this is basically the correctness of the LTL to GNBA construction.
+
+83
+00:08:32,640 --> 00:08:47,080
+And this says the following. For every LTL formula phi and GNBA
+
+84
+00:08:47,080 --> 00:08:55,480
+G of phi, which is the one I just defined on this slide, it holds
+
+85
+00:08:55,480 --> 00:09:04,200
+that the set of infinite words accepted by this automaton is exactly the words of phi.
+
+86
+00:09:04,200 --> 00:09:19,840
+So what does this mean? This means the set of infinite words accepted by G phi equals
+
+87
+00:09:19,840 --> 00:09:32,000
+the set of traces satisfying phi. Good.
+
+88
+00:09:32,000 --> 00:09:38,533
+This is what we want to show. Good.
+
+89
+00:09:38,533 --> 00:09:40,880
+So how are we going to do this?
+
+90
+00:09:40,880 --> 00:09:48,560
+This is an equality. So we're going to prove subset inclusion in both directions.
+
+91
+00:09:48,560 --> 00:09:57,280
+So part one. I'm going to first start with this subset inclusion.
+
+92
+00:09:57,280 --> 00:09:59,320
+So how are we going to prove this?
+
+93
+00:09:59,320 --> 00:10:08,200
+Well, we pick something in the set words of phi.
+
+94
+00:10:08,200 --> 00:10:20,360
+And we're going to assume let sigma is something of the form A0 A1 etc. such that
+
+95
+00:10:20,360 --> 00:10:32,360
+A of I is a subset of the closure of phi.
+
+96
+00:10:32,360 --> 00:10:49,760
+That means sigma can be written as B0 intersection AP B1 intersection AP B2 intersection AP etc.
+
+97
+00:10:49,760 --> 00:11:05,280
+This is the sigma we have at our disposal such that AI intersected with the closure of phi equals
+
+98
+00:11:05,280 --> 00:11:23,000
+BI intersected with AP. So, we have that BI is I is the following set.
+
+99
+00:11:23,000 --> 00:11:32,000
+These are all subformulas of the closure of phi such that the sequence starting at that position,
+
+100
+00:11:32,000 --> 00:11:45,000
+so here is an I there is an I of all As this satisfies the formula for psi.
+
+101
+00:11:45,000 --> 00:11:51,520
+No, phi. Yeah. Phi, that's good. Good. This is what we should keep in
+
+102
+00:11:51,520 --> 00:12:04,400
+mind because that's what we're going to use quite a bit.
+
+103
+00:12:04,400 --> 00:12:18,240
+Good. Now, what we're going to prove we will prove that the sequence of Bs, so B0 B1 B2
+
+104
+00:12:18,240 --> 00:12:24,760
+is a run of the automaton G of phi.
+
+105
+00:12:24,760 --> 00:12:27,200
+That's the first thing I'm going to prove.
+
+106
+00:12:27,200 --> 00:12:28,771
+Later, I'm going to prove it's also accepting.
+
+107
+00:12:28,771 --> 00:12:37,600
+I'm first going to show the set of the sequence of Bs is a run.
+
+108
+00:12:37,600 --> 00:12:45,320
+Good. And it's a run for the input word sigma.
+
+109
+00:12:45,320 --> 00:13:06,440
+Good. First observe that B0 is an initial state of G phi since
+
+110
+00:13:06,440 --> 00:13:13,640
+by star, which is the thing here in the box B0 are all formulas in the closure such
+
+111
+00:13:13,640 --> 00:13:23,240
+that A0 satisfies phi right? So, that means that phi belongs to B0.
+
+112
+00:13:23,240 --> 00:13:30,720
+And we know by definition that all the states that include phi are initial states.
+
+113
+00:13:30,720 --> 00:13:39,839
+So slowly what do we have? We have that by star B0 is the set of
+
+114
+00:13:39,839 --> 00:13:46,280
+in the closure such that A0 A1 etc. satisfies phi.
+
+115
+00:13:46,280 --> 00:13:58,400
+this is true since sigma belongs to the words of phi.
+
+116
+00:13:58,400 --> 00:14:15,045
+And this A0 etc. was sigma. Good. So, B0 is an initial state.
+
+117
+00:14:15,045 --> 00:14:17,100
+That's what we know. What else are we going to have to know?
+
+118
+00:14:17,100 --> 00:14:21,080
+We have to find prove something about the successor relation because we want to prove it's a run.
+
+119
+00:14:21,080 --> 00:14:23,697
+The only thing we know now is that this run starts in initial state.
+
+120
+00:14:23,697 --> 00:14:28,200
+That's good to know. But now what we have to prove is the following.
+
+121
+00:14:28,200 --> 00:14:42,280
+So, now we have to show also we have that BI + 1 belongs to delta BI of AI.
+
+122
+00:14:42,280 --> 00:14:46,680
+So, this tells you that BI + 1 is a successor successor of BI if you take as
+
+123
+00:14:46,680 --> 00:14:51,880
+next input symbol AI. Why AI? Yeah, because that's what sigma is, right?
+
+124
+00:14:51,880 --> 00:15:10,320
+Sigma is the sequence of As. Since the following things hold A AI equals BI intersected with AP
+
+125
+00:15:10,320 --> 00:15:16,500
+Look at this slide. This is important because otherwise there is no successor.
+
+126
+00:15:16,500 --> 00:15:23,520
+So, we have to make sure that we are in this case which is the case by construction.
+
+127
+00:15:23,520 --> 00:15:30,400
+B If you have a next formula So, now what do I need to check?
+
+128
+00:15:30,400 --> 00:15:36,160
+I need to check these two conditions.
+
+129
+00:15:36,160 --> 00:15:44,320
+So, how do I get these conditions? Assume that next psi belongs to the closure of phi.
+
+130
+00:15:44,320 --> 00:15:56,720
+For that it holds the following. Next psi belongs to BI if and only if by condition star
+
+131
+00:15:56,720 --> 00:16:18,600
+that AI AI + 1 satisfies next psi.
+
+132
+00:16:18,600 --> 00:16:29,120
+But this means if and only if AI + 1 AI + 2 satisfies psi.
+
+133
+00:16:29,120 --> 00:16:36,560
+Here I just use star. Here I use the if and only if and I'm a little bit
+
+134
+00:16:36,560 --> 00:17:02,360
+confused because Sorry, I made one typo which I see now that is a typo.
+
+135
+00:17:02,360 --> 00:17:17,091
+This really must be a psi. So, this argument still holds.
+
+136
+00:17:17,091 --> 00:17:25,880
+We take all the psi satisfying psi, but we know that sigma satisfies phi and therefore it follows that phi
+
+137
+00:17:25,880 --> 00:17:34,240
+belongs to B0 and therefore it follows that B0 is initial.
+
+138
+00:17:34,240 --> 00:17:37,960
+But now I saw that here I I need this psi.
+
+139
+00:17:37,960 --> 00:17:40,999
+So, next psi belongs to BI. Look at star.
+
+140
+00:17:40,999 --> 00:17:46,679
+That means that AI AI + 1 satisfies this formula which is next psi.
+
+141
+00:17:46,679 --> 00:17:54,080
+Now, you apply the semantics of LTL. If this sequence satisfies next psi, then the sequence from the next position
+
+142
+00:17:54,080 --> 00:18:07,560
+on needs to satisfy psi. But that is true again by star if and only if psi belongs
+
+143
+00:18:07,560 --> 00:18:19,160
+to BI + 1. If this satisfies psi by definition of star, psi belongs to BI +
+
+144
+00:18:19,160 --> 00:18:35,120
+Next psi belongs to the current state if and only if psi belongs to the next state.
+
+145
+00:18:35,120 --> 00:18:39,520
+Sorry for the camera man. I'm moving a bit today.
+
+146
+00:18:39,520 --> 00:18:46,520
+good. So, what else? We need to also to prove C, namely for an until formula.
+
+147
+00:18:46,520 --> 00:18:55,000
+So, we show that if you give me an until formula in the closure of phi we have the following.
+
+148
+00:18:55,000 --> 00:19:01,479
+Phi1 until Phi2 belongs to BI. Notice where I am.
+
+149
+00:19:01,479 --> 00:19:06,240
+I am here on the left-hand side of this if and only if.
+
+150
+00:19:06,240 --> 00:19:10,320
+Now, I have to prove the right-hand side.
+
+151
+00:19:10,320 --> 00:19:17,640
+So, this means if and only if again by construction, so by star it follows that
+
+152
+00:19:17,640 --> 00:19:23,919
+AI AI + 1 satisfies Phi1 until Phi2.
+
+153
+00:19:23,919 --> 00:19:36,720
+But this is true as you all know that means that either AI AI + 1 satisfies Phi2.
+
+154
+00:19:36,720 --> 00:19:43,320
+so, here I use expansion law.
+
+155
+00:19:43,320 --> 00:19:47,000
+I was already hinting at the point that the expansion law is crucial in this
+
+156
+00:19:47,000 --> 00:19:51,200
+algorithm and here is where we one of the places where we use it.
+
+157
+00:19:51,200 --> 00:20:02,640
+this means that AI at this one satisfies phi two or AI AI plus one satisfies phi one, but
+
+158
+00:20:02,640 --> 00:20:08,440
+then also the next thing, the next state, so starting from AI plus one AI
+
+159
+00:20:08,440 --> 00:20:15,920
+plus two, it needs to satisfy phi one until phi two.
+
+160
+00:20:15,920 --> 00:20:22,960
+Good, but this holds again by star. That means that this is from I on, so
+
+161
+00:20:22,960 --> 00:20:27,880
+that means that phi two belongs to BI.
+
+162
+00:20:27,880 --> 00:20:44,240
+Or phi one belongs to BI and this end, phi one until phi two belongs to BI plus one.
+
+163
+00:20:44,240 --> 00:20:51,520
+This is the same as saying AI should satisfy next and therefore I've shifted this index by one.
+
+164
+00:20:51,520 --> 00:21:16,360
+Yeah. This all together B0 is an initial state and we have that BI plus one belongs to delta
+
+165
+00:21:16,360 --> 00:21:31,320
+BI AI. So B0 B1 etc. is a run of G phi.
+
+166
+00:21:31,320 --> 00:21:44,880
+Good. What is left we need to prove is accepting.
+
+167
+00:21:44,880 --> 00:21:51,160
+So now it comes why is this acceptance condition really the acceptance condition we need.
+
+168
+00:21:51,160 --> 00:21:58,920
+So the second part of the proof two So the only thing we know is a run.
+
+169
+00:21:58,920 --> 00:22:14,760
+Now I want to prove show that B0 B1 etc. is accepting.
+
+170
+00:22:14,760 --> 00:22:24,200
+Good. Let's the set of accept states be something of the form F1 up to FK.
+
+171
+00:22:24,200 --> 00:22:52,520
+So these are the accept states, the accepts sets of my automata.
+
+172
+00:22:52,520 --> 00:23:08,960
+Good. To prove BI I some index in the run needs to be in F of J
+
+173
+00:23:08,960 --> 00:23:27,120
+for all J for infinitely many I.
+
+174
+00:23:27,120 --> 00:23:39,040
+I mean the intuition is here we have B0 B1 B2 etc. B27 B100 etc.
+
+175
+00:23:39,040 --> 00:23:42,600
+Now we have to fulfill all the accept conditions, so pick one.
+
+176
+00:23:42,600 --> 00:23:46,376
+I take FJ. What do I need to prove?
+
+177
+00:23:46,376 --> 00:23:50,920
+I need to prove that this run visits FJ infinitely often.
+
+178
+00:23:50,920 --> 00:23:55,600
+What does that mean? There are infinitely many indices, let's call them I
+
+179
+00:23:55,600 --> 00:24:00,200
+such that I visit some state in FJ.
+
+180
+00:24:00,200 --> 00:24:03,382
+So I is an index here,
+
+181
+00:24:03,382 --> 00:24:09,520
+Maybe this belongs to F J maybe this is another I that belongs to F
+
+182
+00:24:09,520 --> 00:24:16,480
+J and what I need to prove, I need to prove that there are infinitely many of those Is.
+
+183
+00:24:16,480 --> 00:24:25,560
+Good. Let FJ correspond to a certain subformula.
+
+184
+00:24:25,560 --> 00:24:32,800
+Why do I know this? Well, I know that all those Fs, F1 up to FK are induced
+
+185
+00:24:32,800 --> 00:24:38,440
+because they belong to a certain until subformula that belongs in the closure.
+
+186
+00:24:38,440 --> 00:24:47,679
+So number J, let's say it corresponds to the formula phi one J until phi two J
+
+187
+00:24:47,679 --> 00:24:52,320
+which is an element of the closure of phi.
+
+188
+00:24:52,320 --> 00:24:56,000
+Now we're going to show this by contraposition.
+
+189
+00:24:56,000 --> 00:25:00,400
+That means I'm going to work towards a contradiction.
+
+190
+00:25:00,400 --> 00:25:02,360
+So how do I get to a contradiction?
+
+191
+00:25:02,360 --> 00:25:16,240
+We're going to assume that BI I belongs to FJ for finitely many.
+
+192
+00:25:16,240 --> 00:25:18,840
+I need to prove it for infinitely many.
+
+193
+00:25:18,840 --> 00:25:25,600
+Now I'm going to say it's for finitely many and then let's see whether we can get a contradiction.
+
+194
+00:25:25,600 --> 00:25:44,520
+Good. Let's call this condition triangle. Good. It holds that if BI does not belong to FJ implies
+
+195
+00:25:44,520 --> 00:26:05,440
+that this subformula, belongs to BI and the formula phi two J does not belong to BI.
+
+196
+00:26:05,440 --> 00:26:12,560
+An element does not belong to this set if the negation of this part is true.
+
+197
+00:26:12,560 --> 00:26:18,640
+The negation of the part means this part is in the set and this thing is not in the set.
+
+198
+00:26:18,640 --> 00:26:33,160
+It's just a negation of what is written down on this slide.
+
+199
+00:26:33,160 --> 00:26:45,960
+So this holds by definition of F J.
+
+200
+00:26:45,960 --> 00:26:57,800
+Good. As BI is what? Well, that was the definition closure of phi such that AI AI plus one
+
+201
+00:26:57,800 --> 00:27:04,520
+satisfies psi. This was my star before on that board over there.
+
+202
+00:27:04,520 --> 00:27:18,542
+It follows BI does not belong to FJ implies
+
+203
+00:27:18,542 --> 00:27:22,920
+Now I can show you this. I can basically write this down as follows AI
+
+204
+00:27:22,920 --> 00:27:32,000
+AI plus one etc. satisfies phi one J until phi two J.
+
+205
+00:27:32,000 --> 00:27:36,920
+So what I do is I replace this BI by this AI etc. satisfying the formula
+
+206
+00:27:36,920 --> 00:27:39,560
+which I can do because of this definition.
+
+207
+00:27:39,560 --> 00:27:42,760
+And I do the same for the second part.
+
+208
+00:27:42,760 --> 00:27:54,040
+And, this is not in BI which means actually that the sequence AI AI plus one etc. violates
+
+209
+00:27:54,040 --> 00:28:19,120
+phi two J. Good. From star from this So let's call this, I don't know what, A.
+
+210
+00:28:19,120 --> 00:28:24,400
+Now A is maybe back, right?, let's call this small A, let's call this B.
+
+211
+00:28:24,400 --> 00:28:29,848
+Mhm. Mhm. From A, what can I conclude from A?
+
+212
+00:28:29,848 --> 00:28:39,360
+From A it follows if this sequence satisfies this formula, it means there must be a K
+
+213
+00:28:39,360 --> 00:28:47,760
+AK AK plus one etc. satisfying the second part of the formula phi two J for some
+
+214
+00:28:47,760 --> 00:28:57,159
+K at least well, I. If this sequence satisfies the until formula, it needs to be the case that
+
+215
+00:28:57,159 --> 00:29:01,800
+yeah, phi two J should hold some point at some point K.
+
+216
+00:29:01,800 --> 00:29:12,600
+By two it says K differs from J because this itself does not satisfy this formula.
+
+217
+00:29:12,600 --> 00:29:18,480
+So what do we know? K is larger than J.
+
+218
+00:29:18,480 --> 00:29:37,080
+Strictly larger than J. I, of course. Yeah, we're talking about at least I.
+
+219
+00:29:37,080 --> 00:29:43,440
+This one says phi two J is not satisfied by AI, so K is strictly larger than I.
+
+220
+00:29:43,440 --> 00:30:01,000
+Sorry, not to J. Good. Then phi 2 j belongs to BK.
+
+221
+00:30:01,000 --> 00:30:10,040
+No, for some K strictly larger than I because of this.
+
+222
+00:30:10,040 --> 00:30:33,440
+And because of the definition of BK. And by definition BK belongs to FJ.
+
+223
+00:30:33,440 --> 00:30:36,760
+Yeah, because we have phi 2 j and because of the definition if there is a
+
+224
+00:30:36,760 --> 00:30:40,897
+phi if the second part of the until formula is true at some position then you also satisfy this thing.
+
+225
+00:30:40,897 --> 00:30:45,653
+So, what have we concluded? We conclude this from what?
+
+226
+00:30:45,653 --> 00:30:55,544
+Where did we start? We started by saying BI belongs to FJ.
+
+227
+00:30:55,544 --> 00:31:17,720
+So, summarizing So, from BI belonging to FJ we conclude BK in FJ for some K strictly larger than I.
+
+228
+00:31:17,720 --> 00:31:21,400
+And now I can repeat the argument for BK.
+
+229
+00:31:21,400 --> 00:31:26,080
+Yeah, here I start with I. Now I get that at some point later
+
+230
+00:31:26,080 --> 00:31:28,924
+I again have a state that is in FJ.
+
+231
+00:31:28,924 --> 00:31:31,500
+Now you can do the same reasoning starting with BK.
+
+232
+00:31:31,500 --> 00:31:38,240
+You will get there exists some L strictly larger than K that again is in FJ.
+
+233
+00:31:38,240 --> 00:31:44,480
+But that means there are infinitely many which contradicts my assumption that there are only finitely many.
+
+234
+00:31:44,480 --> 00:32:07,720
+So repeating this argument repeating this argument So, this simply means induction, right?
+
+235
+00:32:07,720 --> 00:32:29,880
+to BK yields that there are infinitely many Is such that BI in FJ.
+
+236
+00:32:29,880 --> 00:32:36,360
+This is a contradiction to the formula which was in the triangle.
+
+237
+00:32:36,360 --> 00:32:47,720
+Because the triangle said there are only finitely many.
+
+238
+00:32:47,720 --> 00:32:52,840
+Good. This was one direction of the proof.
+
+239
+00:32:52,840 --> 00:32:58,320
+Yeah. But I hope you see that the steps we are doing is quite elementary and the reason
+
+240
+00:32:58,320 --> 00:33:03,320
+I do the proof is that you also hopefully try to understand why this acceptance condition is the right
+
+241
+00:33:03,320 --> 00:33:22,520
+acceptance condition. Yeah, and exactly that part of the proof here is to my opinion very important.
+
+242
+00:33:22,520 --> 00:33:31,760
+Any questions so far? So, what did we prove so far?
+
+243
+00:33:31,760 --> 00:33:43,320
+We have shown that if sigma satisfies phi if sigma satisfies phi then actually
+
+244
+00:33:43,320 --> 00:33:48,400
+there is an accepting run in the automaton for this word.
+
+245
+00:33:48,400 --> 00:33:50,210
+Now we're going to construct the other way around.
+
+246
+00:33:50,210 --> 00:33:54,400
+We want to prove that this automaton does not accept more.
+
+247
+00:33:54,400 --> 00:34:04,560
+So, that's the next step. Okay. So, second part of the proof we have to show the inclusion
+
+248
+00:34:04,560 --> 00:34:13,280
+in this direction. Okay. So, now I take a word which is accepted by the automaton.
+
+249
+00:34:13,280 --> 00:34:23,280
+So, this is something of the form A0 A1 etc. This is accepted by my automaton G of phi.
+
+250
+00:34:23,280 --> 00:34:33,599
+To prove sigma satisfies phi. My automaton does not accept anything that does not satisfy phi.
+
+251
+00:34:33,599 --> 00:34:38,200
+That's basically what we need to prove. Good.
+
+252
+00:34:38,200 --> 00:34:45,240
+What does this mean? That this means that that G phi has an accepting run.
+
+253
+00:34:45,240 --> 00:34:48,520
+Yeah, because otherwise this word would not be in the language.
+
+254
+00:34:48,520 --> 00:34:58,200
+Let's say this was an accepting run B0 B1 B2 etc. which is an accepting run for sigma.
+
+255
+00:34:58,200 --> 00:35:18,840
+Good. Since delta BI AI is empty set if AI differs from BI intersected with AP, it follows
+
+256
+00:35:18,840 --> 00:35:25,800
+quite similar to what we have seen before that AI actually equals BI intersected with AP.
+
+257
+00:35:25,800 --> 00:35:32,480
+Otherwise this B0 etc. could not be an accepting run for this trace.
+
+258
+00:35:32,480 --> 00:35:39,600
+Good. And this holds for all I, right?
+
+259
+00:35:39,600 --> 00:35:53,440
+Thus what we know now is that sigma is of the form B0 AP B1 intersected with AP etc.
+
+260
+00:35:53,440 --> 00:36:01,240
+This is what we know about the shape of our run.
+
+261
+00:36:01,240 --> 00:36:06,000
+Good. We prove now the following claim. And this claim is a little bit more
+
+262
+00:36:06,000 --> 00:36:10,888
+general than the one that we have to prove but this turns out to be fine.
+
+263
+00:36:10,888 --> 00:36:21,359
+We prove the following. For all psi in the closure of phi and
+
+264
+00:36:21,359 --> 00:36:27,720
+B0 B1 etc. being an infinite run So, this is on the Q omega.
+
+265
+00:36:27,720 --> 00:36:52,080
+And we have such a sequence A's A0 A1 etc. belongs to 2 AP omega and I BI
+
+266
+00:36:52,080 --> 00:37:08,560
+BI + 1 is a successor of BI and AI for all I and there are infinitely many Is
+
+267
+00:37:08,560 --> 00:37:20,920
+such that BI belongs to FJ for all FJ in this set of accepting states
+
+268
+00:37:20,920 --> 00:37:28,760
+set of sets of accepting states, then So, if all this together holds, right?
+
+269
+00:37:28,760 --> 00:37:56,000
+Then psi belongs to B0 if and only if A0 A1 A2 satisfies psi.
+
+270
+00:37:56,000 --> 00:38:00,000
+why is this of interest to us now?
+
+271
+00:38:00,000 --> 00:38:03,400
+Well, we need to show that sigma satisfies phi.
+
+272
+00:38:03,400 --> 00:38:07,240
+So, we need to show that this satisfies phi.
+
+273
+00:38:07,240 --> 00:38:15,453
+So, that means actually that if you interpret this as being sigma if you take psi what was psi?
+
+274
+00:38:15,453 --> 00:38:21,040
+Well, psi is any formula in the closure so including phi itself.
+
+275
+00:38:21,040 --> 00:38:27,080
+So, that means that phi belongs to B0 if and only if this A0 etc. satisfies phi.
+
+276
+00:38:27,080 --> 00:38:31,840
+This is what we want to prove. Yeah, and now what this
+
+277
+00:38:31,840 --> 00:38:35,320
+claim is going to tell you in order to prove this it suffices to prove this
+
+278
+00:38:35,320 --> 00:38:40,840
+because this is equivalent to this. Yeah, so interpret this as follows.
+
+279
+00:38:40,840 --> 00:38:52,120
+Maybe I write it down to make this clear.
+
+280
+00:38:52,120 --> 00:39:05,280
+So, our obligation is sigma satisfies phi. This is of the form A0 etc. satisfies phi.
+
+281
+00:39:05,280 --> 00:39:22,440
+Yeah. Provided we can prove the claim. So, by the above claim assuming all those conditions hold it suffices
+
+282
+00:39:22,440 --> 00:39:34,825
+to show that phi belongs to B0. Good.
+
+283
+00:39:34,825 --> 00:39:39,000
+So, now what we're going to do, we're going to focus to prove this.
+
+284
+00:39:39,000 --> 00:39:53,400
+Let's say double star. Once we're done with this, we basically actually done.
+
+285
+00:39:53,400 --> 00:39:56,440
+How are we going to prove this claim?
+
+286
+00:39:56,440 --> 00:40:18,080
+Yeah, so this is the This is proven by induction over psi.
+
+287
+00:40:18,080 --> 00:40:30,840
+By induction on the structure of psi. Now, I'm going to skip the base cases.
+
+288
+00:40:30,840 --> 00:40:36,114
+I'm going to skip the trivial cases, negation, conjunction, etc. I'm going to skip next.
+
+289
+00:40:36,114 --> 00:41:07,600
+I'm only doing the hardest part. So, we only consider psi is of the form phi1 until phi2.
+
+290
+00:41:07,600 --> 00:41:14,080
+So, in particular, the induction hypothesis is that the claim holds for phi1 and it also holds for phi2.
+
+291
+00:41:14,080 --> 00:41:19,760
+Yeah, that's what I'm also of course going to use in the proof.
+
+292
+00:41:19,760 --> 00:41:22,440
+Good. So, what do we need to prove?
+
+293
+00:41:22,440 --> 00:41:26,280
+Well, we need to prove the claim which is written there and there and there.
+
+294
+00:41:26,280 --> 00:41:41,440
+So, to prove is the following. Phi1 until phi2 belongs to B0 if and only if A0 A1 A2 satisfies
+
+295
+00:41:41,440 --> 00:41:46,560
+Well, this whole thing there which is phi1 until phi2.
+
+296
+00:41:46,560 --> 00:41:50,875
+This is what I need to prove. How are we going to prove this?
+
+297
+00:41:50,875 --> 00:41:56,857
+In two parts. I need to prove this if and only if which is an implication in both directions.
+
+298
+00:41:56,857 --> 00:42:03,440
+So, we first start with the implication from right to left.
+
+299
+00:42:03,440 --> 00:42:14,520
+So, assume A0 A1 satisfies phi1 until phi2.
+
+300
+00:42:14,520 --> 00:42:31,600
+Good. What does it mean? Then we know that AK AK + 1 etc. satisfies phi2 for some K
+
+301
+00:42:31,600 --> 00:42:56,920
+at least zero. And AI AI + 1 satisfies phi1 for all Is between zero up to but excluding K.
+
+302
+00:42:56,920 --> 00:43:18,840
+Semantics of until. Now, you apply the induction hypothesis to both phi1 and phi2.
+
+303
+00:43:18,840 --> 00:43:21,788
+Yeah, because here I have something which is a phi and this is a phi.
+
+304
+00:43:21,788 --> 00:43:25,120
+So, now I can apply the induction hypothesis.
+
+305
+00:43:25,120 --> 00:43:31,560
+And this gives me that phi2 belongs to BK.
+
+306
+00:43:31,560 --> 00:43:40,000
+Yeah, because this says if Well, for if this holds for AK satisfying phi2,
+
+307
+00:43:40,000 --> 00:43:56,920
+then phi2 must belong to BK. And we have that phi1 belongs to BI for all Is.
+
+308
+00:43:56,920 --> 00:44:06,240
+Now, you can apply induction by induction on K.
+
+309
+00:44:06,240 --> 00:44:24,040
+It follows that phi1 until phi2 belongs to BK BK minus 1 etc. So, recursion backward I mean
+
+310
+00:44:24,040 --> 00:44:27,933
+induction backwards to B0. And this is what we needed to prove.
+
+311
+00:44:27,933 --> 00:44:42,800
+We need to prove that phi1 until phi2 belongs to B0.
+
+312
+00:44:42,800 --> 00:44:45,030
+Yeah, because we started with this phi1 until phi2.
+
+313
+00:44:45,030 --> 00:44:49,188
+From this BK, we know that now K is also satisfying phi1 until phi2.
+
+314
+00:44:49,188 --> 00:44:52,400
+And then you apply the same argument again and again and again.
+
+315
+00:44:52,400 --> 00:45:12,240
+And then you get this result. Good, that was implication from right to left.
+
+316
+00:45:12,240 --> 00:45:22,120
+What about implication from left to right? So, the second part which I call B
+
+317
+00:45:22,120 --> 00:45:27,000
+is now the implication from left to right.
+
+318
+00:45:27,000 --> 00:45:35,640
+So, now I take a Let phi1 until phi2 belongs to B0.
+
+319
+00:45:35,640 --> 00:45:46,830
+So, we know that B0 is elementary. As B0 is elementary why do we know this?
+
+320
+00:45:46,830 --> 00:45:52,200
+Yeah, because all the Bs are states in my Büchi automaton and all states are by definition elementary.
+
+321
+00:45:52,200 --> 00:45:57,400
+But by using this elementary, I know that either phi1 belongs to B0
+
+322
+00:45:57,400 --> 00:46:07,880
+and interpret this as phi2 not being in B0 or phi2 belongs to B0.
+
+323
+00:46:07,880 --> 00:46:16,680
+Two cases. Let's first take the case that phi2 belongs to B0.
+
+324
+00:46:16,680 --> 00:46:29,440
+But that's easy because then by induction hypothesis we have that A0 A1 etc. satisfies phi2.
+
+325
+00:46:29,440 --> 00:46:39,680
+And this implies that A0 A1 satisfies phi1 until phi2.
+
+326
+00:46:39,680 --> 00:47:00,470
+Thus phi1 until phi2 belongs to B0. this is not important.
+
+327
+00:47:00,470 --> 00:47:04,960
+This is not this. This is enough. This is what we need to prove.
+
+328
+00:47:04,960 --> 00:47:11,480
+Second case. Phi2 does not belong to B zero.
+
+329
+00:47:11,480 --> 00:47:13,150
+And problems are always in the last case.
+
+330
+00:47:13,150 --> 00:47:19,600
+So, here this is a bit difficult. Then it means that phi1 is in B0.
+
+331
+00:47:19,600 --> 00:47:28,080
+And by definition, phi1 until phi2 belongs to B0.
+
+332
+00:47:28,080 --> 00:47:30,560
+because this is already what we know.
+
+333
+00:47:30,560 --> 00:47:34,040
+this says that phi1. So, this is already what we know from here.
+
+334
+00:47:34,040 --> 00:47:58,960
+So, this is what we know. Good. We prove that phi2 belongs to BJ for some J larger than zero.
+
+335
+00:47:58,960 --> 00:48:27,960
+And this is done by contraposition. Assume phi2 does not belong to BJ for all J.
+
+336
+00:48:27,960 --> 00:48:56,040
+From the definition of delta I mean this delta over here we obtain that phi1 belongs to BJ and
+
+337
+00:48:56,040 --> 00:49:05,960
+phi1 until phi2 belongs to BJ for all J at least zero.
+
+338
+00:49:05,960 --> 00:49:17,520
+This is by induction by structural induction. Yeah, from this assumption.
+
+339
+00:49:17,520 --> 00:49:30,600
+As B0 B1 satisfies all accept sets Yeah, this B0 was an accepting run.
+
+340
+00:49:30,600 --> 00:49:34,240
+So, it sets all the accept sets. We know the following.
+
+341
+00:49:34,240 --> 00:49:51,640
+We know that BJ belongs to F phi 1 until phi 2 for infinitely many Js.
+
+342
+00:49:51,640 --> 00:50:03,880
+On the other hand, we have that phi 2 does not belong to B J.
+
+343
+00:50:03,880 --> 00:50:08,280
+Where is this coming from? Well, that was here.
+
+344
+00:50:08,280 --> 00:50:31,600
+That was our assumption. and phi 1 until phi 2 belongs to B J.
+
+345
+00:50:31,600 --> 00:50:47,040
+if and only if B J does not belong to F phi 1 until phi 2 for all J.
+
+346
+00:50:47,040 --> 00:50:59,400
+this holds for all J. This is a contradiction.
+
+347
+00:50:59,400 --> 00:51:05,400
+Yeah, because here I concluded B J in F, this set for infinitely many, and this I said B J
+
+348
+00:51:05,400 --> 00:51:10,008
+does not belong to that set, so this is contradicting to each other.
+
+349
+00:51:10,008 --> 00:51:24,480
+So, phi 2 belongs to B J for infinitely many Js.
+
+350
+00:51:24,480 --> 00:51:37,120
+for some, sorry. Yeah, because this was the assumption.
+
+351
+00:51:37,120 --> 00:51:40,404
+Assumption was that for all J this is not the case.
+
+352
+00:51:40,404 --> 00:51:46,200
+We have now found a contradiction, so it means that there is a J for which this is not true.
+
+353
+00:51:46,200 --> 00:51:54,200
+Therefore, for some J. Now, we have to get to our next argument.
+
+354
+00:51:54,200 --> 00:52:14,600
+Without loss of generality, let J be the smallest index such that phi 2 belongs to B J.
+
+355
+00:52:14,600 --> 00:52:18,120
+So, it's starting from zero, the first index where phi 2 is included.
+
+356
+00:52:18,120 --> 00:52:22,360
+For all the intermediate ones, it's not included.
+
+357
+00:52:22,360 --> 00:52:40,880
+Then the induction hypothesis for all the positions up to J yields that phi 1 belongs to B I and
+
+358
+00:52:40,880 --> 00:52:46,680
+phi 1 until phi 2 belongs to B I.
+
+359
+00:52:46,680 --> 00:53:18,280
+For all these Is. Now, applying the induction hypothesis results in A J A J + 1
+
+360
+00:53:18,280 --> 00:53:25,040
+satisfying phi 2. Because we have phi 2 in B J.
+
+361
+00:53:25,040 --> 00:53:29,640
+So, from that, applying the induction hypothesis to that, we get this.
+
+362
+00:53:29,640 --> 00:53:45,960
+And So, maybe I do this with a color.
+
+363
+00:53:45,960 --> 00:54:00,040
+So, from this I get this. And from this I get that A I A I + 1 satisfies
+
+364
+00:54:00,040 --> 00:54:05,640
+phi 1. So, this is the green part.
+
+365
+00:54:05,640 --> 00:54:14,280
+And this holds for all I less than J.
+
+366
+00:54:14,280 --> 00:54:23,480
+Thus, A 0 A 1 etc. satisfies phi 1 until phi 2.
+
+367
+00:54:23,480 --> 00:54:31,960
+And this is what we needed to prove.
+
+368
+00:54:31,960 --> 00:54:38,400
+So, again, in this part of the proof, you see the use of the definition of the acceptance conditions.
+
+369
+00:54:38,400 --> 00:54:45,000
+In particular, here you see that here we use the definition of these acceptance conditions, which is crucial
+
+370
+00:54:45,000 --> 00:54:54,359
+to get the correctness of this of this proof.
+
+371
+00:54:54,359 --> 00:55:00,160
+Good. I spent so much time on this proof because I think this is the key to model checking
+
+372
+00:55:00,160 --> 00:55:06,680
+of LTL. And to my belief, you should understand why this actually is correct.
+
+373
+00:55:06,680 --> 00:55:12,920
+And I mentioned already that in the literature, there are many different algorithms being published.
+
+374
+00:55:12,920 --> 00:55:18,160
+Actually, it's still a subject for research to get smaller and smaller and smaller Büchi automata,
+
+375
+00:55:18,160 --> 00:55:21,720
+but the algorithms are typically much more complicated.
+
+376
+00:55:21,720 --> 00:55:27,811
+The definition like here doesn't fit on one slide anymore, and the correctness proofs are accordingly much more complicated.
+
+377
+00:55:27,811 --> 00:55:32,080
+And you see that even for this case, the if you do it rigorously,
+
+378
+00:55:32,080 --> 00:55:41,000
+it takes you quite a bit of effort to to do this.
+
+379
+00:55:41,000 --> 00:55:50,840
+Good. The last part I would like to spend on the complexity of the algorithm.
+
+380
+00:55:50,840 --> 00:55:56,400
+And then in the next lecture, I'm going to show you that actually the LTL model checking is PSPACE-complete.
+
+381
+00:55:56,400 --> 00:56:02,400
+And that means that the exponential blow-up that we get in this NBA is unavoidable.
+
+382
+00:56:02,400 --> 00:56:05,720
+So, what's the complexity of the procedure we have seen?
+
+383
+00:56:05,720 --> 00:56:13,440
+We go from an LTL formula, we negate it, and then construct the Büchi automaton for its negation.
+
+384
+00:56:13,440 --> 00:56:15,680
+So, this is what we just have proven.
+
+385
+00:56:15,680 --> 00:56:19,440
+And this was the procedure we were following.
+
+386
+00:56:19,440 --> 00:56:24,640
+Yeah, the definition transformed the LTL formula phi into a GNBA.
+
+387
+00:56:24,640 --> 00:56:28,359
+And then, and this is the construction you have been confronted with in some of
+
+388
+00:56:28,359 --> 00:56:37,440
+the earlier lectures, that you can convert any generalized Büchi automaton into an equivalent non-deterministic Büchi automaton.
+
+389
+00:56:37,440 --> 00:56:41,560
+And maybe you happen if this has K accept sets, what you do, you just copy.
+
+390
+00:56:41,560 --> 00:56:44,440
+You make K copies, and then you cycle around.
+
+391
+00:56:44,440 --> 00:56:50,040
+And that basically was the main construction. So, what's the complexity?
+
+392
+00:56:50,040 --> 00:56:57,480
+Now, this NBA, right? the size of this thing is something like the size of the GNBA times the
+
+393
+00:56:57,480 --> 00:57:01,640
+number of accept sets. Why do we get this number of accept set?
+
+394
+00:57:01,640 --> 00:57:09,000
+This is because the copying. If the number of accept sets here is eight, we make eight copies, and that's
+
+395
+00:57:09,000 --> 00:57:15,000
+why this automaton is eight times the size of the GNBA.
+
+396
+00:57:15,000 --> 00:57:19,640
+Good. So, this is the number of accept sets, and this is also good to know, the number of
+
+397
+00:57:19,640 --> 00:57:23,160
+accept set is at most the size of the formula.
+
+398
+00:57:23,160 --> 00:57:30,080
+Why is this? Well, this is the fact because for every until formula like here, right?
+
+399
+00:57:30,080 --> 00:57:33,514
+F sub phi 1 until phi 2, we have an accept set.
+
+400
+00:57:33,514 --> 00:57:37,400
+How many until subformulas can a formula have?
+
+401
+00:57:37,400 --> 00:57:50,920
+Yeah, only linearly many. So, therefore, this cardinality is at most the size of the formula.
+
+402
+00:57:50,920 --> 00:57:56,880
+Good. So, that means we take the size of this automaton is
+
+403
+00:57:56,880 --> 00:57:59,008
+actually two to the power of the closure of phi.
+
+404
+00:57:59,008 --> 00:58:01,210
+Why do I get the two to the power of the closure of phi?
+
+405
+00:58:01,210 --> 00:58:06,080
+Well, we take the closure, which were the subsets, or sorry, which were the subformulas.
+
+406
+00:58:06,080 --> 00:58:11,440
+And then we take elementary sets. So, we take subsets of the closure.
+
+407
+00:58:11,440 --> 00:58:13,226
+This was already pointed out in the previous lecture.
+
+408
+00:58:13,226 --> 00:58:20,240
+How many subsets can you take? Two to the power the cardinality of the closure.
+
+409
+00:58:20,240 --> 00:58:23,960
+So, the blow-up is in the number of states.
+
+410
+00:58:23,960 --> 00:58:29,080
+So, this is the size of this automaton.
+
+411
+00:58:29,080 --> 00:58:33,520
+And that means that the size of the NBA is at most something at two to the power
+
+412
+00:58:33,520 --> 00:58:37,520
+this thing, Times the number of accept sets, which is in the worst case
+
+413
+00:58:37,520 --> 00:58:49,720
+in the length of the formula. So, this is the size of the automaton that our algorithm provides.
+
+414
+00:58:49,720 --> 00:58:55,400
+Good. So, it's exponential in the size of the formula.
+
+415
+00:58:55,400 --> 00:58:59,320
+Good. So, we can make some remarks about the size of NBA.
+
+416
+00:58:59,320 --> 00:59:07,560
+Actually, it's typically unnecessarily complicated. I already mentioned the algorithm I showed you is the one originally by
+
+417
+00:59:07,560 --> 00:59:15,880
+Wolper and Vardi. if you use tools nowadays to do the model checking, and Spin is one of those
+
+418
+00:59:15,880 --> 00:59:20,560
+tools, then actually you will figure out that the Büchi automata they generate are much
+
+419
+00:59:20,560 --> 00:59:24,520
+smaller than the ones we get from this algorithm.
+
+420
+00:59:24,520 --> 00:59:29,280
+But as I mentioned before, proving the complexity of those algorithms is much harder.
+
+421
+00:59:29,280 --> 00:59:35,360
+I don't know off the the of my head how many wrong algorithms have been published but quite a few.
+
+422
+00:59:35,360 --> 00:59:41,080
+Yeah. Where you reduce too much. So, if you for instance take this NBA
+
+423
+00:59:41,080 --> 00:59:45,160
+with next A, if I would ask you, can you give me an NBA for next A, you would
+
+424
+00:59:45,160 --> 00:59:50,040
+construct something like well, in the initial state anything can happen, but then the next state A should happen and
+
+425
+00:59:50,040 --> 00:59:53,580
+that's it. So, this would be the NBA you would come up with.
+
+426
+00:59:53,580 --> 00:59:56,840
+The algorithm, if you apply it step by step, and actually this is one
+
+427
+00:59:56,840 --> 01:00:00,800
+of the examples in my slides, takes four states and eight edges.
+
+428
+01:00:00,800 --> 01:00:05,142
+So, much more complicated than let's say this this structure.
+
+429
+01:00:05,142 --> 01:00:08,760
+Also this A until B, this was another example which is in the
+
+430
+01:00:08,760 --> 01:00:10,531
+slides, but I skip this here for the moment.
+
+431
+01:00:10,531 --> 01:00:16,000
+This would be something like A holds until at some point B holds, and then
+
+432
+01:00:16,000 --> 01:00:19,480
+yeah, no matter what happens you stay in the accept set, so it's two states.
+
+433
+01:00:19,480 --> 01:00:27,160
+The construction, if you apply the algorithm literally, gives you five states and 20 edges.
+
+434
+01:00:27,160 --> 01:00:34,120
+Good. But there exist worst-case formulas. So, there are formulas for which this exponential blow-up is unavoidable.
+
+435
+01:00:34,120 --> 01:00:38,840
+So, there exist actually a family of formulas, so phi n simply means it's a
+
+436
+01:00:38,840 --> 01:00:45,760
+family of formula where the index or the subscript n is something saying about the size of the formula.
+
+437
+01:00:45,760 --> 01:00:49,200
+So, the size of phi n is polynomial in n.
+
+438
+01:00:49,200 --> 01:00:55,040
+I will show an example in a minute, but I will argue that every NBA
+
+439
+01:00:55,040 --> 01:00:59,520
+for such a formula has at least exponentially many states.
+
+440
+01:00:59,520 --> 01:01:05,160
+Okay? So, this shows you that the blow-up by means of an example is unavoidable.
+
+441
+01:01:05,160 --> 01:01:10,800
+So, this is an LT property that has no small non-deterministic Büchi automaton.
+
+442
+01:01:10,800 --> 01:01:15,080
+So, the family of properties we are considering is written down as follows.
+
+443
+01:01:15,080 --> 01:01:18,920
+So, E of n, so I just write it down as a property,
+
+444
+01:01:18,920 --> 01:01:21,697
+as an LT property, so this is a set of traces, right?
+
+445
+01:01:21,697 --> 01:01:28,840
+It's the set of all infinite words of the following form, you have some prefix of size n,
+
+446
+01:01:28,840 --> 01:01:35,000
+then this same prefix is repeated, and then something arbitrary.
+
+447
+01:01:35,000 --> 01:01:41,480
+Okay? What is the key point here is the repetition of the first prefix.
+
+448
+01:01:41,480 --> 01:01:46,120
+Good. So, this is of the form XX, X is the prefix of length n,
+
+449
+01:01:46,120 --> 01:01:51,720
+and that's repeated and then something which happens afterwards which is actually arbitrary.
+
+450
+01:01:51,720 --> 01:01:57,720
+So, the LTL formula that corresponds to this property looks something like this.
+
+451
+01:01:57,720 --> 01:02:04,880
+So, phi n is a conjunction of for all atomic propositions AP of some length, and here is this length
+
+452
+01:02:04,880 --> 01:02:12,080
+n again, so n again is this length of the prefix, such that if there is an A at position
+
+453
+01:02:12,080 --> 01:02:18,160
+I if and only if n positions later there is an A as well.
+
+454
+01:02:18,160 --> 01:02:21,600
+Now, this I hope you see this models the repetition.
+
+455
+01:02:21,600 --> 01:02:26,200
+And as you do this for all I, it really tells you that if there is let's say a
+
+456
+01:02:26,200 --> 01:02:33,320
+symbol in this A2, then at n positions later, which is exactly here, this symbol, for instance
+
+457
+01:02:33,320 --> 01:02:35,920
+small A, needs also to be in this set.
+
+458
+01:02:35,920 --> 01:02:40,880
+And because you do this for all I, you really say it repeats.
+
+459
+01:02:40,880 --> 01:02:42,680
+Now, this is of course a hypothetical case.
+
+460
+01:02:42,680 --> 01:02:46,034
+I'm not claiming that this is a formula that you easily let's it.
+
+461
+01:02:46,034 --> 01:02:49,760
+Of course, this is polynomial in the length of n.
+
+462
+01:02:49,760 --> 01:02:54,940
+Yeah, I mean this is constant length. Now, you have this is a conjunction over n.
+
+463
+01:02:54,940 --> 01:03:00,800
+Well, and this is also still linear over number of atomic propositions, so you get something which is polynomial in
+
+464
+01:03:00,800 --> 01:03:08,520
+the size of n. Now, let's look at the Büchi automaton you need for these words.
+
+465
+01:03:08,520 --> 01:03:11,520
+What's the hard part? You need some kind of memory, right?
+
+466
+01:03:11,520 --> 01:03:15,960
+Because you need to encode somewhere in the automaton that if this is the
+
+467
+01:03:15,960 --> 01:03:22,560
+prefix, then you first have to see exactly the same prefix again before you can do anything else.
+
+468
+01:03:22,560 --> 01:03:30,480
+And that's the key point. So, let's take a very simple example, n equals 1.
+
+469
+01:03:30,480 --> 01:03:35,160
+So, I have a word which is simply of the form AA something.
+
+470
+01:03:35,160 --> 01:03:42,840
+Good. If I just take it instead of atomic propositions being a singleton A, then the automaton looks as follows.
+
+471
+01:03:42,840 --> 01:03:49,040
+So, there are two possibilities initially, either I have this input symbol this set A contains an A or it
+
+472
+01:03:49,040 --> 01:03:55,908
+does not. Okay? Now, here in that state, I have to repeat the same pattern as I have seen before.
+
+473
+01:03:55,908 --> 01:04:01,320
+So, if the incoming edge is labeled with A, it's outgoing edge is also has to be labeled with A.
+
+474
+01:04:01,320 --> 01:04:05,000
+And from there on I can accept anything, because then I can accept
+
+475
+01:04:05,000 --> 01:04:09,280
+those Bs which is the self cycle in the accept state.
+
+476
+01:04:09,280 --> 01:04:12,720
+Yeah, the automaton is symmetric, so here the same but not A and not A.
+
+477
+01:04:12,720 --> 01:04:19,920
+Good. Okay, this is the LTL formula A if and only if next A.
+
+478
+01:04:19,920 --> 01:04:24,359
+This is if you expand the set of atomic propositions.
+
+479
+01:04:24,359 --> 01:04:32,000
+So, again n equals 1, so I just have AA, but now I have a set of atomic propositions AP,
+
+480
+01:04:32,000 --> 01:04:36,359
+and now I have to distinguish between all possible As there.
+
+481
+01:04:36,359 --> 01:04:39,520
+So, what are all the possible subsets of AB?
+
+482
+01:04:39,520 --> 01:04:43,720
+Well, there are 2 to the power 2, so I get four different outcomes, A and
+
+483
+01:04:43,720 --> 01:04:48,080
+B, A and not B, not A and B, and not A and B.
+
+484
+01:04:48,080 --> 01:04:52,062
+In those intermediate states, there is my memory, so to speak.
+
+485
+01:04:52,062 --> 01:04:57,760
+So, if the prefix was A and B before, I have only an outgoing edge with A and B.
+
+486
+01:04:57,760 --> 01:05:01,200
+And the same for all the other states.
+
+487
+01:05:01,200 --> 01:05:06,574
+Good. What happens if we And this is the formula A if and only if next A and B if
+
+488
+01:05:06,574 --> 01:05:12,280
+and only if next B. Now, let's expand n a bit.
+
+489
+01:05:12,280 --> 01:05:17,720
+So, again I restrict myself to a single atomic proposition, but n equals 2.
+
+490
+01:05:17,720 --> 01:05:24,800
+So, now I look at the words A1 A2 followed by A1 A2 followed by something.
+
+491
+01:05:24,800 --> 01:05:29,080
+Now, my automaton has to First, we have to have all the possibilities A1 A2, so
+
+492
+01:05:29,080 --> 01:05:32,800
+I have something of the form A, and then I can choose between A or not
+
+493
+01:05:32,800 --> 01:05:36,342
+A, or I can have not A and then I have A and not A.
+
+494
+01:05:36,342 --> 01:05:39,306
+Now, the positions here, that's exactly their subscript.
+
+495
+01:05:39,306 --> 01:05:44,440
+1 1 means I have reached that state by first doing an A and then reaching an A,
+
+496
+01:05:44,440 --> 01:05:46,022
+and then doing an A. So, what should I do?
+
+497
+01:05:46,022 --> 01:05:51,440
+I do first an A, which is the correct copy of this A, and then I do
+
+498
+01:05:51,440 --> 01:05:53,876
+here I have this A and this is the copy of that A.
+
+499
+01:05:53,876 --> 01:05:59,720
+So, here you see A and not A followed by A and not A, and so forth.
+
+500
+01:05:59,720 --> 01:06:03,440
+I think you get the idea. I have to encode all possibilities.
+
+501
+01:06:03,440 --> 01:06:07,960
+Now, there are exponentially many possibilities, so your automaton will be exponentially large.
+
+502
+01:06:07,960 --> 01:06:13,400
+The formula was polynomial, but the automaton is exponential.
+
+503
+01:06:13,400 --> 01:06:20,640
+This is the LTL formula A if and only if next next A, so two positions later A, and
+
+504
+01:06:20,640 --> 01:06:27,480
+if in the next position, n equals 2, then three positions later, I mean two positions later after this position,
+
+505
+01:06:27,480 --> 01:06:30,000
+which means now three times next A holds.
+
+506
+01:06:30,000 --> 01:06:36,640
+Good. The general case has 2 to the power n at least 2 to the power n states,
+
+507
+01:06:36,640 --> 01:06:40,560
+and the point is that basically here you have to get you get 2 to the power n
+
+508
+01:06:40,560 --> 01:06:44,000
+states because you have to basically encode all the histories.
+
+509
+01:06:44,000 --> 01:06:51,160
+What has been the prefix until reaching that state, and there are 2 to the power n of those histories.
+
+510
+01:06:51,160 --> 01:06:57,040
+Is this blow-up Now, you might argue, okay, don't use automata.
+
+511
+01:06:57,040 --> 01:07:01,320
+If this is the problem, why are you so keen on using automata?
+
+512
+01:07:01,320 --> 01:07:03,310
+Yeah, of course you can try to use something else.
+
+513
+01:07:03,310 --> 01:07:11,680
+So, what we are going to see in the next lecture, next Tuesday, we're going to talk about Turing machines,
+
+514
+01:07:11,680 --> 01:07:17,359
+and we're going to show that the reduction of LTL to Turing machines leads you to approve that this actually
+
+515
+01:07:17,359 --> 01:07:23,720
+LTL model checking is PSPACE complete. So, you cannot avoid this exponential blow-up.
+
+516
+01:07:23,720 --> 01:07:28,560
+How clever you can be on every Sunday afternoon, this will not work.
+
+517
+01:07:28,560 --> 01:07:30,186
+And that's what I'm going to show next Tuesday.
+
+518
+01:07:30,186 --> 01:07:36,400
+I wish you a nice weekend and a nice Sunday when you are going to beat the Mexicans.

@@ -1,0 +1,2371 @@
+1
+00:00:02,320 --> 00:00:10,000
+okay very good let's get started even though it's ever fewer people with every tuesday getting fewer and fewer
+
+2
+00:00:10,000 --> 00:00:19,840
+people okay so now before we get started i want to quickly recap the last lecture
+
+3
+00:00:19,840 --> 00:00:26,000
+and basically i want to do that by asking you questions so last lecture you talked about
+
+4
+00:00:26,000 --> 00:00:34,160
+non-deterministic buchi automata can someone tell me what's the like the main difference between non-deterministic Büchi automata and
+
+5
+00:00:34,160 --> 00:00:53,600
+non-deterministic finite automata yes exactly so they operate on infinite words instead of finite words and on
+
+6
+00:00:53,600 --> 00:00:57,360
+finite words i mean there is some point where you can stop in an accepting state
+
+7
+00:00:57,360 --> 00:01:01,680
+but on infinite words there is no such thing as stopping somewhere right so we
+
+8
+00:01:01,680 --> 00:01:06,880
+need to tweak the the acceptance criterion and the acceptance criterion is defined
+
+9
+00:01:06,880 --> 00:01:14,960
+in a way that says a run for a word is accepting if it visits accepting states infinitely often
+
+10
+00:01:14,960 --> 00:01:23,600
+now who of you has seen omega automata buchi automata in other lectures
+
+11
+00:01:23,600 --> 00:01:29,520
+one two three okay not too many so for you probably you know these two
+
+12
+00:01:29,520 --> 00:01:36,479
+lectures are rather boring maybe because it's the the standard contents but it's good that other people here don't
+
+13
+00:01:36,479 --> 00:01:49,200
+know all the contents already now last lecture you have shown that omega regular expressions correspond to omega regular languages
+
+14
+00:01:49,200 --> 00:01:55,200
+right this is what professor cartoon proved to you and in this lecture now we're going
+
+15
+00:01:55,200 --> 00:02:03,119
+to take a look at the closure properties of omega-regular languages what what does that mean well on
+
+16
+00:02:03,119 --> 00:02:12,400
+languages of finite words namely regular languages you all know that they are closed under union intersection and complementation
+
+17
+00:02:12,400 --> 00:02:16,560
+what does that mean you take any two regular languages and you build a union
+
+18
+00:02:16,560 --> 00:02:22,400
+still a regular language you build their intersection still a regular language and you take one and complement it and
+
+19
+00:02:22,400 --> 00:02:28,160
+you will still get a regular language and here in the case of finite words you
+
+20
+00:02:28,160 --> 00:02:36,640
+also have concatenation and cleaning star meaning that if you concatenate two languages or you iterate them finitely often
+
+21
+00:02:36,640 --> 00:02:43,360
+after another then you will still get a regular language so they are in some sense
+
+22
+00:02:43,360 --> 00:02:51,760
+pretty much closed under the common operations and now in this lecture we will see that omega-regular languages forming a
+
+23
+00:02:51,760 --> 00:03:00,400
+regular language you have a very similar thing they are also closed under union intersection and complementation now
+
+24
+00:03:00,400 --> 00:03:14,000
+why are concatenation and cleaning star missing maybe here yes exactly they don't make sense to begin
+
+25
+00:03:14,000 --> 00:03:18,159
+with right if you have finite words then you can put one finite word after the
+
+26
+00:03:18,159 --> 00:03:23,599
+other but if you have infinite words how do you put one infinite word after the
+
+27
+00:03:23,599 --> 00:03:28,879
+end of another infinite word there is no such thing as an end of the first word to begin with
+
+28
+00:03:28,879 --> 00:03:33,760
+So the interesting properties for infinite words for omega regular language union intersection and
+
+29
+00:03:33,760 --> 00:03:40,799
+implementation and as it turns out omega regular languages are closed under all these operations and
+
+30
+00:03:40,799 --> 00:03:50,159
+we're not going to show all of them but i'm going to illustrate let's say two of them so
+
+31
+00:03:50,159 --> 00:03:57,439
+do you have a hypothesis why how you can prove that it's closed under union
+
+32
+00:03:57,439 --> 00:04:03,680
+so take two omega regular languages take the union of them why is it still an omega-regular language
+
+33
+00:04:03,680 --> 00:04:10,480
+maybe you have already proved that think of the the contents of the lecture
+
+34
+00:04:10,480 --> 00:04:17,519
+of last lecture you proved that in omega regular expressions you have a plus operator well what does the plus
+
+35
+00:04:17,519 --> 00:04:23,680
+operator do it means take the language of the left thing join it with the language of the right
+
+36
+00:04:23,680 --> 00:04:29,120
+thing and this is exactly the union of two languages right so you already have
+
+37
+00:04:29,120 --> 00:04:36,240
+this so union you already proved last lecture in fact in this lecture we're going to
+
+38
+00:04:36,240 --> 00:04:41,120
+show that it's also closed under intersection but we need we're going to need a few
+
+39
+00:04:41,120 --> 00:04:46,639
+tools left and right for that but this i will show to you
+
+40
+00:04:46,639 --> 00:04:51,840
+and the compliment we're not gonna do it those of you who have seen omega automata in other languages they
+
+41
+00:04:51,840 --> 00:05:00,400
+probably know that and i will show you maybe some clues here and there why this is the case
+
+42
+00:05:00,400 --> 00:05:07,360
+it's really non-trivial to complement an omega regular language so in a finite
+
+43
+00:05:07,360 --> 00:05:10,880
+case what would you do i mean you have a you have an omega regular language so
+
+44
+00:05:10,880 --> 00:05:17,199
+you have an automaton for it you maybe need to determinize it and then you complement the
+
+45
+00:05:17,199 --> 00:05:21,759
+accepting states and then you have an automaton for for the complement of the
+
+46
+00:05:21,759 --> 00:05:28,479
+language you started with not as easy for omega regular automata okay but the main content of this
+
+47
+00:05:28,479 --> 00:05:32,000
+lecture is going to be the intersection and as i said there's going to be a few
+
+48
+00:05:32,000 --> 00:05:37,440
+tools here and there that we need in order to do this so let's start with non-emptiness for
+
+49
+00:05:37,440 --> 00:05:45,680
+non-deterministic Büchi automata you're also going to need this in the in a follow-up lectures and algorithms
+
+50
+00:05:45,680 --> 00:05:55,919
+so the question is given a non-deterministic Büchi automaton set of states alphabet transition function initial states accepting states
+
+51
+00:05:55,919 --> 00:06:06,880
+the question is is there some word that is accepted by the automaton well and in order to decide this
+
+52
+00:06:06,880 --> 00:06:13,199
+we're going to prove the following theorem that says if we have such a non-deterministic Büchi automaton
+
+53
+00:06:13,199 --> 00:06:18,880
+the language of that automaton is empty if and only if this huge thing here
+
+54
+00:06:18,880 --> 00:06:26,639
+holds well this is very long but it's rather easy to understand it means there exists an initial state
+
+55
+00:06:26,639 --> 00:06:34,639
+and a finite state a word x that is potentially empty just a regular finite word that can be empty
+
+56
+00:06:34,639 --> 00:06:45,919
+and a non-empty finite word y such that we can go from q 0 to p by reading x
+
+57
+00:06:45,919 --> 00:06:53,280
+and we can go from p to p via y well if you draw this what does it mean
+
+58
+00:06:53,280 --> 00:06:58,560
+it means you're starting in some initial state q zero you read a possibly a
+
+59
+00:06:58,560 --> 00:07:04,240
+possibly empty word x you get to some final state or some accepting state p
+
+60
+00:07:04,240 --> 00:07:11,039
+and from p you can read y and reach p itself and then i hope you intuitively already
+
+61
+00:07:11,039 --> 00:07:18,479
+see that yeah you would kind of accept the word x y to the omega right because we're
+
+62
+00:07:18,479 --> 00:07:40,080
+starting an initial state and visiting some accepting state infinitely often okay let's prove this theorem up there
+
+63
+00:07:40,080 --> 00:07:49,440
+let's start with the direction from left to right now for this we can assume
+
+64
+00:07:49,440 --> 00:07:59,360
+that the language that the automaton accepts is not the empty set okay what what does that mean that means
+
+65
+00:07:59,360 --> 00:08:11,120
+we can take a word sigma a0 a1 and so on that is in the language really just some word
+
+66
+00:08:11,120 --> 00:08:16,960
+good now because this word is in the language it means there needs to be an accepting run
+
+67
+00:08:16,960 --> 00:08:34,640
+so we let pi q 0 q 1 and so on bien accepting run of the automaton
+
+68
+00:08:34,640 --> 00:08:46,000
+for the word signal so far so good now because this run is accepting we
+
+69
+00:08:46,000 --> 00:08:54,399
+know that it needs to visit an accepting state infinitely often some accepting infinitely often so let's write that down
+
+70
+00:08:54,399 --> 00:09:12,480
+so we take sum accepting state p such that this one accepting state that we chose
+
+71
+00:09:12,480 --> 00:09:20,959
+appears infinitely often in the run pi that we chose such that q i so the position
+
+72
+00:09:20,959 --> 00:09:37,440
+so the run pi at position i is exactly this accepting state for infinitely many i
+
+73
+00:09:37,440 --> 00:09:44,080
+now why does it have to exist i mean you could ask why do we see any particular one
+
+74
+00:09:44,080 --> 00:09:50,959
+accepting state infinitely often well because we only have finitely many accepting states right we need to visit
+
+75
+00:09:50,959 --> 00:09:54,160
+the accepting states infinitely often but there are only finitely many of them
+
+76
+00:09:54,160 --> 00:09:59,040
+so it cannot be the case that we visit a different one every time so we must see
+
+77
+00:09:59,040 --> 00:10:10,079
+one of them infinitely many times okay now we can choose i and j to positions in the word
+
+78
+00:10:10,079 --> 00:10:24,079
+that are distinct such that q i is sorry q j is p so at both positions i and j
+
+79
+00:10:24,079 --> 00:10:34,000
+in this accepting run we see the accepting state p now what does our run pi that we chose now
+
+80
+00:10:34,000 --> 00:10:43,920
+look like it looks like this q 0 q 1 q 2 dot dot dot up until q i
+
+81
+00:10:43,920 --> 00:10:49,920
+and then at some later position qj and then it goes on right i mean this is
+
+82
+00:10:49,920 --> 00:10:56,959
+what we started with this is the run pi on sigma now we said we have two positions i and
+
+83
+00:10:56,959 --> 00:11:04,800
+j that are distinct where the automaton is in the accepting state p this means this is p in f
+
+84
+00:11:04,800 --> 00:11:13,600
+and here in this state is also p and f okay but now let's
+
+85
+00:11:13,600 --> 00:11:22,399
+i mean we know that the automaton from q0 up until qi it reads the word
+
+86
+00:11:22,399 --> 00:11:28,240
+a0 dot dot dot until a i minus 1 right this is the word we started with a0 a1
+
+87
+00:11:28,240 --> 00:11:36,959
+and so on and up until qi we read the partial the finite prefix a0 to ai minus 1.
+
+88
+00:11:36,959 --> 00:11:45,600
+and let's call this one x and similarly here from q i to q j
+
+89
+00:11:45,600 --> 00:11:57,040
+because the positions were distinct we read a non-empty word a i dot dot a j minus 1.
+
+90
+00:11:57,040 --> 00:12:09,200
+and this word we're going to call y sorry oh sorry can also
+
+91
+00:12:09,200 --> 00:12:15,279
+i mean is this large enough can i zoom out or do you rather want me to to push it
+
+92
+00:12:15,279 --> 00:12:27,200
+up is that still readable okay because it's good to have the whole picture hopefully on one slide okay
+
+93
+00:12:27,200 --> 00:12:32,720
+but now given that we define x and the words x and y to be like this
+
+94
+00:12:32,720 --> 00:12:42,880
+what does it mean it means that we can go from from q0 by reading x
+
+95
+00:12:42,880 --> 00:12:50,560
+right we go to q i which is p so p is in delta of q 0 and x
+
+96
+00:12:50,560 --> 00:13:00,240
+and at the same time we also can go from p from this q i by reading y
+
+97
+00:13:00,240 --> 00:13:07,680
+go to q j which is also p so we get p in delta of p and y
+
+98
+00:13:07,680 --> 00:13:13,440
+and you see this is exactly the condition we had over there meaning that from the initial state we
+
+99
+00:13:13,440 --> 00:13:19,040
+can go to some state some accepting state p via reading x and from there on
+
+100
+00:13:19,040 --> 00:13:29,040
+we can loop with a non-empty word y okay is this clear very good so i would now move to
+
+101
+00:13:29,040 --> 00:13:40,320
+the other direction let's do that okay now let's for the sake of clarity let's write down
+
+102
+00:13:40,320 --> 00:13:45,519
+the whole right thing again just to make sure that we have our assumptions so
+
+103
+00:13:45,519 --> 00:13:52,560
+we take q0 in the initial states we have an accepting state p and f
+
+104
+00:13:52,560 --> 00:14:07,040
+we have a possibly empty finite word x we have a non-empty word y such that we can go from
+
+105
+00:14:07,040 --> 00:14:16,880
+sorry p in delta of q 0 and x we can go via x from q 0 to p and
+
+106
+00:14:16,880 --> 00:14:25,040
+we have p in delta of p and y this is just the condition
+
+107
+00:14:25,040 --> 00:14:34,959
+okay but then let's look at the word x y to the omega let's call it sigma
+
+108
+00:14:34,959 --> 00:14:48,480
+and now it must have a run of the form q0 dot dot dot up until p right because
+
+109
+00:14:48,480 --> 00:14:53,519
+this condition says by reading x we can go to p from q 0.
+
+110
+00:14:53,519 --> 00:15:01,199
+so by reading x we can make that that move and then from p we can go
+
+111
+00:15:01,199 --> 00:15:14,480
+to p by reading y and we can repeat that and so on so we have constructed a run
+
+112
+00:15:14,480 --> 00:15:19,519
+for the word sigma and now all we need to do is to check is it accepting or not
+
+113
+00:15:19,519 --> 00:15:37,600
+and as you can already see it is accepting because we visit an accepting state infinitely many times namely p
+
+114
+00:15:37,600 --> 00:15:50,079
+so we visit p infinitely often and sorry and since we have that p is accepting
+
+115
+00:15:50,079 --> 00:16:04,000
+this whole run is accepting and therefore we clearly have that the word xy to the omega
+
+116
+00:16:04,000 --> 00:16:13,600
+is in the language recognized by the automaton a and in particular we have l omega of the automaton
+
+117
+00:16:13,600 --> 00:16:29,120
+it's not empty okay i hope this is also intuitively clear but this whole proof and also
+
+118
+00:16:29,120 --> 00:16:37,519
+this thing it gives you even more it gives you that if the language of the automaton is non-empty
+
+119
+00:16:37,519 --> 00:16:43,440
+then there are very special words that we recognize special in the sense that they have this
+
+120
+00:16:43,440 --> 00:16:48,959
+form some finite prefix x and then repeating the same word over and over
+
+121
+00:16:48,959 --> 00:16:58,000
+and over again this is what is called it's not ultimately periodic words ultimately periodic words it's called and
+
+122
+00:16:58,000 --> 00:17:03,040
+i mean this is also a very interesting property so when the language of the automaton is non-empty
+
+123
+00:17:03,040 --> 00:17:06,720
+you don't have to look for if you want to check whether this is the
+
+124
+00:17:06,720 --> 00:17:12,640
+case you don't have to look for very special words it suffices to look for very special words namely ultimately
+
+125
+00:17:12,640 --> 00:17:23,360
+periodic words and now this theorem it directly gives you an algorithmic way
+
+126
+00:17:23,360 --> 00:17:30,320
+to check whether the language accepted by a non-deterministic Büchi automaton is empty well why well because you can
+
+127
+00:17:30,320 --> 00:17:37,440
+essentially do some some graph search say a depth first search from the initial state from the initial states if
+
+128
+00:17:37,440 --> 00:17:46,720
+there are some to find some accepting state that is basically on a cycle right that looks like
+
+129
+00:17:46,720 --> 00:17:58,720
+this picture so by graph searches you can decide the emptiness problem for non-deterministic Büchi automata in polynomial time good
+
+130
+00:17:58,720 --> 00:18:10,000
+now in the finite word case you all know deterministic finite automata right so let's look at deterministic buffer automata
+
+131
+00:18:10,000 --> 00:18:17,600
+well very straightforward what are there what are they a non-deterministic Büchi automaton is called a deterministic Büchi automaton
+
+132
+00:18:17,600 --> 00:18:24,880
+if there is a unique initial state so we mustn't have the opportunity to start at different initial states
+
+133
+00:18:24,880 --> 00:18:32,400
+so the initial state set is basically a singleton and no matter which state queue you are in
+
+134
+00:18:32,400 --> 00:18:41,120
+and no matter which symbol you use you read the successor set this set of states that
+
+135
+00:18:41,120 --> 00:18:49,840
+you can reach in one step with this character is at at most one element large right this is intuitively
+
+136
+00:18:49,840 --> 00:18:54,400
+what you also have for dfa so if you read a symbol from some state there's
+
+137
+00:18:54,400 --> 00:19:01,679
+only one unique successor state at most that you can go to
+
+138
+00:19:01,679 --> 00:19:09,840
+and now if if q0 is the singleton set just containing one initial state lowercase q0 then we just write
+
+139
+00:19:09,840 --> 00:19:16,640
+lowercase q0 to for for dba to express that there is exactly one
+
+140
+00:19:16,640 --> 00:19:23,039
+okay and here's an example i mean this is a deterministic Büchi automaton because it has just one initial state
+
+141
+00:19:23,039 --> 00:19:30,880
+namely q0 the other state is not initial and if i look at the alphabet consisting of a and b
+
+142
+00:19:30,880 --> 00:19:34,160
+and if i look at the outgoing transitions of q0 for example if i
+
+143
+00:19:34,160 --> 00:19:38,559
+choose b then there is one unique successor namely q1 if i look at the
+
+144
+00:19:38,559 --> 00:19:44,880
+character a there is one unique successor namely q0 and the same thing holds for q1 so it's
+
+145
+00:19:44,880 --> 00:19:56,400
+a deterministic b here automaton and we can already see that it accepts the language infinitely often b well why
+
+146
+00:19:56,400 --> 00:20:02,080
+because i mean the acceptance condition is still the same it says you need to visit q1
+
+147
+00:20:02,080 --> 00:20:07,360
+infinitely often but how can we get to q1 where we need to read a b
+
+148
+00:20:07,360 --> 00:20:11,200
+we are allowed to read some a's in between that's perfectly fine
+
+149
+00:20:11,200 --> 00:20:16,080
+but once in a while we always have to go to q1 in order to be accepting right and
+
+150
+00:20:16,080 --> 00:20:26,880
+if you do this you automatically have infinitely many b's in your word it's that clear very good
+
+151
+00:20:26,880 --> 00:20:36,480
+now for for a non-deterministic finite automata you know that i can take an nfa recognizing some regular language
+
+152
+00:20:36,480 --> 00:20:41,919
+and i can use the powerset construction to determinize it right i can get
+
+153
+00:20:41,919 --> 00:20:47,840
+by an algorithmic construction i can get a very easy algorithmic construction i get a deterministic finite automaton
+
+154
+00:20:47,840 --> 00:20:58,799
+that recognizes exactly the same language well the obvious question is for non-deterministic automata can we take our nba
+
+155
+00:20:58,799 --> 00:21:04,720
+and then make some powerset construction and then go to a dba
+
+156
+00:21:04,720 --> 00:21:10,400
+this is what we're going to look at now so this is an nba for the language
+
+157
+00:21:10,400 --> 00:21:18,400
+eventually forever a why because initially we start here we can read an arbitrary prefix but at some
+
+158
+00:21:18,400 --> 00:21:22,320
+point in order to be accepting we need to make this switch to the accepting
+
+159
+00:21:22,320 --> 00:21:28,240
+state and then you can only cycle with a so from some point on
+
+160
+00:21:28,240 --> 00:21:36,000
+you will only read a's in order to be accepting okay let's make this more complete in a sense so
+
+161
+00:21:36,000 --> 00:21:41,679
+as soon as you have decided non-deterministically in this case to go
+
+162
+00:21:41,679 --> 00:21:45,919
+to the accepting state if you read a not a at some point you can
+
+163
+00:21:45,919 --> 00:21:52,159
+reject the word that doesn't change the language because you can still non-deterministically guess the point
+
+164
+00:21:52,159 --> 00:22:02,159
+from which on a holds forever okay let's do the power set construction that you hopefully still
+
+165
+00:22:02,159 --> 00:22:09,919
+vaguely recall from from lectures on automata theory and then the resulting thing would look
+
+166
+00:22:09,919 --> 00:22:14,640
+like this so let's let's maybe look at some transitions while they are there so
+
+167
+00:22:14,640 --> 00:22:19,840
+starting in q0 there are two cases i can read either not a or i can read a
+
+168
+00:22:19,840 --> 00:22:24,898
+if i read not a well then the only state that i can get to is q 0 q 0
+
+169
+00:22:24,898 --> 00:22:31,840
+again so i have a not a loop on q0 in the in the power set automaton as well
+
+170
+00:22:31,840 --> 00:22:35,919
+but if i read an a from q0 there is a non-deterministic choice right there are
+
+171
+00:22:35,919 --> 00:22:41,039
+two possible successors i can either stay in q0 or i can move to qf
+
+172
+00:22:41,039 --> 00:22:48,080
+and this is reflected in the in the construction by moving from the state q0 via ina to
+
+173
+00:22:48,080 --> 00:22:52,559
+like the meta state that says well i don't know you are either in q0 or you
+
+174
+00:22:52,559 --> 00:22:59,360
+can be in either q0 or qf right this is the usual thing that you do for
+
+175
+00:22:59,360 --> 00:23:07,679
+for nfa to dfa constructions and then you can continue that process and then you will
+
+176
+00:23:07,679 --> 00:23:15,679
+get this automaton in the end this is just some examples and as it turns out this this
+
+177
+00:23:15,679 --> 00:23:24,240
+deterministic british automaton accepts the language infinitely often a well that's too bad right because we
+
+178
+00:23:24,240 --> 00:23:28,559
+started with eventually forever a and what we get is infinitely often a i
+
+179
+00:23:28,559 --> 00:23:34,240
+mean you you can have a look into the automaton so in order to be accepting you either need
+
+180
+00:23:34,240 --> 00:23:42,080
+to visit this state infinitely often so you can read some not a's then an a and then a forever
+
+181
+00:23:42,080 --> 00:23:46,320
+that is fine but that doesn't allow that you have for example not a not a
+
+182
+00:23:46,320 --> 00:23:51,120
+not a then an a then again not a not a not a and so on
+
+183
+00:23:51,120 --> 00:23:55,120
+so you might also want to so you also need to to consider the last part in
+
+184
+00:23:55,120 --> 00:24:00,720
+order to completely characterize the language and this part back here for example
+
+185
+00:24:00,720 --> 00:24:06,103
+you would accept the word a not a and then a not a a not a a not a a
+
+186
+00:24:06,103 --> 00:24:10,400
+not a because this is an accepting state you visit it infinitely often
+
+187
+00:24:10,400 --> 00:24:14,960
+but the word you have accepted is still a not a and then alternating in an
+
+188
+00:24:14,960 --> 00:24:23,200
+alternating way a and not a which is definitely not satisfying eventually forever a right
+
+189
+00:24:23,200 --> 00:24:29,200
+So what have we now seen we have seen that the usual power set construction
+
+190
+00:24:29,200 --> 00:24:35,840
+from nfa to dfa if we apply it like this to nbas doesn't work it just it just
+
+191
+00:24:35,840 --> 00:24:41,919
+fails it gives you a different language it may still be interesting in some sense but it's not language preserving
+
+192
+00:24:41,919 --> 00:24:49,760
+as you would have in the finite word case okay let's look at the complementation of
+
+193
+00:24:49,760 --> 00:25:01,279
+deterministic Büchi automata we will come back to the to the language equivalence thing for dba in a minute
+
+194
+00:25:01,279 --> 00:25:08,960
+oh sorry okay you all know that you can complement a dfa
+
+195
+00:25:08,960 --> 00:25:15,760
+the d is important right it needs to be deterministic just complementing its accept its
+
+196
+00:25:15,760 --> 00:25:21,919
+acceptance set right you take the dfa and you basically drop all the accepting states and make
+
+197
+00:25:21,919 --> 00:25:27,679
+all other states accepting then you get exactly the inverse the complement of the language you accepted with your
+
+198
+00:25:27,679 --> 00:25:36,400
+original automaton a natural question now is does this hold for deterministic british automata
+
+199
+00:25:36,400 --> 00:25:40,559
+and let's look at this example this is a dba for the language infinitely often
+
+200
+00:25:40,559 --> 00:25:45,840
+not a right because we need to see this state infinitely often and we can only
+
+201
+00:25:45,840 --> 00:25:50,480
+go there via not a so it's i hope it's clear that it's infinitely
+
+202
+00:25:50,480 --> 00:25:56,320
+often not a the language that is recognized by this automaton and yeah let's just invert the
+
+203
+00:25:56,320 --> 00:26:02,080
+acceptance set right just like we did for dfa and then we get this automaton
+
+204
+00:26:02,080 --> 00:26:22,080
+and yeah what's the language that this automaton accepts yes i would say infinitely often a right
+
+205
+00:26:22,080 --> 00:26:26,000
+right because because basically you can only get to this state via reading an a
+
+206
+00:26:26,000 --> 00:26:33,679
+but but i i think you meant the right thing okay so it accepts the language infinitely often a
+
+207
+00:26:33,679 --> 00:26:39,200
+now i hope you see this is not the complement of one another it might be tempting to think
+
+208
+00:26:39,200 --> 00:26:43,360
+that it is because you you're saying yeah not a and so i i
+
+209
+00:26:43,360 --> 00:26:48,159
+you know complemented the the a back here so it should be fine no it's not
+
+210
+00:26:48,159 --> 00:26:54,960
+because the complement of infinitely often not a is only finitely often not a okay that's something else than
+
+211
+00:26:54,960 --> 00:27:03,919
+infinitely often a in particular so if you reformulate infinitely often not a the complement is from some point
+
+212
+00:27:03,919 --> 00:27:11,840
+on always a which is not just infinitely often a so what do we learn from this if we take
+
+213
+00:27:11,840 --> 00:27:18,320
+a dba even though it's deterministic and we reverse or flip the the set of accepting states
+
+214
+00:27:18,320 --> 00:27:26,960
+you will get a different language you will not get the complement okay so
+
+215
+00:27:26,960 --> 00:27:33,200
+on the previous slide you have seen if we take an nfa a nba
+
+216
+00:27:33,200 --> 00:27:43,360
+and we determinize it using the powerset construction doesn't give you an equivalent dba where you can say
+
+217
+00:27:43,360 --> 00:27:46,799
+yeah let's do something else let's do a different construction i mean we're not
+
+218
+00:27:46,799 --> 00:27:53,679
+bound to the power set construction of of finite automata so you know let's just do something else
+
+219
+00:27:53,679 --> 00:27:59,279
+as it turns out you know there is no hope to do that
+
+220
+00:27:59,279 --> 00:28:07,840
+because as we will prove in a minute there is no dba for certain omega regular languages
+
+221
+00:28:07,840 --> 00:28:16,880
+omega regular languages are strictly more expressive than deterministic Büchi automata so by by picking or by by going for
+
+222
+00:28:16,880 --> 00:28:22,880
+a determinism in the automaton you lose expressiveness in the finite word case
+
+223
+00:28:22,880 --> 00:28:26,720
+this is not the case but for omega automata this is the case
+
+224
+00:28:26,720 --> 00:28:32,320
+now we're going to prove there is no deterministic Büchi automaton that recognizes the linear time property
+
+225
+00:28:32,320 --> 00:28:42,320
+eventually forever a from some point on forever a okay and the theorem for this is saying
+
+226
+00:28:42,320 --> 00:28:49,279
+that there is no deterministic automaton over the alphabet a b such that the language recognized by
+
+227
+00:28:49,279 --> 00:28:55,200
+this dba is exactly the language characterized by this omega regular expression saying i can read an
+
+228
+00:28:55,200 --> 00:29:03,600
+arbitrary prefix of a's and b's but at some point i need to decide from now on only ace
+
+229
+00:29:03,600 --> 00:29:10,399
+and you know if if you instantiate this this theorem up here by choosing a to be
+
+230
+00:29:10,399 --> 00:29:16,720
+the set containing a and b to be the empty set you get the result that we had before
+
+231
+00:29:16,720 --> 00:29:21,200
+because this a technically it's an atomic proposition it's not a character of
+
+232
+00:29:21,200 --> 00:29:26,559
+that is that is read by the automaton right but this theorem gives you the
+
+233
+00:29:26,559 --> 00:29:53,200
+result that there is no dba for the linear time property eventually forever a okay let's prove that proof
+
+234
+00:29:53,200 --> 00:29:58,480
+So you know a straightforward direction that we are going to follow is we assume
+
+235
+00:29:58,480 --> 00:30:04,960
+that there is a dba that does exactly what is stated here that it's not possible and then i'm
+
+236
+00:30:04,960 --> 00:30:14,080
+going to show you it cannot be the right dba that you that you started with okay assume
+
+237
+00:30:14,080 --> 00:30:23,039
+you have that that the language that we're going to call l from now on for simplicity it's
+
+238
+00:30:23,039 --> 00:30:29,279
+exactly the language that we have on the slides a or b for finitely many steps and then
+
+239
+00:30:29,279 --> 00:30:42,159
+from some point only a let's call that one l now assume that this is recognized
+
+240
+00:30:42,159 --> 00:30:57,519
+for some by some dba that we call a now the dba consists of q sigma delta
+
+241
+00:30:57,519 --> 00:31:03,760
+q zero and accepting states f okay so we assume the contrary and now
+
+242
+00:31:03,760 --> 00:31:09,279
+we're going to show well cannot be the case cannot be the right dba
+
+243
+00:31:09,279 --> 00:31:17,600
+okay let's look at some word call it sigma 1 and it's the word we pick a to the omega
+
+244
+00:31:17,600 --> 00:31:28,799
+now is a to the omega in our language or not in l
+
+245
+00:31:28,799 --> 00:31:33,840
+i mean this this this is l right so you can start with an arbitrary prefix of
+
+246
+00:31:33,840 --> 00:31:38,159
+a's and b's and at some point on you only see a's is a to the omega in this
+
+247
+00:31:38,159 --> 00:31:44,960
+set or not i see some slightly nodding heads i hope we all agree it's in the in the language
+
+248
+00:31:44,960 --> 00:31:49,600
+okay okay so we pick the word that is in the language what does that mean because
+
+249
+00:31:49,600 --> 00:31:58,320
+our assumption is our dba recognizes this language it means that we must have an accepting run right
+
+250
+00:31:58,320 --> 00:32:08,240
+So we have this word in the language then there exists a natural number n1
+
+251
+00:32:08,240 --> 00:32:25,200
+greater or equal than zero such that we have that from delta that from q0 if we read exactly n1as
+
+252
+00:32:25,200 --> 00:32:35,440
+then we are exactly in the state q1 and the state q1 is an accepting state
+
+253
+00:32:35,440 --> 00:32:41,279
+well why is that we have a deterministic automaton remember so and first of all because the word is
+
+254
+00:32:41,279 --> 00:32:47,440
+in the language we know there must be an accepting run and we know that this accepting run at
+
+255
+00:32:47,440 --> 00:32:53,840
+some point it needs to visit an accepting state infinitely often so in particular after some finite number of
+
+256
+00:32:53,840 --> 00:32:59,519
+steps we need to visit one call it n1 and because we know it's deterministic
+
+257
+00:32:59,519 --> 00:33:07,919
+there can only be one state that we're in after any number of steps on a particular word
+
+258
+00:33:07,919 --> 00:33:22,000
+So this is a singleton as a is deterministic okay so far so good we looked at one
+
+259
+00:33:22,000 --> 00:33:31,440
+word and we we said that after n1a's our automaton must visit an accepting state let's look at another word
+
+260
+00:33:31,440 --> 00:33:38,799
+call it sigma 2. and how do we construct sigma 2 well we take n1a's
+
+261
+00:33:38,799 --> 00:33:44,799
+then we sneak in a b and from there on we read a forever
+
+262
+00:33:44,799 --> 00:33:50,840
+now is this word in our language it is so this one is in
+
+263
+00:33:50,840 --> 00:33:59,039
+l but now we can repeat this right the argument can say well then there exists an n2
+
+264
+00:33:59,039 --> 00:34:14,000
+strictly after n1 such that if we read from q0 from the one initial state a n1 b
+
+265
+00:34:14,000 --> 00:34:23,520
+and then an2 also sorry this should be an equal sign because this is exactly the set
+
+266
+00:34:23,520 --> 00:34:31,200
+consisting of one state now if we read this prefix again we must be in in some accepting state
+
+267
+00:34:31,200 --> 00:34:39,679
+call it q2 following the same argument as above again it's just one
+
+268
+00:34:39,679 --> 00:34:49,280
+accepting state that we can be in after having read this finite prefix okay let's do this one more time
+
+269
+00:34:49,280 --> 00:34:59,839
+so let's take a word sigma 3. it's straightforwardly defined by having n1a's then a b
+
+270
+00:34:59,839 --> 00:35:08,079
+then n2 a's again we're sneaking in a b and going to repeat a infinitely off again
+
+271
+00:35:08,079 --> 00:35:22,560
+is in our language because eventually forever a holds again there exists now an index a3 greater than n2
+
+272
+00:35:22,560 --> 00:35:35,839
+such that if we read the prefix q0 an1 b a n 2 b a and 3
+
+273
+00:35:35,839 --> 00:35:44,480
+we are in some accepting state q 3.
+
+274
+00:35:44,480 --> 00:35:51,200
+now i hope you see where this is going right we can continue this process on and on and on
+
+275
+00:35:51,200 --> 00:36:06,079
+so where do we get so continuing this process well what does it give us it yields a sequence
+
+276
+00:36:06,079 --> 00:36:25,359
+actually two sequences but the one is of natural numbers and one and two and so on and
+
+277
+00:36:25,359 --> 00:36:49,920
+in particular we also get a sequence of accepting states namely q1 q2 q3 and so on
+
+278
+00:36:49,920 --> 00:37:04,720
+such that the following holes you know essentially summarizing the process above so we have that delta starting sorry
+
+279
+00:37:04,720 --> 00:37:17,599
+starting from q0 if we read the word a n 1 b a and 2 b a and 3
+
+280
+00:37:17,599 --> 00:37:28,000
+and so on up until a n i minus 1 b a n i so this is basically the construction
+
+281
+00:37:28,000 --> 00:37:39,760
+for arbitrary for this arbitrary ni we are in the accepting state q i
+
+282
+00:37:39,760 --> 00:37:53,040
+okay where can we go from here well we know q is finite right and in particular also f then
+
+283
+00:37:53,040 --> 00:37:58,320
+well what does it mean it means because we have a sequence of finite prefixes
+
+284
+00:37:58,320 --> 00:38:04,800
+that all end in an accepting state in exactly one accepting state it means
+
+285
+00:38:04,800 --> 00:38:09,680
+that we have at least two positions where we have to be in the same
+
+286
+00:38:09,680 --> 00:38:15,760
+accepting state because there are only finitely many right infinitely often we need to
+
+287
+00:38:15,760 --> 00:38:20,160
+we are in some accepting state so because we are infinitely many we need
+
+288
+00:38:20,160 --> 00:38:28,160
+to be in one of them infinitely often but in particular that means that we have two positions in
+
+289
+00:38:28,160 --> 00:38:36,400
+the word i and j that are distinct not two positions in the word but rather
+
+290
+00:38:36,400 --> 00:38:48,160
+two positions in these sequences of natural numbers and states such that we have delta q 0
+
+291
+00:38:48,160 --> 00:38:57,040
+reading from q 0 the prefix n 1 b or a n 1 times then a b and so on
+
+292
+00:38:57,040 --> 00:39:12,240
+b and i times an a is the same accepting state as reading the different word that goes until nj
+
+293
+00:39:12,240 --> 00:39:19,760
+so q a n one b dot dot b a n i
+
+294
+00:39:19,760 --> 00:39:27,359
+right so this is up until now it's this word but we're going to put something behind that
+
+295
+00:39:27,359 --> 00:39:36,240
+up until b and then a n j right this is just formally saying that
+
+296
+00:39:36,240 --> 00:39:43,520
+because infinitely often we visit an accepting state two of at least i must visit one accepting
+
+297
+00:39:43,520 --> 00:39:50,800
+state infinitely often and in particular i need to visit it twice right meaning i can pick two positions
+
+298
+00:39:50,800 --> 00:39:58,480
+in our sequences such that the set this accepting state that i reach after this word
+
+299
+00:39:58,480 --> 00:40:08,880
+is the same as the one that i reach after reading the extended word but what does this mean
+
+300
+00:40:08,880 --> 00:40:22,960
+it means that our automaton or dba that we started with has an accepting run on the word
+
+301
+00:40:22,960 --> 00:40:31,599
+a and one times b a and two times and so on so this word up here
+
+302
+00:40:31,599 --> 00:40:44,240
+b a n i and from there we're going to re to repeat the missing fragment from
+
+303
+00:40:44,240 --> 00:40:48,720
+from this finite prefix to that finite prefix we can't iterate that infinitely
+
+304
+00:40:48,720 --> 00:40:54,319
+often because we just said we were in the same state after reading these two words it means
+
+305
+00:40:54,319 --> 00:41:01,599
+that we can go to this accepting state and then loop this extension of the word infinitely often
+
+306
+00:41:01,599 --> 00:41:12,880
+so what does this extension look like it's b a n i plus 1 times b a and j
+
+307
+00:41:12,880 --> 00:41:21,040
+it's exactly the part of the word that we appended here and got to the same state but
+
+308
+00:41:21,040 --> 00:41:28,640
+okay why does this now contradict our assumption well we have a word that is accepted by our dba
+
+309
+00:41:28,640 --> 00:41:38,960
+but it's clearly not in the language because you have b infinitely often right so this is not in l
+
+310
+00:41:38,960 --> 00:41:53,920
+and let's write it down which contradicts that the language recognized by our dba is the language l we started
+
+311
+00:41:53,920 --> 00:41:58,480
+So we assume we have a dba for the language and then we showed well
+
+312
+00:41:58,480 --> 00:42:10,800
+it's not the language right so it breaks okay let's move on well this is
+
+313
+00:42:10,800 --> 00:42:16,079
+somewhat it's it's bad news because it means it's not easy to get a deterministic
+
+314
+00:42:16,079 --> 00:42:24,800
+automaton and sometimes it's not even possible to get a deterministic automaton for the same language deterministic bushi automaton
+
+315
+00:42:24,800 --> 00:42:33,280
+and i already already stated this if you look at the languages that you can recognize via
+
+316
+00:42:33,280 --> 00:42:39,440
+some deterministic Büchi automaton this is a proper subclass of the omega regular languages it's not only a
+
+317
+00:42:39,440 --> 00:42:46,720
+subclass but it's really a proper subclass there are languages omega-regular languages that are not dba recognizable
+
+318
+00:42:46,720 --> 00:42:53,359
+and we've seen on the previous slide it's also not closed under complementation right i mean
+
+319
+00:42:53,359 --> 00:43:00,079
+it we directly get this because we had the dba for infinitely many infinity and many b's
+
+320
+00:43:00,079 --> 00:43:06,720
+but if you would complement this you will you will get the language only finitely many b's and
+
+321
+00:43:06,720 --> 00:43:12,400
+we just saw that this is not dba recognizable we just proved i mean not with the bs but
+
+322
+00:43:12,400 --> 00:43:18,880
+for a very similar language improved it's not dba recognizable and for this one we have a dba for this
+
+323
+00:43:18,880 --> 00:43:24,560
+one you can prove there is none it means dbas cannot be closed under complementation and the dba recognizable
+
+324
+00:43:24,560 --> 00:43:35,119
+languages cannot be close under complementation okay let's finally come back to our main goal of today the intersection
+
+325
+00:43:35,119 --> 00:43:40,480
+of omega regular languages showing that it's that is closed under complementation
+
+326
+00:43:40,480 --> 00:43:44,000
+and for this we're going to need a tool that's called the generalized optimistic
+
+327
+00:43:44,000 --> 00:43:50,880
+british automaton and that we will also use in future lectures a bit
+
+328
+00:43:50,880 --> 00:43:58,319
+and so what does how does it generalize in non-intermediate buffy automaton well it's almost the same
+
+329
+00:43:58,319 --> 00:44:05,680
+apart from the acceptance condition right so you also have states alphabet transition function doesn't change set
+
+330
+00:44:05,680 --> 00:44:10,480
+of initial states doesn't change the only thing that instead of like a
+
+331
+00:44:10,480 --> 00:44:16,240
+regular f we now have a curly f well well why do we have that it means
+
+332
+00:44:16,240 --> 00:44:22,400
+we have instead of having one set of acceptance accepting states it means we have a set
+
+333
+00:44:22,400 --> 00:44:28,000
+of sets of accepting states right so instead of just having saying
+
+334
+00:44:28,000 --> 00:44:34,319
+yeah q0 and q1 either one of them needs to be visited infinitely often we can
+
+335
+00:44:34,319 --> 00:44:40,800
+now require more why is that because we now say a run is accepting
+
+336
+00:44:40,800 --> 00:44:47,040
+on some some infinite word sigma around q0 q1 q2 is accepting if it visits
+
+337
+00:44:47,040 --> 00:44:54,400
+all the sets that are in this curly f infinitely often right so instead of saying
+
+338
+00:44:54,400 --> 00:44:58,240
+yeah here's this one set and you need to visit it infinitely often i'm going to
+
+339
+00:44:58,240 --> 00:45:02,800
+give you a set of sets and in order to be accepting you need to visit all of
+
+340
+00:45:02,800 --> 00:45:07,839
+them infinitely often you can choose which state in the individual set that's up to you but you
+
+341
+00:45:07,839 --> 00:45:10,560
+need to visit all of them infinitely often and if you write that down
+
+342
+00:45:10,560 --> 00:45:16,880
+formally it's like this so for every regular f so for every set of accepting
+
+343
+00:45:16,880 --> 00:45:22,800
+states in our new acceptance condition that is a set of sets we need to have infinitely many
+
+344
+00:45:22,800 --> 00:45:33,119
+positions in the word such that the state qi is in this f okay that's that's important so
+
+345
+00:45:33,119 --> 00:45:40,720
+generalized non-deterministic Büchi automata everything is the same as non-deterministic automata but we have sets
+
+346
+00:45:40,720 --> 00:45:49,040
+of sets of accepting states and in order to be accepting we need to visit all of them infinitely often
+
+347
+00:45:49,040 --> 00:45:56,640
+okay very straightforward what's the language accepted by gnba well it's the set of words that has an accepting run
+
+348
+00:45:56,640 --> 00:46:02,800
+it's the same as before we just change the acceptance condition let's look at an example gnba
+
+349
+00:46:02,800 --> 00:46:06,759
+over the set of atomic propositions so crit 1 and crit 2.
+
+350
+00:46:06,759 --> 00:46:13,359
+so it's a gnba taken from from the mutual exclusion world and it looks like this so if one
+
+351
+00:46:13,359 --> 00:46:23,280
+initial state q0 and two accepting states q1 and q2 but they are in different classes
+
+352
+00:46:23,280 --> 00:46:29,599
+So here we have a curly f saying you need to visit q1 infinitely often
+
+353
+00:46:29,599 --> 00:46:37,040
+and you need to visit q2 infinitely often okay that's a difference to putting them into
+
+354
+00:46:37,040 --> 00:46:43,119
+into one set why is that different now let's assume for the moment that we we
+
+355
+00:46:43,119 --> 00:46:47,359
+look at this as a regular nba and we say both of them are accepting
+
+356
+00:46:47,359 --> 00:46:53,680
+well then for example the word q0 q1 or the run q0 q1 and so on it would be
+
+357
+00:46:53,680 --> 00:47:01,119
+accepting because it visits an accepting state infinitely often but in the gnba if we use this acceptance
+
+358
+00:47:01,119 --> 00:47:05,680
+set it's not accepting anymore because it requires both of them to be visited
+
+359
+00:47:05,680 --> 00:47:10,800
+infinitely often and if you look at this gnba you see that you need to visit both of
+
+360
+00:47:10,800 --> 00:47:23,359
+them infinitely often meaning you have to see crit 1 and crit 2 infinitely often is that clear good
+
+361
+00:47:23,359 --> 00:47:31,680
+and therefore we can we can specify the linear time property for example using this automaton that says infinitely often
+
+362
+00:47:31,680 --> 00:47:39,200
+crit one and infinitely often crit two if we look at regular nbas and just have one accepting state then
+
+363
+00:47:39,200 --> 00:47:45,680
+this automaton would recognize a different different language okay here's the reasoning on the slides
+
+364
+00:47:45,680 --> 00:47:49,839
+but i hope you intuitively see that it recognizes infinitely often crit one and
+
+365
+00:47:49,839 --> 00:47:58,559
+infinitely often quid two let's look at this generalized non-deterministic Büchi automaton one initial state you can read an a
+
+366
+00:47:58,559 --> 00:48:14,640
+here and with this acceptance condition what language does the gmba recognize nothing right
+
+367
+00:48:14,640 --> 00:48:19,760
+because the condition says you need to visit q1 and q2 infinitely often well
+
+368
+00:48:19,760 --> 00:48:23,760
+show me a run that visits both of them infinitely often it's not possible
+
+369
+00:48:23,760 --> 00:48:32,839
+because as soon as you have visited q2 there is no way to see q1 again so language is empty
+
+370
+00:48:32,839 --> 00:48:45,599
+let's look at a different gnba with two sets of accepting states namely q1 and
+
+371
+00:48:45,599 --> 00:48:53,040
+q3 so the boxes are forming one set of accepting states and q2 and q4 are forming one set of
+
+372
+00:48:53,040 --> 00:48:58,880
+accepting states and as you can probably see what would you say is the accepted
+
+373
+00:48:58,880 --> 00:49:05,920
+language by this automaton for example described as an omega regular expression
+
+374
+00:49:05,920 --> 00:49:10,240
+yeah i mean it's it's you start with an a and then you can
+
+375
+00:49:10,240 --> 00:49:15,280
+see b infinitely often so you could decide to cycle just here so you get
+
+376
+00:49:15,280 --> 00:49:18,880
+this part of the omega regular expression and the other part is you
+
+377
+00:49:18,880 --> 00:49:24,000
+start with an a and then you read an arbitrary number of b's go there read an
+
+378
+00:49:24,000 --> 00:49:34,160
+a again and then cycle between a and b forever okay but because these cycles
+
+379
+00:49:34,160 --> 00:49:44,640
+yeah they are accepting because they contain accepting states from both of these sets that's the important part
+
+380
+00:49:44,640 --> 00:49:52,160
+okay because that confuses people quite a bit let's talk about what happens if the acceptance condition is empty for
+
+381
+00:49:52,160 --> 00:50:00,480
+Büchi automata now let's look at the same automaton once as an nba and was as a gnba
+
+382
+00:50:00,480 --> 00:50:15,359
+suppose the nba has no accepting states what's the language that it recognizes it's a stupid question i know but
+
+383
+00:50:15,359 --> 00:50:23,040
+just yes it's empty exactly right because you see the the definition says you need to see
+
+384
+00:50:23,040 --> 00:50:29,280
+an accepting state infinitely often but there is none right so it's empty
+
+385
+00:50:29,280 --> 00:50:49,040
+gnba let's suppose we have no set of accepting states what's the language recognized by the automaton
+
+386
+00:50:49,040 --> 00:50:55,200
+exactly so the language is is in this case the the language
+
+387
+00:50:55,200 --> 00:51:01,200
+a to the omega exactly one word well why is that because it suffices to have one
+
+388
+00:51:01,200 --> 00:51:06,559
+infinite run for a word because remember the definition said for all of the sets
+
+389
+00:51:06,559 --> 00:51:12,559
+that are in here you need to satisfy being infinitely often in that
+
+390
+00:51:12,559 --> 00:51:19,599
+set but as there are none for all quantification it's directly fulfilled and
+
+391
+00:51:19,599 --> 00:51:23,520
+yeah and it's the word a to the omega because we still require
+
+392
+00:51:23,520 --> 00:51:30,079
+an infinite run right so if there is no run then then you can also not accept the word
+
+393
+00:51:30,079 --> 00:51:40,800
+even if you don't have to check for the acceptance criterion with respect to the accepting states okay now
+
+394
+00:51:40,800 --> 00:51:49,119
+suppose we have a gnba with an empty acceptance condition so no set of accepting states it just happens
+
+395
+00:51:49,119 --> 00:51:56,480
+to be like that do you think there is always a gnba that has a non-empty set of accepting states
+
+396
+00:51:56,480 --> 00:52:11,200
+that recognizes the same language yes exactly right so it's a very trivial transformation instead of taking none
+
+397
+00:52:11,200 --> 00:52:17,280
+you just say well all of them are accepting and that's perfectly fine exactly
+
+398
+00:52:17,280 --> 00:52:23,520
+good so we can now for example always assume that our gnba has at least one
+
+399
+00:52:23,520 --> 00:52:29,760
+set of accepting states right because we can also always do that transformation
+
+400
+00:52:29,760 --> 00:52:40,559
+and now we're going to look at the transformation from generalized non-deterministic buffer automata to non-deterministic automata and
+
+401
+00:52:40,559 --> 00:52:48,079
+the claim is i give you a gnba possibly many sets of accepting states
+
+402
+00:52:48,079 --> 00:52:55,359
+and you can construct an nba with just one set of accepting states that recognize the same language
+
+403
+00:52:55,359 --> 00:53:04,240
+what does it mean it means non-deterministic Büchi automata and generalized non-deterministic Büchi automata same expressivity okay omega
+
+404
+00:53:04,240 --> 00:53:14,240
+regular languages same thing and i'm not going to prove that formally but i'm showing you basically the intuition of
+
+405
+00:53:14,240 --> 00:53:18,880
+the construction now suppose we have a gmba g i mean this
+
+406
+00:53:18,880 --> 00:53:24,880
+is what we start with and we want to construct an nbaa from that and our gnba has accepting
+
+407
+00:53:24,880 --> 00:53:32,640
+sets f1 up until fk now one thing is i just said that
+
+408
+00:53:32,640 --> 00:53:36,480
+we can assume there is at least one in there right otherwise we can we can
+
+409
+00:53:36,480 --> 00:53:42,559
+construct one that is equivalent that has one accepting set in here now for
+
+410
+00:53:42,559 --> 00:53:47,359
+the case where it's one it's actually pretty pretty boring because then we already
+
+411
+00:53:47,359 --> 00:53:51,760
+have an nba because we require you need to visit that one set infinitely often
+
+412
+00:53:51,760 --> 00:53:57,599
+where you can then directly take that set as an as the acceptance condition for your non-deterministic british
+
+413
+00:53:57,599 --> 00:54:06,880
+automaton so let's assume we have at least two sets of accepting states and our generalized non-deterministic Büchi automaton
+
+414
+00:54:06,880 --> 00:54:17,040
+and the intuition is now that cree that we create k copies of our gnba and this looks as follows
+
+415
+00:54:17,040 --> 00:54:22,960
+so we we take the gnba basically like a blueprint and then we put k copies one
+
+416
+00:54:22,960 --> 00:54:28,720
+for each accepting set next to one another right don't forget about the errors right now
+
+417
+00:54:28,720 --> 00:54:34,720
+but we have one copy second copy and so on until we have a copy for the last one
+
+418
+00:54:34,720 --> 00:54:42,000
+we start in the first copy this is where our initial states are we just start there
+
+419
+00:54:42,000 --> 00:54:46,559
+okay but then we need to decide okay where do we put the transitions and now
+
+420
+00:54:46,559 --> 00:54:56,799
+the idea is to say in the first component in the first copy of our gnba we basically
+
+421
+00:54:56,799 --> 00:55:04,720
+divert all the transitions going out of the accepting states of f1 into the second copy all other
+
+422
+00:55:04,720 --> 00:55:11,200
+transitions remain in this copy but as soon as we have seen some some state that is accepting
+
+423
+00:55:11,200 --> 00:55:17,599
+with respect to f1 we move to the second copy and we do the same here and so on so
+
+424
+00:55:17,599 --> 00:55:23,760
+what you get is essentially you're always switching the copy one step further once you have seen
+
+425
+00:55:23,760 --> 00:55:27,599
+an initial state that belongs to this copy so here you need to see an
+
+426
+00:55:27,599 --> 00:55:33,119
+accepting state from f2 in order to change to the next copy and so on
+
+427
+00:55:33,119 --> 00:55:38,319
+and from the last copy obviously you don't move forward but you go back to
+
+428
+00:55:38,319 --> 00:55:45,200
+the first one so it's it's to be understood modulo what you load the number of of
+
+429
+00:55:45,200 --> 00:55:56,640
+acceptance sets okay and now i hope that you already maybe intuitively see that by this transformation now if we
+
+430
+00:55:56,640 --> 00:56:04,319
+make only the states of f1 accepting in the first copy we drop all the other
+
+431
+00:56:04,319 --> 00:56:11,599
+you know acceptance conditions with respect to f2 and fk but we only require the
+
+432
+00:56:11,599 --> 00:56:16,640
+states of f1 in the first copy to be visited infinitely often
+
+433
+00:56:16,640 --> 00:56:22,720
+well first of all what we get is an nba right because we have only one set of accepting states
+
+434
+00:56:22,720 --> 00:56:27,920
+now obviously you can ask the question why does it recognize the same language
+
+435
+00:56:27,920 --> 00:56:35,040
+i mean we went from from k sets of accepting states to just one well
+
+436
+00:56:35,040 --> 00:56:40,160
+but i hope that you intuitively see that by moving through the copies and only
+
+437
+00:56:40,160 --> 00:56:49,359
+allowing to switch the copy once we have visited the corresponding acceptance set of this copy it means that
+
+438
+00:56:49,359 --> 00:56:55,359
+if you have an accepting run in your gnba it needs to visit f1 f2 and fk and so on
+
+439
+00:56:55,359 --> 00:57:02,720
+infinitely often but then it can also go through this cycle infinitely often and in particular visit the accepting states
+
+440
+00:57:02,720 --> 00:57:08,480
+in f1 infinitely often so it will also be accepting in this construction
+
+441
+00:57:08,480 --> 00:57:18,480
+So by creating copies of the gnba we have got rid of all the acceptance sets
+
+442
+00:57:18,480 --> 00:57:27,440
+but it remains only to have one yes i mean as i said we assume that
+
+443
+00:57:27,440 --> 00:57:31,440
+it's not empty because we can always add something if it has size one then we
+
+444
+00:57:31,440 --> 00:57:37,599
+have an nba so our assumption is it has at least two yes but otherwise good good question this is
+
+445
+00:57:37,599 --> 00:57:40,480
+why we i mean this is why we put it on the slides that
+
+446
+00:57:40,480 --> 00:57:47,200
+that you can't always come up with an acceptance condition that is not empty and recognizes the same thing
+
+447
+00:57:47,200 --> 00:57:52,160
+So we're not going to prove that that this works but i hope you intuitively see
+
+448
+00:57:52,160 --> 00:58:01,520
+that because we're talking about infinite runs this construction gives you the same set of accepted words
+
+449
+00:58:01,520 --> 00:58:08,799
+but now recognized by a non-deterministic Büchi automaton not a generalized non-deterministic Büchi
+
+450
+00:58:08,799 --> 00:58:15,359
+but of course it comes at a price so you start it with a gnba of size something size n
+
+451
+00:58:15,359 --> 00:58:22,559
+then the size of the nba it will be the the the n the the size of the gnba
+
+452
+00:58:22,559 --> 00:58:31,680
+times the number of copies we needed namely number of acceptance sets in our acceptance condition
+
+453
+00:58:31,680 --> 00:58:36,480
+okay let's look at an example let's take this n b a g i mean you know it
+
+454
+00:58:36,480 --> 00:58:42,240
+from the previous slides it says infinitely often crit one and infinitely often crit two these are the words that
+
+455
+00:58:42,240 --> 00:58:49,200
+it recognizes and this is the nba you get when you construct it as i've shown you before
+
+456
+00:58:49,200 --> 00:58:53,440
+so this is the first copy these are the states where you have one in the second
+
+457
+00:58:53,440 --> 00:58:58,160
+component it means this is our first copy this is our second copy the states
+
+458
+00:58:58,160 --> 00:59:02,640
+where we have a two in the second component we start in the first component in the
+
+459
+00:59:02,640 --> 00:59:09,359
+initial state so in this compound state q 0 and 1.
+
+460
+00:59:09,359 --> 00:59:15,599
+and then we look at what transitions should there be now in our nba
+
+461
+00:59:15,599 --> 00:59:23,680
+since q0 is not an accepting state in f1 right we maintain all its
+
+462
+00:59:23,680 --> 00:59:28,240
+transitions and stay in the first copy which is why you see that we can
+
+463
+00:59:28,240 --> 00:59:37,359
+basically mimic the behavior of q0 here but remain in the first copy here now something changes because q1 is
+
+464
+00:59:37,359 --> 00:59:44,720
+in the set f1 in the first set of accepting states meaning that we change its transitions
+
+465
+00:59:44,720 --> 00:59:51,920
+in a way that they move to the second component here the other accepting state q2
+
+466
+00:59:51,920 --> 00:59:58,559
+it's in the second acceptance set f2 we're keeping the transitions in the
+
+467
+00:59:58,559 --> 01:00:02,480
+first copy we will only change something in the second copy right every copy is
+
+468
+01:00:02,480 --> 01:00:09,040
+associated with one set of accepting states and then you continue this process and
+
+469
+01:00:09,040 --> 01:00:16,880
+here you see the symmetrical case where we using the transitions from q1 which was in f1
+
+470
+01:00:16,880 --> 01:00:22,319
+we stay in the second copy but if we move if we visit the state q2 which was
+
+471
+01:00:22,319 --> 01:00:30,000
+in the accepting set f2 we move to the first copy again and you already see that in order
+
+472
+01:00:30,000 --> 01:00:36,640
+to be accepting here you need to to visit this one because q1 was from f1 infinitely often
+
+473
+01:00:36,640 --> 01:00:43,680
+but in order to do so we also need to always go to through q2 which was an accepting state
+
+474
+01:00:43,680 --> 01:00:54,480
+in f2 right okay so long story short generalized non-deterministic Büchi automata not more expressive than non-deterministic
+
+475
+01:00:54,480 --> 01:01:00,240
+Büchi automata same thing we can use this construction to reduce it but it's still sometimes handy to have it
+
+476
+01:01:00,240 --> 01:01:06,000
+why is it handy well i'm going to show you now that the product construction for
+
+477
+01:01:06,000 --> 01:01:14,480
+the the intersection the product construction that we need is going to to use gnbas because that will
+
+478
+01:01:14,480 --> 01:01:26,079
+yeah will come in handy okay so last part of today we're given two nbas
+
+479
+01:01:26,079 --> 01:01:36,720
+a1 and a2 defined as usual and now our goal is how can we define an nba
+
+480
+01:01:36,720 --> 01:01:43,200
+a such that the language of this non-deterministic Büchi automaton is the intersection of the language of the two
+
+481
+01:01:43,200 --> 01:01:54,880
+automata a1 and a2 and i hope you also again vaguely remember from courses on automata theory
+
+482
+01:01:54,880 --> 01:02:01,039
+that if you if you want to do the very same thing on non-deterministic finite automata what
+
+483
+01:02:01,039 --> 01:02:08,720
+you do is you essentially let the automata run in parallel so they need to take all the steps synchronously
+
+484
+01:02:08,720 --> 01:02:14,799
+and you accept a word if both so if both of them or i shouldn't say
+
+485
+01:02:14,799 --> 01:02:22,000
+and you make a state accepting in this product construction if all components if both components of
+
+486
+01:02:22,000 --> 01:02:25,920
+the automata are in accepting states because what does it mean it means that
+
+487
+01:02:25,920 --> 01:02:30,079
+if you have a run and the automata move in parallel and you come to an accepting
+
+488
+01:02:30,079 --> 01:02:39,119
+state then both of the automata accept this word meaning that it's in the intersection right
+
+489
+01:02:39,119 --> 01:02:49,599
+So this was the product construction for for nfa big reminder and now we're going to do essentially
+
+490
+01:02:49,599 --> 01:02:54,480
+the same thing just on nba and what do we do that we how do we do
+
+491
+01:02:54,480 --> 01:03:00,079
+that we also let a1 and a2 the two nba move in parallel
+
+492
+01:03:00,079 --> 01:03:06,799
+and we need to check that both of them are accepting right as was the case for non-domestic
+
+493
+01:03:06,799 --> 01:03:13,280
+finite automata but as it turns out it's not enough now to just say well
+
+494
+01:03:13,280 --> 01:03:19,680
+let's make the states accepting in which both components are accepting no this will not work
+
+495
+01:03:19,680 --> 01:03:25,520
+but we will need to tweak the the acceptance condition a bit and we will
+
+496
+01:03:25,520 --> 01:03:30,880
+have to formulate that in a way that says both f1 so the acceptance set of
+
+497
+01:03:30,880 --> 01:03:36,079
+this one and the acceptance set of the second one are both visited infinitely
+
+498
+01:03:36,079 --> 01:03:43,359
+often and as you can see in this in this condition it directly gives you a gnba right
+
+499
+01:03:43,359 --> 01:03:51,760
+we're going to to look at details now but it tells you if you do the product construction on gnba
+
+500
+01:03:51,760 --> 01:04:01,440
+on nba you will get a gnba because you have two sets of accepting states in the end
+
+501
+01:04:01,440 --> 01:04:08,319
+So how do we define the product now the state space just as for nfa is
+
+502
+01:04:08,319 --> 01:04:16,559
+the cartesian product of the state spaces of the two involved non-deterministic Büchi automata a1 and a2
+
+503
+01:04:16,559 --> 01:04:23,920
+the alphabet stays the same the initial states are this the cartesian product of the initial states
+
+504
+01:04:23,920 --> 01:04:30,240
+of the two involved automata and now we come to the interesting part which i already alluded to
+
+505
+01:04:30,240 --> 01:04:41,680
+the acceptance condition now has two elements so it's a gnba and the acceptance condition says a longer run
+
+506
+01:04:41,680 --> 01:04:49,520
+you must visit states who are in an accepting state in their first component with respect to the first automaton
+
+507
+01:04:49,520 --> 01:04:57,359
+infinitely often and you need to visit states that are in an accepting state in its second
+
+508
+01:04:57,359 --> 01:05:05,280
+component with respect to the automaton a2 also infinitely often both of this has to hold okay
+
+509
+01:05:05,280 --> 01:05:14,240
+so you have two set of accepting states that need to be visited infinitely often and the transition relation is
+
+510
+01:05:14,240 --> 01:05:19,280
+defined just as it was for for nfa for the product construction on nfa it means
+
+511
+01:05:19,280 --> 01:05:23,599
+if you are in a compound state q1 q2 and you read in a
+
+512
+01:05:23,599 --> 01:05:29,359
+well where do we go where can we go from there we can go to all states p1 p2 such
+
+513
+01:05:29,359 --> 01:05:38,480
+that i can go in the automaton a1 so via delta 1 i can go from the first component q1
+
+514
+01:05:38,480 --> 01:05:42,960
+via a to this p1 and in the second component i need to
+
+515
+01:05:42,960 --> 01:05:48,240
+make a step from q2 via a to p2 right this is the same thing as we had
+
+516
+01:05:48,240 --> 01:05:56,640
+for nfa so the only thing that that really changed in this construction in comparison to the finite
+
+517
+01:05:56,640 --> 01:06:03,760
+word case is this acceptance condition but i've already shown you i mean this
+
+518
+01:06:03,760 --> 01:06:09,359
+is not a big problem right reconstructed we construct a generalized non-deterministic Büchi automaton but we
+
+519
+01:06:09,359 --> 01:06:16,480
+can always get rid of the additional accepting sets and reduce it to a non-deterministic Büchi automaton again so
+
+520
+01:06:16,480 --> 01:06:23,200
+what have we done then we have taken two nba constructed a gnba that can be reduced
+
+521
+01:06:23,200 --> 01:06:32,079
+to an nba again that recognizes the intersection of the languages accepted by the two input automata
+
+522
+01:06:32,079 --> 01:06:56,000
+let's look at an a boring but still an example okay we have a1 that looks as follows
+
+523
+01:06:56,000 --> 01:07:10,960
+consists of two states q1 which is an accepting state and we have q2 here
+
+524
+01:07:10,960 --> 01:07:24,480
+and both of them are labeled with an a and let's look at a very similar automaton a2
+
+525
+01:07:24,480 --> 01:07:40,319
+it has two states r1 and r r2 and in this case r2 is accepting
+
+526
+01:07:40,319 --> 01:07:45,920
+yet both transitions are also labeled with an a so can you tell me
+
+527
+01:07:45,920 --> 01:07:59,599
+these are nbas these are input nbas what are the languages accepted by these automata
+
+528
+01:07:59,599 --> 01:08:20,880
+still stupid question so go ahead did i draw them too crappily or yes exactly so exactly they recognize one
+
+529
+01:08:20,880 --> 01:08:33,120
+word namely a to the omega okay let's now do our product construction and move to the gnba
+
+530
+01:08:33,120 --> 01:08:44,319
+that is the product of a1 so this we use for the to denote the product of a1 and a2
+
+531
+01:08:44,319 --> 01:08:52,880
+now let me go back here maybe you can tell me what what should the product look like
+
+532
+01:08:52,880 --> 01:09:24,080
+what should i draw nothing no too early yes exactly so let's do q1 r1
+
+533
+01:09:24,080 --> 01:09:33,120
+and this is an initial state right our only initial state and we have q2 r2
+
+534
+01:09:33,120 --> 01:09:39,839
+and since the automata need to move synchronously we have these transitions in there right
+
+535
+01:09:39,839 --> 01:09:43,839
+because both of them need to take a step at the very same time so we can only
+
+536
+01:09:43,839 --> 01:09:54,239
+have q1 r1 and q2 r2 okay now suppose for a moment we we don't do this
+
+537
+01:09:54,239 --> 01:10:04,960
+you know let's say complicated acceptance condition but we do the regular acceptance condition for the product construction on nfa
+
+538
+01:10:04,960 --> 01:10:16,880
+which of the two states would be accepting the answer is none right because in none of these two states
+
+539
+01:10:16,880 --> 01:10:24,159
+are both automata in their accepting state but you know then this would mean that
+
+540
+01:10:24,159 --> 01:10:31,840
+the language is empty right because this is supposed to be so if we interpret this in nba the
+
+541
+01:10:31,840 --> 01:10:36,400
+language is empty right okay so this doesn't work so we need to
+
+542
+01:10:36,400 --> 01:10:44,159
+this is why we need to have this criterion that's a little bit more complicated so
+
+543
+01:10:44,159 --> 01:10:55,760
+what we have to do is we take a3 as is a gnba and its acceptance condition is the following
+
+544
+01:10:55,760 --> 01:11:04,080
+this is curly f so we now need to spell out this acceptance condition for this example
+
+545
+01:11:04,080 --> 01:11:12,640
+meaning that we have in the first component all states that are an accepting component
+
+546
+01:11:12,640 --> 01:11:22,719
+in their first first element here so what is what states are this it's q1 r1 and it's q1
+
+547
+01:11:22,719 --> 01:11:28,159
+r2 i mean i didn't i didn't draw the the remaining states there are two more
+
+548
+01:11:28,159 --> 01:11:32,640
+states they are just not reachable from the initial state okay so i omitted them
+
+549
+01:11:32,640 --> 01:11:41,520
+here but technically there are two more states in this product okay this is one set of accepting states
+
+550
+01:11:41,520 --> 01:11:59,520
+this let's call it f1 and the second one is the dual namely we have q1 r2 and q2 r2
+
+551
+01:11:59,520 --> 01:12:06,640
+we call this f2 why are these accepting in the in the second acceptance set well
+
+552
+01:12:06,640 --> 01:12:11,440
+because their second component namely the r2 is an accepting state of our
+
+553
+01:12:11,440 --> 01:12:19,760
+automaton a2 so if we put it like this then we are exactly having our acceptance condition as we defined
+
+554
+01:12:19,760 --> 01:12:25,440
+it for the product g gnba okay but now we're not happy with our
+
+555
+01:12:25,440 --> 01:12:34,400
+gnba we want an nba so let's apply the the reduction from gnba to nba that we've seen before
+
+556
+01:12:34,400 --> 01:12:50,719
+so we do basically a3 gnba to an nba a4 and the nba would look as follows so
+
+557
+01:12:50,719 --> 01:13:03,280
+so we start in the initial state of the gnba namely q1 r1 and in the first component
+
+558
+01:13:03,280 --> 01:13:14,159
+okay this is our initial state okay where can we go from here first of all we observe q1
+
+559
+01:13:14,159 --> 01:13:23,440
+is accepting in in the first automaton right so with respect i should say with respect no
+
+560
+01:13:23,440 --> 01:13:30,480
+this state q1 r1 is accepting in f1 this is why in our first copy this is an
+
+561
+01:13:30,480 --> 01:13:38,239
+accepting state and it means that we change the outgoing transitions to move to the second component to the second
+
+562
+01:13:38,239 --> 01:13:55,360
+copy that we need for f2 so we move to q2 r2 but this time in the second component
+
+563
+01:13:55,360 --> 01:14:03,760
+and now q2 r2 is an element in f2 meaning that we change the outgoing
+
+564
+01:14:03,760 --> 01:14:08,239
+trend transitions to enter the first component again because we only have two
+
+565
+01:14:08,239 --> 01:14:13,360
+sets of accepting states f1 and f2 and that's also labeled within a
+
+566
+01:14:13,360 --> 01:14:19,120
+and if we now look at this one then we see ah it recognizes it still recognizes the
+
+567
+01:14:19,120 --> 01:14:30,400
+word a to the omega so we have l omega oh sorry l omega of the the nba a4
+
+568
+01:14:30,400 --> 01:14:39,040
+is exactly l omega of the gnbaa3 which is the set containing of one
+
+569
+01:14:39,040 --> 01:14:47,440
+infinite word namely a to the omega which is also the intersection of a1 of the language recognized by a1
+
+570
+01:14:47,440 --> 01:14:59,040
+intersected with the language recognized by a2 okay so what have we done we have taken two nba
+
+571
+01:14:59,040 --> 01:15:04,800
+we have constructed the product gnba and we've reduced the gnba to an nba
+
+572
+01:15:04,800 --> 01:15:09,440
+again and we've seen yes in our example it works and you can also prove that it
+
+573
+01:15:09,440 --> 01:15:19,040
+works in in the remaining cases that this construction tells you omega regular languages are closed under
+
+574
+01:15:19,040 --> 01:15:32,239
+intersection because we can find non-intimacy automata that recognize the intersection languages is that clear i hope
+
+575
+01:15:32,239 --> 01:15:38,320
+okay let's come to the summary of today and probably close a bit early today so what
+
+576
+01:15:38,320 --> 01:15:42,560
+have we learned about omega regular languages in this long lecture and not
+
+577
+01:15:42,560 --> 01:15:50,960
+not only this one but also the last one you've seen that omega regular languages agree with several classes
+
+578
+01:15:50,960 --> 01:16:00,159
+of languages first and foremost they coincide with the languages that you can specify by means of omega-regular expressions professor
+
+579
+01:16:00,159 --> 01:16:07,120
+cartoon has shown this to you secondly they also coincide with the class of languages for which you can
+
+580
+01:16:07,120 --> 01:16:13,199
+find an nba that recognizes this language so nba and omega regular languages have the
+
+581
+01:16:13,199 --> 01:16:21,360
+same exclusivity and as you've seen in this lecture even if you allow for more accepting sets of
+
+582
+01:16:21,360 --> 01:16:27,040
+if you allow for more sets of accepting states that all need to be visited infinitely often you don't gain
+
+583
+01:16:27,040 --> 01:16:32,159
+expressivity but you can reduce it to a non-deterministic Büchi automata getting again so
+
+584
+01:16:32,159 --> 01:16:41,120
+you you also have that gnba recognize exactly omega regular languages but as i've shown you deterministic
+
+585
+01:16:41,120 --> 01:16:48,400
+Büchi automata is strictly less expressive there are omega regular languages that are not dba recognizable
+
+586
+01:16:48,400 --> 01:16:57,360
+there is no dba that recognizes this language and finally we have seen at least in parts that omega regular
+
+587
+01:16:57,360 --> 01:17:06,719
+languages that are recognized by nba and gnba are closed under all important operation operations union intersection and complementation
+
+588
+01:17:06,719 --> 01:17:15,120
+out of which union is clear again from the fact that you have omega regular expressions characterizing
+
+589
+01:17:15,120 --> 01:17:21,920
+the same set of languages and you have a plus in these in these omega regular expressions
+
+590
+01:17:21,920 --> 01:17:28,880
+intersection we have seen the gmba construction for this and complementation we didn't deal with that because that's pretty much
+
+591
+01:17:28,880 --> 01:17:35,280
+complicated and you might see that in another lecture not from us but if you're interested in
+
+592
+01:17:35,280 --> 01:17:42,719
+that i would advise you to visit christoph luding's very very good lectures on this
+
+593
+01:17:42,719 --> 01:17:48,360
+well and if there are no questions then we're done for today

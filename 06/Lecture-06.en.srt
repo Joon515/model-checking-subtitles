@@ -1,0 +1,3255 @@
+﻿1
+00:00:02,360 --> 00:00:05,160
+So it's half past 8:00, I guess.
+
+2
+00:00:05,160 --> 00:00:10,480
+So, let's get started right away because we have a lot of our on our agenda today.
+
+3
+00:00:10,480 --> 00:00:17,240
+So, today's topic is going to be linear time properties two, if you will.
+
+4
+00:00:17,240 --> 00:00:23,400
+We're going to talk about safety properties and liveness properties, which I told you already is kind of a
+
+5
+00:00:23,400 --> 00:00:29,600
+categorization of all linear time properties, as I will show you in this lecture.
+
+6
+00:00:29,600 --> 00:00:40,560
+before I get started, how many So, who of you knows what a linear time property is?
+
+7
+00:00:40,560 --> 00:00:51,440
+Well, that's That's kind of devastating. So, who of you that did not just raise his or her hand
+
+8
+00:00:51,440 --> 00:00:55,560
+did not ask the question what is a linear time property yesterday in the
+
+9
+00:00:55,560 --> 00:00:59,680
+exercise class, even though he or she was there?
+
+10
+00:00:59,680 --> 00:01:03,400
+Yeah. So, I I You know, if you don't know, then you then you have to ask
+
+11
+00:01:03,400 --> 00:01:07,145
+because it's this lecture will fully build on the last one.
+
+12
+00:01:07,145 --> 00:01:12,560
+So, without knowing what a linear time property is, it's going to be very complicated, I I think.
+
+13
+00:01:12,560 --> 00:01:21,040
+So, just to to shortly recap, a linear time property is a set of infinite words
+
+14
+00:01:21,040 --> 00:01:24,073
+and the alphabet is the set of atomic propositions.
+
+15
+00:01:24,073 --> 00:01:30,960
+So, every character is an set of atomic propositions and they kind of specify what are the allowed
+
+16
+00:01:30,960 --> 00:01:34,720
+behaviors of my transition system and we say that a transition system satisfies a
+
+17
+00:01:34,720 --> 00:01:41,640
+linear time property if all of its traces are included in the property.
+
+18
+00:01:41,640 --> 00:01:49,800
+So let's look at invariants again. So, invariants, you you hopefully recall, are a special kind
+
+19
+00:01:49,800 --> 00:01:55,133
+of linear time properties, namely one that is characterized by a propositional formula.
+
+20
+00:01:55,133 --> 00:01:58,320
+And how does it characterize the the invariant?
+
+21
+00:01:58,320 --> 00:02:05,800
+Well, our our invariant contains all infinite words again, the characters are sets of atomic
+
+22
+00:02:05,800 --> 00:02:11,320
+propositions such that every set along the way at time point 0, 1, and so on
+
+23
+00:02:11,320 --> 00:02:18,450
+satisfies a propositional logic formula. For example, at every point in time, we do have an A in our labeling.
+
+24
+00:02:18,450 --> 00:02:22,940
+Meaning that all the traces at every point, really, they have to have an A.
+
+25
+00:02:22,940 --> 00:02:28,600
+So, that's that's what's called an invariant and this this phi is called the invariant condition of
+
+26
+00:02:28,600 --> 00:02:37,240
+the linear time property. And intuitively, we said safety properties state that nothing bad will ever happen.
+
+27
+00:02:37,240 --> 00:02:38,706
+But we have not talked about this further.
+
+28
+00:02:38,706 --> 00:02:45,840
+We only talked about invariants so far. Of course, invariants are kind of properties that follow this pattern.
+
+29
+00:02:45,840 --> 00:02:50,440
+For example, mutual exclusion says never is it going to be the case that
+
+30
+00:02:50,440 --> 00:02:55,200
+our two processes are in the in their critical sections at the same time.
+
+31
+00:02:55,200 --> 00:03:04,120
+Or deadlock freedom saying that never all of the philosophers are in state wait at the same time.
+
+32
+00:03:04,120 --> 00:03:10,930
+Okay, this we already saw, but there are other safety properties I already hinted at that are not as easy.
+
+33
+00:03:10,930 --> 00:03:17,520
+Here, you can These are invariants, you can characterize them by a propositional formula, but this one you cannot so
+
+34
+00:03:17,520 --> 00:03:22,800
+easily, right? So, for example, the German traffic lights, you could state that every red phase of your traffic
+
+35
+00:03:22,800 --> 00:03:27,640
+light is preceded directly by a yellow phase, for example.
+
+36
+00:03:27,640 --> 00:03:33,440
+Or if you think of the beverage vending machine again, you could say state that
+
+37
+00:03:33,440 --> 00:03:38,337
+if the user did not enter a coin, then no drink must be released.
+
+38
+00:03:38,337 --> 00:03:43,080
+Right? Or that the total number of coins that the user put in is never less than the
+
+39
+00:03:43,080 --> 00:03:51,480
+total number of released drinks. Okay, so so somehow they are different because these three,
+
+40
+00:03:51,480 --> 00:03:58,280
+they are not invariants, but they are safety properties, but somehow they must they have to have something in common
+
+41
+00:03:58,280 --> 00:04:01,160
+with the above ones. and what is that?
+
+42
+00:04:01,160 --> 00:04:07,600
+I mean, if we talk about invariants, we could we they are characterized by saying that no bad
+
+43
+00:04:07,600 --> 00:04:12,200
+state will be reached. We showed that an invariant is satisfied if and only
+
+44
+00:04:12,200 --> 00:04:16,880
+if all reachable states satisfy the invariant condition.
+
+45
+00:04:16,880 --> 00:04:20,880
+And these properties, as I said, it's not so easy there.
+
+46
+00:04:20,880 --> 00:04:26,040
+It's It's not that that there is a particularly bad state, but there needs to be some kind
+
+47
+00:04:26,040 --> 00:04:33,360
+of bad behavior as a combination, but all of them have in common that there is
+
+48
+00:04:33,360 --> 00:04:39,520
+if you violate the property, then you can already tell after a finite prefix.
+
+49
+00:04:39,520 --> 00:04:43,680
+Right? I mean, this is a special case an invariant of a safety property in
+
+50
+00:04:43,680 --> 00:04:47,580
+general because, you will see that later, actually.
+
+51
+00:04:47,580 --> 00:04:54,200
+But the the commonality between all safety properties is that in order to
+
+52
+00:04:54,200 --> 00:05:02,280
+satisfy the property, there must not be a bad prefix of your property present in the transition system in
+
+53
+00:05:02,280 --> 00:05:09,234
+the traces of the transition system. Okay, let's let's let's look at this as an example.
+
+54
+00:05:09,234 --> 00:05:14,240
+So, again, take the traffic lights example where we say where we state as a
+
+55
+00:05:14,240 --> 00:05:18,080
+property that every red phase is preceded by a yellow phase.
+
+56
+00:05:18,080 --> 00:05:22,960
+Well, what would be a bad prefix of that?
+
+57
+00:05:22,960 --> 00:05:28,225
+I mean, a bad prefix of that is obviously I don't know whether you can see the colors.
+
+58
+00:05:28,225 --> 00:05:31,050
+Is it visible as from this neither again?
+
+59
+00:05:31,050 --> 00:05:36,440
+So, this is this is a red supposed to indicate that the traffic light is red and this is
+
+60
+00:05:36,440 --> 00:05:43,400
+supposed to be green. Anyway, but but you see you see that if
+
+61
+00:05:43,400 --> 00:05:50,070
+it it suffices to look at this finite prefix in order to say that the property cannot be satisfied.
+
+62
+00:05:50,070 --> 00:05:57,120
+So, as you know, if this finite prefix is somehow in our transition system or if Let's Let's
+
+63
+00:05:57,120 --> 00:06:03,240
+forget about transition systems, but just look at this finite prefix, then we know that no extension of this prefix
+
+64
+00:06:03,240 --> 00:06:09,800
+will ever satisfy the property, right? Right? Because already at this point, because we had
+
+65
+00:06:09,800 --> 00:06:16,560
+green followed by red, meaning that we somehow violated this property, no matter what we put after that, it's
+
+66
+00:06:16,560 --> 00:06:21,200
+going to be violated. Is that intuitively clear?
+
+67
+00:06:21,200 --> 00:06:26,480
+Very good. Okay, and the same thing you can do for the for the beverage vending
+
+68
+00:06:26,480 --> 00:06:29,560
+machine, where you say that the total number of entered coins should never be
+
+69
+00:06:29,560 --> 00:06:31,460
+less than the total number of released drinks.
+
+70
+00:06:31,460 --> 00:06:37,520
+If you look at the prefix paid drink drink, so two drinks were released, but only one was paid, then
+
+71
+00:06:37,520 --> 00:06:46,480
+already after that finite part, you can say there is no way that this property is satisfied, right?
+
+72
+00:06:46,480 --> 00:06:53,800
+Okay, and now we're just going to formulate what I intuitively told you formally, right?
+
+73
+00:06:53,800 --> 00:06:59,040
+And capture safety properties by a formal definition.
+
+74
+00:06:59,040 --> 00:07:01,905
+Okay, let's E be an linear time property.
+
+75
+00:07:01,905 --> 00:07:10,240
+So, that is it's a subset of the infinite words over sets of atomic propositions.
+
+76
+00:07:10,240 --> 00:07:14,232
+Then we call E a safety property if the following holds.
+
+77
+00:07:14,232 --> 00:07:17,640
+It looks very technical, but the intuition is very easy.
+
+78
+00:07:17,640 --> 00:07:26,120
+It says that if you take a word, some infinite word that is not contained in the property,
+
+79
+00:07:26,120 --> 00:07:29,020
+it violates your property, it's not allowed by the property.
+
+80
+00:07:29,020 --> 00:07:35,040
+If you take an infinite word, then there must be a finite prefix, so you can cut off the
+
+81
+00:07:35,040 --> 00:07:44,680
+sigma at some position such that none of the words that start with this prefix ever belong to E.
+
+82
+00:07:44,680 --> 00:07:51,120
+Right? So, if you have this prefix in an infinite word there is no way that
+
+83
+00:07:51,120 --> 00:07:55,497
+you can ever extend the word to an infinite word such that it belongs to the property again.
+
+84
+00:07:55,497 --> 00:07:58,565
+And if you restate that, you can you can write it like this.
+
+85
+00:07:58,565 --> 00:08:06,360
+So, E intersected with all the words that have this bad prefix at the beginning should be the empty
+
+86
+00:08:06,360 --> 00:08:11,320
+set. Okay, and this is the the characterization of a safety property.
+
+87
+00:08:11,320 --> 00:08:21,080
+So, we call a linear time property safety property if and only if we have this property.
+
+88
+00:08:21,080 --> 00:08:27,320
+Okay, and I mean, unsurprisingly, these words are called bad prefixes because they tell you,
+
+89
+00:08:27,320 --> 00:08:32,291
+well, after this after reading this bad prefix, there is no way of ever being in the property.
+
+90
+00:08:32,291 --> 00:08:35,919
+So, already at that point, we know that it's violated.
+
+91
+00:08:35,919 --> 00:08:41,560
+and then you could also write down the set E that we started with as the
+
+92
+00:08:41,560 --> 00:08:47,320
+set of all infinite words that do not have a bad prefix.
+
+93
+00:08:47,320 --> 00:08:51,400
+And as a some kind of notation that we will use quite a bit in this lecture, we
+
+94
+00:08:51,400 --> 00:08:57,453
+say bad pref of some linear time property is by definition the set of the bad prefixes.
+
+95
+00:08:57,453 --> 00:09:05,480
+So, it's exactly those words that you cannot extend to ever get back into your property again.
+
+96
+00:09:05,480 --> 00:09:09,660
+And I want to make that distinction. This is these are finite words, okay?
+
+97
+00:09:09,660 --> 00:09:11,520
+I mean, that's a that's a major difference.
+
+98
+00:09:11,520 --> 00:09:17,720
+A linear time property, set of infinite words, but the bad prefixes, I mean, it's exactly the point that
+
+99
+00:09:17,720 --> 00:09:24,280
+already after a finite word, you can tell there is no way of of satisfying the property.
+
+100
+00:09:24,280 --> 00:09:28,280
+And if the if the property E is clear from the context, we also use bad pref,
+
+101
+00:09:28,280 --> 00:09:33,920
+but mostly will indicate what linear time property it this is referring to.
+
+102
+00:09:33,920 --> 00:09:37,824
+And of course, there may be there may be a lot of bad prefixes.
+
+103
+00:09:37,824 --> 00:09:44,280
+so, we also have the notion of minimal bad prefixes, which are all bad prefixes such that no
+
+104
+00:09:44,280 --> 00:09:48,720
+proper prefix of this bad prefix is in itself a bad prefix.
+
+105
+00:09:48,720 --> 00:09:52,760
+So, think you have this word A0 to AN, it's a bad prefix,
+
+106
+00:09:52,760 --> 00:09:56,880
+so you cannot possibly extend it to be in the property again.
+
+107
+00:09:56,880 --> 00:10:01,731
+but it could be that you can drop AN in the end and still have a bad bad prefix.
+
+108
+00:10:01,731 --> 00:10:04,368
+And a minimal bad prefix, this is not possible.
+
+109
+00:10:04,368 --> 00:10:13,160
+So,, so you cannot take any anything from the back, and maintain this property that's a bad prefix.
+
+110
+00:10:13,160 --> 00:10:18,040
+Let's look at an example. So, here,, can you see the colors here?
+
+111
+00:10:18,040 --> 00:10:22,080
+So, the labeling with yellow and red and these two are labeled with empty set.
+
+112
+00:10:22,080 --> 00:10:26,760
+it's a transition system supposed to model some kind of traffic light.
+
+113
+00:10:26,760 --> 00:10:33,080
+it can go from yellow to red, red to red and yellow to green and back.
+
+114
+00:10:33,080 --> 00:10:39,057
+And,, let's look at the property whether every red phase is preceded by a yellow phase again.
+
+115
+00:10:39,057 --> 00:10:44,000
+Now, if you write this down,, as a linear time property, it looks something like this.
+
+116
+00:10:44,000 --> 00:10:49,440
+So, our property is a set of all infinite words A0 and so on over sets of
+
+117
+00:10:49,440 --> 00:10:55,160
+atomic propositions such that for every position,, where we have a red in our
+
+118
+00:10:55,160 --> 00:10:59,920
+labeling, we require that it was not the first step because then it could not
+
+119
+00:10:59,920 --> 00:11:04,120
+have possibly be been preceded by a yellow.
+
+120
+00:11:04,120 --> 00:11:07,220
+And we require that yellow was actually in the previous set.
+
+121
+00:11:07,220 --> 00:11:10,817
+Okay? I mean, this is,, the formal statement of of this informal property.
+
+122
+00:11:10,817 --> 00:11:16,920
+And if we look at this transition system, we see that it actually is satisfies E because
+
+123
+00:11:16,920 --> 00:11:20,839
+you can only have a red state if it was directly preceded by a yellow state and
+
+124
+00:11:20,839 --> 00:11:25,745
+you cannot start in a red state. Let's look at this other transition system.
+
+125
+00:11:25,745 --> 00:11:28,754
+It starts in in green, so no labels here.
+
+126
+00:11:28,754 --> 00:11:32,280
+This is labeled with red and this is again labeled with yellow.
+
+127
+00:11:32,280 --> 00:11:36,960
+And here you can already tell that the property is not going to be satisfied, right?
+
+128
+00:11:36,960 --> 00:11:44,000
+but why is that? That you could say it's the case because
+
+129
+00:11:44,000 --> 00:11:51,011
+we have this prefix empty set red empty set yellow in the finite traces of this transition system, right?
+
+130
+00:11:51,011 --> 00:11:55,839
+Because we can go empty set red empty set yellow.
+
+131
+00:11:55,839 --> 00:12:00,240
+It's a it's a finite word. It's in the finite traces of the transition system.
+
+132
+00:12:00,240 --> 00:12:03,480
+If you recall the definitions from last,, lecture.
+
+133
+00:12:03,480 --> 00:12:08,622
+and already after that prefix, we can tell, I mean, it's already violated.
+
+134
+00:12:08,622 --> 00:12:11,565
+No matter how you,, you continue this trace.
+
+135
+00:12:11,565 --> 00:12:16,280
+If you No matter how you complete it, this infinite word that you'll get out of it
+
+136
+00:12:16,280 --> 00:12:22,160
+will not be in the property. Is that clear?
+
+137
+00:12:22,160 --> 00:12:24,684
+Okay, I see a few not nodding heads.
+
+138
+00:12:24,684 --> 00:12:29,993
+but obviously you could say, "Yeah, why are we only saying that we know at this point?"
+
+139
+00:12:29,993 --> 00:12:36,839
+Actually, we know much earlier, right? We know after reading this red here that the property,, or that the
+
+140
+00:12:36,839 --> 00:12:40,480
+trace will not be will not be in the property.
+
+141
+00:12:40,480 --> 00:12:43,660
+and this is exactly what a minimal bad prefix is, right?
+
+142
+00:12:43,660 --> 00:12:49,000
+So, bad prefix is, for example, this. Also, if you cut off here, it's also going to be a bad
+
+143
+00:12:49,000 --> 00:12:57,520
+prefix. But the min- One of the minimal bad prefixes is,, the prefix empty set followed by red.
+
+144
+00:12:57,520 --> 00:13:03,640
+Because no matter how you extend it, never going to be in the property again.
+
+145
+00:13:03,640 --> 00:13:09,771
+Okay. And,, you can, for example, then write down the bad prefixes of the property, all bad prefixes.
+
+146
+00:13:09,771 --> 00:13:14,520
+And in this case, it's the set of all finite words.
+
+147
+00:13:14,520 --> 00:13:22,520
+So, prefixes, finite words, again over sets of atomic propositions such that for some position, we actually have the
+
+148
+00:13:22,520 --> 00:13:30,280
+negation of up here, intuitively, right? Because it it's it states that here that for all positions, something holds.
+
+149
+00:13:30,280 --> 00:13:36,440
+And here it said says after a finite time, I already have a position where this this
+
+150
+00:13:36,440 --> 00:13:41,839
+condition does not hold. So, we have red in our labeling and it was the first,
+
+151
+00:13:41,839 --> 00:13:51,839
+time step which we excluded here or yellow was not contained in the previous step.
+
+152
+00:13:51,839 --> 00:13:59,480
+Okay. Let's talk about satisfaction of the satisfaction relation for safety properties.
+
+153
+00:13:59,480 --> 00:14:03,200
+Last time, and I already repeated that in the beginning of the lecture, we said
+
+154
+00:14:03,200 --> 00:14:10,080
+a transition system satisfies a linear time property written like this if and only if the traces of the
+
+155
+00:14:10,080 --> 00:14:17,440
+transition system are fully included. Right? So, you can think of the property, linear time property E, as
+
+156
+00:14:17,440 --> 00:14:22,120
+the set of allowed behaviors of the system.
+
+157
+00:14:22,120 --> 00:14:29,640
+And what you can show for safety properties is that you can, in order to determine whether this
+
+158
+00:14:29,640 --> 00:14:35,720
+holds, it suffices to look at the finite traces of the transition system and see
+
+159
+00:14:35,720 --> 00:14:41,040
+whether there is any bad prefix of the property in there.
+
+160
+00:14:41,040 --> 00:14:45,400
+And if there is, if the the finite trace of the transition system, if there is
+
+161
+00:14:45,400 --> 00:14:50,125
+some bad prefix in there, it tells you then your property is not satisfied.
+
+162
+00:14:50,125 --> 00:14:54,280
+And it tells this this,, theorem also tells you if this is empty, if there is
+
+163
+00:14:54,280 --> 00:15:00,560
+no finite trace that's a bad prefix, then your property holds.
+
+164
+00:15:00,560 --> 00:15:04,666
+And you can take that one step further by looking at the at the minimal bad prefixes.
+
+165
+00:15:04,666 --> 00:15:11,160
+I mean, this is rather obvious., if you already have the statement for the bad prefixes.
+
+166
+00:15:11,160 --> 00:15:22,000
+And,, if I may take over this,, projector, I would like to show you exactly this statement.
+
+167
+00:15:22,000 --> 00:15:28,760
+Transition system satisfies a linear time property if and only if the finite traces intersected with the bad prefixes
+
+168
+00:15:28,760 --> 00:15:36,959
+of the property are empty. So, let's look at the proof.
+
+169
+00:15:36,959 --> 00:15:41,600
+So, please complain if,, there is something you cannot read.
+
+170
+00:15:41,600 --> 00:15:45,120
+Okay, let's let's write it down first what the statement is.
+
+171
+00:15:45,120 --> 00:15:54,480
+So, we have a subset of the infinite words over sets of atomic propositions.
+
+172
+00:15:54,480 --> 00:15:59,440
+And in particular, we assume that it's a safety property.
+
+173
+00:15:59,440 --> 00:16:07,000
+Recall what that means from the definition. That means for every word that's not in the property,
+
+174
+00:16:07,000 --> 00:16:11,200
+we can find a finite prefix such that after this finite prefixes, no matter
+
+175
+00:16:11,200 --> 00:16:14,000
+how you extend it, it's not in the property.
+
+176
+00:16:14,000 --> 00:16:37,480
+And we're going to say that T,, is a transition system without terminal states.
+
+177
+00:16:37,480 --> 00:16:48,440
+Then we have the following statement. T, the transition system, satisfies the safety property if and only if
+
+178
+00:16:48,440 --> 00:17:02,400
+the finite traces of the transition system intersected with the bad prefixes of the property is empty.
+
+179
+00:17:02,400 --> 00:17:15,360
+So let's prove this. Now, we first start with the direction from left to right.
+
+180
+00:17:15,360 --> 00:17:26,600
+So, we assume that the transition system satisfies the property and for the sake of contradiction, we assume that
+
+181
+00:17:26,600 --> 00:17:38,720
+this thing here is non-empty. So, the finite traces of the transition system intersected with bad prefixes of the property
+
+182
+00:17:38,720 --> 00:17:46,440
+it's not empty. Okay, but it's if it's not empty, then we can take an element from it.
+
+183
+00:17:46,440 --> 00:17:53,120
+So, let's do that. So, let's have is a finite word sigma hat.
+
+184
+00:17:53,120 --> 00:17:59,760
+It's the word A0, A1 and so on up until AN.
+
+185
+00:17:59,760 --> 00:18:15,800
+And it's contained in this intersection. Finite traces of the transition system together with the bad prefixes of V.
+
+186
+00:18:15,800 --> 00:18:20,925
+But what do we know if this word is in the finite traces of the transition system?
+
+187
+00:18:20,925 --> 00:18:30,520
+Well, then we know that there exists a finite path that gives rise to this finite trace.
+
+188
+00:18:30,520 --> 00:18:45,560
+Then there exists pi hat S0 to SN in path in the finite paths of the transition system
+
+189
+00:18:45,560 --> 00:18:55,840
+such that the trace of pi hat is exactly sigma hat.
+
+190
+00:18:55,840 --> 00:19:12,520
+Now, since the transition system, we assume that it has no terminal states, since T has no terminal states,
+
+191
+00:19:12,520 --> 00:19:17,480
+we can also extend this finite path that we took up here to an infinite path.
+
+192
+00:19:17,480 --> 00:19:22,720
+Right? Because no There must not be any terminal state, so we can always go on.
+
+193
+00:19:22,720 --> 00:19:32,360
+there is pi that starts with S0 to SN, but then goes
+
+194
+00:19:32,360 --> 00:19:41,600
+on with SN + 1 and so on in the paths of the transition system.
+
+195
+00:19:41,600 --> 00:19:50,360
+And if we look at the trace of this path, well, what does it look like?
+
+196
+00:19:50,360 --> 00:19:59,537
+Well, it starts with sigma hat, right? So, then we have trace of pi is sigma hat and sigma prime.
+
+197
+00:19:59,537 --> 00:20:06,440
+So, followed by the labelings of the states s n plus one and so on.
+
+198
+00:20:06,440 --> 00:20:18,520
+For sigma hat sigma prime is l of s n plus one and so on.
+
+199
+00:20:18,520 --> 00:20:28,200
+Okay. But, what do we have then? Then, we have that sigma is not in the property.
+
+200
+00:20:28,200 --> 00:20:37,100
+Well, why is that? Because sigma hat was a bad prefix of the of the property e, right?
+
+201
+00:20:37,100 --> 00:20:44,240
+Because it was initially taken from the intersection of the finite traces of the transition system and the
+
+202
+00:20:44,240 --> 00:20:49,605
+bad prefixes. So, in particular, sigma hat is in the bad prefixes of the property.
+
+203
+00:20:49,605 --> 00:21:00,320
+But, then because sigma is an extension of sigma hat we know that sigma cannot be in the
+
+204
+00:21:00,320 --> 00:21:07,760
+property e. And, what can we derive from that?
+
+205
+00:21:07,760 --> 00:21:13,885
+Well, we can directly derive that the transition system does not satisfy the property.
+
+206
+00:21:13,885 --> 00:21:22,000
+Because we have a path pi a0 etc. that has this trace but the trace is not contained in the
+
+207
+00:21:22,000 --> 00:21:27,730
+property. So, we directly know it's not it doesn't satisfy it and that violates our assumption.
+
+208
+00:21:27,730 --> 00:21:39,360
+So, contradiction. Is that more or less clear?
+
+209
+00:21:39,360 --> 00:21:45,640
+And, can you actually read that or is it too small or No complaints, that's good.
+
+210
+00:21:45,640 --> 00:21:57,200
+Maybe because it's early in the morning, but Let's look at the other direction.
+
+211
+00:21:57,200 --> 00:22:09,560
+For the other direction we have to show that if the finite traces of the transition system t
+
+212
+00:22:09,560 --> 00:22:19,240
+and the bad prefixes of the property intersected with that is actually empty, then the transition system satisfies the
+
+213
+00:22:19,240 --> 00:22:33,800
+linear time property. And, for the sake of contradiction, again we're going to assume that this is not the case.
+
+214
+00:22:33,800 --> 00:22:44,240
+So, but if the transition system does not satisfy the linear time property,
+
+215
+00:22:44,240 --> 00:22:48,610
+that means there is a trace in the transition system that's not contained in e.
+
+216
+00:22:48,610 --> 00:22:51,760
+That's the very definition of the satisfaction relation.
+
+217
+00:22:51,760 --> 00:23:00,160
+So, we have that for some path pi, the trace sigma its trace sigma is not contained in the
+
+218
+00:23:00,160 --> 00:23:20,640
+linear time property. then, we know still that e is a safety property.
+
+219
+00:23:20,640 --> 00:23:35,679
+As e is a safety property and we have that the sigma is not Sorry, it's not in the
+
+220
+00:23:35,679 --> 00:23:47,120
+linear time property. By definition there exists a finite prefix, again that I cannot extend to be in the property
+
+221
+00:23:47,120 --> 00:24:16,840
+again. So, for all sigma prime it is sigma hat sigma prime not contained in the property e.
+
+222
+00:24:16,840 --> 00:24:18,933
+I mean, that's just applying the definition really.
+
+223
+00:24:18,933 --> 00:24:23,588
+So, we started with we have a trace that's not in the linear time property.
+
+224
+00:24:23,588 --> 00:24:27,840
+Well, when it's not in the in the safety property, then we have a
+
+225
+00:24:27,840 --> 00:24:32,800
+finite prefix that we cannot extend to make it back into the property again.
+
+226
+00:24:32,800 --> 00:24:38,360
+So, for all extensions of this prefix, we have that it's not in the property.
+
+227
+00:24:38,360 --> 00:24:52,080
+But, then the sigma hat is in the finite traces of the transition system because we have some
+
+228
+00:24:52,080 --> 00:24:57,280
+path that gives rise to sigma. well, then a prefix of this path is
+
+229
+00:24:57,280 --> 00:25:01,960
+also giving rise to this prefix of the word sigma.
+
+230
+00:25:01,960 --> 00:25:12,800
+And, we have we stated that earlier that sigma hat is a bad prefix of the property.
+
+231
+00:25:12,800 --> 00:25:18,960
+Well, but that's a contradiction to the fact that we said there is no
+
+232
+00:25:18,960 --> 00:25:24,000
+element that is in the finite traces of the transition system and is a bad prefix at the same time.
+
+233
+00:25:24,000 --> 00:25:31,320
+But, we just showed that under this assumption that t does not satisfy the property then there is
+
+234
+00:25:31,320 --> 00:25:49,600
+such a common element. Okay. Let's move on.
+
+235
+00:25:49,600 --> 00:26:00,960
+So, Is it true that every invariant is a safety property?
+
+236
+00:26:00,960 --> 00:26:03,720
+Well, I already told you that. Yes, it is.
+
+237
+00:26:03,720 --> 00:26:16,720
+but, why is that? Okay, it's First of all, let's assume that e is an invariant with condition phi.
+
+238
+00:26:16,720 --> 00:26:20,571
+Yeah, well it's very easy to characterize the bad prefixes of this property.
+
+239
+00:26:20,571 --> 00:26:28,560
+Because we said that if at some point during a finite word, I already have violation of my invariant
+
+240
+00:26:28,560 --> 00:26:34,720
+condition, then I cannot possibly extend it to satisfy the property again.
+
+241
+00:26:34,720 --> 00:26:40,040
+Well, and if I can define a set of bad prefixes that characterize my property,
+
+242
+00:26:40,040 --> 00:26:43,160
+well then it's by definition a safety property.
+
+243
+00:26:43,160 --> 00:26:55,400
+And, the minimal bad prefixes are such that the first n minus one elements all satisfy the property
+
+244
+00:26:55,400 --> 00:26:58,754
+the invariant condition and the last one does not, right?
+
+245
+00:26:58,754 --> 00:27:05,320
+Because then after you cannot take away the last element, this an, because this ex- actually explains
+
+246
+00:27:05,320 --> 00:27:13,120
+violation of the of the invariant. Which is why this is the set of minimal bad prefixes.
+
+247
+00:27:13,120 --> 00:27:26,160
+Is the empty set a safety property? Well, yes because it's even an invariant.
+
+248
+00:27:26,160 --> 00:27:32,520
+Right? Actually, all finite words are bad prefixes, right?
+
+249
+00:27:32,520 --> 00:27:39,720
+Because after having read the first item, you can already say that the result you cannot complete this
+
+250
+00:27:39,720 --> 00:27:42,240
+trace to ever be in your property again.
+
+251
+00:27:42,240 --> 00:27:47,544
+And, the invariant condition for this invariant empty set is the condition false.
+
+252
+00:27:47,544 --> 00:27:56,096
+So, there is a proposition or formula such that that characterizes this linear time property.
+
+253
+00:27:56,096 --> 00:28:08,920
+So, it's an invariant. Is the set of all words a safety property?
+
+254
+00:28:08,920 --> 00:28:12,800
+Well, yes it is. And, why is that trivially the case?
+
+255
+00:28:12,800 --> 00:28:20,600
+Because remember the definition of safety properties, it stated something about for all words that are not contained in
+
+256
+00:28:20,600 --> 00:28:25,520
+my property, I have something. But, if all words are in your property,
+
+257
+00:28:25,520 --> 00:28:28,350
+then you know there is nothing to to require.
+
+258
+00:28:28,350 --> 00:28:36,120
+So, by by definition, this is trivially a safety property.
+
+259
+00:28:36,120 --> 00:28:44,520
+Let's come to the prefix closure. It's going to be an important notion in this lecture.
+
+260
+00:28:44,520 --> 00:28:50,986
+If you have an infinite word sigma then we define pref of sigma to be all finite prefixes.
+
+261
+00:28:50,986 --> 00:28:56,240
+So, you take that infinite word and you chop it off at some point in time
+
+262
+00:28:56,240 --> 00:29:08,120
+and you obtain a finite word and all those finite words are contained in pref of sigma.
+
+263
+00:29:08,120 --> 00:29:13,960
+Then, you lift this by saying we don't only look at the prefixes of
+
+264
+00:29:13,960 --> 00:29:22,400
+infinite words but let's look at a set of infinite words and define pref of of this set, of this
+
+265
+00:29:22,400 --> 00:29:28,760
+linear time property if you will, as the union of all prefixes of the contained words.
+
+266
+00:29:28,760 --> 00:29:34,200
+So, you take your set of infinite words e take every individual word, chop it off
+
+267
+00:29:34,200 --> 00:29:40,588
+after at every point in time and obtain all the prefixes allowed by the property.
+
+268
+00:29:40,588 --> 00:29:50,520
+So, pref of e says what are the prefixes that are allowed by the property.
+
+269
+00:29:50,520 --> 00:29:56,200
+And now this definition for me it always takes some time to to process this.
+
+270
+00:29:56,200 --> 00:30:00,920
+but this defines the prefix closure of a linear time property.
+
+271
+00:30:00,920 --> 00:30:07,240
+So we have a linear time property, set of infinite words, and we say the closure
+
+272
+00:30:07,240 --> 00:30:12,520
+of this set of infinite words is again a set of infinite words,
+
+273
+00:30:12,520 --> 00:30:15,106
+but what kind of words are contained in there?
+
+274
+00:30:15,106 --> 00:30:26,080
+Well, it's exactly those words such that all prefixes are also prefixes of the whole property E.
+
+275
+00:30:26,080 --> 00:30:31,440
+So for me it takes some always takes some time to to think about this.
+
+276
+00:30:31,440 --> 00:30:42,782
+So if a word is in here, it means that when you cut it off at some point, right?
+
+277
+00:30:42,782 --> 00:30:48,800
+Then you obtain a finite prefix. And you can definitely find that prefix
+
+278
+00:30:48,800 --> 00:30:52,440
+as a prefix of some word in the property.
+
+279
+00:30:52,440 --> 00:30:59,120
+That's what it says. Right? And if this is true for all the prefixes of the word,
+
+280
+00:30:59,120 --> 00:31:05,560
+then it's contained in the closure. And first of all, it's if you think
+
+281
+00:31:05,560 --> 00:31:11,440
+about it, it's it's rather clear that the closure only adds new words.
+
+282
+00:31:11,440 --> 00:31:14,920
+Right? So it kind of extends the the linear time property E.
+
+283
+00:31:14,920 --> 00:31:21,760
+because I mean the prefixes of a word are contained in the prefixes of the word itself,
+
+284
+00:31:21,760 --> 00:31:27,680
+and since we said that pref of E is the union over all words, this clearly
+
+285
+00:31:27,680 --> 00:31:33,280
+contains all the words in E, but it may contain more.
+
+286
+00:31:33,280 --> 00:31:37,440
+And we're going to see this in the course of this lecture.
+
+287
+00:31:37,440 --> 00:31:42,600
+Okay, but this is the prefix closure of a linear time property E.
+
+288
+00:31:42,600 --> 00:31:46,713
+And given all these definitions, this is just a repetition from the previous slide.
+
+289
+00:31:46,713 --> 00:31:54,120
+Given the definition of the closure of the linear time property as the word all infinite words whose
+
+290
+00:31:54,120 --> 00:32:01,240
+prefixes are fully contained in the prefixes of the property, we can state the following theorem that
+
+291
+00:32:01,240 --> 00:32:07,960
+we're also going to prove. It characterizes safety properties in the sense that we can say
+
+292
+00:32:07,960 --> 00:32:15,600
+E is a safety property, a linear time property is a safety property if and only if its closure is
+
+293
+00:32:15,600 --> 00:32:21,908
+the property itself, meaning that E is already closed, you could say.
+
+294
+00:32:21,908 --> 00:32:27,320
+So even after applying the closure operation, you don't add any new words.
+
+295
+00:32:27,320 --> 00:32:31,520
+It's exactly then is it a safety property.
+
+296
+00:32:31,520 --> 00:32:38,960
+And yes, we're going to prove that now.
+
+297
+00:32:38,960 --> 00:32:41,546
+Oh, and by the way, if you have any questions, right?
+
+298
+00:32:41,546 --> 00:32:48,506
+Just just ask right away. Okay, so what's our statement?
+
+299
+00:32:48,506 --> 00:33:09,720
+Our statement Sorry. is E is a safety property if and only if the closure
+
+300
+00:33:09,720 --> 00:33:23,480
+of the property is the property itself. So the closure operator didn't add any new words.
+
+301
+00:33:23,480 --> 00:33:30,560
+Let's look at the proof. Well, actually we make a case distinction to make our life easier.
+
+302
+00:33:30,560 --> 00:33:40,160
+The first one, we say what about the specific property containing all words.
+
+303
+00:33:40,160 --> 00:33:46,480
+As we've seen, this is a safety property because it trivially satisfies the definition.
+
+304
+00:33:46,480 --> 00:33:50,840
+so we also have to look look out for that.
+
+305
+00:33:50,840 --> 00:34:02,800
+So this is our first case. But then by the definition of E, we also have that the closure
+
+306
+00:34:02,800 --> 00:34:09,120
+of the set of all words, as I said, the closure is only adding infinite words to
+
+307
+00:34:09,120 --> 00:34:15,679
+the property, so to speak. and because we already have all infinite words, well, then the closure of the
+
+308
+00:34:15,679 --> 00:34:18,600
+property is going to be the property itself.
+
+309
+00:34:18,600 --> 00:34:28,960
+And we saw that E is a safety property.
+
+310
+00:34:28,960 --> 00:34:30,919
+And then we're done here for this case.
+
+311
+00:34:30,919 --> 00:34:39,520
+So we got rid of that, but we have to talk about all other properties still.
+
+312
+00:34:39,520 --> 00:34:47,720
+So let's look at the case where E is not the set of all infinite words over 2 to
+
+313
+00:34:47,720 --> 00:34:55,240
+the AP. Now we still have to show both directions, right?
+
+314
+00:34:55,240 --> 00:35:00,280
+I mean, we we restricted E to a specific case, but we still have to show
+
+315
+00:35:00,280 --> 00:35:07,540
+both directions, and let's start with the one from right to left.
+
+316
+00:35:07,540 --> 00:35:15,240
+So we assume this. We want to say that if the closure is the property itself,
+
+317
+00:35:15,240 --> 00:35:23,040
+then E is also a safety So we assume closure of E Sorry.
+
+318
+00:35:23,040 --> 00:35:33,920
+Of E is E itself. And sig- sorry.
+
+319
+00:35:33,920 --> 00:35:49,000
+That's an infinite word sigma in the complement of E, meaning 2 to the AP omega without the set E.
+
+320
+00:35:49,000 --> 00:35:53,520
+And this I This is why we made the case distinction this year.
+
+321
+00:35:53,520 --> 00:36:05,400
+It's non-empty because the set E is not the set of all infinite words.
+
+322
+00:36:05,400 --> 00:36:10,320
+So we assume that the closure of of E is E itself, and we just take one
+
+323
+00:36:10,320 --> 00:36:14,800
+word of the complement, and there must be such a word in the complement because
+
+324
+00:36:14,800 --> 00:36:21,359
+we're not talking about the set of all words to begin with.
+
+325
+00:36:21,359 --> 00:36:27,764
+Okay. Then we have that sigma this infinite word is not in E, right?
+
+326
+00:36:27,764 --> 00:36:30,313
+I mean, we took it from the complement of E.
+
+327
+00:36:30,313 --> 00:36:43,640
+It's not contained in E. And because we know that the closure of E is E itself,
+
+328
+00:36:43,640 --> 00:36:54,880
+then it can also not be in the closure.
+
+329
+00:36:54,880 --> 00:37:10,280
+Thus, there exists a finite prefix of this infinite word sigma, let's call it sigma hat, such that sigma hat
+
+330
+00:37:10,280 --> 00:37:14,520
+is not a prefix of the property E.
+
+331
+00:37:14,520 --> 00:37:19,359
+Well, why is that? Our definition of closure of a linear time property, we
+
+332
+00:37:19,359 --> 00:37:24,800
+add all the words such that all prefixes are prefixes of the property.
+
+333
+00:37:24,800 --> 00:37:30,200
+But we just said we have a word sigma that is not in the closure, so there must be
+
+334
+00:37:30,200 --> 00:37:40,200
+some prefix that we cannot find as a prefix over in the closure set, okay?
+
+335
+00:37:40,200 --> 00:37:59,440
+Then by definition of the closure, there is no sigma hat sigma prime contained in E.
+
+336
+00:37:59,440 --> 00:38:04,520
+Right? Because this says sigma hat is not in the prefixes of E, meaning there
+
+337
+00:38:04,520 --> 00:38:10,680
+is really no word in E that has sigma hat as a prefix, meaning that no matter
+
+338
+00:38:10,680 --> 00:38:16,800
+how you extend it, it's not going to be in the property.
+
+339
+00:38:16,800 --> 00:38:22,600
+But this is exactly our characterization of a safety property, recall.
+
+340
+00:38:22,600 --> 00:38:31,526
+And therefore E is a safety property. Right?
+
+341
+00:38:31,526 --> 00:38:37,920
+Because we took an arbitrary element sigma that is not in the property,
+
+342
+00:38:37,920 --> 00:38:43,200
+and we showed that no matter how you extend it, there is no element sigma hat sigma
+
+343
+00:38:43,200 --> 00:38:50,320
+prime in E, and this was the very characterization of of a safety property.
+
+344
+00:38:50,320 --> 00:38:59,840
+So much for that direction. Let's move to the other direction.
+
+345
+00:38:59,840 --> 00:39:03,593
+Now for the other direction, can you read it?
+
+346
+00:39:03,593 --> 00:39:08,280
+we have to show that if E is a safety property, then the closure of the
+
+347
+00:39:08,280 --> 00:39:12,880
+property is the property itself. And to show this typically you
+
+348
+00:39:12,880 --> 00:39:17,080
+show that E is contained in the closure of E, and the closure of E is
+
+349
+00:39:17,080 --> 00:39:22,720
+contained in E, right? To get equality. but I already said that, and it's
+
+350
+00:39:22,720 --> 00:39:26,760
+rather easy to show, so I'm going to omit that here, the direction that E is
+
+351
+00:39:26,760 --> 00:39:31,960
+contained in the closure of E. Because as I said, the closure only adds new words.
+
+352
+00:39:31,960 --> 00:39:37,359
+E is always contained in closure of E.
+
+353
+00:39:37,359 --> 00:39:42,720
+So we have we have this part trivially.
+
+354
+00:39:42,720 --> 00:39:59,960
+So, it remains to show that closure of E is a subset of E if E is a safety property.
+
+355
+00:39:59,960 --> 00:40:10,177
+So, how we could doing that? We assume that the contrary to show a contradiction.
+
+356
+00:40:10,177 --> 00:40:17,520
+So, let's say the closure of E is not contained in the set E itself.
+
+357
+00:40:17,520 --> 00:40:27,000
+Sorry. Well, then we can take an element that is in the closure but not in E.
+
+358
+00:40:27,000 --> 00:40:38,400
+Right? So, we take sigma A 0 and so on that is in the closure of the property
+
+359
+00:40:38,400 --> 00:40:43,880
+without the property itself. I mean, this is our assumption and we're going to show that this is
+
+360
+00:40:43,880 --> 00:40:58,720
+going to produce a contradiction. Then, E is still a safety property.
+
+361
+00:40:58,720 --> 00:41:06,417
+And by this assumption here that we made we have that sigma is not contained in the property, right?
+
+362
+00:41:06,417 --> 00:41:09,830
+Because it's in the closure but not in the property.
+
+363
+00:41:09,830 --> 00:41:15,640
+But, E is the safety property, so there must exist a by definition a finite prefix
+
+364
+00:41:15,640 --> 00:41:19,640
+such that no continuation of that prefix is in E again.
+
+365
+00:41:19,640 --> 00:41:37,680
+So, let's write that down. then there exists a finite prefix sigma hat A0 up until some point AN
+
+366
+00:41:37,680 --> 00:41:47,640
+of sigma such that sigma hat is a bad prefix.
+
+367
+00:41:47,640 --> 00:41:53,520
+I mean, that's saying nothing else than you cannot continue it in any way to get
+
+368
+00:41:53,520 --> 00:42:12,228
+it back into the property. Okay. Now, then we have that sigma hat is in the prefixes of sigma, right?
+
+369
+00:42:12,228 --> 00:42:15,410
+Because we said sigma hat is a prefix of sigma.
+
+370
+00:42:15,410 --> 00:42:27,720
+So, that's very trivial. And we have that the prefixes of sigma are fully contained in the prefixes of E.
+
+371
+00:42:27,720 --> 00:42:32,520
+Why? Well, because sigma is in the closure.
+
+372
+00:42:32,520 --> 00:42:38,026
+Right? And the definition of closure says it's exactly those words that satisfy this here.
+
+373
+00:42:38,026 --> 00:42:43,475
+It's It's those infinite words whose prefixes are fully contained in the prefixes of E.
+
+374
+00:42:43,475 --> 00:42:50,760
+So, we have have this one here. And because of these two things, I mean,
+
+375
+00:42:50,760 --> 00:42:54,040
+you see sigma hat is in the prefixes of sigma and the prefixes of sigma are
+
+376
+00:42:54,040 --> 00:43:00,720
+fully contained in E, we already know that sigma hat is in the prefixes must be in the
+
+377
+00:43:00,720 --> 00:43:09,230
+prefixes of E. But, if it's in the prefixes, what does that mean?
+
+378
+00:43:09,230 --> 00:43:25,720
+It means there is an infinite word in there such that sigma hat is the prefix of this infinite word.
+
+379
+00:43:25,720 --> 00:43:33,493
+Then, there is a sigma prime such that sigma hat continued with sigma prime is in the property E.
+
+380
+00:43:33,493 --> 00:43:39,600
+Otherwise, sigma hat would not be a prefix of E.
+
+381
+00:43:39,600 --> 00:43:53,200
+But, this is a contradiction to the fact that sigma hat is a bad prefix of the property.
+
+382
+00:43:53,200 --> 00:44:01,280
+Right? We just showed that we found a continuation of sigma hat that is in the property, but above here
+
+383
+00:44:01,280 --> 00:44:05,714
+we showed that sigma hat is also a bad prefix, meaning no continuation is in the property.
+
+384
+00:44:05,714 --> 00:44:17,440
+So, this clearly is a contradiction. So, we're done here.
+
+385
+00:44:17,440 --> 00:44:21,480
+Is that more or less clear? So, I mean, it definitely I think takes some
+
+386
+00:44:21,480 --> 00:44:27,040
+time to get used to this prefix closure to all these notations.
+
+387
+00:44:27,040 --> 00:44:35,040
+but I hope you you at least get get an idea about this.
+
+388
+00:44:35,040 --> 00:44:41,480
+So let's move on. There's plenty that we have ahead of us.
+
+389
+00:44:41,480 --> 00:44:49,280
+Now, recall from the last lecture that if the traces So, if we have two
+
+390
+00:44:49,280 --> 00:44:53,640
+transition systems T1 and T2 and the traces of the first one are fully
+
+391
+00:44:53,640 --> 00:44:59,080
+contained in the traces of the second one then this is equivalent to having that
+
+392
+00:44:59,080 --> 00:45:07,840
+for all LT properties E, if the second one T2 satisfies the linear time property, then also the first one
+
+393
+00:45:07,840 --> 00:45:13,800
+satisfies the property. I mean, this we already had in the last lecture.
+
+394
+00:45:13,800 --> 00:45:21,000
+And what you can actually show is the following, if we look at safety properties only.
+
+395
+00:45:21,000 --> 00:45:26,720
+If we have two transition systems T1 and T2 that are not connected by trace
+
+396
+00:45:26,720 --> 00:45:31,920
+inclusion but by finite trace inclusion, meaning that all finite traces of T1 are
+
+397
+00:45:31,920 --> 00:45:37,280
+contained in the finite traces of T2. This is equivalent to having that for
+
+398
+00:45:37,280 --> 00:45:43,480
+all safety properties E, if the second one satisfies E, then also the first one.
+
+399
+00:45:43,480 --> 00:45:50,160
+Right? So, it's it's very similar. It's just that here you have infinite trace inclusion, here you have finite trace
+
+400
+00:45:50,160 --> 00:45:55,880
+inclusion, here you say all LT properties for all LT properties you have a statement and here you say
+
+401
+00:45:55,880 --> 00:46:06,400
+for all safety properties. So, for a subset of the linear time properties you have this.
+
+402
+00:46:06,400 --> 00:46:08,800
+Yes, this is the the statement we just had.
+
+403
+00:46:08,800 --> 00:46:14,080
+So, let's quickly go through the proof, but it's it's rather straightforward, I would say, especially
+
+404
+00:46:14,080 --> 00:46:19,240
+the direction from from left to right. So, suppose we have that the finite
+
+405
+00:46:19,240 --> 00:46:23,480
+traces of T1 is fully included in the finite traces of T2.
+
+406
+00:46:23,480 --> 00:46:29,760
+and recall that we just showed that a transition system satisfies a safety
+
+407
+00:46:29,760 --> 00:46:39,960
+property if and only if the finite traces intersected with the bad prefixes of the property is the empty set.
+
+408
+00:46:39,960 --> 00:46:43,480
+So how are we going to show that if we have finite trace inclusion then
+
+409
+00:46:43,480 --> 00:46:51,880
+for all LT properties we have the implication that if T2 satisfies the property, then also does T1?
+
+410
+00:46:51,880 --> 00:47:00,840
+How are we going to do this? Well, we know that T2 satisfies So, let's take a random an arbitrary
+
+411
+00:47:00,840 --> 00:47:03,565
+safety property and we know that T2 satisfies it.
+
+412
+00:47:03,565 --> 00:47:08,840
+I mean, that's that's the part on the left-hand side of the implication.
+
+413
+00:47:08,840 --> 00:47:16,840
+but then we know that the finite traces of T2 do not contain any bad prefix, right?
+
+414
+00:47:16,840 --> 00:47:21,560
+So, the finite traces of T2 intersected with the bad prefixes is the empty set.
+
+415
+00:47:21,560 --> 00:47:28,000
+But, since the finite traces of T1 are included in the finite traces of T2 we know that
+
+416
+00:47:28,000 --> 00:47:33,300
+the the the finite trace of T1 intersected with the bad prefixes is a subset of this one.
+
+417
+00:47:33,300 --> 00:47:38,400
+And if this one the finite traces that of T2 that are bad prefixes is already the empty set,
+
+418
+00:47:38,400 --> 00:47:43,920
+well, then clearly also the same holds for T1 and we have have that T1
+
+419
+00:47:43,920 --> 00:47:49,480
+satisfies the linear time property, the safety property E.
+
+420
+00:47:49,480 --> 00:47:54,210
+Now, the other direction is a bit more involved but not too much.
+
+421
+00:47:54,210 --> 00:48:00,359
+So, let's quickly go through it. So, we have to show that if we have that
+
+422
+00:48:00,359 --> 00:48:05,720
+for all safety properties E, we have the following, then the finite traces of T1
+
+423
+00:48:05,720 --> 00:48:08,440
+are included in the finite traces of T2.
+
+424
+00:48:08,440 --> 00:48:12,940
+Let So, we let's take as a linear time property this one.
+
+425
+00:48:12,940 --> 00:48:17,560
+So, the closure of the traces of T2.
+
+426
+00:48:17,560 --> 00:48:21,160
+And in order to apply this this on the right what we have on the right-hand
+
+427
+00:48:21,160 --> 00:48:24,586
+side here is we have to first show that it's a safety property, right?
+
+428
+00:48:24,586 --> 00:48:30,600
+Because this I mean, we can look at it, but it's not directly obvious that it's a safety property.
+
+429
+00:48:30,600 --> 00:48:35,440
+but in order to actually use this, we need that it's a safety property.
+
+430
+00:48:35,440 --> 00:48:43,400
+now again here quick reminder that the closure of some set and in this of some set of
+
+431
+00:48:43,400 --> 00:48:48,080
+infinite words, in this case the traces of T2 are all words such that the
+
+432
+00:48:48,080 --> 00:48:53,262
+prefixes are fully contained in the prefixes of this one.
+
+433
+00:48:53,262 --> 00:48:58,880
+And here we already substituted that with the finite traces of T2 because you can show that for each
+
+434
+00:48:58,880 --> 00:49:04,960
+transition system you have that the prefixes of the traces of the transition system
+
+435
+00:49:04,960 --> 00:49:07,320
+are exactly the finite traces of the transition system.
+
+436
+00:49:07,320 --> 00:49:10,240
+And this is not not hard to see.
+
+437
+00:49:10,240 --> 00:49:14,120
+I mean, we don't use that here in this proof, I guess, but but anyway, it's
+
+438
+00:49:14,120 --> 00:49:20,630
+a nice nice thing to to know. So, why is this a safety property?
+
+439
+00:49:20,630 --> 00:49:26,440
+So, I mean, in order to show this thing implies this thing
+
+440
+00:49:26,440 --> 00:49:28,640
+we have to somehow make sure that we can apply it.
+
+441
+00:49:28,640 --> 00:49:36,040
+So, it must be a safety property. Why is it a safety property?
+
+442
+00:49:36,040 --> 00:49:41,902
+Well, it's a safety property because you can show that the closure is an item item potent operation.
+
+443
+00:49:41,902 --> 00:49:48,400
+So, if you apply the closure to some set of infinite words, and you apply the
+
+444
+00:49:48,400 --> 00:49:50,570
+closure again, it's going to be the same thing.
+
+445
+00:49:50,570 --> 00:49:58,320
+So, no matter how often you apply the closure, it will stay at the same it will stay the same.
+
+446
+00:49:58,320 --> 00:50:02,874
+And this is exactly the characterization we had for for safety properties, remember?
+
+447
+00:50:02,874 --> 00:50:08,800
+So, we have that closure of closure of traces of T2 is closure of
+
+448
+00:50:08,800 --> 00:50:14,640
+traces of T2, and therefore E is a safety property.
+
+449
+00:50:14,640 --> 00:50:19,680
+And then we can use the this this one.
+
+450
+00:50:19,680 --> 00:50:25,920
+So, then we may assume because we showed that E is a safety property
+
+451
+00:50:25,920 --> 00:50:32,640
+then by assumption T2 satisfies the property E, and now we have to show
+
+452
+00:50:32,640 --> 00:50:36,920
+that we can assume that T1 also satisfies the property, and from this we
+
+453
+00:50:36,920 --> 00:50:45,320
+need to derive that the finite traces of T1 are included in the finite traces of T2.
+
+454
+00:50:45,320 --> 00:50:49,091
+Well, what does it mean that T1 satisfies the linear time property E?
+
+455
+00:50:49,091 --> 00:50:53,640
+It means that all of its traces are fully contained in linear time property.
+
+456
+00:50:53,640 --> 00:51:00,560
+That's just the definition of it. And given all these tiny fragments here,
+
+457
+00:51:00,560 --> 00:51:05,760
+we can now basically create a chain of reasoning that that shows that the
+
+458
+00:51:05,760 --> 00:51:10,160
+finite traces of T1 are included in the finite traces of T2, and it goes like this.
+
+459
+00:51:10,160 --> 00:51:15,137
+The finite traces of T1 is the set of prefixes of the traces of T1.
+
+460
+00:51:15,137 --> 00:51:18,445
+Remember, we had this like three three overlays ago.
+
+461
+00:51:18,445 --> 00:51:22,960
+This holds for any transition system. So, if you take the traces, and you take the prefixes of
+
+462
+00:51:22,960 --> 00:51:27,440
+that, you arrive at the finite traces of the transition system.
+
+463
+00:51:27,440 --> 00:51:33,280
+Now, because T1 satisfies the linear time property, we know all its traces are included in E.
+
+464
+00:51:33,280 --> 00:51:38,920
+So, by taking the prefixes of a larger set, so we make this one larger by
+
+465
+00:51:38,920 --> 00:51:45,640
+moving to E, we also have more prefixes, which is why we have this subset relation.
+
+466
+00:51:45,640 --> 00:51:51,600
+Then, putting in the definition of E means that this is the prefixes of E are
+
+467
+00:51:51,600 --> 00:51:58,600
+the prefixes of closure of traces of T2.
+
+468
+00:51:58,600 --> 00:52:05,020
+And then you can show that this is the same as the prefixes of the traces of T2.
+
+469
+00:52:05,020 --> 00:52:09,240
+So, you can essentially drop that closure. Why is that?
+
+470
+00:52:09,240 --> 00:52:14,800
+Intuitively, it is because the closure operation does not introduce new prefixes.
+
+471
+00:52:14,800 --> 00:52:20,160
+It may introduce new words, infinite words, but no new prefixes.
+
+472
+00:52:20,160 --> 00:52:25,000
+So, you can cross out the closure here essentially, and then you are stuck with
+
+473
+00:52:25,000 --> 00:52:29,960
+the prefixes of the traces of T2, and just like here, we then know this is
+
+474
+00:52:29,960 --> 00:52:37,080
+exactly the finite traces of T2. I know this is a bit quick, but I think
+
+475
+00:52:37,080 --> 00:52:44,280
+you need to take your time at home and maybe think about it once more.
+
+476
+00:52:44,280 --> 00:52:52,240
+So, safety and finite trace equivalence. So, remember we we just showed that the finite traces
+
+477
+00:52:52,240 --> 00:52:57,640
+of So, that finite trace inclusion is the same as having that for all safety
+
+478
+00:52:57,640 --> 00:53:04,000
+properties, if T2 satisfies the safety property, then so does T1.
+
+479
+00:53:04,000 --> 00:53:10,400
+And obviously, just like for trace inclusion, you can lift that to trace equivalence, and finite trace
+
+480
+00:53:10,400 --> 00:53:15,440
+equivalence in this case. So, you have that if if you do not only have inclusion, but
+
+481
+00:53:15,440 --> 00:53:21,000
+you have inclusion in both directions, so the finite traces of the two transition systems are the same
+
+482
+00:53:21,000 --> 00:53:26,840
+then the T1 and T2 are not distinguishable by safety properties.
+
+483
+00:53:26,840 --> 00:53:42,440
+Okay? Are there any major questions up to that point?
+
+484
+00:53:42,440 --> 00:53:53,960
+No. Okay. Just a summary. Right? We have seen all these before, but summary.
+
+485
+00:53:53,960 --> 00:54:00,720
+If we have trace inclusion then we have that for all LT properties, if the transition system that has more
+
+486
+00:54:00,720 --> 00:54:07,640
+traces satisfies the property, then so does the one with fewer traces.
+
+487
+00:54:07,640 --> 00:54:09,446
+We have the same thing for finite trace inclusion.
+
+488
+00:54:09,446 --> 00:54:16,000
+If we have finite trace inclusion, it's the same thing as saying that for all safety properties, we have
+
+489
+00:54:16,000 --> 00:54:23,880
+that if the transition system with more finite traces satisfies the property, then so does the one with fewer finite
+
+490
+00:54:23,880 --> 00:54:29,920
+of the finite traces. And the same thing for trace and finite trace equivalence.
+
+491
+00:54:29,920 --> 00:54:34,560
+All right, I'm not going to go through all of that but it should
+
+492
+00:54:34,560 --> 00:54:42,230
+hopefully make sense to you by now. Let's have a short short quiz again.
+
+493
+00:54:42,230 --> 00:54:47,920
+So, if we have that the traces of some transition system are included in the traces of the transition
+
+494
+00:54:47,920 --> 00:54:56,280
+system in some some other transition system is it the case that then also the finite traces of one
+
+495
+00:54:56,280 --> 00:55:05,080
+of the first one is included in the finite traces of the second one?
+
+496
+00:55:05,080 --> 00:55:11,960
+What would you intuitively say without actually justifying?
+
+497
+00:55:11,960 --> 00:55:15,840
+Yes. You would say yes, and this is good because it's correct.
+
+498
+00:55:15,840 --> 00:55:19,359
+because I mean, on on a previous slide I already mentioned that that the
+
+499
+00:55:19,359 --> 00:55:25,680
+finite traces of transition system are the prefixes of the traces of the transition system and and then it's
+
+500
+00:55:25,680 --> 00:55:31,840
+clear because if you if you have a a larger set, so a super set, then you
+
+501
+00:55:31,840 --> 00:55:40,400
+also have more prefixes, and then it it you also have finite trace inclusion directly.
+
+502
+00:55:40,400 --> 00:55:47,800
+So, we just said if we have trace inclusion, we have finite trace inclusion.
+
+503
+00:55:47,800 --> 00:55:57,640
+What about the other way around? So, if we have finite trace inclusion do we also have trace inclusion?
+
+504
+00:55:57,640 --> 00:56:07,534
+What would you intuitively say? No guesses? Yes, one guess?
+
+505
+00:56:07,534 --> 00:56:15,080
+I would say no because when we only look at finite prefixes and they are the same.
+
+506
+00:56:15,080 --> 00:56:21,359
+Yes. Then the the the that's nothing about infinite words.
+
+507
+00:56:21,359 --> 00:56:25,560
+And there they the sets could differ.
+
+508
+00:56:25,560 --> 00:56:29,115
+Yes and no. I I You are correct.
+
+509
+00:56:29,115 --> 00:56:37,320
+First of all, it doesn't hold, but the argument, I mean, if you have finite trace inclusion, it means
+
+510
+00:56:37,320 --> 00:56:41,659
+you're right. It it talks about finite prefixes, but of arbitrary length.
+
+511
+00:56:41,659 --> 00:56:45,960
+So, it somehow means you can copy it arbitrarily deep.
+
+512
+00:56:45,960 --> 00:56:52,720
+And as we will see, under certain assumptions, it it holds again, but in the general case, it doesn't.
+
+513
+00:56:52,720 --> 00:56:55,491
+So, the answer is no, and let's look at an example.
+
+514
+00:56:55,491 --> 00:57:01,359
+So, here we have a transition system T, very tiny, so just a state with a self-loop
+
+515
+00:57:01,359 --> 00:57:07,200
+labeled with empty set the state, and here it's a very large transition system.
+
+516
+00:57:07,200 --> 00:57:15,040
+It's infinitely large. So, we have an initial state here and then we have an infinite branching
+
+517
+00:57:15,040 --> 00:57:21,570
+from this initial state. And it you know, you already see the pattern.
+
+518
+00:57:21,570 --> 00:57:26,280
+It can enter like a chain of having empty set empty set empty set,
+
+519
+00:57:26,280 --> 00:57:30,800
+and at some point it will always go into a state labeled with B, and from there
+
+520
+00:57:30,800 --> 00:57:39,445
+on only see B forever. And let's look at the traces and finite traces of these two transition systems.
+
+521
+00:57:39,445 --> 00:57:45,200
+So, it's clear that for this transition system, the only trace is empty set infinitely often.
+
+522
+00:57:45,200 --> 00:57:49,320
+Right? Because you you start there, and you stay there.
+
+523
+00:57:49,320 --> 00:57:55,440
+If you just read off the labeling, will just be the empty set forever.
+
+524
+00:57:55,440 --> 00:58:03,200
+Now, the finite traces of this transition system is equal to an arbitrary amount, an arbitrary but
+
+525
+00:58:03,200 --> 00:58:11,520
+finite amount of empty sets. Can someone tell me why this is wrong?
+
+526
+00:58:11,520 --> 00:58:26,640
+It's very easy, but Okay. So, to my opinion, that should be a one.
+
+527
+00:58:26,640 --> 00:58:31,428
+Right? Because if because if you have n zero, it means you have nothing.
+
+528
+00:58:31,428 --> 00:58:38,520
+Right? And our traces also are finite words, they always contain at least at least one letter.
+
+529
+00:58:38,520 --> 00:58:41,191
+Okay? So, so think of that being a one.
+
+530
+00:58:41,191 --> 00:58:44,600
+Okay? But other than that, it's it's it's correct.
+
+531
+00:58:44,600 --> 00:58:50,240
+Let's look at the traces of this other transition system T prime.
+
+532
+00:58:50,240 --> 00:58:57,760
+the traces, they have an arbitrary number of of empty sets that is greater
+
+533
+00:58:57,760 --> 00:59:01,880
+than two, but other than that, you can have, depending on where you
+
+534
+00:59:01,880 --> 00:59:12,240
+which branch you enter, you will have an arbitrary amount of of empty set followed by B forever.
+
+535
+00:59:12,240 --> 00:59:15,200
+But then if you look at the finite traces of this transition system over
+
+536
+00:59:15,200 --> 00:59:21,600
+here you see that it also contains, again, think of that being a one
+
+537
+00:59:21,600 --> 00:59:25,340
+an arbitrary number of empty set. Right?
+
+538
+00:59:25,340 --> 00:59:31,400
+Because if I go down the 100th branch or so
+
+539
+00:59:31,400 --> 00:59:35,880
+then I can make 100 steps of seeing an empty set.
+
+540
+00:59:35,880 --> 00:59:39,960
+And if I want to see more empty sets, I I just go down farther to
+
+541
+00:59:39,960 --> 00:59:42,520
+the right, farther to the right, and so on.
+
+542
+00:59:42,520 --> 00:59:50,840
+So, in this in this thing, we have that it's possible to obtain the finite traces that have an arbitrary
+
+543
+00:59:50,840 --> 00:59:59,080
+number of of empty sets. But, of course, you can also have an arbitrary number of empty sets if it's
+
+544
+00:59:59,080 --> 01:00:03,160
+at least two and followed by an arbitrary number of Bs.
+
+545
+01:00:03,160 --> 01:00:11,420
+But, the important point is that it's also possible to stop the finite trace before reaching the Bs, okay?
+
+546
+01:00:11,420 --> 01:00:16,160
+And then you already see the that the finite traces of T, they
+
+547
+01:00:16,160 --> 01:00:19,336
+are included in the finite traces of T prime, right?
+
+548
+01:00:19,336 --> 01:00:25,240
+Because this set being a one is is directly a subset of this one.
+
+549
+01:00:25,240 --> 01:00:30,640
+but at the same time, we have that the traces of this transition system, so
+
+550
+01:00:30,640 --> 01:00:37,200
+empty set forever, is not an element of the traces of this other transition system because eventually you will end
+
+551
+01:00:37,200 --> 01:00:41,360
+up in a B in the transition system on the right-hand side.
+
+552
+01:00:41,360 --> 01:00:44,720
+I mean, you could say it's an artificial example because you have infinite
+
+553
+01:00:44,720 --> 01:00:48,120
+branching and so on, and indeed it is.
+
+554
+01:00:48,120 --> 01:00:53,320
+and indeed under certain restrictions, as we'll see, it it actually holds.
+
+555
+01:00:53,320 --> 01:00:59,200
+The statement that finite trace inclusion implies trace inclusion.
+
+556
+01:00:59,200 --> 01:01:03,960
+So we just saw that in general this doesn't hold, and
+
+557
+01:01:03,960 --> 01:01:09,680
+the result saying that if we we have trace inclusion if and only if
+
+558
+01:01:09,680 --> 01:01:15,440
+it's not distinguishable by LT properties, it means that because we don't have trace inclusion, there is a
+
+559
+01:01:15,440 --> 01:01:19,890
+linear time property that distinguishes the two. And what property is it?
+
+560
+01:01:19,890 --> 01:01:27,120
+Well, for example, eventually B. You have that this transition system satisfies eventually B.
+
+561
+01:01:27,120 --> 01:01:32,542
+Right? Because all traces will eventually you reach a point where you have B in the labeling.
+
+562
+01:01:32,542 --> 01:01:44,080
+Whereas this clearly doesn't. Okay? But, under certain restrictions, I already hinted at, it actually holds.
+
+563
+01:01:44,080 --> 01:01:50,640
+So, what are those restrictions? So, one possibility to do that is to require
+
+564
+01:01:50,640 --> 01:01:56,280
+that the first one, the T, has no terminal states, meaning that all paths
+
+565
+01:01:56,280 --> 01:02:04,080
+in the transition system T are infinite. And we require that the second one, this T prime, is finite.
+
+566
+01:02:04,080 --> 01:02:09,040
+So, that that might look somehow artificial to you as well, but if you look into the
+
+567
+01:02:09,040 --> 01:02:13,005
+proof, it actually makes quite a bit of sense to to require these things.
+
+568
+01:02:13,005 --> 01:02:19,440
+And then you can show under these assumptions then trace equivalent or trace inclusion
+
+569
+01:02:19,440 --> 01:02:25,040
+is the same thing as finite trace inclusion.
+
+570
+01:02:25,040 --> 01:02:31,040
+And I mean, we already saw that the the the implication from trace inclusion to
+
+571
+01:02:31,040 --> 01:02:36,060
+finite trace inclusion, this holds for all transition systems, no matter whether you have this or not.
+
+572
+01:02:36,060 --> 01:02:44,440
+But, if you additionally have these two things, then also the other way around, finite trace inclusion means trace inclusion.
+
+573
+01:02:44,440 --> 01:02:54,560
+Here on the I'm quickly going through this because on the slides, there is some kind of a
+
+574
+01:02:54,560 --> 01:03:01,000
+proof idea. And I would somehow like to show that to you, but I'm afraid this this takes more
+
+575
+01:03:01,000 --> 01:03:06,960
+time than I have. If you want to see this, if you're interested in this proof,
+
+576
+01:03:06,960 --> 01:03:13,160
+please send me a mail, and depending on how many people are interested in that, I will
+
+577
+01:03:13,160 --> 01:03:18,160
+yeah, maybe have a short Q&A session in our office, or maybe cut some time off
+
+578
+01:03:18,160 --> 01:03:21,685
+the exercise class to to show the proof idea because I really like it.
+
+579
+01:03:21,685 --> 01:03:26,520
+It's really a neat idea. but it's not essential to the contents
+
+580
+01:03:26,520 --> 01:03:33,480
+of this lecture, so I'm going to omit that here.
+
+581
+01:03:33,480 --> 01:03:37,417
+So, now suppose we have shown this.
+
+582
+01:03:37,417 --> 01:03:46,680
+Suppose that under these assumptions, we have that finite trace inclusion implies trace inclusion.
+
+583
+01:03:46,680 --> 01:03:50,400
+And what you can show is that you that these are not the only restrictions that
+
+584
+01:03:50,400 --> 01:03:56,485
+you can make for for this result to hold, but you can somehow weaken this.
+
+585
+01:03:56,485 --> 01:04:00,920
+Here we said T prime is finite. It's maybe something not something you
+
+586
+01:04:00,920 --> 01:04:05,040
+want to have, but you can show that image finiteness is actually sufficient.
+
+587
+01:04:05,040 --> 01:04:08,440
+And image finiteness, what does that mean? It's very much related to the
+
+588
+01:04:08,440 --> 01:04:12,600
+notion of AP determinism that we had in the exercise class.
+
+589
+01:04:12,600 --> 01:04:18,359
+Image finiteness means that if you if you are standing on a specific state,
+
+590
+01:04:18,359 --> 01:04:26,359
+and if you look at the successor states of this one state, then there are only finitely many
+
+591
+01:04:26,359 --> 01:04:32,640
+successors that are labeled the same. So, there may be infinitely many
+
+592
+01:04:32,640 --> 01:04:40,200
+successors that I have standing on the current state, but if I take a specific set of atomic
+
+593
+01:04:40,200 --> 01:04:44,920
+propositions, then only finitely many of them will be labeled the same.
+
+594
+01:04:44,920 --> 01:04:50,320
+Only fine So, if I take, for example, the atomic propositions ABC, only finitely many of
+
+595
+01:04:50,320 --> 01:04:53,920
+them will be labeled with A. Only finitely many of them will be labeled
+
+596
+01:04:53,920 --> 01:05:00,160
+with A and B, and so on. Of course, if you have finitely many atomic propositions, then image finiteness
+
+597
+01:05:00,160 --> 01:05:09,320
+directly implies finiteness. But, if you have infinitely many atomic propositions, then image finiteness is strictly weaker.
+
+598
+01:05:09,320 --> 01:05:16,240
+And of course, you you not only require this for the for the successor states of all the
+
+599
+01:05:16,240 --> 01:05:21,880
+states, but also for the initial states. So, for every set of atomic propositions, there are only finitely
+
+600
+01:05:21,880 --> 01:05:27,960
+many initial states that are labeled with exactly this set.
+
+601
+01:05:27,960 --> 01:05:35,893
+Okay, but the bottom line is that under certain restrictions, you can show that finite trace inclusion implies trace inclusion.
+
+602
+01:05:35,893 --> 01:05:47,920
+That's what you should take away, probably. Okay, so let's lift this to trace equivalence, moving from inclusion to equivalence.
+
+603
+01:05:47,920 --> 01:05:56,840
+So, if we have the traces that the traces of two transition systems are the same, then clearly we
+
+604
+01:05:56,840 --> 01:06:00,400
+also have that the finite traces of these transition systems are the same.
+
+605
+01:06:00,400 --> 01:06:04,800
+This follows the result we had previously for trace inclusion.
+
+606
+01:06:04,800 --> 01:06:10,392
+But, again, the reverse direction does not hold in general, and even not for finite transition systems.
+
+607
+01:06:10,392 --> 01:06:16,720
+So, let's look at an example. two very finite transition systems.
+
+608
+01:06:16,720 --> 01:06:22,440
+And if you look at them, then the traces are the same.
+
+609
+01:06:22,440 --> 01:06:27,040
+sorry, the finite traces are the same, but the traces are not.
+
+610
+01:06:27,040 --> 01:06:32,600
+Right? So, here you have this trace that goes down there, but here, if you
+
+611
+01:06:32,600 --> 01:06:36,680
+if you try to mimic that trace in the left-hand side, you need to continue
+
+612
+01:06:36,680 --> 01:06:42,880
+from there, so there's no point you cannot stop here because it's not a terminal state, whereas here it is.
+
+613
+01:06:42,880 --> 01:06:46,160
+So, the the traces of the transition system are different.
+
+614
+01:06:46,160 --> 01:06:52,400
+But, again, under additional restrictions, for example, that both of them are finite and do not
+
+615
+01:06:52,400 --> 01:07:00,400
+have terminal states, or both of them are AP deterministic, you can show that finite trace equivalence implies trace
+
+616
+01:07:00,400 --> 01:07:18,760
+equivalence as well. Okay, I hope I have not like shocked you too much.
+
+617
+01:07:18,760 --> 01:07:24,960
+I mean, I I know I we realize that this is one of the lectures that are very proof-heavy
+
+618
+01:07:24,960 --> 01:07:28,160
+and a lot of notation and so on.
+
+619
+01:07:28,160 --> 01:07:32,760
+but yeah. But, I think if you look at it again,
+
+620
+01:07:32,760 --> 01:07:36,800
+you will hopefully be able to handle it.
+
+621
+01:07:36,800 --> 01:07:40,650
+So, let's move on. We talked about safety properties now.
+
+622
+01:07:40,650 --> 01:07:48,160
+Safety properties, that were the properties that of in set of infinite words such that if
+
+623
+01:07:48,160 --> 01:07:51,840
+I have a word that does not belong to my safety property, I can always find a
+
+624
+01:07:51,840 --> 01:07:58,240
+finite prefix that I cannot extend such that it belongs to the property again.
+
+625
+01:07:58,240 --> 01:08:02,240
+And now the dual to this is called liveness.
+
+626
+01:08:02,240 --> 01:08:10,280
+Liveness. Intuitively, it states something good will eventually happen.
+
+627
+01:08:10,280 --> 01:08:13,846
+What might be examples for this? For example, an event A will occur eventually.
+
+628
+01:08:13,846 --> 01:08:16,994
+For example, my program will terminate at some point.
+
+629
+01:08:16,994 --> 01:08:25,319
+I don't know when, maybe after five steps, 100 steps, I don't know, but eventually, at some point.
+
+630
+01:08:25,319 --> 01:08:35,000
+Or something will occur infinitely many times. So, the dining philosophers eat infinitely often eat or something like this.
+
+631
+01:08:35,000 --> 01:08:47,480
+Starvation freedom. Or whenever some event B occurs, then at some point in the future, A occurs.
+
+632
+01:08:47,480 --> 01:08:52,960
+Like with the critical section, we had an example where we said if we at
+
+633
+01:08:52,960 --> 01:08:58,520
+some point are waiting for the crit to enter the critical section, then we will do so.
+
+634
+01:08:58,520 --> 01:09:08,839
+These are examples for liveness properties, and we Can you tell me why are they not safety properties?
+
+635
+01:09:08,839 --> 01:09:12,693
+I mean, they seem to be somehow different from what what we had until now.
+
+636
+01:09:12,693 --> 01:09:22,000
+Why are they different? Even if the some prefixes are satisfying them, they can still be extended by something that
+
+637
+01:09:22,000 --> 01:09:34,759
+violates the liveness. I But yes, yes and no. I would I would
+
+638
+01:09:34,759 --> 01:09:43,971
+formulate it, I mean, dually, but I would say that give me a finite prefix, you can choose it.
+
+639
+01:09:43,971 --> 01:09:50,040
+No matter which finite prefix you give me, I can extend it such that it is in the property.
+
+640
+01:09:50,040 --> 01:09:58,280
+Right? So, think about termination. So, you give me a run of your program that ends somewhere,
+
+641
+01:09:58,280 --> 01:10:02,440
+but then I can complete it, right? So, that it eventually terminates.
+
+642
+01:10:02,440 --> 01:10:05,640
+Of course, I cannot do that for all the programs.
+
+643
+01:10:05,640 --> 01:10:09,775
+But but with respect to the property, I can.
+
+644
+01:10:09,775 --> 01:10:17,255
+Right? You cannot give me a finite prefix that I cannot complete somehow to be in my property again.
+
+645
+01:10:17,255 --> 01:10:22,565
+I can always choose a suffix such that the whole infinite word will be in my property again.
+
+646
+01:10:22,565 --> 01:10:29,720
+And that's exactly the the the difference between safety properties and liveness properties.
+
+647
+01:10:29,720 --> 01:10:33,760
+So, let's let's have a quick quiz. So, a few properties and I want you to
+
+648
+01:10:33,760 --> 01:10:38,993
+determine, are these safety properties, liveness properties, neither of them?
+
+649
+01:10:38,993 --> 01:10:44,520
+As we can see, there are properties that are neither liveness nor safety properties.
+
+650
+01:10:44,520 --> 01:10:47,816
+Let's talk about Each philosopher thinks infinitely often.
+
+651
+01:10:47,816 --> 01:10:54,800
+Liveness or safety? Yes, one? Liveness. Liveness, right?
+
+652
+01:10:54,800 --> 01:10:58,800
+Because if you if you give me a finite prefix, no matter what happens
+
+653
+01:10:58,800 --> 01:11:03,424
+there, I can complete it such that each philosopher thinks infinitely often.
+
+654
+01:11:03,424 --> 01:11:07,750
+I just even if no philosopher has thought so far, right?
+
+655
+01:11:07,750 --> 01:11:11,360
+I can still complete it in a satisfactory way.
+
+656
+01:11:11,360 --> 01:11:18,200
+So, this is a liveness property. Two philosophers next to each other never eat at the same time.
+
+657
+01:11:18,200 --> 01:11:20,657
+It's safety and it's even an invariant, right?
+
+658
+01:11:20,657 --> 01:11:25,600
+Because it means that at every point in time you have a specific condition, but in particular every
+
+659
+01:11:25,600 --> 01:11:45,400
+invariant is a safety property, so yes. Whenever a philosopher eats, then he has been thinking at some time before.
+
+660
+01:11:45,400 --> 01:11:49,880
+Ah, that's a bit harder, I agree. But still a safety property, right?
+
+661
+01:11:49,880 --> 01:11:59,168
+Because because you I If you give me a finite prefix where some philosopher is thinking without No, sorry.
+
+662
+01:11:59,168 --> 01:12:03,160
+If if he's eating and has not thought before, then I cannot complete
+
+663
+01:12:03,160 --> 01:12:06,800
+it to to be back in the property, right?
+
+664
+01:12:06,800 --> 01:12:13,600
+Whenever a philosopher eats, then he will think sometime later.
+
+665
+01:12:13,600 --> 01:12:17,832
+Yes, I heard some Liveness. It's liveness. Right?
+
+666
+01:12:17,832 --> 01:12:25,480
+Because no matter which finite prefix you give me, I can extend it by just
+
+667
+01:12:25,480 --> 01:12:33,080
+just extending it with with some think after if if some of them have eaten
+
+668
+01:12:33,080 --> 01:12:39,440
+before, I can extend it with some things there so that we are back in our property.
+
+669
+01:12:39,440 --> 01:12:46,400
+Yeah, sorry. With some of think atomic proposition inclusions, that should be the way to phrase it.
+
+670
+01:12:46,400 --> 01:12:52,880
+Okay, and then finally, one property between two eating phases of philosopher I lies at least one eating phase of
+
+671
+01:12:52,880 --> 01:13:01,920
+philosopher of some other philosopher I plus one.
+
+672
+01:13:01,920 --> 01:13:11,865
+Yes? Starvation freedom is also a liveness. I mean, star star I would say it's safety.
+
+673
+01:13:11,865 --> 01:13:17,548
+So, first of all, because because how can you violate this?
+
+674
+01:13:17,548 --> 01:13:24,160
+Well, if you think about violation of this property, it means that philosopher I ate two times
+
+675
+01:13:24,160 --> 01:13:27,900
+without having philosopher I plus one eat in between, right?
+
+676
+01:13:27,900 --> 01:13:33,728
+But if you then give me this prefix that contains this behavior, there's nothing I can do.
+
+677
+01:13:33,728 --> 01:13:38,920
+I can I cannot extend it to to be contained in the property again, right?
+
+678
+01:13:38,920 --> 01:13:47,453
+So, safety. Okay. Now, there have been several notions of liveness defined in literature.
+
+679
+01:13:47,453 --> 01:13:52,080
+Here is just just one of them, but in our context, this is very fitting because
+
+680
+01:13:52,080 --> 01:13:57,640
+it's it's pretty much the dual of our definition of a safety property.
+
+681
+01:13:57,640 --> 01:14:04,360
+Okay, and the formal definition says just just says what we intuitively said.
+
+682
+01:14:04,360 --> 01:14:11,880
+We said an LT property, linear time property, set of infinite words over sets of atomic propositions is called a
+
+683
+01:14:11,880 --> 01:14:19,080
+liveness property if every finite word can be extended to an infinite word in the property.
+
+684
+01:14:19,080 --> 01:14:25,760
+Right? It's exactly the dual what we had to to safety properties.
+
+685
+01:14:25,760 --> 01:14:32,120
+And if you formulate it differently, it means that the prefixes of the property
+
+686
+01:14:32,120 --> 01:14:38,480
+the prefixes of all the words contained in the property are all finite words.
+
+687
+01:14:38,480 --> 01:14:48,520
+Right? So, for every finite word, I can find a word in my property that starts with this finite prefix.
+
+688
+01:14:48,520 --> 01:14:54,224
+Because we said I can complete every finite word such that it is contained in the property.
+
+689
+01:14:54,224 --> 01:15:02,266
+That's exactly the definition. Okay, let's not go through all of these examples again.
+
+690
+01:15:02,266 --> 01:15:06,880
+I I mean, they are essentially what we what we had on the previous slide.
+
+691
+01:15:06,880 --> 01:15:16,813
+Let's maybe look at this example, formulate an LT property that is a liveness property.
+
+692
+01:15:16,813 --> 01:15:24,760
+So, say we have n processes and we have atomic propositions crit I for all these n
+
+693
+01:15:24,760 --> 01:15:27,360
+processes, crit one, crit two, and so on.
+
+694
+01:15:27,360 --> 01:15:30,994
+And we want to state that each process will eventually enter its critical section.
+
+695
+01:15:30,994 --> 01:15:36,800
+Well, then we can define this as a linear time property, set of infinite words
+
+696
+01:15:36,800 --> 01:15:43,600
+of the form A0, A1, and so on, such that for all processes, there exists a point
+
+697
+01:15:43,600 --> 01:15:50,640
+in time where process I is in its critical section.
+
+698
+01:15:50,640 --> 01:16:00,680
+Right? Yeah, this is all very unsurprising. You can also extend extend that that you will
+
+699
+01:16:00,680 --> 01:16:06,440
+enter the critical section infinitely often. Yes, as I'm running out of time, I will
+
+700
+01:16:06,440 --> 01:16:12,560
+move through this quickly, but I I hope you get the idea already.
+
+701
+01:16:12,560 --> 01:16:21,760
+And now, we will show an important connection or an important result about safety properties and liveness properties and
+
+702
+01:16:21,760 --> 01:16:28,360
+how they relate to each other and how they categorize the set of linear time properties in total.
+
+703
+01:16:28,360 --> 01:16:33,622
+So, recall, it looks very technical, but it's just what we had in the first part of the lecture.
+
+704
+01:16:33,622 --> 01:16:40,240
+It says, what is a safety property? Safety property is a set of infinite
+
+705
+01:16:40,240 --> 01:16:45,200
+words such that for all elements that are not in the property, there is a
+
+706
+01:16:45,200 --> 01:16:53,160
+finite prefix such that no matter how you extend that prefix, you will not be in the property again.
+
+707
+01:16:53,160 --> 01:16:59,360
+And we showed by a formal proof that E is a safety property if and only if the
+
+708
+01:16:59,360 --> 01:17:03,072
+closure of the of E is E itself.
+
+709
+01:17:03,072 --> 01:17:07,628
+So, E is already closed under the prefix closure.
+
+710
+01:17:07,628 --> 01:17:13,240
+And just for repetition, here is a reminder, the closure of a linear time property
+
+711
+01:17:13,240 --> 01:17:19,520
+E is a set of all words whose prefixes are the prefixes of the
+
+712
+01:17:19,520 --> 01:17:27,120
+of the whole set are contained in the prefixes of the linear time property.
+
+713
+01:17:27,120 --> 01:17:31,560
+Let's come to this main result about safety and liveness.
+
+714
+01:17:31,560 --> 01:17:36,480
+I mean, I already hinted at the fact that there are in fact linear time
+
+715
+01:17:36,480 --> 01:17:42,000
+properties that are neither a safety property nor a liveness property.
+
+716
+01:17:42,000 --> 01:17:47,000
+So, are we supposed to look at some new class of properties or what?
+
+717
+01:17:47,000 --> 01:17:53,240
+And the fact is, no, we do not have to do that because of the following result.
+
+718
+01:17:53,240 --> 01:18:02,680
+You give me an LT property E, arbitrary one, set of infinite words over sets of atomic propositions.
+
+719
+01:18:02,680 --> 01:18:09,400
+And I will give you two properties back, one a safety property and a liveness property,
+
+720
+01:18:09,400 --> 01:18:15,040
+and they will be chosen in such a way that your property is the conjunction,
+
+721
+01:18:15,040 --> 01:18:19,200
+or if you will, intersection of the two properties I'm giving you back.
+
+722
+01:18:19,200 --> 01:18:24,880
+So, what does it say? It says every linear time property can be decomposed
+
+723
+01:18:24,880 --> 01:18:29,120
+into a safety property and a liveness property in the sense of intersection of
+
+724
+01:18:29,120 --> 01:18:34,320
+those two properties again give you the original linear time property.
+
+725
+01:18:34,320 --> 01:18:42,880
+So, in some sense, you could say you can say safety and liveness are everything you need.
+
+726
+01:18:42,880 --> 01:18:46,440
+So, let's prove it. How do we prove it?
+
+727
+01:18:46,440 --> 01:18:55,400
+Let's start. So, given some linear time property E, we have to say, what is safe and what is life
+
+728
+01:18:55,400 --> 01:19:03,000
+such that these conditions are satisfied. And we take safe to be the closure of E.
+
+729
+01:19:03,000 --> 01:19:10,680
+Well, why not do that? There This is just a reminder of the formal definitions, and we choose life,
+
+730
+01:19:10,680 --> 01:19:22,280
+the property life, to be E joined together with the complement of the closure.
+
+731
+01:19:22,280 --> 01:19:27,160
+Okay, we can do that. But obviously we still have to show that
+
+732
+01:19:27,160 --> 01:19:33,920
+if you define safe and live to be like this then first of all the intersection of
+
+733
+01:19:33,920 --> 01:19:38,440
+the two is again the property E. That's one thing.
+
+734
+01:19:38,440 --> 01:19:42,160
+We need to show that safe is a safety property.
+
+735
+01:19:42,160 --> 01:19:48,880
+And we need to show that live as defined here is a liveness property.
+
+736
+01:19:48,880 --> 01:19:52,920
+And we're going now going to do that.
+
+737
+01:19:52,920 --> 01:19:59,600
+So I would argue it's more or less obvious that the intersection of them is E again.
+
+738
+01:19:59,600 --> 01:20:08,840
+So if you take closure of E intersected so these two intersected closure of E intersected with E union of
+
+739
+01:20:08,840 --> 01:20:16,040
+the complement of the closure well if you resolve that then what remains is just E.
+
+740
+01:20:16,040 --> 01:20:22,760
+That's very rather straightforward. so let's not do it here.
+
+741
+01:20:22,760 --> 01:20:29,000
+Would also argue that it's rather easy to argue why safe is a safety property.
+
+742
+01:20:29,000 --> 01:20:33,280
+Do you have any intuition as to why that might be?
+
+743
+01:20:33,280 --> 01:20:42,680
+We already had a similar case on some slide before.
+
+744
+01:20:42,680 --> 01:20:46,800
+Yes? Because it's already a closure. Exactly because it is already a closure
+
+745
+01:20:46,800 --> 01:20:51,220
+and I told you that the closure is an item potent operation.
+
+746
+01:20:51,220 --> 01:20:56,720
+So if you have some set of infinite words take the closure then you possibly
+
+747
+01:20:56,720 --> 01:21:02,040
+extended it but if you then take the closure over and over again you will not add more words.
+
+748
+01:21:02,040 --> 01:21:07,280
+So we have the closure of safe because it is already a closure of some
+
+749
+01:21:07,280 --> 01:21:14,360
+property E is again the property itself and remember we showed this theorem that
+
+750
+01:21:14,360 --> 01:21:20,200
+if we have this for a property safe then safe is a safety property.
+
+751
+01:21:20,200 --> 01:21:25,080
+So the only thing that remains is that live is a liveness property.
+
+752
+01:21:25,080 --> 01:21:29,520
+And this is actually what we're going to to show now as the final proof of
+
+753
+01:21:29,520 --> 01:21:35,960
+today's lecture and for this we need to show that all finite words are prefixes
+
+754
+01:21:35,960 --> 01:21:47,040
+of the liveness property. And this is not that difficult actually.
+
+755
+01:21:47,040 --> 01:22:11,840
+So Oops, sorry. Proof. So we assume the contrary that the prefixes of this property live are not
+
+756
+01:22:11,840 --> 01:22:27,120
+all finite words. Well then we can take a finite word sigma head that is in
+
+757
+01:22:27,120 --> 01:22:37,960
+so it's a finite word to T A P plus that is not a prefix of live.
+
+758
+01:22:37,960 --> 01:22:42,680
+All right, because we said okay we have a prefix so we have a finite word that's
+
+759
+01:22:42,680 --> 01:22:54,240
+not a prefix of our liveness property well then we can take it.
+
+760
+01:22:54,240 --> 01:23:03,960
+But then there is no sigma head sigma prime in live.
+
+761
+01:23:03,960 --> 01:23:08,817
+Why is that? Why is no continuation of sigma head in live?
+
+762
+01:23:08,817 --> 01:23:14,360
+Yeah, because if it were then sigma head would be a prefix of live.
+
+763
+01:23:14,360 --> 01:23:20,920
+All right? If there was some infinite words in live such that sigma
+
+764
+01:23:20,920 --> 01:23:32,520
+head is a prefix of it sigma head would be contained in this set but by our assumption it's not.
+
+765
+01:23:32,520 --> 01:23:47,920
+Therefore there is no sigma head sigma prime in E joint with the complement of the closure of E.
+
+766
+01:23:47,920 --> 01:23:51,540
+That is just plugging in the definition of live here, right?
+
+767
+01:23:51,540 --> 01:24:02,120
+So I sorry I substituted live with our definition that we that we gave for liveness property.
+
+768
+01:24:02,120 --> 01:24:09,680
+But what does that mean? If we don't have a word of the form sigma head sigma prime
+
+769
+01:24:09,680 --> 01:24:13,480
+in the union of these it means in particular that we have no such word in
+
+770
+01:24:13,480 --> 01:24:22,600
+E and that we have no such word in the complement of the closure.
+
+771
+01:24:22,600 --> 01:24:44,920
+This implies that there is A no sigma head sigma prime in E and there is point B
+
+772
+01:24:44,920 --> 01:25:01,880
+no sigma head sigma prime in the complement of the closure of E.
+
+773
+01:25:01,880 --> 01:25:08,840
+So we have sigma head sigma prime so we have no sigma head sigma prime in
+
+774
+01:25:08,840 --> 01:25:20,200
+in the property E. But then we directly get from that that sigma head is not a prefix
+
+775
+01:25:20,200 --> 01:25:23,960
+of the linear time property E, right? Because it can only be a prefix is there
+
+776
+01:25:23,960 --> 01:25:29,120
+if there is some word some continuation in the property but there is none.
+
+777
+01:25:29,120 --> 01:25:35,800
+So we know that sigma head is not a prefix of the property E.
+
+778
+01:25:35,800 --> 01:25:55,240
+and from B we get that there exists sigma head sigma prime in the closure of E.
+
+779
+01:25:55,240 --> 01:26:02,200
+Well if we said there is no continuation of sigma head that is in the complement of the closure
+
+780
+01:26:02,200 --> 01:26:11,960
+it means all continuations of sigma head are in the closure so we can in particular take one.
+
+781
+01:26:11,960 --> 01:26:32,022
+But then by definition of the closure this implies that sigma head is a prefix of the property.
+
+782
+01:26:32,022 --> 01:26:38,120
+All right? Because we have something that is in the closure the closure were exactly those words
+
+783
+01:26:38,120 --> 01:26:43,760
+such that all of their prefixes are contained in the prefix of the property.
+
+784
+01:26:43,760 --> 01:26:50,240
+And you know we derive that sigma head is not a prefix of E and we
+
+785
+01:26:50,240 --> 01:26:53,120
+derive sigma head is a prefix of E.
+
+786
+01:26:53,120 --> 01:27:02,000
+So we have contradiction. And which means that our assumption cannot have been correct.
+
+787
+01:27:02,000 --> 01:27:15,400
+And we know that the prefixes of our liveness property are all finite words.
+
+788
+01:27:15,400 --> 01:27:22,120
+Okay, we will be done right on time because there is only one slide missing that I will show you.
+
+789
+01:27:22,120 --> 01:27:28,160
+so we have just seen every linear time property can be decomposed into a conjunction of a
+
+790
+01:27:28,160 --> 01:27:38,120
+safety and a liveness property. but are there properties that are both liveness and safety?
+
+791
+01:27:38,120 --> 01:27:46,040
+What would you say? I see you shaking head here.
+
+792
+01:27:46,040 --> 01:27:50,920
+Okay. as it turns out yes there is.
+
+793
+01:27:50,920 --> 01:27:59,000
+Sorry. But but it's just one. It's really just one and it's the set of all words.
+
+794
+01:27:59,000 --> 01:28:07,000
+it's the only property the only linear time property that is both safe and live.
+
+795
+01:28:07,000 --> 01:28:11,430
+Well first of all what we can easily verify is that it's a safety and a liveness property.
+
+796
+01:28:11,430 --> 01:28:13,960
+I mean we have already seen it in some earlier proof that it's
+
+797
+01:28:13,960 --> 01:28:18,200
+a safety property but it's also a liveness property because if you
+
+798
+01:28:18,200 --> 01:28:24,920
+take the prefixes of of all words it means that you will also get all finite
+
+799
+01:28:24,920 --> 01:28:29,240
+if you take the prefixes of all infinite words you will get all finite words
+
+800
+01:28:29,240 --> 01:28:31,810
+which is exactly the definition of the liveness of the liveness property.
+
+801
+01:28:31,810 --> 01:28:36,760
+So it's easy to verify that it is actually indeed safe and live.
+
+802
+01:28:36,760 --> 01:28:40,480
+but you could argue is it the only one?
+
+803
+01:28:40,480 --> 01:28:45,840
+How do I know? Well let's check. So we just proved that or the from the
+
+804
+01:28:45,840 --> 01:28:50,400
+definition of a linear time property we know that it's a liveness property.
+
+805
+01:28:50,400 --> 01:28:53,480
+if it's a liveness property then we have that the prefixes of the
+
+806
+01:28:53,480 --> 01:29:01,120
+property are all finite words. I mean that's just applying the definition but then if you apply the closure
+
+807
+01:29:01,120 --> 01:29:08,470
+then you know that the closure of this property E must be the set of all infinite words, right?
+
+808
+01:29:08,470 --> 01:29:16,720
+Because you know the closure it doesn't introduce new prefixes but it adds all prefi- all infinite words whose
+
+809
+01:29:16,720 --> 01:29:20,824
+prefixes are fully contained in this set.
+
+810
+01:29:20,824 --> 01:29:26,365
+And this set is the set of all finite words, so the closure of E will be all infinite words.
+
+811
+01:29:26,365 --> 01:29:31,800
+And since for a safety property, we have that the closure and the property E must be the
+
+812
+01:29:31,800 --> 01:29:38,680
+very same thing, it directly follows that the only linear time property that can satisfy
+
+813
+01:29:38,680 --> 01:29:44,880
+both the definition of a liveness property and a safety property is in fact the set of all words.
+
+814
+01:29:44,880 --> 01:29:50,960
+And yeah, thank you for your attention and see you on Friday probably.

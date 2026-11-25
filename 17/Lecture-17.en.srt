@@ -1,0 +1,3307 @@
+﻿1
+00:00:02,400 --> 00:00:12,240
+Yeah, good morning. Before I start with a new topic, namely computation tree logic, there is a one
+
+2
+00:00:12,240 --> 00:00:15,800
+question which popped up in the lecture last week that I would like to address
+
+3
+00:00:15,800 --> 00:00:18,680
+because I think it's important for your understanding.
+
+4
+00:00:18,680 --> 00:00:23,960
+And I thank the students for posing this question because I think it was a very relevant question.
+
+5
+00:00:23,960 --> 00:00:30,880
+So, let's go back to what we were proving actually in the last lecture.
+
+6
+00:00:30,880 --> 00:00:42,520
+We were proving that actually LTL model checking is a PSPACE-complete.
+
+7
+00:00:42,520 --> 00:00:46,680
+Yeah, and this proof consists of two parts.
+
+8
+00:00:46,680 --> 00:00:53,680
+so, actually what we did is because PSPACE is the same as its complement, we were not
+
+9
+00:00:53,680 --> 00:00:58,960
+looking at the LTL model checking problem. as LTL model checking problem.
+
+10
+00:00:58,960 --> 00:01:04,519
+But, we were looking at the complement. So, this holds if and only if the complement
+
+11
+00:01:04,519 --> 00:01:25,560
+yeah, which is the existential LTL model checking problem is PSPACE- complete.
+
+12
+00:01:25,560 --> 00:01:38,120
+why did we prove this? This is because we know that PSPACE is the same as co-PSPACE.
+
+13
+00:01:38,120 --> 00:01:43,920
+So, this was the problem we were considering.
+
+14
+00:01:43,920 --> 00:01:48,120
+And in order to prove this, we did actually two things.
+
+15
+00:01:48,120 --> 00:01:59,040
+So, we have to prove that this problem, so the existential LTL model checking problem is in PSPACE.
+
+16
+00:01:59,040 --> 00:02:11,920
+And secondly, we have to prove that this problem is PSPACE- hard.
+
+17
+00:02:11,920 --> 00:02:19,520
+Good. How did we do this? I showed you this in quite detail by means of this
+
+18
+00:02:19,520 --> 00:02:34,930
+acceptance problem for deterministic Turing machines. And that was a detailed construction that we showed last time.
+
+19
+00:02:34,930 --> 00:02:39,640
+And I also showed you the the first thing, and actually what we proved
+
+20
+00:02:39,640 --> 00:02:48,840
+is not exactly what is written down here, but we used the fact and that is because PSPACE
+
+21
+00:02:48,840 --> 00:02:59,280
+is the same as NPSPACE. NPSPACE stands for it suffices to have a non-deterministic computation
+
+22
+00:02:59,280 --> 00:03:01,800
+which you can do in polynomial space.
+
+23
+00:03:01,800 --> 00:03:14,320
+So, actually what we showed is that the existential LTL model checking problem belongs to NPSPACE.
+
+24
+00:03:14,320 --> 00:03:20,270
+Okay? So, that's the issue. So, that's was also on the slide.
+
+25
+00:03:20,270 --> 00:03:28,320
+So, that's where this comes from. the question is there a path such that pi satisfies phi
+
+26
+00:03:28,320 --> 00:03:32,600
+is the same as the existential LTL model checking problem for the negation of a
+
+27
+00:03:32,600 --> 00:03:37,040
+formula if you interpret this as something which is a negated formula.
+
+28
+00:03:37,040 --> 00:03:44,040
+So, the way I explained you this is that you can solve this by this non-deterministic polynomial space bound algorithm.
+
+29
+00:03:44,040 --> 00:03:51,760
+And the idea is that you guess non-deterministically some kind of computational path of
+
+30
+00:03:51,760 --> 00:03:55,520
+the product of the transition system and the Büchi automaton.
+
+31
+00:03:55,520 --> 00:04:00,080
+Now, what's now the issue? This Büchi automaton can is, as we have seen in the
+
+32
+00:04:00,080 --> 00:04:04,040
+construction, exponential in the size of the formula.
+
+33
+00:04:04,040 --> 00:04:08,440
+So it's not immediately clear why this can be done in polynomial space,
+
+34
+00:04:08,440 --> 00:04:11,520
+and that's what I'm I'm going to address in a minute.
+
+35
+00:04:11,520 --> 00:04:16,560
+So, what was the idea? We're going to guess a path in this product
+
+36
+00:04:16,560 --> 00:04:21,760
+such that you start in some initial state, at some point you reach a cycle, and
+
+37
+00:04:21,760 --> 00:04:28,520
+this cycle is an accepting cycle. Yeah, in the product.
+
+38
+00:04:28,520 --> 00:04:35,960
+And then we have to check whether this path that we guessed is an accepting path of the Büchi automaton.
+
+39
+00:04:35,960 --> 00:04:39,674
+And how do we do this? So, we guess two numbers.
+
+40
+00:04:39,674 --> 00:04:43,480
+So, after having guessed a path, we guess two numbers.
+
+41
+00:04:43,480 --> 00:04:51,040
+where these numbers are linear in the size of the transition system, but exponential in the size of
+
+42
+00:04:51,040 --> 00:04:58,840
+the formula. And this is necessary because this has to do with the number of acceptance
+
+43
+00:04:58,840 --> 00:05:05,120
+conditions that we need to check. And remember from the construction that for every sub until formula, you have an
+
+44
+00:05:05,120 --> 00:05:10,470
+acceptance condition. So, how many acceptance condition do you have in the worst case?
+
+45
+00:05:10,470 --> 00:05:14,240
+Linearly many in the size of the formula.
+
+46
+00:05:14,240 --> 00:05:18,440
+Good. And then what we do is we we guess this path in the transition system, we
+
+47
+00:05:18,440 --> 00:05:24,960
+guess a couple of elementary sets. Yeah, so those Bs are all elementary sets.
+
+48
+00:05:24,960 --> 00:05:30,880
+So, it's important I don't construct the Büchi automaton, right?
+
+49
+00:05:30,880 --> 00:05:36,456
+I'm just guessing a sequence of states in my transition system.
+
+50
+00:05:36,456 --> 00:05:46,360
+I'm guessing a sequence maybe exponentially many, but I'm going to guess such a sequence of elementary sets.
+
+51
+00:05:46,360 --> 00:05:49,245
+actually, I'm I'm checking sets of the closure.
+
+52
+00:05:49,245 --> 00:05:51,617
+I need to check whether they are elementary.
+
+53
+00:05:51,617 --> 00:05:56,440
+And then I check the following conditions. I need to check whether I close
+
+54
+00:05:56,440 --> 00:06:01,200
+somewhere the this state, and that state is the same as the goes to.
+
+55
+00:06:01,200 --> 00:06:05,760
+And I have actually an initial run. I need to check that this is an initial run
+
+56
+00:06:05,760 --> 00:06:13,680
+for the trace in my GBN A. And I need to check whether I fit all the acceptance conditions.
+
+57
+00:06:13,680 --> 00:06:18,960
+Good. If this is the case, then we return yes, otherwise we return no.
+
+58
+00:06:18,960 --> 00:06:24,400
+So, what do we all need to check?
+
+59
+00:06:24,400 --> 00:06:26,700
+So, the point I want to make is the following.
+
+60
+00:06:26,700 --> 00:06:36,560
+All these checks can be done in polynomial time.
+
+61
+00:06:36,560 --> 00:06:44,720
+Or polynomial space. Sorry. Yeah, that's the important point.
+
+62
+00:06:44,720 --> 00:06:51,040
+So, although the intuition of this construction is indeed driven by this Büchi automaton, which is exponential in
+
+63
+00:06:51,040 --> 00:06:56,200
+the size of the formula, you can do the checks in polynomial space.
+
+64
+00:06:56,200 --> 00:06:57,720
+For instance, what do we need to check?
+
+65
+00:06:57,720 --> 00:07:01,160
+We need to check that, for instance, in order to check whether we indeed we have
+
+66
+00:07:01,160 --> 00:07:15,360
+a finite path, we need to check that SI is a successor of SI minus one in the transition system.
+
+67
+00:07:15,360 --> 00:07:22,800
+Then we need to check things like the Bs that I select are elementary.
+
+68
+00:07:22,800 --> 00:07:32,120
+So, I indeed check a set of subformulas from the closure, but they also need to be elementary.
+
+69
+00:07:32,120 --> 00:07:36,240
+Yeah, because otherwise it's not an initial run of my Büchi automaton.
+
+70
+00:07:36,240 --> 00:07:40,320
+Then third, what I need to check is that there is a transition.
+
+71
+00:07:40,320 --> 00:07:47,280
+So, I need to check that BI intersected with AP is actually the labeling of SI.
+
+72
+00:07:47,280 --> 00:07:54,520
+And I need to check that BI is a successor of the previous one, that means BI minus one
+
+73
+00:07:54,520 --> 00:08:00,144
+together with the labeling of SI. For I at least one.
+
+74
+00:08:00,144 --> 00:08:08,400
+What else do I need to check? I need in addition to check the acceptance condition.
+
+75
+00:08:08,400 --> 00:08:13,400
+So, this is this last bullet. So, how can I check this?
+
+76
+00:08:13,400 --> 00:08:18,600
+Well, you just keep track. So, basically what we have to check is this last condition.
+
+77
+00:08:18,600 --> 00:08:30,880
+I just write it down. Psi two such that psi one until psi two belongs to one of the BIs
+
+78
+00:08:30,880 --> 00:08:38,760
+between n and n plus m. Yeah, so one of the BIs on the cycle.
+
+79
+00:08:38,760 --> 00:08:44,720
+This is a subset of all the BIs.
+
+80
+00:08:44,720 --> 00:08:53,635
+n plus m. Good. So, how we going to do this?
+
+81
+00:08:53,635 --> 00:09:01,666
+We're going to remember the subformulas that occur at those elementary sets.
+
+82
+00:09:01,666 --> 00:09:15,760
+So, that are contained in these sets Bn up to Bn plus m.
+
+83
+00:09:15,760 --> 00:09:26,240
+I think minus one. plus one. And we're going to do the same for all the phi psi twos
+
+84
+00:09:26,240 --> 00:09:38,760
+plus all So, we remember all the psi one until psi two, and you remember all psi twos occurring in
+
+85
+00:09:38,760 --> 00:09:45,560
+these sets. So, what do we need to check?
+
+86
+00:09:45,560 --> 00:09:49,497
+You only need to keep track of something which is a successor or predecessor.
+
+87
+00:09:49,497 --> 00:09:53,200
+You need to check this, you need to check this condition, you need to check this
+
+88
+00:09:53,200 --> 00:10:02,280
+condition, which is again all become relevant between predecessor and a successor, but you never store the whole path.
+
+89
+00:10:02,280 --> 00:10:07,880
+That's the crucial thing. In particular, you don't store the whole cycle.
+
+90
+00:10:07,880 --> 00:10:12,160
+Yeah, notice this cycle is of exponential length.
+
+91
+00:10:12,160 --> 00:10:19,000
+Because M is at most K and K is exponential, but you don't need to store the whole cycle
+
+92
+00:10:19,000 --> 00:10:22,720
+because the only thing that you need to do is you have to check condition five.
+
+93
+00:10:22,720 --> 00:10:25,573
+And you can imagine that I just have a sliding window over the cycle.
+
+94
+00:10:25,573 --> 00:10:30,600
+Every time I take a new state, I just increase the set of these until subformulas and I
+
+95
+00:10:30,600 --> 00:10:36,200
+increase those ties. And this can all be done in polynomial space.
+
+96
+00:10:36,200 --> 00:10:44,520
+Good. I think the the the point is that this slide is a bit misleading in the sense
+
+97
+00:10:44,520 --> 00:10:49,365
+that it suggests that you first generate the whole Büchi automaton and then do the whole checks there.
+
+98
+00:10:49,365 --> 00:10:54,480
+And that's not the case. Good. I hope I have clarified this.
+
+99
+00:10:54,480 --> 00:11:02,920
+And thanks for the question. Good point. okay.
+
+100
+00:11:02,920 --> 00:11:11,320
+Good. Then I would like to start today with a new topic and that is computation tree logic.
+
+101
+00:11:11,320 --> 00:11:17,120
+So, what we have seen so far were linear time properties.
+
+102
+00:11:17,120 --> 00:11:20,520
+In the beginning, we said there were sets of traces.
+
+103
+00:11:20,520 --> 00:11:23,068
+And then we said, "Well, this is maybe a bit awkward.
+
+104
+00:11:23,068 --> 00:11:28,839
+Why don't we introduce a logic?" So, we have LTL.
+
+105
+00:11:28,839 --> 00:11:30,826
+And now I'm going to introduce you yet another logic.
+
+106
+00:11:30,826 --> 00:11:34,480
+So, the first question you should pose is why?
+
+107
+00:11:34,480 --> 00:11:38,440
+Why yet another logic? Is one logic not enough?
+
+108
+00:11:38,440 --> 00:11:43,360
+Yeah, and the answer is no. So, what we're going to see is that this
+
+109
+00:11:43,360 --> 00:11:46,866
+logic CTL has an incomparable expressive power with LTL.
+
+110
+00:11:46,866 --> 00:11:51,920
+So, I write this down as a as a Venn diagram.
+
+111
+00:11:51,920 --> 00:11:56,360
+Suppose these are all the properties that you can express in LTL.
+
+112
+00:11:56,360 --> 00:12:05,160
+Okay? So, this is an LT property. This is an LT property and so forth.
+
+113
+00:12:05,160 --> 00:12:11,200
+So, this circle is the whole set of properties that you can express in LTL.
+
+114
+00:12:11,200 --> 00:12:14,960
+Now, I'm going to introduce the logic computation tree logic.
+
+115
+00:12:14,960 --> 00:12:26,920
+Computation tree logic is due to Alan Emerson and Edmund Clarke, both Turing Award winners in 2007.
+
+116
+00:12:26,920 --> 00:12:30,120
+Emerson at that time was a PhD student of Clarke.
+
+117
+00:12:30,120 --> 00:12:33,000
+And they introduced a logic as called CTL.
+
+118
+00:12:33,000 --> 00:12:37,280
+And this logic, I mean, in this Venn diagram looks like this.
+
+119
+00:12:37,280 --> 00:12:42,060
+What does this mean? It means we are going to see certain properties.
+
+120
+00:12:42,060 --> 00:12:47,560
+They will not be LT properties anymore, but they will be properties about trees.
+
+121
+00:12:47,560 --> 00:12:52,480
+I mean, this is linear time, right? These are sequences.
+
+122
+00:12:52,480 --> 00:12:56,960
+Yeah, remember we had infinite sequences of sets of atomic propositions.
+
+123
+00:12:56,960 --> 00:13:02,920
+We're going to make a paradigm shift. Rather than having a linear time perspective,
+
+124
+00:13:02,920 --> 00:13:06,360
+we're going to take a what they call a branching time perspective, which means
+
+125
+00:13:06,360 --> 00:13:09,360
+that the basic notion will be a tree.
+
+126
+00:13:09,360 --> 00:13:13,750
+An infinite tree. And that's what's the notion of CTL.
+
+127
+00:13:13,750 --> 00:13:20,620
+So, actually these are infinite trees in some sense.
+
+128
+00:13:20,620 --> 00:13:24,760
+And we're going to see that there is a common subset.
+
+129
+00:13:24,760 --> 00:13:28,480
+So, there are properties that you can express in LTL that you can also express
+
+130
+00:13:28,480 --> 00:13:32,520
+in CTL, but the two logics are incomparable.
+
+131
+00:13:32,520 --> 00:13:38,520
+So, there are certain properties like this one here that can be expressed in LTL, but not in CTL.
+
+132
+00:13:38,520 --> 00:13:46,200
+And the vice versa. Good. So, that's one good thing to know.
+
+133
+00:13:46,200 --> 00:13:49,200
+Then what we're also going to see that there are certain problems here that you
+
+134
+00:13:49,200 --> 00:13:53,360
+maybe can express in both logics, but in one logic, you can express a
+
+135
+00:13:53,360 --> 00:13:57,480
+certain property in a much more succinct way than any other logic.
+
+136
+00:13:57,480 --> 00:14:03,000
+So one example that we're going to see is the Hamilton path problem, the existence of a Hamilton path.
+
+137
+00:14:03,000 --> 00:14:16,040
+So, this could for instance be the property the existence of a Hamilton path.
+
+138
+00:14:16,040 --> 00:14:20,759
+Remember, this was a path through a directed graph that visits exactly every vertex once.
+
+139
+00:14:20,759 --> 00:14:26,651
+Yeah, we have seen this actually in the last lecture to show that this problem actually is co-NP-hard.
+
+140
+00:14:26,651 --> 00:14:32,720
+And we have seen that the LTL, you can express this in a formula which is
+
+141
+00:14:32,720 --> 00:14:36,845
+polynomial in the size of the graph.
+
+142
+00:14:36,845 --> 00:14:41,959
+In CTL, you can express the same property, but you need a formula that is exponential.
+
+143
+00:14:41,959 --> 00:14:48,400
+So, you can express the property, but you need a much longer formula.
+
+144
+00:14:48,400 --> 00:14:54,480
+This does not hold for all the properties here, but there are properties which is the case.
+
+145
+00:14:54,480 --> 00:15:01,880
+Now, what is the other important difference? We have seen that this is PSPACE-complete.
+
+146
+00:15:01,880 --> 00:15:11,000
+And this is actually model checking problem, and this model checking problem is PTIME-complete.
+
+147
+00:15:11,000 --> 00:15:14,560
+So model checking of CTL is easier.
+
+148
+00:15:14,560 --> 00:15:21,120
+Conceptually easier. And now people always say, "Well, if you have a formula here that you can express
+
+149
+00:15:21,120 --> 00:15:25,760
+in both, you should always use a CTL model checker because it's much faster."
+
+150
+00:15:25,760 --> 00:15:34,560
+This is a stupid idea because, as I just explained, there may be properties that you can express by a
+
+151
+00:15:34,560 --> 00:15:39,870
+formula in polynomial length in LTL. But the formula here is exponential.
+
+152
+00:15:39,870 --> 00:15:43,640
+So, it's PTIME-complete, it's polynomial in the size of the formula, but the formula itself for this
+
+153
+00:15:43,640 --> 00:15:56,400
+property might be exponential. Good. Then we are going to see that here fairness is easy.
+
+154
+00:15:56,400 --> 00:15:57,865
+I mean, there are no free lunches, right?
+
+155
+00:15:57,865 --> 00:16:02,800
+So, it cannot be the case that now we have a logic where model checking is conceptually easy, PTIME-complete
+
+156
+00:16:02,800 --> 00:16:14,440
+even, but the fairness will be complicated. Yeah, complicated.
+
+157
+00:16:14,440 --> 00:16:20,839
+Good. So, from today on, we're going to be confronted with this thing.
+
+158
+00:16:20,839 --> 00:16:27,079
+Now, there are many more logics. So, if you if you are a logician,
+
+159
+00:16:27,079 --> 00:16:31,800
+then you would say, "Okay, why don't you take a logic that covers both?"
+
+160
+00:16:31,800 --> 00:16:37,000
+Make sense, right? And that's also what I'm going to address.
+
+161
+00:16:37,000 --> 00:16:39,946
+So, that we will consider at some point a logic that considers both.
+
+162
+00:16:39,946 --> 00:16:44,040
+So, we're going to consider a logic that actually is this.
+
+163
+00:16:44,040 --> 00:16:53,120
+The best of both worlds or the worst of both worlds, depends on how you view it, right?
+
+164
+00:16:53,120 --> 00:16:59,880
+This is a logic CTL star. Yeah, and we're going to see that
+
+165
+00:16:59,880 --> 00:17:05,760
+this is strictly more expressive than both. Actually, there are properties here,
+
+166
+00:17:05,760 --> 00:17:09,480
+That you can neither express in LTL nor in CTL.
+
+167
+00:17:09,480 --> 00:17:11,325
+But of course, there is a price to be paid.
+
+168
+00:17:11,325 --> 00:17:16,679
+The model checking algorithm is a bit expensive.
+
+169
+00:17:16,679 --> 00:17:20,266
+And if you are true logician, you might say, "Wow, this is not enough.
+
+170
+00:17:20,266 --> 00:17:23,413
+I want to have even a larger logic."
+
+171
+00:17:23,413 --> 00:17:27,372
+Fine. So, there are logics that consider basically more.
+
+172
+00:17:27,372 --> 00:17:32,880
+It's going to do this. And then you consider things like what they call the modal mu-calculus.
+
+173
+00:17:32,880 --> 00:17:36,080
+And I'm not going to introduce you to this.
+
+174
+00:17:36,080 --> 00:17:41,977
+And And that's also possible.
+
+175
+00:17:41,977 --> 00:17:46,880
+So, I'm What I'm saying is I'm basically taking two logics out of it, LTL and CTL.
+
+176
+00:17:46,880 --> 00:17:50,760
+Later, I'm going to also explain you a bit about CTL star.
+
+177
+00:17:50,760 --> 00:17:55,600
+Why do I do this? Because the model checking of CTL star can use basically
+
+178
+00:17:55,600 --> 00:17:58,880
+IDs of both model checking algorithms, so that's convenient.
+
+179
+00:17:58,880 --> 00:18:00,920
+For the modal mu-calculus, this is a completely different story.
+
+180
+00:18:00,920 --> 00:18:04,720
+It would be a completely different kind of lecture.
+
+181
+00:18:04,720 --> 00:18:11,320
+So far so good. Computation tree logic, Emerson-Clarke, 1981.
+
+182
+00:18:11,320 --> 00:18:14,826
+Good. So, the observation is we have linear time versus branching time.
+
+183
+00:18:14,826 --> 00:18:21,200
+So, we have a transition system. A transition system, if you abstract from the labels, from the actions,
+
+184
+00:18:21,200 --> 00:18:25,600
+because in the end, the actions were only used to glue small transition systems together.
+
+185
+00:18:25,600 --> 00:18:27,946
+Yeah, we only used them for parallel composition.
+
+186
+00:18:27,946 --> 00:18:30,540
+Then in the end, we have a state graph and some labeling.
+
+187
+00:18:30,540 --> 00:18:34,373
+In the linear time view, there are state sequences.
+
+188
+00:18:34,373 --> 00:18:38,840
+In the branching time view, there are states and branches.
+
+189
+00:18:38,840 --> 00:18:42,520
+So, state sequences give rise to traces.
+
+190
+00:18:42,520 --> 00:18:48,600
+You look at the sequence of states. You look at the atomic proposition that this gives rise to a trace.
+
+191
+00:18:48,600 --> 00:18:54,200
+Here, we're going to look at trees. And they are called computation trees.
+
+192
+00:18:54,200 --> 00:18:59,440
+That's the conceptual difference. So, what's a computation tree?
+
+193
+00:18:59,440 --> 00:19:06,600
+A computation tree arises basically by taking a transition system and unfolding it into a tree.
+
+194
+00:19:06,600 --> 00:19:13,560
+You abstract from the actions and you project the states to their labels.
+
+195
+00:19:13,560 --> 00:19:16,445
+So, the unfolding is basically given as a tree.
+
+196
+00:19:16,445 --> 00:19:20,679
+So, here is an example. Here is an example of a mutual exclusion algorithm.
+
+197
+00:19:20,679 --> 00:19:22,639
+I hope you all have in mind the transition system.
+
+198
+00:19:22,639 --> 00:19:26,182
+Now, you can unfold the transition system. How do I unfold the transition system?
+
+199
+00:19:26,182 --> 00:19:33,773
+I start in the initial state. If my atomic propositions are crit1 and crit2, this initial state is not labeled.
+
+200
+00:19:33,773 --> 00:19:39,320
+Empty set. Now, two things can happen. We have two two threads.
+
+201
+00:19:39,320 --> 00:19:44,000
+Either thread one request access to the critical section or thread two.
+
+202
+00:19:44,000 --> 00:19:50,760
+Thread one and request to enter the critical section thread two.
+
+203
+00:19:50,760 --> 00:19:52,406
+They're both still not in the critical section.
+
+204
+00:19:52,406 --> 00:19:56,600
+So, the state themselves the label of the state is still empty set.
+
+205
+00:19:56,600 --> 00:20:01,080
+But you see the branching. It makes a difference.
+
+206
+00:20:01,080 --> 00:20:05,897
+So here thread one has requested access. Now it can access.
+
+207
+00:20:05,897 --> 00:20:12,040
+Now we get to a state where crit one holds or process two also requests.
+
+208
+00:20:12,040 --> 00:20:15,560
+Yeah, and that's the empty set again. And in this state you see the branching.
+
+209
+00:20:15,560 --> 00:20:20,040
+Now both are waiting. Both have requested to enter the critical section.
+
+210
+00:20:20,040 --> 00:20:23,280
+Now either one gets access or two gets access.
+
+211
+00:20:23,280 --> 00:20:28,720
+So you basically take this transition system and you unfold it.
+
+212
+00:20:28,720 --> 00:20:34,697
+If your transition system has cycles which in this example it has this unfolding is infinite.
+
+213
+00:20:34,697 --> 00:20:38,336
+So we don't talk about infinite sequences anymore.
+
+214
+00:20:38,336 --> 00:20:45,960
+We talk about infinite trees. But they always have a finite branching degree.
+
+215
+00:20:45,960 --> 00:20:51,120
+Every vertex in the tree has only finitely many children.
+
+216
+00:20:51,120 --> 00:20:55,600
+Yeah, because in a transition system I can only have finitely many successors.
+
+217
+00:20:55,600 --> 00:21:02,626
+So we have countably infinite trees but with finite branching degree.
+
+218
+00:21:02,626 --> 00:21:06,600
+These are the objects that we are considering.
+
+219
+00:21:06,600 --> 00:21:08,732
+Good. And now you can have a path.
+
+220
+00:21:08,732 --> 00:21:12,920
+What is a path? Well, one path is one traversal through the tree.
+
+221
+00:21:12,920 --> 00:21:17,456
+So for instance you start here which corresponds to this state.
+
+222
+00:21:17,456 --> 00:21:21,440
+Then you go to wait one NC2, so that's here.
+
+223
+00:21:21,440 --> 00:21:24,525
+Then you go to crit one NC2 that corresponds to there.
+
+224
+00:21:24,525 --> 00:21:29,017
+So now I'm here. And then you can do this and that corresponds to going there.
+
+225
+00:21:29,017 --> 00:21:34,400
+So one traversal through the tree is one trace.
+
+226
+00:21:34,400 --> 00:21:42,960
+So basically you can consider it's a tree it's just a representation of a bunch of traces.
+
+227
+00:21:42,960 --> 00:21:48,480
+Good. That's the computation I just showed you.
+
+228
+00:21:48,480 --> 00:21:56,040
+So summarizing linear time versus branching time, we have paths and we have states.
+
+229
+00:21:56,040 --> 00:22:00,880
+Here we have traces and trees. The temporal logic is LTL there is CTL.
+
+230
+00:22:00,880 --> 00:22:05,280
+model checking here we have seen it's PSPACE-complete and the model checking algorithm I
+
+231
+00:22:05,280 --> 00:22:11,040
+showed you via Büchi automata was linear in the size of the transition system but exponential in the size of
+
+232
+00:22:11,040 --> 00:22:16,520
+the formula. This is in P time is actually P time complete and this is the algorithm I'm
+
+233
+00:22:16,520 --> 00:22:20,200
+going to show you in one of the next lectures is linear in the size of the
+
+234
+00:22:20,200 --> 00:22:23,360
+transition system but linear in the size of the formula.
+
+235
+00:22:23,360 --> 00:22:31,480
+So this exponential blowup which is there is no longer present in CTL.
+
+236
+00:22:31,480 --> 00:22:36,040
+And we're not going to use Büchi automata but we're still going to use the expansion law.
+
+237
+00:22:36,040 --> 00:22:40,693
+That's again the most important thing. Implementation relations here is trace equivalent.
+
+238
+00:22:40,693 --> 00:22:49,440
+What do I mean by this? If I you give me two transition systems which have the same traces then
+
+239
+00:22:49,440 --> 00:22:55,800
+they LTL for any LTL formula if it holds in one transition system it also holds in the other transition
+
+240
+00:22:55,800 --> 00:22:57,828
+system. If it doesn't hold it doesn't hold in the other one.
+
+241
+00:22:57,828 --> 00:23:01,800
+So they correspond, right? This is no longer the case for CTL.
+
+242
+00:23:01,800 --> 00:23:07,640
+so here we are going to have another notion which is bisimulation.
+
+243
+00:23:07,640 --> 00:23:14,160
+If you want to check whether two transition systems are trace equivalent, so whether they are LTL equivalent
+
+244
+00:23:14,160 --> 00:23:22,320
+this is PSPACE-complete. This is what stems from checking whether two finite state automata are language equivalent.
+
+245
+00:23:22,320 --> 00:23:28,320
+Also this is PSPACE-complete. Checking whether two transition systems two finite transition systems are
+
+246
+00:23:28,320 --> 00:23:33,280
+bisimilar can be done in polynomial time and actually this is also P time complete.
+
+247
+00:23:33,280 --> 00:23:36,920
+So this looks all much more friendly.
+
+248
+00:23:36,920 --> 00:23:42,693
+Fairness is easy here and this requires well it's not com- but it requires a special treatment.
+
+249
+00:23:42,693 --> 00:23:47,850
+Okay? maybe it's good to know that in the '80s so all these works came up in the '80s.
+
+250
+00:23:47,850 --> 00:23:51,200
+So LTL was in late '70s early '80s.
+
+251
+00:23:51,200 --> 00:23:54,410
+This was in '81. And then there were two schools.
+
+252
+00:23:54,410 --> 00:23:58,240
+It was the linear time school and the branching time school.
+
+253
+00:23:58,240 --> 00:24:03,040
+And then there was a whole bunch of papers in the literature linear time versus branching time.
+
+254
+00:24:03,040 --> 00:24:07,240
+And people were really fighting against each other what is better.
+
+255
+00:24:07,240 --> 00:24:13,120
+And actually there is a nice paper it's by Manna and Pnueli and he says
+
+256
+00:24:13,120 --> 00:24:19,480
+has a paper linear time versus branching time the final showdown because he wanted to stop this whole discussion.
+
+257
+00:24:19,480 --> 00:24:22,960
+his view is linear time.
+
+258
+00:24:22,960 --> 00:24:27,200
+But the truth is there is no real it's not the case that one is better
+
+259
+00:24:27,200 --> 00:24:29,770
+than the other one, right? I mean there is room for both.
+
+260
+00:24:29,770 --> 00:24:34,320
+Both have their advantages. Both have their disadvantages.
+
+261
+00:24:34,320 --> 00:24:37,679
+Good. So far about linear time branching time.
+
+262
+00:24:37,679 --> 00:24:45,080
+So we go to computation tree logic. So computa- tation tree logic can state properties about states.
+
+263
+00:24:45,080 --> 00:24:49,960
+Mentally think about this infinite tree. You can state a property about a state
+
+264
+00:24:49,960 --> 00:24:54,233
+think about the root of the tree. This can satisfy true.
+
+265
+00:24:54,233 --> 00:24:57,976
+Every state will satisfy true. It can be labeled with an atomic proposition.
+
+266
+00:24:57,976 --> 00:25:01,920
+It can satisfy something which is a conjunction and negation.
+
+267
+00:25:01,920 --> 00:25:08,760
+And you can say something about there exists a path starting in that vertex in the tree
+
+268
+00:25:08,760 --> 00:25:12,672
+and that path satisfies a particular property namely phi.
+
+269
+00:25:12,672 --> 00:25:19,120
+So this small phi is a property about a path and a path is a sequence, right?
+
+270
+00:25:19,120 --> 00:25:23,120
+Just a path in the tree, infinite path.
+
+271
+00:25:23,120 --> 00:25:31,560
+And you can say something about in this state in the tree all paths starting there satisfy a certain property.
+
+272
+00:25:31,560 --> 00:25:37,440
+So the existential universal quantification allow you to quantify over the paths starting in for instance
+
+273
+00:25:37,440 --> 00:25:41,428
+the root of the tree. What kind of path formulas can we express?
+
+274
+00:25:41,428 --> 00:25:48,040
+Well, this is just like LTL. So you can say something like next something and you can say something like
+
+275
+00:25:48,040 --> 00:25:53,360
+this must hold until that must hold. Now you have to be a bit careful.
+
+276
+00:25:53,360 --> 00:25:58,320
+This are the arguments of a next are a state formula.
+
+277
+00:25:58,320 --> 00:26:02,793
+It's not an arbitrary path formula.
+
+278
+00:26:02,793 --> 00:26:26,880
+So something that you cannot easily write down are things like this.
+
+279
+00:26:26,880 --> 00:26:33,560
+So A until B is perfectly valid as a path formula.
+
+280
+00:26:33,560 --> 00:26:40,336
+And then you can say as a state formula well there exists a path which is A until B.
+
+281
+00:26:40,336 --> 00:26:48,240
+This is fine. In LTL you would also be allowed to say something like A until B until C.
+
+282
+00:26:48,240 --> 00:26:52,400
+this is not allowed here.
+
+283
+00:26:52,400 --> 00:26:55,262
+Why not? Well, this needs to be state formula.
+
+284
+00:26:55,262 --> 00:27:03,040
+This is a state formula but this is not a state formula.
+
+285
+00:27:03,040 --> 00:27:06,365
+So syntactically we're going to forbid this.
+
+286
+00:27:06,365 --> 00:27:12,779
+So this is not in CTL. What instead is in CTL is something like this.
+
+287
+00:27:12,779 --> 00:27:19,480
+Well, a path formula that says there exists a path such that A holds until
+
+288
+00:27:19,480 --> 00:27:26,360
+and now again I need a state formula.
+
+289
+00:27:26,360 --> 00:27:31,552
+And one particular state formula could be of the form for all hm?
+
+290
+00:27:31,552 --> 00:27:37,017
+B until C. This is okay.
+
+291
+00:27:37,017 --> 00:27:42,640
+But I'm forced to put a quantification here in front of the until.
+
+292
+00:27:42,640 --> 00:27:49,120
+Which here I was not doing. So the way to think about this is that
+
+293
+00:27:49,120 --> 00:27:56,000
+linear let's say modalities like next and until must always be directly preceded by a quantification either
+
+294
+00:27:56,000 --> 00:28:03,440
+being an existential or a universal quantification. And this is forced syntactically.
+
+295
+00:28:03,440 --> 00:28:07,160
+And now you can define things like there exists a path so that eventually phi
+
+296
+00:28:07,160 --> 00:28:11,120
+holds which is simply there exists a path such that true until phi holds.
+
+297
+00:28:11,120 --> 00:28:16,600
+here you this is something like for all paths true until phi.
+
+298
+00:28:16,600 --> 00:28:23,120
+there exists a box phi which is something like you cannot write this down like this.
+
+299
+00:28:23,120 --> 00:28:24,679
+You may be tempted to do this. Why?
+
+300
+00:28:24,679 --> 00:28:31,679
+Because we know that box phi In LTL is nothing else than not eventually not phi.
+
+301
+00:28:31,679 --> 00:28:33,880
+Ah, but you cannot write down this formula.
+
+302
+00:28:33,880 --> 00:28:40,480
+So you cannot write this down in place of question mark because this syntactically is not a CTL formula.
+
+303
+00:28:40,480 --> 00:28:45,200
+Same problem as I just have on the on the board.
+
+304
+00:28:45,200 --> 00:28:51,919
+So but this is not for all eventually not phi and that's a CTL formula.
+
+305
+00:28:51,919 --> 00:28:54,960
+So you need to be a bit careful about what to write down and what you
+
+306
+00:28:54,960 --> 00:29:00,200
+cannot write down because certain things are syntactically simply forbidden.
+
+307
+00:29:00,200 --> 00:29:06,760
+This is then still okay. because this is I think the the problem is this negation here in front.
+
+308
+00:29:06,760 --> 00:29:10,080
+There is no negation here in a path formula, right?
+
+309
+00:29:10,080 --> 00:29:14,320
+You cannot negate a path formula. You cannot take a conjunction of a path formula.
+
+310
+00:29:14,320 --> 00:29:18,120
+These kind of things are also not allowed.
+
+311
+00:29:18,120 --> 00:29:22,420
+Good. So next until that's clear always eventually that's clear.
+
+312
+00:29:22,420 --> 00:29:27,440
+So things like mutual exclusion for all box one of the processes
+
+313
+00:29:27,440 --> 00:29:30,120
+at most one of the processes in the critical section.
+
+314
+00:29:30,120 --> 00:29:38,960
+Every request will be answered eventually. For every path it's always the case if a request is being made
+
+315
+00:29:38,960 --> 00:29:45,800
+then for every path starting from there eventually you will get a response.
+
+316
+00:29:45,800 --> 00:29:54,440
+So the way to think about this is in terms of a tree.
+
+317
+00:29:54,440 --> 00:29:56,928
+So, we look at the unfolding of the transition system.
+
+318
+00:29:56,928 --> 00:30:01,480
+This is very schematically my infinite computation tree.
+
+319
+00:30:01,480 --> 00:30:04,668
+We say for all paths, take a path.
+
+320
+00:30:04,668 --> 00:30:08,280
+This is a path. For all paths is the case that if there
+
+321
+00:30:08,280 --> 00:30:12,400
+always the case that if this is a request, so if this is request,
+
+322
+00:30:12,400 --> 00:30:17,240
+then it must be the case that for all paths starting here,
+
+323
+00:30:17,240 --> 00:30:21,240
+this is one of them, but maybe I could also have gone here.
+
+324
+00:30:21,240 --> 00:30:24,285
+Maybe I go and go here. Maybe I can go there.
+
+325
+00:30:24,285 --> 00:30:27,290
+For all of them, eventually there needs to be a response.
+
+326
+00:30:27,290 --> 00:30:33,080
+So, that means that on this way, there needs to be a response somewhere.
+
+327
+00:30:33,080 --> 00:30:39,360
+But also if I take this path, I need to have a response somewhere.
+
+328
+00:30:39,360 --> 00:30:44,440
+Maybe on this path there is here is response, but there need to be a response somewhere.
+
+329
+00:30:44,440 --> 00:30:47,582
+It doesn't always have to be at the same distance of this request, right?
+
+330
+00:30:47,582 --> 00:30:55,760
+But it has to be everywhere. So, also here, maybe here there is a response.
+
+331
+00:30:55,760 --> 00:31:04,920
+And this holds for any request that you have.
+
+332
+00:31:04,920 --> 00:31:12,160
+Good. A traffic light. For all computations, it's always the case if the traffic light is yellow,
+
+333
+00:31:12,160 --> 00:31:18,160
+then for all possible computations, the next state must be red.
+
+334
+00:31:18,160 --> 00:31:24,840
+This is an interesting property. We're going to see later and going to prove that you cannot express this
+
+335
+00:31:24,840 --> 00:31:28,200
+property in LTL. So, this has the following.
+
+336
+00:31:28,200 --> 00:31:36,160
+For all computation paths, in any state of any computation path, there exists a path that eventually
+
+337
+00:31:36,160 --> 00:31:43,840
+brings you to the start state. So, this nesting of universal and existential quantification is actually
+
+338
+00:31:43,840 --> 00:31:50,280
+one of the strengths of CTL. Notice that it says for all paths, it's
+
+339
+00:31:50,280 --> 00:31:52,746
+any state along this path, there is a possibility.
+
+340
+00:31:52,746 --> 00:31:55,017
+It's not saying you should take it,
+
+341
+00:31:55,017 --> 00:32:03,240
+There is a possibility, there exists a path that eventually goes to the start state.
+
+342
+00:32:03,240 --> 00:32:08,679
+Good. Fairness. This is an easy fairness thing, unconditional fairness.
+
+343
+00:32:08,679 --> 00:32:13,880
+We're going to see that this expresses infinitely often crit one and infinitely often crit two.
+
+344
+00:32:13,880 --> 00:32:17,640
+And that's exactly what we called unconditional process fairness.
+
+345
+00:32:17,640 --> 00:32:24,120
+We're going to see that the other fairness assumptions are going to be a little bit problematic in CTL.
+
+346
+00:32:24,120 --> 00:32:27,040
+Good. So, an example is this, I guess you all know this.
+
+347
+00:32:27,040 --> 00:32:31,051
+This is this 15 puzzle. So, here you have tiles.
+
+348
+00:32:31,051 --> 00:32:35,960
+These tiles have numbers. And there is one tile which is a hole.
+
+349
+00:32:35,960 --> 00:32:38,360
+And now you can shift those tiles.
+
+350
+00:32:38,360 --> 00:32:41,840
+So, you can shift this one position to the bottom or you can shift the nine one
+
+351
+00:32:41,840 --> 00:32:47,360
+position to the left or you can shift maybe the seven one position up, right?
+
+352
+00:32:47,360 --> 00:32:48,764
+What is the end of the of the game?
+
+353
+00:32:48,764 --> 00:32:54,345
+The end of the game is you would like to have this configuration all the tiles in the right formal.
+
+354
+00:32:54,345 --> 00:32:58,920
+We all know that this is a hard problem.
+
+355
+00:32:58,920 --> 00:33:03,912
+There are actually exponentially many combinations, so you have to be a bit careful.
+
+356
+00:33:03,912 --> 00:33:10,840
+This system has two to the two times 10 to the power 13 states.
+
+357
+00:33:10,840 --> 00:33:16,400
+that's why children typically give this puzzle to their parents give this puzzle to their
+
+358
+00:33:16,400 --> 00:33:19,494
+children, then they hopefully have some some rest for the for the time.
+
+359
+00:33:19,494 --> 00:33:24,120
+What's the state? The state is a game configuration, so this is one state.
+
+360
+00:33:24,120 --> 00:33:27,880
+This is the final state. This is a state we want to reach, right?
+
+361
+00:33:27,880 --> 00:33:31,400
+What are transitions? Transitions are the legal moves.
+
+362
+00:33:31,400 --> 00:33:36,280
+So, the move that for instance I move this tile nine one position to the left,
+
+363
+00:33:36,280 --> 00:33:41,400
+this gives me one new configuration and that gives me a transition.
+
+364
+00:33:41,400 --> 00:33:47,480
+So, you can model this for instance by some kind of parallel composition and then the CTL specification is that
+
+365
+00:33:47,480 --> 00:33:51,040
+you would like to check, does there exist a path?
+
+366
+00:33:51,040 --> 00:34:00,440
+Does there exist a sequence of moves, legal moves in the game, such that eventually I reach this configuration.
+
+367
+00:34:00,440 --> 00:34:05,629
+What is this configuration? At position I, I mean, piece I is at field I.
+
+368
+00:34:05,629 --> 00:34:09,760
+If I number the fields, I mean, according to the numbers here,
+
+369
+00:34:09,760 --> 00:34:13,760
+then I want to say that this six is exactly at position six and seven is at
+
+370
+00:34:13,760 --> 00:34:18,080
+position seven, etc. You put this into a model checker.
+
+371
+00:34:18,080 --> 00:34:22,679
+in particular, what you typically do in a model checker, you put the negation
+
+372
+00:34:22,679 --> 00:34:27,320
+of this formula into the model checker. Why?
+
+373
+00:34:27,320 --> 00:34:31,920
+Because then you say there does not exist, it's not possible to reach this configuration.
+
+374
+00:34:31,920 --> 00:34:35,720
+So, what you're saying is it's not possible to move there.
+
+375
+00:34:35,720 --> 00:34:42,520
+And then the model checker will give you a counterexample and the counterexample is a solution to this game.
+
+376
+00:34:42,520 --> 00:34:48,879
+The shortest counterexample is the minimum number of moves you have to make
+
+377
+00:34:48,879 --> 00:34:52,000
+to go from this configuration to that configuration.
+
+378
+00:34:52,000 --> 00:34:57,240
+Good. So, what I'm saying is you can use model checking to solve games.
+
+379
+00:34:57,240 --> 00:35:06,800
+Good. Okay. Semantics for CTL. you can define satisfaction relation for CTL in the
+
+380
+00:35:06,800 --> 00:35:12,760
+same way as we have done this for LTL and we take as a input a transition system without
+
+381
+00:35:12,760 --> 00:35:19,253
+terminal states. We have formulas about states, we have formulas about paths, so we have two satisfaction relation.
+
+382
+00:35:19,253 --> 00:35:24,200
+One for the state formulas, one for the path formulas.
+
+383
+00:35:24,200 --> 00:35:31,445
+Good. Remember LTL? For LTL it was easy, we just take paths and we express everything in terms of paths.
+
+384
+00:35:31,445 --> 00:35:34,680
+So, for instance, take look at the next.
+
+385
+00:35:34,680 --> 00:35:40,880
+This path satisfies next phi if and only if the suffix, which means you just delete the first element, this
+
+386
+00:35:40,880 --> 00:35:46,680
+S0 from this path, this satisfies phi. This you cannot do anymore.
+
+387
+00:35:46,680 --> 00:35:53,960
+Why not? Yeah, because it's always next of a state formula in CTL, not next of a path formula.
+
+388
+00:35:53,960 --> 00:35:59,040
+So, this will be a relation between a state and a state formula, whereas this
+
+389
+00:35:59,040 --> 00:36:02,359
+is a relation between a path and a path formula.
+
+390
+00:36:02,359 --> 00:36:07,480
+And they are in some sense, intertwined in some way.
+
+391
+00:36:07,480 --> 00:36:11,871
+So, path formulas. We take an infinite path starting from a zero.
+
+392
+00:36:11,871 --> 00:36:18,400
+We say a pi satisfies next phi. Phi is a state formula.
+
+393
+00:36:18,400 --> 00:36:26,320
+So, this holds if and only if the next state in this path, which is S1, satisfies the state formula
+
+394
+00:36:26,320 --> 00:36:33,840
+phi. So, if this says next red, this holds if and only if the next state in pi is
+
+395
+00:36:33,840 --> 00:36:41,840
+satisfying the atomic proposition being red. Until, similar.
+
+396
+00:36:41,840 --> 00:36:47,680
+Again, these two things are state formulas. So, we're going to say there exists some kind of position along this
+
+397
+00:36:47,680 --> 00:36:56,920
+sequence. Let's call this position J such that at position J phi2 holds and at all preceding positions K,
+
+398
+00:36:56,920 --> 00:37:02,480
+preceding strictly less than J, we have phi1.
+
+399
+00:37:02,480 --> 00:37:09,200
+Good. So, that means immediately that you have something like if you have eventually phi, eventually means true
+
+400
+00:37:09,200 --> 00:37:16,348
+until phi, then definitely you get something that existed an index J such that at index satisfies phi.
+
+401
+00:37:16,348 --> 00:37:25,800
+And box means simply as you intuitively would understand, for all J, we have that SJ satisfies phi.
+
+402
+00:37:25,800 --> 00:37:33,080
+Good. What about state formulas? Good. State formulas are just as a transition is is this satisfaction
+
+403
+00:37:33,080 --> 00:37:34,973
+relation between a state and a state formula.
+
+404
+00:37:34,973 --> 00:37:40,400
+Every state satisfies true. A state satisfies an atomic proposition if and only if it's labeled with this.
+
+405
+00:37:40,400 --> 00:37:50,394
+Conjunction is conjunction. Negation negation. Existential path. So, a state satisfies existentially, there exists a path satisfying phi.
+
+406
+00:37:50,394 --> 00:37:55,359
+So, if and only if there is a path pi starting in S, this is this S,
+
+407
+00:37:55,359 --> 00:38:02,920
+such that that path satisfies phi. And the universal is then similar for each path starting in S, that path
+
+408
+00:38:02,920 --> 00:38:09,679
+satisfies phi. Good. But you see the inter- meet- twining.
+
+409
+00:38:09,679 --> 00:38:12,384
+This is the relation between a state and a state formula.
+
+410
+00:38:12,384 --> 00:38:15,480
+This is a relation between a path and a path formula.
+
+411
+00:38:15,480 --> 00:38:21,560
+They are always alternating. Then it's useful to define this notion.
+
+412
+00:38:21,560 --> 00:38:23,665
+It's the satisfaction set of a state formula.
+
+413
+00:38:23,665 --> 00:38:27,480
+These are just a set of states satisfying that formula.
+
+414
+00:38:27,480 --> 00:38:32,520
+So, sat of phi is the set of states that satisfy the formula.
+
+415
+00:38:32,520 --> 00:38:37,960
+Good. Then the interpretation over transition system. So, a transition system satisfies a
+
+416
+00:38:37,960 --> 00:38:43,320
+formula if and only if all its initial states satisfy the formula.
+
+417
+00:38:43,320 --> 00:38:49,400
+That means S0 must be a subset of all the states satisfying phi.
+
+418
+00:38:49,400 --> 00:38:52,760
+Good. And that's the same as what I just said.
+
+419
+00:38:52,760 --> 00:38:57,657
+Good. Next. What is next? The next operator says the following.
+
+420
+00:38:57,657 --> 00:39:02,240
+S satisfies there exists a path such that next phi.
+
+421
+00:39:02,240 --> 00:39:05,740
+So, first we apply the semantics for existential quantification.
+
+422
+00:39:05,740 --> 00:39:09,920
+So, that says there exists a path starting in S.
+
+423
+00:39:09,920 --> 00:39:15,240
+So, this path starts in S such that this path satisfies next phi.
+
+424
+00:39:15,240 --> 00:39:18,125
+But that's nothing else than saying that S1 satisfies phi.
+
+425
+00:39:18,125 --> 00:39:22,800
+So, in terms of a tree, this is represented as follows.
+
+426
+00:39:22,800 --> 00:39:27,120
+This S, you can imagine this as the root of the tree.
+
+427
+00:39:27,120 --> 00:39:34,680
+There exists next phi means that this thing has one of its direct children satisfies the formula phi.
+
+428
+00:39:34,680 --> 00:39:39,640
+So, in this case for instance S1. Or a different way of saying this, the
+
+429
+00:39:39,640 --> 00:39:46,213
+set of direct successors of S intersected with the set of states satisfying phi must be non-empty.
+
+430
+00:39:46,213 --> 00:39:49,360
+So this means for all next phi.
+
+431
+00:39:49,360 --> 00:39:53,840
+So in terms of the semantics it says for all parts starting in S.
+
+432
+00:39:53,840 --> 00:39:56,394
+So for every pi you have to have next phi.
+
+433
+00:39:56,394 --> 00:40:02,760
+So in terms of a tree this means S again being the root of the tree
+
+434
+00:40:02,760 --> 00:40:08,697
+for all next phi means for all children of S phi should hold.
+
+435
+00:40:08,697 --> 00:40:16,120
+So all its children should be in this picture colored pink.
+
+436
+00:40:16,120 --> 00:40:23,240
+Until I hope you understand this difference between existential and universal and now you see that they actually exist
+
+437
+00:40:23,240 --> 00:40:28,440
+exist a path which is blue until red is there exist a blue path which until
+
+438
+00:40:28,440 --> 00:40:31,520
+you reach a red state. Of course there may be plenty of other
+
+439
+00:40:31,520 --> 00:40:35,600
+paths that do not satisfy blue until red, but that's okay.
+
+440
+00:40:35,600 --> 00:40:39,520
+This is a tree that satisfies for all blue until red.
+
+441
+00:40:39,520 --> 00:40:41,755
+So no matter where you go starting from the root.
+
+442
+00:40:41,755 --> 00:40:46,840
+You go here and you reach some red state after two transitions and maybe here I reach it after three
+
+443
+00:40:46,840 --> 00:40:53,800
+transitions and so forth. There exist a path eventually phi.
+
+444
+00:40:53,800 --> 00:40:59,160
+This means there exist a path starting from the root that leads you to a red state.
+
+445
+00:40:59,160 --> 00:41:05,100
+And here is this path. That there are many paths that do not satisfy eventually red.
+
+446
+00:41:05,100 --> 00:41:11,840
+This is all fine. For all eventually phi Yeah, it simply means that everything
+
+447
+00:41:11,840 --> 00:41:16,125
+which was blue here is now not relevant anymore because it's true until phi.
+
+448
+00:41:16,125 --> 00:41:23,240
+So no matter where you go at some point you reach a blue a red state.
+
+449
+00:41:23,240 --> 00:41:29,880
+Good. So this was for all eventually phi, there exist eventually phi, now with box.
+
+450
+00:41:29,880 --> 00:41:32,080
+So there exist a path which is completely blue.
+
+451
+00:41:32,080 --> 00:41:36,960
+So here is this completely blue and of course in all the pictures it's meant that this goes on ad
+
+452
+00:41:36,960 --> 00:41:44,920
+infinitum. for all box phi it simply means the whole tree is blue.
+
+453
+00:41:44,920 --> 00:41:48,720
+For all paths starting here all states are blue.
+
+454
+00:41:48,720 --> 00:41:53,360
+And that's that means simply that the whole tree is blue.
+
+455
+00:41:53,360 --> 00:41:58,320
+Good example. So this is example we have seen plenty of times before.
+
+456
+00:41:58,320 --> 00:42:00,893
+We want to send a message. This message may get lost.
+
+457
+00:42:00,893 --> 00:42:05,720
+Then you resend it and at some point you hope that it will be delivered.
+
+458
+00:42:05,720 --> 00:42:10,080
+So let's look at the CTL formula for all box for all eventually start.
+
+459
+00:42:10,080 --> 00:42:14,440
+And we want to check whether the transition system satisfies this formula.
+
+460
+00:42:14,440 --> 00:42:18,560
+One scheme to do this is that you first look at the subformula.
+
+461
+00:42:18,560 --> 00:42:23,120
+So you look at the formula and you try to reason from inside out.
+
+462
+00:42:23,120 --> 00:42:26,800
+So I start with this subformula and the first thing that I'm going to ask which
+
+463
+00:42:26,800 --> 00:42:33,240
+states satisfy that for all paths starting in that state you get to the start state.
+
+464
+00:42:33,240 --> 00:42:35,253
+Well this definitely is true for start, right?
+
+465
+00:42:35,253 --> 00:42:40,480
+Because you're already there. And this also is true as for delivered because all paths immediately go to the
+
+466
+00:42:40,480 --> 00:42:46,835
+start state. But this is not true for instance for lost because you can go into this loop.
+
+467
+00:42:46,835 --> 00:42:52,800
+And the same holds for try. So this is true for the states start and delivered.
+
+468
+00:42:52,800 --> 00:42:58,960
+Okay, now mentally think about replacing this subformula by just having this set.
+
+469
+00:42:58,960 --> 00:43:08,000
+So I'm interested in for which states now do we satisfy the formula for all box this holds.
+
+470
+00:43:08,000 --> 00:43:15,000
+So this is basically what I'm doing and this means that we are for all box start or delivered.
+
+471
+00:43:15,000 --> 00:43:19,400
+Now I know this is not so hard to determine.
+
+472
+00:43:19,400 --> 00:43:25,360
+So this is actually the empty set because this says for all paths you
+
+473
+00:43:25,360 --> 00:43:27,813
+always are in the start state or in the delivered state.
+
+474
+00:43:27,813 --> 00:43:32,340
+Yeah, and you can immediately see there is no state satisfying this.
+
+475
+00:43:32,340 --> 00:43:37,080
+So therefore this transition system violates this formula.
+
+476
+00:43:37,080 --> 00:43:43,680
+That's what we just had determined. Good.
+
+477
+00:43:43,680 --> 00:43:45,573
+And this is what it says infinitely often start.
+
+478
+00:43:45,573 --> 00:43:51,600
+That's the intuition behind this formula. And it's not the case that for all paths infinitely often start
+
+479
+00:43:51,600 --> 00:43:58,960
+holds because you can go here and then stay here and then you only have finitely often start.
+
+480
+00:43:58,960 --> 00:44:07,880
+Good. So what about infinitely often? So here you have this formula for all box for all eventually A.
+
+481
+00:44:07,880 --> 00:44:11,560
+This has the following according to the CTL semantics.
+
+482
+00:44:11,560 --> 00:44:20,240
+It says for all paths. So for all paths starting in S and now we have box for
+
+483
+00:44:20,240 --> 00:44:25,400
+all eventually A. And it's not difficult to see that this is nothing else than there are said
+
+484
+00:44:25,400 --> 00:44:33,040
+there are infinitely many indices I such that SI satisfies A.
+
+485
+00:44:33,040 --> 00:44:36,920
+And that's the same as the LTL formula infinitely often A.
+
+486
+00:44:36,920 --> 00:44:44,600
+One way to see this is again look at the tree.
+
+487
+00:44:44,600 --> 00:44:46,904
+And here is a tree. What does this formula says?
+
+488
+00:44:46,904 --> 00:44:50,600
+S. So S is the root of the tree.
+
+489
+00:44:50,600 --> 00:44:53,080
+It says for all paths. So take a path.
+
+490
+00:44:53,080 --> 00:44:56,740
+This is a path. So this is a path.
+
+491
+00:44:56,740 --> 00:45:07,120
+What does it say? It says box. So we have that S satisfies for all box for all eventually A.
+
+492
+00:45:07,120 --> 00:45:15,120
+If this is path pi then pi satisfies box for all eventually A.
+
+493
+00:45:15,120 --> 00:45:18,606
+I just strip off this first quantification.
+
+494
+00:45:18,606 --> 00:45:27,955
+So what does that mean? It means basically that if pi is a path S0 S1 S2 etc.
+
+495
+00:45:27,955 --> 00:45:35,280
+It means because of this box that for all J SJ satisfies
+
+496
+00:45:35,280 --> 00:45:44,440
+for all eventually A. Good. So take such a state.
+
+497
+00:45:44,440 --> 00:45:49,880
+Let this be SJ. Good. This is one of those states in pi.
+
+498
+00:45:49,880 --> 00:45:53,760
+So it satisfies for all eventually A. What does that mean?
+
+499
+00:45:53,760 --> 00:46:01,800
+Well, in terms of a tree you're going to look at the subtree which is rooted at this state.
+
+500
+00:46:01,800 --> 00:46:07,348
+This is the subtree rooted at SJ. This contains all paths there.
+
+501
+00:46:07,348 --> 00:46:11,840
+So it contains all the paths. Take such a path.
+
+502
+00:46:11,840 --> 00:46:17,240
+Take a path in this subtree. For instance pi prime.
+
+503
+00:46:17,240 --> 00:46:22,840
+What does pi prime satisfy? Well, pi prime needs to satisfy eventually A.
+
+504
+00:46:22,840 --> 00:46:28,240
+Because of this. So it means that along this path there needs to be some A.
+
+505
+00:46:28,240 --> 00:46:33,440
+Here. The same holds of course for this path.
+
+506
+00:46:33,440 --> 00:46:36,365
+The suffix of pi that starts from SJ.
+
+507
+00:46:36,365 --> 00:46:40,000
+Also along this path I need to have an A.
+
+508
+00:46:40,000 --> 00:46:43,760
+And this reasoning is applicable to every SJ.
+
+509
+00:46:43,760 --> 00:46:47,160
+So in particular also to this guy.
+
+510
+00:46:47,160 --> 00:46:52,720
+But also to for instance this guy. All S's along pi.
+
+511
+00:46:52,720 --> 00:46:56,800
+But that means that you have to visit infinitely often an A.
+
+512
+00:46:56,800 --> 00:47:17,000
+Good. A somewhat more involved transition system.
+
+513
+00:47:17,000 --> 00:47:23,440
+Start try lost error delivered. I want to check whether the transition system satisfies this formula.
+
+514
+00:47:23,440 --> 00:47:27,840
+with CTL I I never try to pass the formula.
+
+515
+00:47:27,840 --> 00:47:32,194
+The strategy is always the same. You look at the most nested subformula.
+
+516
+00:47:32,194 --> 00:47:37,940
+The most nested state formula which is let's say satisfied.
+
+517
+00:47:37,940 --> 00:47:42,120
+So we start with this yellow subformula.
+
+518
+00:47:42,120 --> 00:47:47,120
+Now this yellow subformula says for all paths always not start.
+
+519
+00:47:47,120 --> 00:47:54,640
+So which states satisfy this property? Well, definitely this state does not satisfy the property because every
+
+520
+00:47:54,640 --> 00:47:57,945
+path starting here is a start state. So what about this?
+
+521
+00:47:57,945 --> 00:48:00,822
+No, because I can go from try
+
+522
+00:48:00,822 --> 00:48:06,942
+to delivered and from delivered to start and therefore I'm validating I'm refuting the not start thing.
+
+523
+00:48:06,942 --> 00:48:10,000
+So try is also not satisfying this property.
+
+524
+00:48:10,000 --> 00:48:16,000
+Similarly lost is not satisfying the property because I can go from lost to try to delivered to start.
+
+525
+00:48:16,000 --> 00:48:20,040
+So basically I'm looking for a state that cannot reach start.
+
+526
+00:48:20,040 --> 00:48:23,200
+There is only one which is the error state.
+
+527
+00:48:23,200 --> 00:48:30,559
+Good. So now I replace again conceptually speaking this yellow part by means of this formula.
+
+528
+00:48:30,559 --> 00:48:33,680
+So now the formula becomes a little bit more friendly.
+
+529
+00:48:33,680 --> 00:48:37,200
+Does there exist a path that leads me to the error state?
+
+530
+00:48:37,200 --> 00:48:43,960
+Good. So I'm interested in which states satisfy this formula which corresponds same to which states satisfy the
+
+531
+00:48:43,960 --> 00:48:51,600
+original formula. Good. Which states are satisfying there exist a path that eventually error holds?
+
+532
+00:48:51,600 --> 00:48:57,720
+This actually holds for all states because every state can reach finally the error state.
+
+533
+00:48:57,720 --> 00:49:06,440
+And that in particular means also the initial state satisfies this and therefore the transition system satisfies this formula.
+
+534
+00:49:06,440 --> 00:49:12,720
+Lesson learned. Read formulas from inside out.
+
+535
+00:49:12,720 --> 00:49:15,605
+That's the way to look at this.
+
+536
+00:49:15,605 --> 00:49:19,440
+Here is an even more complicated formula. I don't want to even think about it.
+
+537
+00:49:19,440 --> 00:49:23,840
+For all next there exist a next that for all box something holds.
+
+538
+00:49:23,840 --> 00:49:30,680
+Woof. Inside out, right? For all box start not start which is exactly
+
+539
+00:49:30,680 --> 00:49:33,000
+the same subformula as we just have seen.
+
+540
+00:49:33,000 --> 00:49:36,740
+Which were all the states that could that never can reach start which is only the error state.
+
+541
+00:49:36,740 --> 00:49:39,166
+So that's simplifies the formula to this.
+
+542
+00:49:39,166 --> 00:49:42,400
+Now, which state satisfy there exist next error?
+
+543
+00:49:42,400 --> 00:49:47,034
+Well, definitely error itself plus try, right? Because try has one transition into error.
+
+544
+00:49:47,034 --> 00:49:53,760
+Good, but now we can simplify this because now this becomes this formula and now life becomes more friendly.
+
+545
+00:49:53,760 --> 00:49:59,200
+And now you check which state satisfy this formula for all paths the direct
+
+546
+00:49:59,200 --> 00:50:03,600
+successor is an error or a try. Well, this for instance holds for lost
+
+547
+00:50:03,600 --> 00:50:05,982
+because it only has a try or error.
+
+548
+00:50:05,982 --> 00:50:10,440
+For try itself it doesn't hold, right? Because you can also move to delivered.
+
+549
+00:50:10,440 --> 00:50:13,920
+So, what do you get? You get at the end the error, lost, and start.
+
+550
+00:50:13,920 --> 00:50:19,606
+And start it also holds because start only has one successor, which is try, which is satisfying this disjunct.
+
+551
+00:50:19,606 --> 00:50:27,320
+So, that's okay. So, the initial state is included in this set and therefore the transition system satisfies this formula.
+
+552
+00:50:27,320 --> 00:50:32,600
+Good. this is another example. We're going to skip this.
+
+553
+00:50:32,600 --> 00:50:41,120
+I guess you got the idea. so, here is an example of a very simple transition system.
+
+554
+00:50:41,120 --> 00:50:46,040
+The question is does there the transition system satisfy the following problem the following formula there
+
+555
+00:50:46,040 --> 00:50:54,640
+exist a path such that from the next state on all paths never satisfy A.
+
+556
+00:50:54,640 --> 00:50:57,810
+Good. How to deal with this? Same recipe as before.
+
+557
+00:50:57,810 --> 00:51:01,960
+Answer will be no. Why? Look at the inside formula.
+
+558
+00:51:01,960 --> 00:51:07,160
+Look at this sub formula for all paths you never have an A state.
+
+559
+00:51:07,160 --> 00:51:10,040
+Now, this does not satisfy is not satisfied by this because it's an A
+
+560
+00:51:10,040 --> 00:51:12,760
+state and it's also not satisfied by this because I can move to this blue state.
+
+561
+00:51:12,760 --> 00:51:16,240
+So, the only state satisfying this formula is S2.
+
+562
+00:51:16,240 --> 00:51:20,840
+So, now I can say there exist next S2.
+
+563
+00:51:20,840 --> 00:51:24,871
+Which state satisfy there exist a path so that the next state is S2?
+
+564
+00:51:24,871 --> 00:51:34,880
+S2 itself plus S1. But not the initial state and therefore the transition system violates the formula.
+
+565
+00:51:34,880 --> 00:51:39,880
+Good. And there are other examples, but we're going to skip this.
+
+566
+00:51:39,880 --> 00:51:45,240
+I think I'm going to to skip this.
+
+567
+00:51:45,240 --> 00:51:51,085
+Good. what about the following statement? We have a transition system and a CTL formula.
+
+568
+00:51:51,085 --> 00:51:54,977
+If T violates not phi then T satisfies phi.
+
+569
+00:51:54,977 --> 00:52:02,640
+Is this true? The answer is no because T satisfies phi means all initial states satisfy phi.
+
+570
+00:52:02,640 --> 00:52:10,200
+It means that if you refute not phi, it means there exist an initial state that is not satisfying
+
+571
+00:52:10,200 --> 00:52:16,120
+not phi, but it's not saying that all initial states satisfy not phi.
+
+572
+00:52:16,120 --> 00:52:20,720
+Good. So, this that's the same thing as we have seen in LTL.
+
+573
+00:52:20,720 --> 00:52:24,800
+Good. So, here you have an example of transition system with two initial states.
+
+574
+00:52:24,800 --> 00:52:30,880
+this satisfies does not satisfy the formula there exist always A.
+
+575
+00:52:30,880 --> 00:52:36,400
+Because this formula has to be true for all initial states, but for this initial
+
+576
+00:52:36,400 --> 00:52:43,720
+state there does not completely green path. But this transition system also doesn't satisfy the negation
+
+577
+00:52:43,720 --> 00:52:51,720
+because this is an initial state that satisfies there is a path which is completely green.
+
+578
+00:52:51,720 --> 00:53:00,160
+Good. Hamilton path problem. Finite directed graph, does G have a Hamilton path?
+
+579
+00:53:00,160 --> 00:53:04,560
+That is does there exist a path that visits each node exactly once?
+
+580
+00:53:04,560 --> 00:53:07,760
+ID is we want to encode this in CTL.
+
+581
+00:53:07,760 --> 00:53:10,351
+So, that's exactly one of these problems that we have seen here.
+
+582
+00:53:10,351 --> 00:53:13,080
+We know how to encode it in LTL.
+
+583
+00:53:13,080 --> 00:53:18,720
+Yeah, in LTL this was easy. What was the Hamilton path in LTL?
+
+584
+00:53:18,720 --> 00:53:29,840
+So, Hamilton path in LTL it says something like eventually you have to reach a vertex and it's
+
+585
+00:53:29,840 --> 00:53:34,640
+always the case that if you have reached a vertex you should never visit it again.
+
+586
+00:53:34,640 --> 00:53:39,720
+So, it should always be the case that from there on you never visit V again.
+
+587
+00:53:39,720 --> 00:53:42,520
+And this you have to do for all vertices.
+
+588
+00:53:42,520 --> 00:53:44,700
+So, this is something like the formula.
+
+589
+00:53:44,700 --> 00:53:48,360
+So, this is polynomial in the size of the graph.
+
+590
+00:53:48,360 --> 00:53:51,600
+In CTL this is a bit more awkward.
+
+591
+00:53:51,600 --> 00:53:56,540
+Why? Intuition, I have to always indicate the branching.
+
+592
+00:53:56,540 --> 00:54:00,840
+Is it there exist or does it for all?
+
+593
+00:54:00,840 --> 00:54:04,040
+So, what I want is I want to have finite digraph.
+
+594
+00:54:04,040 --> 00:54:08,480
+I want to obtain a finite transition system and a CTL formula phi such that G
+
+595
+00:54:08,480 --> 00:54:14,085
+has a Hamilton path if and only if now in this case the negation TG has not a phi.
+
+596
+00:54:14,085 --> 00:54:21,240
+So, in terms of LTL the non-existence is of course given by just the negation.
+
+597
+00:54:21,240 --> 00:54:26,359
+Good. So, I want to show this the transition system does not have an Hamiltonian.
+
+598
+00:54:26,359 --> 00:54:30,302
+that means doesn't satisfy phi. So, how I'm going to do this?
+
+599
+00:54:30,302 --> 00:54:32,820
+This was the example. I mean, same principle as before.
+
+600
+00:54:32,820 --> 00:54:38,160
+We just take the transition system as being those three vertices.
+
+601
+00:54:38,160 --> 00:54:42,280
+Every vertex is an initial state and we have a trap state that once you have
+
+602
+00:54:42,280 --> 00:54:47,840
+traversed the graph and visited every vertex exactly you end up in this trap state.
+
+603
+00:54:47,840 --> 00:54:53,440
+Exactly same construction as last week. And now what is the CTL formula?
+
+604
+00:54:53,440 --> 00:54:56,586
+So, now the point is that you have to encode all possible orderings.
+
+605
+00:54:56,586 --> 00:55:01,435
+So, one possibility is you can either state start in V1, in V2, or V3.
+
+606
+00:55:01,435 --> 00:55:04,599
+So, here we start in V1. Here we start in V2.
+
+607
+00:55:04,599 --> 00:55:08,600
+There we start in V3. Okay? So, what can happen?
+
+608
+00:55:08,600 --> 00:55:16,040
+Well, from V1 there possible orderings either after V1 you visit V2 or V3.
+
+609
+00:55:16,040 --> 00:55:18,879
+You have to encode all possible po- possibilities.
+
+610
+00:55:18,879 --> 00:55:22,760
+Here of course there is no possibility to go from V1 to V3,
+
+611
+00:55:22,760 --> 00:55:27,560
+but I want of course a formula that is applicable to every graph.
+
+612
+00:55:27,560 --> 00:55:34,440
+So, I'm going to say I'm currently in V1 and it is possible that my successor will be
+
+613
+00:55:34,440 --> 00:55:40,840
+V2 and after V2 there is a possibility that my that the successor V2 is V3.
+
+614
+00:55:40,840 --> 00:55:47,440
+Or after V1 the direct successor is V3 and there is a possibility to get V2.
+
+615
+00:55:47,440 --> 00:55:50,760
+So, what you see I have to list all possible orderings.
+
+616
+00:55:50,760 --> 00:55:57,280
+And this leads of course to a formula which is exponential in the size of the graph.
+
+617
+00:55:57,280 --> 00:56:03,160
+So, this is an example of a property which is there but it's
+
+618
+00:56:03,160 --> 00:56:15,520
+to formulate that property in LTL leads to a much more compact shorter formula than in CTL.
+
+619
+00:56:15,520 --> 00:56:19,946
+Good. And the negation because I was interested in the negation is just the negation of this formula.
+
+620
+00:56:19,946 --> 00:56:24,160
+That's the same as in in LTL. Good.
+
+621
+00:56:24,160 --> 00:56:26,432
+Now, we get to like for LTL we get equivalences.
+
+622
+00:56:26,432 --> 00:56:32,720
+So, when are two formulas equivalent? And we define this in terms of state formulas.
+
+623
+00:56:32,720 --> 00:56:40,880
+So, state formula phi1 is equivalent to state formula phi2 if and only if for every transition system T
+
+624
+00:56:40,880 --> 00:56:46,320
+T satisfies phi1 if and only if T satisfies phi2.
+
+625
+00:56:46,320 --> 00:56:51,160
+and that means that you quantify over all the transition system.
+
+626
+00:56:51,160 --> 00:56:54,880
+That's the same as saying for all transition systems the set of states satisfying
+
+627
+00:56:54,880 --> 00:57:01,800
+phi1 coincides with the set of states satisfying phi2.
+
+628
+00:57:01,800 --> 00:57:07,960
+Good. Trivial examples are things like this. I don't think I have to spend many words on this.
+
+629
+00:57:07,960 --> 00:57:11,946
+other examples are next. So, what do we know about next?
+
+630
+00:57:11,946 --> 00:57:14,755
+Well, in LTL we know it's dual, right?
+
+631
+00:57:14,755 --> 00:57:23,800
+So, in LTL we know that something of the form next not next phi was equivalent to next not phi.
+
+632
+00:57:23,800 --> 00:57:27,960
+Now, we can push the negation inside. The same is true here.
+
+633
+00:57:27,960 --> 00:57:29,793
+But now you have to keep track of the quantification.
+
+634
+00:57:29,793 --> 00:57:38,600
+So, not for all next phi. So, it's not the case that all direct successors satisfy phi,
+
+635
+00:57:38,600 --> 00:57:42,960
+which means there exists a direct successor that doesn't satisfy phi.
+
+636
+00:57:42,960 --> 00:57:47,328
+Makes sense. The same for of course existential quantification.
+
+637
+00:57:47,328 --> 00:57:56,120
+If here is an existential quantification this becomes a universal quantification and you can push the negation inside.
+
+638
+00:57:56,120 --> 00:58:02,240
+what about this? There exist a path eventually A and B is equivalent to there exist a path
+
+639
+00:58:02,240 --> 00:58:05,800
+eventually A and there exist a path eventually B.
+
+640
+00:58:05,800 --> 00:58:11,160
+this looks to me like nonsense. because there is an existential quantification.
+
+641
+00:58:11,160 --> 00:58:18,800
+Eventually is also something like exist and we know that conjunction does not distribute over existential quantification.
+
+642
+00:58:18,800 --> 00:58:21,600
+So, this is wrong and here is a counterexample.
+
+643
+00:58:21,600 --> 00:58:25,148
+There exist a path that eventually goes to blue.
+
+644
+00:58:25,148 --> 00:58:27,468
+There exist a path that eventually goes to red.
+
+645
+00:58:27,468 --> 00:58:33,880
+But of course there does not exist a path that goes to blue and red at the same time.
+
+646
+00:58:33,880 --> 00:58:40,062
+What about this? for all eventually A and B is equivalent to for all A and B.
+
+647
+00:58:40,062 --> 00:58:44,280
+This is also not true. What's the intuitive way to see this?
+
+648
+00:58:44,280 --> 00:58:49,200
+this is a universal quantification, but this is an existential quantification, right?
+
+649
+00:58:49,200 --> 00:58:53,400
+There exist a position somewhere. And here is the counterexample.
+
+650
+00:58:53,400 --> 00:58:57,870
+For all paths eventually get to A.
+
+651
+00:58:57,870 --> 00:59:01,011
+Well, here for all paths eventually you have to pass through this state.
+
+652
+00:59:01,011 --> 00:59:04,840
+So, you eventually get A. You eventually get B, but of course you never get to a state
+
+653
+00:59:04,840 --> 00:59:10,000
+which has A and B. Good. What holds is the following.
+
+654
+00:59:10,000 --> 00:59:14,960
+Equiva- equivalences like this. And the intuition is relatively simple.
+
+655
+00:59:14,960 --> 00:59:19,392
+This is a universal quantification. Box is a universal quantification over all states.
+
+656
+00:59:19,392 --> 00:59:23,620
+You know that conjunction distributes over universal quantification.
+
+657
+00:59:23,620 --> 00:59:28,440
+So, therefore it distributes over for all box.
+
+658
+00:59:28,440 --> 00:59:31,880
+This is an existential quantification. This is an existential quantification.
+
+659
+00:59:31,880 --> 00:59:42,000
+Disjunction distributes over existential quantification, so we have this equivalent.
+
+660
+00:59:42,000 --> 00:59:47,691
+Good. What about this equivalence? This is correct.
+
+661
+00:59:47,691 --> 00:59:53,180
+How to see this? Yeah, in terms of a formula, it's for all direct successors.
+
+662
+00:59:53,180 --> 01:00:00,760
+Think about the root. For all direct successors, the next states, so the children
+
+663
+01:00:00,760 --> 01:00:02,760
+for the children says for all box A.
+
+664
+01:00:02,760 --> 01:00:05,455
+What was for all box A? The whole subtree is blue.
+
+665
+01:00:05,455 --> 01:00:10,240
+So, for this child, the whole subtree rooted here is blue.
+
+666
+01:00:10,240 --> 01:00:13,360
+The same holds for this one, and the same holds for that one.
+
+667
+01:00:13,360 --> 01:00:24,640
+That's the formula on the left. The other one says for all paths starting here it's always the case Yeah.
+
+668
+01:00:24,640 --> 01:00:29,845
+that all direct successors satisfy A. Now, this is true here because all direct successors satisfy A.
+
+669
+01:00:29,845 --> 01:00:35,708
+Now, take a path, for instance, moving here, and then of course here also all direct successors are blue.
+
+670
+01:00:35,708 --> 01:00:40,920
+Now, move here. All direct successors are blue because the whole subtree is blue.
+
+671
+01:00:40,920 --> 01:00:46,520
+And therefore, you get that these two formulas are equivalent.
+
+672
+01:00:46,520 --> 01:00:49,920
+This existential quantification two formulas is not the case.
+
+673
+01:00:49,920 --> 01:00:53,280
+So, this is the same formula as on the top of the
+
+674
+01:00:53,280 --> 01:00:59,240
+slide, but I changed the unit both universal quantifications by existential quantifications.
+
+675
+01:00:59,240 --> 01:01:02,800
+this is wrong. Look at the following transition system.
+
+676
+01:01:02,800 --> 01:01:13,040
+Yellow, blue, yellow. Claim. S0 does not satisfy there exist a path such that from the next state on there
+
+677
+01:01:13,040 --> 01:01:17,160
+exist a path which is completely blue. Yeah.
+
+678
+01:01:17,160 --> 01:01:25,480
+Look at S0. Yeah. Does S0 have a computation such that when it goes to the next state
+
+679
+01:01:25,480 --> 01:01:30,773
+there is a path which is completely blue, which is not the case because for instance you can move here.
+
+680
+01:01:30,773 --> 01:01:38,240
+Yeah. And then this is not satisfied. There exist a path which is completely blue.
+
+681
+01:01:38,240 --> 01:01:42,544
+Yeah. Also here. What about this path? This is another possibility.
+
+682
+01:01:42,544 --> 01:01:48,668
+You can stay here. Does it satisfy there exist next or eventually existent always blue?
+
+683
+01:01:48,668 --> 01:01:52,240
+This is also not the case. Yeah. So, no matter whether I take the
+
+684
+01:01:52,240 --> 01:01:55,880
+self cycle or I take the self cycle finally many times, for instance, zero
+
+685
+01:01:55,880 --> 01:02:02,720
+times and I move to the right. This not satisfies next existential box A.
+
+686
+01:02:02,720 --> 01:02:10,640
+So, more systematically again, look at the subformula there exist box A.
+
+687
+01:02:10,640 --> 01:02:18,520
+There is no state satisfying this. So, actually it says there exist next false, and therefore it cannot satisfy.
+
+688
+01:02:18,520 --> 01:02:29,000
+But, S0 satisfies the following formula. There exist a path such that always along that path
+
+689
+01:02:29,000 --> 01:02:32,440
+there exist a next state which is blue.
+
+690
+01:02:32,440 --> 01:02:35,493
+Yeah. Now, which path would satisfy this formula?
+
+691
+01:02:35,493 --> 01:02:42,640
+So, in S0 we have to find a path such that in any position along that path
+
+692
+01:02:42,640 --> 01:02:44,720
+there is a next state which is always blue.
+
+693
+01:02:44,720 --> 01:02:51,520
+Which is blue, not always. So, take the path which takes the self loop infinitely often.
+
+694
+01:02:51,520 --> 01:02:58,920
+Yeah. This is definitely a path starting in S0, and it satisfies box every time you are in S0.
+
+695
+01:02:58,920 --> 01:03:08,320
+S0 has a next state, so there exist a next state which is always A.
+
+696
+01:03:08,320 --> 01:03:15,920
+So, I take the path S0 omega.
+
+697
+01:03:15,920 --> 01:03:25,560
+Yeah. Just take the self loop. This S0 omega claim satisfies box existential next A.
+
+698
+01:03:25,560 --> 01:03:35,405
+Yeah. Why? Because S0 satisfies there exist a next state which is A.
+
+699
+01:03:35,405 --> 01:03:41,280
+I hope that's clear. Yeah. And what is now the weird thing, and this is something that you should keep
+
+700
+01:03:41,280 --> 01:03:47,560
+in mind is that we are reasoning we have to check this formula.
+
+701
+01:03:47,560 --> 01:03:54,560
+The reason why it satisfies this formula is a path that itself never reaches a blue state.
+
+702
+01:03:54,560 --> 01:04:01,620
+Yeah, but it has the possibility to move by one transition to a blue state.
+
+703
+01:04:01,620 --> 01:04:11,733
+And it's this possibility which is expressed by this existential quantification that sometimes makes reasoning a bit more harder.
+
+704
+01:04:11,733 --> 01:04:17,880
+You reason about a path and in order to satisfy this formula you have to reason about the possibilities
+
+705
+01:04:17,880 --> 01:04:21,120
+along this path, so you also have to include this outgoing arrow that you
+
+706
+01:04:21,120 --> 01:04:27,840
+never take, but still is an important role to check whether the formula holds or not.
+
+707
+01:04:27,840 --> 01:04:36,240
+This is why some people argue Moshovakis, Leslie Lamport, the world is linear because it makes life simpler.
+
+708
+01:04:36,240 --> 01:04:41,030
+Yeah. And especially because of this reason. Good.
+
+709
+01:04:41,030 --> 01:04:43,745
+This is what I just expressed, so I'm not going to this.
+
+710
+01:04:43,745 --> 01:04:48,600
+Then you can define things like weak until.
+
+711
+01:04:48,600 --> 01:04:51,600
+That goes very similar to to for LTL.
+
+712
+01:04:51,600 --> 01:04:58,000
+So, in LTL, what was weak until? A weak until says a green unless blue
+
+713
+01:04:58,000 --> 01:05:06,000
+says it's green until in particular at some point we establish blue or always green.
+
+714
+01:05:06,000 --> 01:05:11,240
+In CTL it looks and then you have a duality between until and and weak until as we
+
+715
+01:05:11,240 --> 01:05:17,000
+extensively have discussed. and in in W you can also define it in
+
+716
+01:05:17,000 --> 01:05:22,160
+CTL, but now you have to define things like existential W.
+
+717
+01:05:22,160 --> 01:05:30,240
+Now, existential W is something like the negation of an until formula because yeah, something with an they are dual.
+
+718
+01:05:30,240 --> 01:05:35,000
+So, what you get is W can define be defined in terms of until.
+
+719
+01:05:35,000 --> 01:05:38,040
+But, now what you have to do in order to get the existential quantification, you
+
+720
+01:05:38,040 --> 01:05:44,120
+get a negation of the universal quantification. Good.
+
+721
+01:05:44,120 --> 01:05:50,080
+And the same for universal until. Good. I I'm going to skip this because I think it's not so important.
+
+722
+01:05:50,080 --> 01:05:53,120
+What I want is I want to go to the expansion law.
+
+723
+01:05:53,120 --> 01:06:12,240
+Yes. Because that's the crucial part again. So, remember the existent the expansion law for LTL.
+
+724
+01:06:12,240 --> 01:06:17,080
+So, for LTL we have something of the form phi1 until phi2
+
+725
+01:06:17,080 --> 01:06:25,600
+was equivalent to phi2 or phi1 and next phi1 until phi2.
+
+726
+01:06:25,600 --> 01:06:30,480
+We have said this is an equation where this formula occurs on the left and also on the
+
+727
+01:06:30,480 --> 01:06:37,320
+right, and therefore it can have many solutions, and we have seen until is the smallest fixed point
+
+728
+01:06:37,320 --> 01:06:40,400
+the weak until is the largest fixed point, and so forth.
+
+729
+01:06:40,400 --> 01:06:42,760
+So, now I want to lift this to CTL.
+
+730
+01:06:42,760 --> 01:06:46,440
+So, the first thing is that we need to have something with a path
+
+731
+01:06:46,440 --> 01:06:50,475
+quantification because this is not let's say a state formula.
+
+732
+01:06:50,475 --> 01:06:55,720
+And so, what I want is I want to have something like there exist a phi1 well, not I should
+
+733
+01:06:55,720 --> 01:06:59,359
+not write this down. I would try to write phi1 until phi2.
+
+734
+01:06:59,359 --> 01:07:06,920
+Yeah. These are again are state formulas. And now, the principle is very much the same.
+
+735
+01:07:06,920 --> 01:07:09,626
+So, this is equivalent to well, when is this satisfied?
+
+736
+01:07:09,626 --> 01:07:14,240
+If the current state satisfies phi2 then we're done.
+
+737
+01:07:14,240 --> 01:07:17,800
+Yeah. If this is not the case yeah.
+
+738
+01:07:17,800 --> 01:07:28,360
+Then the current state should satisfy phi1. But, now yeah, we need to satisfy there exist until from somewhere on.
+
+739
+01:07:28,360 --> 01:07:33,880
+So, what we get is there exist a path such that from the next state on the
+
+740
+01:07:33,880 --> 01:07:48,320
+until formula is satisfied. So, we get there exist phi1 until phi2.
+
+741
+01:07:48,320 --> 01:07:54,200
+So, here this formula here you see this back here.
+
+742
+01:07:54,200 --> 01:08:03,560
+Yeah. That's the same as in LTL. But, now because of this existential quantification here we get this existential quantification
+
+743
+01:08:03,560 --> 01:08:11,920
+there. Yeah. And the way to view this intuitively is again, think in terms of trees.
+
+744
+01:08:11,920 --> 01:08:19,319
+This is a tree. Very abstract. I want to satisfy for the root Yes.
+
+745
+01:08:19,319 --> 01:08:21,920
+We want to check there exist a path.
+
+746
+01:08:21,920 --> 01:08:26,680
+Let's do this with atomic propositions A until B.
+
+747
+01:08:26,680 --> 01:08:29,694
+Yeah. Good. Now, there are two ways to fulfill this formula.
+
+748
+01:08:29,694 --> 01:08:33,280
+If this state is B itself, we're done.
+
+749
+01:08:33,280 --> 01:08:37,319
+Because it has a path, namely the empty path that satisfies this formula.
+
+750
+01:08:37,319 --> 01:08:41,520
+If this is not the case well, then it definitely has to fulfill A.
+
+751
+01:08:41,520 --> 01:08:47,160
+So, phi1. But, then it means that it has several successors.
+
+752
+01:08:47,160 --> 01:08:52,000
+Let's say there are three direct successors. And then for at least one of these
+
+753
+01:08:52,000 --> 01:08:56,120
+successors, you need to still establish there exist A until B.
+
+754
+01:08:56,120 --> 01:09:00,200
+So, maybe this is a successor which is the nice one, then maybe from this one
+
+755
+01:09:00,200 --> 01:09:07,960
+on I have to fulfill there exist a path that A until B.
+
+756
+01:09:07,960 --> 01:09:11,414
+Yeah. But, it's enough that there exist such a thing.
+
+757
+01:09:11,414 --> 01:09:18,880
+I don't have to let's say request this from all possible things.
+
+758
+01:09:18,880 --> 01:09:27,240
+So, what would you get if you get a universal quantification?
+
+759
+01:09:27,240 --> 01:09:34,182
+Well, very similar. The formula is fulfilled if the current state establishes some phi one, phi two, sorry.
+
+760
+01:09:34,182 --> 01:09:36,811
+Or otherwise, you have to fulfill phi one.
+
+761
+01:09:36,811 --> 01:09:48,080
+And now for all possible successors, we need to fulfill this formula phi one until phi two.
+
+762
+01:09:48,080 --> 01:09:55,080
+So, the same as now I have this universal quantification, I get the universal quantification there.
+
+763
+01:09:55,080 --> 01:10:04,400
+If you have understood the expansion law for LTL, this, I hope, should not be
+
+764
+01:10:04,400 --> 01:10:12,920
+that much of a big deal. Good. So, this is also on the slide
+
+765
+01:10:12,920 --> 01:10:16,880
+which I already And now you have the simplified versions of it.
+
+766
+01:10:16,880 --> 01:10:22,800
+if you just have true, then as for LTL, things become simpler.
+
+767
+01:10:22,800 --> 01:10:30,240
+right? Because if you say there exists eventually true until psi, it means that this is vacuously true.
+
+768
+01:10:30,240 --> 01:10:33,800
+And that means that you can simplify things because this is deleted, and you
+
+769
+01:10:33,800 --> 01:10:43,040
+get psi or and then X is there exist an next state such that this establishes this formula.
+
+770
+01:10:43,040 --> 01:10:48,160
+Good. The same you can do for weak until.
+
+771
+01:10:48,160 --> 01:11:00,320
+So, as for LTL, here you have existential until, existential weak until, and they both satisfy this same equation.
+
+772
+01:11:00,320 --> 01:11:10,060
+Similar or same as for LTL. Good.
+
+773
+01:11:10,060 --> 01:11:15,240
+The other things are all simplifications. So, here is the things for weak until.
+
+774
+01:11:15,240 --> 01:11:22,960
+here is existential box phi. There exist a path which is always satisfying phi if and only if the
+
+775
+01:11:22,960 --> 01:11:31,920
+current state satisfies phi and the current state has some successor for which that successor has a path
+
+776
+01:11:31,920 --> 01:11:43,480
+which is always satisfying phi. Are there any questions so far?
+
+777
+01:11:43,480 --> 01:11:57,330
+Silence. Good. Dualities of box and and and eventually I'm going to skip this.
+
+778
+01:11:57,330 --> 01:12:01,600
+This is all Good. What is important is the following.
+
+779
+01:12:01,600 --> 01:12:06,560
+We have universal quantification and we have existential quantification.
+
+780
+01:12:06,560 --> 01:12:12,440
+And for the algorithms later on, the model checking algorithms, we're going to restrict ourselves to
+
+781
+01:12:12,440 --> 01:12:16,680
+what we call the existential normal form. What's the existential normal form?
+
+782
+01:12:16,680 --> 01:12:23,080
+It says for every CTL formula, there is an equivalent formula that only contains existential quantifications.
+
+783
+01:12:23,080 --> 01:12:30,400
+So, no universal quantifications. So, we have operations of propositional logic, and we only have there exist
+
+784
+01:12:30,400 --> 01:12:34,000
+next, there exist until, and there exist box.
+
+785
+01:12:34,000 --> 01:12:42,400
+I need now exist box because I cannot write it down as not for all eventually
+
+786
+01:12:42,400 --> 01:12:48,120
+because there is no universal quantification. So, I have to take it as a basic ingredient here.
+
+787
+01:12:48,120 --> 01:12:53,160
+So, this is the syntax of CTL in existential normal form.
+
+788
+01:12:53,160 --> 01:12:59,720
+The standard propositional logical fragment plus there exist next phi, there exist phi
+
+789
+01:12:59,720 --> 01:13:04,280
+one until phi two, there exist box phi.
+
+790
+01:13:04,280 --> 01:13:10,560
+Good. Is this a restriction? No, this is not a restriction because every CTL formula can be
+
+791
+01:13:10,560 --> 01:13:15,800
+transformed into an equivalent formula in existential normal form.
+
+792
+01:13:15,800 --> 01:13:23,720
+For instance, this is a formula which is no longer allowed because we don't allow universal quantifications.
+
+793
+01:13:23,720 --> 01:13:27,320
+But this is equivalent to not existentially next not psi.
+
+794
+01:13:27,320 --> 01:13:33,645
+And here is a formula in existential normal form.
+
+795
+01:13:33,645 --> 01:13:37,880
+What happens for a universally quantified until formula?
+
+796
+01:13:37,880 --> 01:13:41,080
+you use the duality with the weak until.
+
+797
+01:13:41,080 --> 01:13:46,720
+So, for all psi one until psi two says there's not the case that there
+
+798
+01:13:46,720 --> 01:13:52,360
+exist a path for which not psi two holds until not psi one and not psi two.
+
+799
+01:13:52,360 --> 01:13:59,120
+And it's not the case that there exist a path which never establishes psi two.
+
+800
+01:13:59,120 --> 01:14:03,720
+And the last part is hopefully clear. I mean, you have to establish psi two,
+
+801
+01:14:03,720 --> 01:14:07,400
+so there should not be a path that never establishes psi two.
+
+802
+01:14:07,400 --> 01:14:12,880
+And this says basically that it should not be the case that there's there should
+
+803
+01:14:12,880 --> 01:14:18,088
+not be a path such that you have not psi two.
+
+804
+01:14:18,088 --> 01:14:22,731
+So, you you violate, let's say, the right-hand side until you violate both.
+
+805
+01:14:22,731 --> 01:14:33,080
+And that's also bad. Good. So, here is an example.
+
+806
+01:14:33,080 --> 01:14:43,280
+A universally quantified Well, two universal quantifications. The first thing is we get rid of the universally next operation.
+
+807
+01:14:43,280 --> 01:14:45,320
+Oh, I here I do it the other way around.
+
+808
+01:14:45,320 --> 01:14:48,840
+I first did the until, so you first take this equation.
+
+809
+01:14:48,840 --> 01:14:52,400
+so, you plug this formula into this equation.
+
+810
+01:14:52,400 --> 01:14:58,600
+here we get not psi two. Psi two is not C, so therefore I get not not C.
+
+811
+01:14:58,600 --> 01:15:01,224
+And so forth. Now I can simplify this a bit.
+
+812
+01:15:01,224 --> 01:15:06,970
+This is the simplification. Now I can push this negation inside or use this equation up here.
+
+813
+01:15:06,970 --> 01:15:14,840
+So, this is the formula over here. And this is the equivalent formula in existential normal form.
+
+814
+01:15:14,840 --> 01:15:19,314
+Okay. You can do similar things with positive normal forms, but that's not not essential here.
+
+815
+01:15:19,314 --> 01:15:26,040
+So, what we're going to do starting from the next lecture on, I'm going to introduce you first going to
+
+816
+01:15:26,040 --> 01:15:36,480
+explain much more in detail this picture. So, we're going to talk about the expressive power of CTL versus LTL.
+
+817
+01:15:36,480 --> 01:15:45,880
+We have seen already some examples there. We have seen for instance the example that
+
+818
+01:15:45,880 --> 01:15:50,428
+for all box for all eventually A is equivalent.
+
+819
+01:15:50,428 --> 01:16:01,640
+So, this is a CTL formula. But this is equivalent to the LTL formula infinitely often A.
+
+820
+01:16:01,640 --> 01:16:07,780
+One of the things that we're going to see next week is if you swap the order.
+
+821
+01:16:07,780 --> 01:16:16,520
+So, if you say instead for all eventually for all box A, I just swap the diamond and the box.
+
+822
+01:16:16,520 --> 01:16:23,120
+We're going to see that you cannot express this in LTL.
+
+823
+01:16:23,120 --> 01:16:28,240
+You would be tempted to say, "Well, this must be something like equivalent to this."
+
+824
+01:16:28,240 --> 01:16:30,960
+And we're going to see that this is not the case.
+
+825
+01:16:30,960 --> 01:16:36,720
+This is actually a property that you cannot express in CTL, and the other thing is a property that you
+
+826
+01:16:36,720 --> 01:16:47,120
+cannot express in LTL. Okay. If there are no questions, which doesn't seem to be the case,
+
+827
+01:16:47,120 --> 01:16:53,400
+then thanks, and hope to see you back next week Tuesday morning early.
